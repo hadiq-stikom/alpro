@@ -1,5 +1,5 @@
 # 📋 SPESIFIKASI PROYEK: Web Algoritma & Pemrograman
-# Dokumen Rujukan Utama — Versi 1.0 (20 Agustus 2026)
+# Dokumen Rujukan Utama — Versi 2.1 (31 Agustus 2026)
 
 > **PENTING**: Dokumen ini adalah sumber kebenaran tunggal (*single source of truth*) untuk seluruh keputusan arsitektur, visi produk, dan status implementasi proyek ini. AI agent atau developer manapun yang bekerja pada proyek ini WAJIB membaca dokumen ini terlebih dahulu sebelum melakukan perubahan apapun.
 
@@ -9,7 +9,7 @@
 
 Platform pembelajaran interaktif mata kuliah **Algoritma & Pemrograman (TI-101, 3 SKS)** yang dirancang untuk:
 
-1. **Meningkatkan minat belajar mahasiswa** melalui visualisasi dan animasi interaktif yang menarik.
+1. **Meningkatkan minat belajar mahasiswa** melalui visualisasi dan animasi interaktif yang dinamis, modern, dan pedagogis.
 2. **Menambah semangat mahasiswa** untuk mendapatkan capaian terbaik melalui **gamifikasi**.
 3. **Menyediakan lencana capaian mahasiswa** di halaman profil mahasiswa — baik rata-rata capaian dari semua bab maupun capaian tiap pertemuan.
 4. **Menyediakan lencana capaian kelas dan per mahasiswa** di halaman dosen — baik secara umum maupun per pertemuan.
@@ -24,339 +24,286 @@ Platform pembelajaran interaktif mata kuliah **Algoritma & Pemrograman (TI-101, 
 
 ## 2. TECH STACK
 
-| Layer | Teknologi | Versi |
+| Layer | Teknologi | Versi / Keterangan |
 |:---|:---|:---|
 | Framework | Next.js (App Router) | 16.3.0 |
-| UI | React | 19.2.8 |
-| Styling | Tailwind CSS v4 | ^4 |
+| UI Library | React | 19.2.8 |
+| Styling | Tailwind CSS v4 (`@import "tailwindcss"`) | ^4 (Class-based dark mode: `@custom-variant dark`) |
 | Animasi | Framer Motion | ^13.0.0 |
 | Ikon | Lucide React | ^1.28.0 |
-| Font Utama | **Plus Jakarta Sans** (Google Fonts via `next/font`) | - |
-| Font Kode | **JetBrains Mono** (Google Fonts via `next/font`) | - |
+| Font Utama | **Plus Jakarta Sans** (Google Fonts via `next/font`) | Variable: `--font-sans` |
+| Font Kode | **JetBrains Mono** (Google Fonts via `next/font`) | Variable: `--font-mono` |
 | Tema | next-themes (dark/light/system) | ^0.4.6 |
 | Code Editor | react-simple-code-editor + PrismJS | - |
 | Python Runtime | Pyodide (browser-side) | ^314.0.3 |
 | Flowchart | @xyflow/react | ^12.11.2 |
-| Backend/Auth/DB | **Supabase** (`@supabase/supabase-js`) | ^2.112.1 |
-| Gambar (jika perlu) | Cloudinary | (akun tersedia) |
+| Backend & Auth | **Supabase** (`@supabase/supabase-js` + `@supabase/ssr`) | SSR cookie-based auth via `proxy.ts` |
+| Evaluator AI | Groq API / Google Gemini Fallback (`/api/grade-essay`) | Evaluasi esai mahasiswa per butir soal |
+| Image Hosting | Cloudinary | Akun tersedia (jika diperlukan) |
 
 ---
 
-## 3. STATUS IMPLEMENTASI SAAT INI
+## 3. STATUS IMPLEMENTASI & ARSITEKTUR
 
-### 3.1 Halaman yang Sudah Ada
+### 3.1 Status Fase Pengerjaan
 
-| Route | Deskripsi | Status |
-|:---|:---|:---:|
-| `/` (page.tsx) | Halaman utama — Hero, 4 Pilar, Roadmap 16 Pertemuan | ✅ Selesai |
-| `/theory/[id]` | Halaman materi per pertemuan | ✅ Selesai (1–5) |
-| `/workspace` | Studio Praktikum (Code Editor + Flowchart + Pseudocode + RAM) | ✅ Selesai |
-
-### 3.2 Komponen Materi Interaktif (24+ Komponen)
-
-**Pertemuan 1 — Pengenalan Komputer & Pemrograman:**
-- `HistoryTimeline.tsx` — Timeline sejarah komputasi
-- `InteractiveComputerDefinition.tsx` — Definisi komputer interaktif
-- `InteractiveComputerStructure.tsx` — Struktur komputer visual
-- `AnimatedComputerOperation.tsx` — Animasi operasi komputer
-- `AnimatedFetchCycle.tsx` — Siklus Fetch-Decode-Execute
-- `AnimatedLanguageDefinition.tsx` — Definisi bahasa pemrograman
-- `AnimatedMachineLanguage.tsx` — Bahasa mesin visual
-- `AnimatedAssemblyDefinition.tsx` — Bahasa assembly visual
-- `AnimatedHighLevelDefinition.tsx` — Bahasa tingkat tinggi
-- `AnimatedTranslatorDefinition.tsx` — Kompiler vs Interpreter
-- `AnimatedProgramDefinition.tsx` — Definisi program
-- `CodeTranslationVisualizer.tsx` — Visualisasi terjemahan kode
-
-**Pertemuan 2 — Arsitektur Komputer & Sistem Bilangan:**
-- `AnimatedArchVsOrg.tsx` — Arsitektur vs Organisasi
-- `AnimatedNumberConversion.tsx` — Konversi bilangan animasi
-- `InteractiveNumberSystem.tsx` — Sistem bilangan interaktif
-- `LogicPuzzleRiver.tsx` — Teka-teki logika sungai
-- `LogicPuzzleSwitches.tsx` — Puzzle gerbang logika
-- `DataUnitsHierarchyLab.tsx` — Satuan data (Bit hingga Yottabyte)
-
-**Pertemuan 3 — Notasi & Penyajian Algoritma:**
-- `AnimatedAlgorithmDefinition.tsx` — Definisi algoritma
-- `AnimatedAlgorithmCharacteristics.tsx` — 5 Karakteristik algoritma
-- `AnimatedShippingAlgorithm.tsx` — Contoh algoritma pengiriman
-- `AnimatedBasicStructures.tsx` — Struktur dasar algoritma (sekuensial, seleksi, iterasi)
-- `InteractiveAlgorithmPresentation.tsx` — Presentasi algoritma
-- `DetailedDescriptive.tsx` — Algoritma naratif detail
-- `DetailedFlowchart.tsx` — Flowchart detail
-- `DetailedPseudocode.tsx` — Pseudocode 3 blok baku
-- `AlgorithmTriConverterLab.tsx` — Konverter Naratif, Flowchart, Pseudocode (62KB, sangat kompleks)
-
-**Pertemuan 4 — Tipe Data, Variabel & I/O:**
-- `DataTypeTaxonomyAndEditor.tsx` — Taksonomi tipe data
-- `DataTypeLab.tsx` — Lab eksplorasi tipe data
-- `VariableAndIdentifierIntro.tsx` — Pengenalan variabel & identifier
-- `IdentifierValidator.tsx` — Validator aturan penamaan identifier
-- `ConstantVsVariable.tsx` — Perbedaan konstanta vs variabel
-- `MemoryAllocationVisualizer.tsx` — Visualisasi alokasi memori RAM
-- `TypeCastingLab.tsx` — Lab konversi tipe data
-- `IOBridgeVisualizer.tsx` — Jembatan Input/Output
-
-**Pertemuan 5 — Operator, Ekspresi & Manipulasi Data:**
-- `ArithmeticModuloLab.tsx` — Operator aritmatika & modulo
-- `OperatorPrecedenceLab.tsx` — Hierarki presedensi (PEMDAS)
-- `ExpressionAnatomyLab.tsx` — Anatomi ekspresi
-- `RelationalLogicLab.tsx` — Operator relasional & logika Boolean
-- `CompoundStringLab.tsx` — Operator compound assignment & string
-
-### 3.3 Infrastruktur yang Sudah Ada
-
-| Komponen | File | Status |
-|:---|:---|:---:|
-| Toggle Python/JS | `src/context/LanguageContext.tsx` | ✅ |
-| Dark/Light/System theme | `src/components/ThemeProvider.tsx` | ✅ |
-| Header utama + profil dosen | `src/components/layout/Navbar.tsx` | ✅ |
-| Hook Pyodide (Python browser) | `src/hooks/usePython.ts` | ✅ |
-| Hook eval JS aman | `src/hooks/useJavaScript.ts` | ✅ |
-| Flowchart auto-gen dari kode | `src/components/FlowchartVisualizer.tsx` | ✅ |
-
-### 3.4 Yang BELUM Ada (Perlu Dibangun)
-
-| Komponen | Prioritas |
-|:---|:---:|
-| Autentikasi (Login/Register) | Fase 1 |
-| Koneksi & konfigurasi Supabase | Fase 1 |
-| Skema database (tabel users, quiz_submissions, dll) | Fase 1 |
-| Komponen Badge/Lencana | Fase 2 |
-| Sistem asesmen (kuis + lab scoring) | Fase 3 |
-| Dashboard Mahasiswa | Fase 4 |
-| Dashboard Dosen | Fase 5 |
-| Integrasi lencana di seluruh halaman | Fase 6 |
+| Bagian / Fase | Nama Modul / Fitur | Status | Detail yang Tersedia |
+|:---:|:---|:---:|:---|
+| **Fase 1** | **Autentikasi & Database Supabase** | ✅ **Selesai** | `supabase/schema.sql`, `supabase/rls.sql`, `src/lib/supabase.ts`, `src/lib/supabase-server.ts`, `src/proxy.ts`, `AuthContext.tsx`, `login/page.tsx` (NIM & Email login, Role-based redirect, RLS recursion fixed via `is_dosen()`). |
+| **UI/UX** | **Halaman Depan (Homepage) Ramah Pemula** | ✅ **Selesai** | Hero terfokus dengan *Single Primary CTA* ("Mulai Belajar: Minggu 01"), Quick Hub Pertemuan Aktif (M-01 s.d. M-05), Onboarding 3 Langkah, 3D Dual-Tone Icons (`ChapterIllustration`), Leaderboard Top 5. |
+| **Pilar 1 (Bagian 1)** | **Fondasi Logika, Algoritma & Tipe Data (Minggu 1–5)** | ✅ **Selesai 100%** | **24+ Lab Interaktif Lengkap**, **Bank Soal Kuis (5 MCQ/minggu)**, dan **Bank Soal Esai (5 Esai/minggu)** dengan sistem penilaian AI otomatis. |
+| **Fase 2** | **Badge & Gamification System** | ✅ **Selesai** | Utilitas kalkulasi skor 9 tingkat + komponen visual lencana. |
+| **Fase 3** | **Sistem Asesmen & Anti-AI (1–5)** | ✅ **Selesai** | Kuis timer ketat, timer akumulasi esai (carry-over), tab-switch watcher tanpa alert modal fokus, auto-remedial gateway. |
+| **Fase 4** | **Dashboard Mahasiswa** | ✅ **Selesai** | Rute `/student/dashboard` & `/student/meeting/[id]`, visualisasi lencana dinamis (`BadgeDisplay.tsx`), agregasi view `overall_grades` & `meeting_grades`. |
+| **Fase 5** | **Dashboard Dosen** | ✅ **Selesai** | Rute `/lecturer/dashboard` (analitik kelas, filter pencarian mahasiswa) & `/lecturer/student/[id]` (detail rapor, detektor anti-cheat, ulasan AI grader). |
+| **Pilar 2 (Bagian 2)** | **Struktur Percabangan Tunggal & Ganda (Minggu 6)** | ✅ **Selesai 100%** | Teori 4 Representasi Terpadu (`Pertemuan6.tsx`), 4 Lab Interaktif (Anatomi Kondisi, IF Tunggal, IF-ELSE Ganda, 3 Kasus Nyata Terpadu), Mode Proyektor Fullscreen, dan **5 Misi Coding Percabangan di Workspace Studio** (`/workspace?chapter=6`). |
+| **Pilar 2 (Bagian 3)** | **Percabangan Majemuk & Bersarang (Minggu 7)** | ✅ **Selesai 100%** | Teori 4 Representasi Terpadu (`Pertemuan7.tsx`), 4 Lab Interaktif (Cascading IF-ELIF Grade, Skrining Donor Darah Nested IF, Selector ATM Switch/Match-case, Studi Kasus Kasir Restoran Terpadu), 5 Soal MCQ Kuis, 5 Soal Esai Evaluasi AI, dan **5 Misi Coding Percabangan Majemuk di Workspace Studio** (`/workspace?chapter=7`). |
 
 ---
 
-## 4. KEPUTUSAN ARSITEKTUR YANG TELAH DISEPAKATI
+### 3.2 Halaman & Rute Aplikasi
 
-### 4.1 Autentikasi
+```
+src/
+├── app/
+│   ├── layout.tsx                     <- Root layout (Fonts, ThemeProvider, AuthProvider, LanguageProvider)
+│   ├── globals.css                    <- Tailwind v4 config, CSS vars, @custom-variant dark
+│   ├── page.tsx                       <- Homepage (Hero Ramah Pemula, 3 Langkah Onboarding, 16 Pertemuan, Leaderboard)
+│   ├── (auth)/
+│   │   └── login/page.tsx             <- Halaman Login NIM / Email
+│   ├── theory/
+│   │   └── [id]/page.tsx              <- Materi perkuliahan interaktif per minggu (Minggu 1 s.d. 7 aktif)
+│   ├── workspace/
+│   │   └── page.tsx                   <- Studio Praktikum (Editor, Flowchart, Pseudocode, RAM)
+│   ├── student/                       <- [Fase 4]
+│   │   ├── dashboard/page.tsx         <- Dashboard profil & capaian lencana mahasiswa
+│   │   └── meeting/[id]/page.tsx      <- Rincian nilai kuis & lab per minggu
+│   └── lecturer/                      <- [Fase 5]
+│       ├── dashboard/page.tsx         <- Ringkasan analitik dosen & overview kelas
+│       ├── class/page.tsx             <- Manajemen kelas & distribusi nilai
+│       └── student/[id]/page.tsx      <- Rapor individu mahasiswa
+├── components/
+│   ├── layout/Navbar.tsx              <- Navbar responsif + user profile + theme switcher
+│   ├── ThemeProvider.tsx              <- next-themes wrapper
+│   ├── FlowchartVisualizer.tsx        <- Generator visual flowchart
+│   ├── Leaderboard.tsx                <- Papan peringkat kelas (Top 5)
+│   ├── assessment/                    <- Sistem Ujian & Gamifikasi
+│   │   ├── TheoryAssessment.tsx       <- Container modul asesmen di akhir teori (MCQ -> Gateway -> Esai -> Rapor)
+│   │   ├── QuizContainer.tsx          <- 5 Soal Pilihan Ganda + Timer + Anti-Cheat
+│   │   ├── AssessmentGateway.tsx      <- Gerbang syarat kelulusan Kuis (≥80) untuk membuka Esai
+│   │   └── EssayContainer.tsx         <- 5 Soal Esai Belajar Tuntas (Gembok bertingkat, Timer Carry-Over, AI Evaluator)
+│   └── theory/                        <- 24+ Komponen materi & lab interaktif Pilar 1 (Bab 1 s.d. 5)
+├── context/
+│   ├── AuthContext.tsx                <- Client-side Supabase auth state & profile
+│   └── LanguageContext.tsx            <- Context toggle Python / JavaScript
+├── lib/
+│   ├── supabase.ts                    <- Supabase browser client (`createBrowserClient`)
+│   ├── supabase-server.ts             <- Supabase server client (`createServerClient`)
+│   ├── database.types.ts              <- TypeScript database interface
+│   ├── question-bank.ts               <- Bank Soal Kuis (5 MCQ per pertemuan)
+│   └── essay-bank.ts                  <- Bank Soal Esai + Rubrik AI (5 Esai per pertemuan)
+├── proxy.ts                           <- Next.js server-side auth proxy (pengganti middleware.ts)
+└── supabase/
+    ├── schema.sql                     <- Skema tabel: classes, users, quiz_submissions, views
+    └── rls.sql                        <- RLS policies & SECURITY DEFINER helper function `is_dosen()`
+```
 
-- **Metode**: NIM mahasiswa sebagai username DAN password awal.
-- **Alur**: Dosen memasukkan daftar NIM. Mahasiswa login pertama kali dengan NIM/NIM. Mahasiswa diminta ubah password setelah login pertama.
-- **Provider**: Supabase Auth (email/password — NIM dijadikan email internal atau field terpisah).
-- **Role**: 2 role — `mahasiswa` dan `dosen`.
+---
 
-### 4.2 Sistem Penilaian & Lencana
+## 4. KEPUTUSAN ARSITEKTUR & ATURAN PENTING
 
-**Rentang Skor yang Disepakati:**
+### 4.1 Autentikasi & Sesi
+- **Login Mahasiswa**: NIM sebagai username dan password default (bisa ubah password).
+- **Login Dosen**: Email dosen / kredensial dosen.
+- **Server-side Session Handling**: Menggunakan `@supabase/ssr` dan cookie handling di `proxy.ts`.
+- **Keamanan RLS**: Menggunakan helper `public.is_dosen()` dengan flag `SECURITY DEFINER` untuk mencegah rekursi tak hingga (*infinite recursion*) pada RLS policy tabel `users`.
+
+### 4.2 Sistem Penilaian & Lencana (9 Warna)
 
 | Nilai | Rentang | Warna Lencana | Hex Color | Kategori |
 |:---:|:---:|:---|:---|:---:|
-| A | 90–100 | Emas (Gold) | #F59E0B | Sempurna |
-| AB | 80–89 | Biru Safir (Sapphire) | #3B82F6 | Baik |
-| B | 70–79 | Hijau Zamrud (Emerald) | #10B981 | Baik |
-| BC | 65–69 | Biru Langit (Sky) | #0EA5E9 | Cukup |
-| C | 55–64 | Kuning (Amber) | #FBBF24 | Cukup |
-| CD | 50–54 | Oranye (Orange) | #F97316 | Kurang |
-| D | 40–49 | Merah Bata (Rose) | #F43F5E | Kurang |
-| DE | 30–39 | Merah (Red) | #EF4444 | Kurang |
-| E | 0–29 | Abu Gelap (Slate) | #64748B | Kurang |
+| **A** | 90–100 | Emas (Gold) | `#F59E0B` | Sempurna |
+| **AB** | 80–89 | Biru Safir (Sapphire) | `#3B82F6` | Baik |
+| **B** | 70–79 | Hijau Zamrud (Emerald) | `#10B981` | Baik |
+| **BC** | 65–69 | Biru Langit (Sky) | `#0EA5E9` | Cukup |
+| **C** | 55–64 | Kuning (Amber) | `#FBBF24` | Cukup |
+| **CD** | 50–54 | Oranye (Orange) | `#F97316` | Kurang |
+| **D** | 40–49 | Merah Bata (Rose) | `#F43F5E` | Kurang |
+| **DE** | 30–39 | Merah (Red) | `#EF4444` | Kurang |
+| **E** | 0–29 | Abu Gelap (Slate) | `#64748B` | Kurang |
 
 ### 4.3 Formula Penilaian Asesmen
+$$\text{Skor Akhir} = (\text{Akurasi} \times 0.80) + (\text{Bonus Waktu} \times 0.20)$$
 
-**Bobot yang Disepakati: 80% Akurasi + 20% Bonus Waktu**
+- $\text{Akurasi} = \left(\frac{\text{Jawaban Benar}}{\text{Total Soal}}\right) \times 100$
+- $\text{Bonus Waktu} = \max\left(0, \left(\frac{\text{Batas Waktu} - \text{Waktu Aktual}}{\text{Batas Waktu}}\right) \times 100\right)$
 
-```
-Skor Akhir = (Akurasi × 0.80) + (Bonus Waktu × 0.20)
+### 4.4 7 Lapisan Anti-AI pada Asesmen
+1. **Copy/Paste/Cut disabled** via event prevention pada container asesmen.
+2. **Klik kanan dinonaktifkan** (`contextmenu` blocked).
+3. **Timer ketat per butir soal** (30–60 detik per soal kuis, 5 menit akumulasi per soal esai).
+4. **Pencatat perpindahan tab** (`visibilitychange` logging ke `quiz_submissions.tab_switches`).
+5. **Soal acak & permutasi opsi** dari bank soal.
+6. **Variasi angka/variabel dinamis** per user id.
+7. **Soal interaktif berbasis aksi/visual** (drag node, susun alur, tracing RAM).
 
-Dimana:
-- Akurasi     = (Jawaban Benar / Total Soal) × 100
-- Bonus Waktu = max(0, ((Batas Waktu - Waktu Aktual) / Batas Waktu) × 100)
-  → Jika melebihi batas waktu, bonus = 0 (tidak dikurangi, hanya tidak dapat bonus)
-```
+### 4.5 Evaluasi Esai Dosen AI (Mastery-Based Progression)
+Ujian esai menerapkan konsep **Belajar Tuntas (Mastery Learning)** per butir soal:
+1. **Gembok Bertingkat (*Progressive Gateway*)**: Terdapat 5 soal esai per modul. Soal berikutnya (`N+1`) **wajib terkunci** sebelum soal saat ini (`N`) mendapat nilai kelulusan $\ge 80$.
+2. **Evaluasi Instan AI**: Begitu dikirim, API Dosen AI mengevaluasi dan merespons dalam 1–2 detik, memberikan skor murni (0–100) dan *feedback* spesifik.
+3. **Loop Revisi di Tempat (*Instant Revision Loop*)**: Jika nilai $< 80$, mahasiswa masuk ke mode revisi, teks jawaban sebelumnya dipertahankan, dan mahasiswa diminta untuk menyempurnakannya berdasarkan ulasan Dosen AI yang disandingkan.
+4. **Manajemen Waktu Cerdas (Timer Carry-Over & Pause)**:
+   - Waktu awal = 5 menit (300 detik).
+   - Waktu **berhenti otomatis (*pause*)** saat AI sedang menilai atau saat mahasiswa membaca ulasan. Waktu hanya berjalan saat mahasiswa aktif mengetik jawaban.
+   - Sisa waktu dari soal sebelumnya **terakumulasi/dibawa (*carry-over*)** ke soal berikutnya begitu gembok terbuka (+300 detik per soal baru).
+5. **Penanganan Error Tanpa Native Alert**: Error API / jaringan disajikan secara *inline* di dalam kartu untuk mencegah *focus loss* yang memicu penalti *tab switch*.
+6. **Standar Penilaian Pseudocode Resmi**:
+   - Struktur **3 Blok Baku**: `PROGRAM`, `KAMUS`, `ALGORITMA`.
+   - **Clean Code Variable**: Menggunakan nama deskriptif (`usia`, `panjang`), dilarang variabel 1 huruf (`u`, `p`).
+   - Instruksi I/O Universal: `input()` dan `output()`.
+   - Operator Penugasan (*Assignment*): `=` (bukan `<-`).
 
-**Contoh Perhitungan:**
-- Kuis 10 soal, batas waktu 10 menit (600 detik)
-- Mahasiswa A: 9/10 benar, selesai 4 menit → (90×0.8)+(100×0.6×0.2) = 72+12 = **84 (AB)**
-- Mahasiswa B: 10/10 benar, selesai 9 menit → (100×0.8)+(100×0.1×0.2) = 80+2 = **82 (AB)**
-- Mahasiswa C: 10/10 benar, selesai 3 menit → (100×0.8)+(100×0.7×0.2) = 80+14 = **94 (A)**
+## 6. KESEPAKATAN PEDAGOGIS & STANDAR PENULISAN ALGORITMA (SESUAI MATERI PERTEMUAN 3)
 
-**Sumber skor per pertemuan (kombinasi):**
-1. **Kuis pilihan ganda / isian singkat** (dengan timer ketat per soal)
-2. **Penyelesaian lab interaktif** (checklist tugas tervalidasi)
-3. **Tantangan kode di workspace** (validasi output program)
-
-### 4.4 Strategi Anti-AI pada Asesmen (7 Lapisan)
-
-| # | Strategi | Implementasi Teknis |
-|:---:|:---|:---|
-| 1 | **Copy/Paste/Cut disabled** | `onCopy`, `onPaste`, `onCut` → `e.preventDefault()` pada seluruh input/textarea asesmen |
-| 2 | **Klik kanan disabled** | `onContextMenu` → `e.preventDefault()` pada area asesmen |
-| 3 | **Timer ketat per soal** | 30–60 detik per soal, terlalu cepat untuk copy-paste ke AI |
-| 4 | **Tab-switch detection** | `visibilitychange` event dicatat jumlahnya, ditampilkan di dashboard dosen |
-| 5 | **Soal acak dari bank soal** | Setiap mahasiswa dapat urutan & variasi soal berbeda (seed dari user_id) |
-| 6 | **Variasi angka random** | Soal sama tapi angka/variabel berubah tiap mahasiswa |
-| 7 | **Soal visual drag & drop** | Susun flowchart, drag variabel ke memori — tidak bisa di-copy ke AI |
-
-
-### 4.5 Tipografi
-
-- **Font utama**: Plus Jakarta Sans (via `next/font/google`, variable: `--font-sans`)
-- **Font kode**: JetBrains Mono (via `next/font/google`, variable: `--font-mono`)
-- **Fallback chain**: `"Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif`
-- **JANGAN mengubah font** — sudah disepakati oleh dosen pengampu.
+Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu dan Asisten AI berdasarkan materi **Pertemuan 3 (3 Teknik Penyajian Algoritma: Naratif, Flowchart, dan Pseudocode)**:
 
 ---
 
-## 5. SKEMA DATABASE (SUPABASE POSTGRESQL)
+### 6.1 Tiga Teknik Baku Penyajian Algoritma (Materi Pertemuan 3)
 
-> **REVISI (20 Agustus 2026):** Skema diperbarui untuk mendukung **multi-kelas** (beberapa rombongan belajar paralel dalam satu semester).
+#### A. Algoritma Naratif (Deskriptif) — Model 1: Format Blok Sejajar
+1. **Nomor Urut Wajib & Langkah Tunggal (*Atomic Decision Block*)**:
+   - Setiap langkah diawali dengan nomor urut (`1.`, `2.`, `3.`) yang berurutan dan lurus sejajar di kolom paling kiri (kolom 0).
+   - Seluruh blok percabangan IF-ELSE (kondisi, cabang `Jika`, dan cabang `Selain itu`) **wajib berada di dalam SATU NOMOR URUT YANG SAMA**.
+   - **Klausa `Selain itu:` DILARANG diberi nomor baru** karena merupakan jalur alternatif eksklusif (*mutually exclusive*), bukan langkah sekuensial berikutnya.
+   - **Baris Terakhir Tanpa Nomor**: Baris penutup atau aksi selesai/terminal pada algoritma naratif **DILARANG memiliki nomor urut** (misal `Selesai` ditulis tanpa awalan angka).
+2. **Format Baku Percabangan Naratif**:
+   ```text
+   1. Masukkan nilai ujian.
+   2. Jika nilai >= 75 maka:
+         Tampilkan "Selamat, Anda LULUS!" ke layar.
+      Selain itu:
+         Tampilkan "Maaf, Anda TIDAK LULUS." ke layar.
+   Selesai.
+   ```
+3. **Perataan Indentasi Vertikal**:
+   - Huruf `S` pada kata `Selain itu:` lurus sejajar vertikal persis di bawah huruf `J` pada kata `Jika` (menjorok 3 spasi dari angka nomor).
+   - Aksi perintah di dalam cabang menjorok lebih dalam (6 spasi).
+4. **Kata Kerja Imperatif (Perintah Baku)**:
+   - Masukan: `Masukkan nilai [variabel]`
+   - Perhitungan/Aksi: `Hitung [variabel] = [rumus]`
+   - Keluaran: `Tampilkan hasil [variabel] ke layar`
+   - Kondisi: `Jika [kondisi] maka:` dan `Selain itu:`
+5. **Bebas Ambiguitas & Variabel Lengkap**: Nama variabel ditulis lengkap (`panjang`, `lebar`, `luas`, `totalBelanja`, `nilaiUjian`), dilarang singkatan 1 huruf.
 
-```sql
--- Tabel kelas/rombongan belajar
-CREATE TABLE classes (
-  id            UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-  name          TEXT        NOT NULL,          -- contoh: "TI-2024-A", "TI-2024-B"
-  academic_year TEXT        NOT NULL,          -- contoh: "2024/2025"
-  semester      TEXT        NOT NULL DEFAULT 'Ganjil'
-                            CHECK (semester IN ('Ganjil', 'Genap')),
-  is_active     BOOLEAN     NOT NULL DEFAULT true,
-  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
-);
+#### B. Flowchart (Diagram Alir Standar ANSI/ISO & Interaktif)
+1. **Terminator (Kapsul/Oval)**: Menandai awal (`START` / `MULAI`) dan akhir (`STOP` / `SELESAI`) algoritma.
+2. **Input/Output (Jajar Genjang)**: Operasi masukan data (`input(var)`) dan tampilan keluaran (`output(...)`).
+3. **Process (Persegi Panjang)**: Operasi kalkulasi, pengolahan data, atau penugasan variabel (`luas = panjang * lebar`).
+4. **Decision (Belah Ketupat / Diamond) Kontras Tinggi & Evaluasi Dinamis**:
+   - Background cokelat gelap pekat (`#451a03`) dengan teks kuning keemasan (`text-amber-200`) tebal (*font-black*) untuk kontras optimal.
+   - Memiliki tepat dua panah keluar: Cabang Benar (`Ya` / `True`) dan Cabang Salah (`Tidak` / `False`).
+   - **Badge Hasil Evaluasi**: Menampilkan status logika *real-time* di sisi bawah:
+     - `✓ HASIL: TRUE (Ya)` (hijau emerald bercahaya) jika kondisi terpenuhi.
+     - `✗ HASIL: FALSE (Tidak)` (merah mawar bercahaya) jika kondisi tidak terpenuhi.
+   - Border SVG belah ketupat memancarkan aksen hijau terang (True) atau merah terang (False).
+5. **Pembeda Visual Jalur True vs False**:
+   - **Jalur Aktif (*Taken/Executed*)**: Garis tebal (`strokeWidth: 3.5`), berwarna cerah (#10b981 atau #f43f5e), efek *glow*, **animasi aliran bergerak dinamis** (`animated: true`), label cabang tegas `✓ Ya (TRUE)` / `✓ Tidak (FALSE)`, serta node di dalamnya diberi badge `✓ DIJALANKAN`.
+   - **Jalur Dilewati (*Bypassed/Skipped*)**: Garis alur redup (*dimmed*, `opacity: 0.35`, dashed `5,5`, `strokeWidth: 1.5`), animasi mati (`animated: false`), label redup `✗ ... (DILEWATI)`, dan node di dalamnya meredup (`opacity-40 grayscale-[60%]`) dengan badge `🚫 DILEWATI`.
+6. **Titik Temu (*Merge Node*)**: Menggunakan lingkaran konektor standar ANSI/ISO (`mergeNode`) agar alur percabangan yang selesai menyatu rapi sebelum melanjutkan ke instruksi sekuensial berikutnya.
 
--- Tabel pengguna
-CREATE TABLE users (
-  id               UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
-  email            TEXT         UNIQUE,
-  full_name        TEXT         NOT NULL,
-  nim              TEXT         UNIQUE,
-  role             TEXT         CHECK (role IN ('mahasiswa', 'dosen')) DEFAULT 'mahasiswa',
-  class_id         UUID         REFERENCES classes(id) ON DELETE SET NULL,  -- NULL untuk dosen
-  avatar_url       TEXT,
-  password_changed BOOLEAN      DEFAULT false,
-  created_at       TIMESTAMPTZ  DEFAULT now()
-);
-
--- Tabel submission kuis/tugas
-CREATE TABLE quiz_submissions (
-  id                 UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id            UUID         REFERENCES users(id) ON DELETE CASCADE,
-  class_id           UUID         REFERENCES classes(id) ON DELETE SET NULL,  -- denormalized
-  meeting_id         INTEGER      NOT NULL CHECK (meeting_id BETWEEN 1 AND 16),
-  quiz_type          TEXT         CHECK (quiz_type IN ('quiz', 'lab', 'challenge', 'exam')),
-  quiz_key           TEXT         NOT NULL,
-  score              NUMERIC(5,2) CHECK (score BETWEEN 0 AND 100),
-  max_score          NUMERIC(5,2) DEFAULT 100,
-  answers_json       JSONB,
-  time_spent_seconds INTEGER,
-  tab_switches       INTEGER      DEFAULT 0,
-  submitted_at       TIMESTAMPTZ  DEFAULT now(),
-  created_at         TIMESTAMPTZ  DEFAULT now()
-);
-
--- View: Rata-rata nilai per pertemuan per mahasiswa (per kelas)
-CREATE VIEW meeting_grades AS
-SELECT user_id, class_id, meeting_id,
-  ROUND(AVG(score), 2) as avg_score,
-  CASE WHEN AVG(score) >= 90 THEN 'A' WHEN AVG(score) >= 80 THEN 'AB'
-       WHEN AVG(score) >= 70 THEN 'B' WHEN AVG(score) >= 65 THEN 'BC'
-       WHEN AVG(score) >= 55 THEN 'C' WHEN AVG(score) >= 50 THEN 'CD'
-       WHEN AVG(score) >= 40 THEN 'D' WHEN AVG(score) >= 30 THEN 'DE'
-       ELSE 'E' END as grade_letter,
-  CASE WHEN AVG(score) >= 90 THEN 'Sempurna' WHEN AVG(score) >= 70 THEN 'Baik'
-       WHEN AVG(score) >= 55 THEN 'Cukup' ELSE 'Kurang' END as grade_category
-FROM quiz_submissions GROUP BY user_id, class_id, meeting_id;
-
--- View: Rata-rata keseluruhan per mahasiswa (per kelas)
-CREATE VIEW overall_grades AS
-SELECT user_id, class_id, ROUND(AVG(avg_score), 2) as total_avg_score,
-  CASE WHEN AVG(avg_score) >= 90 THEN 'A' WHEN AVG(avg_score) >= 80 THEN 'AB'
-       WHEN AVG(avg_score) >= 70 THEN 'B' WHEN AVG(avg_score) >= 65 THEN 'BC'
-       WHEN AVG(avg_score) >= 55 THEN 'C' WHEN AVG(avg_score) >= 50 THEN 'CD'
-       WHEN AVG(avg_score) >= 40 THEN 'D' WHEN AVG(avg_score) >= 30 THEN 'DE'
-       ELSE 'E' END as overall_grade_letter,
-  CASE WHEN AVG(avg_score) >= 90 THEN 'Sempurna' WHEN AVG(avg_score) >= 70 THEN 'Baik'
-       WHEN AVG(avg_score) >= 55 THEN 'Cukup' ELSE 'Kurang' END as overall_grade_category
-FROM meeting_grades GROUP BY user_id, class_id;
-
--- View: Rata-rata nilai per kelas (untuk dashboard dosen)
-CREATE VIEW class_grades AS
-SELECT mg.class_id, c.name as class_name, mg.meeting_id,
-  ROUND(AVG(mg.avg_score), 2) as class_avg_score,
-  COUNT(DISTINCT mg.user_id) as student_count,
-  CASE WHEN AVG(mg.avg_score) >= 90 THEN 'A' WHEN AVG(mg.avg_score) >= 80 THEN 'AB'
-       WHEN AVG(mg.avg_score) >= 70 THEN 'B' WHEN AVG(mg.avg_score) >= 65 THEN 'BC'
-       WHEN AVG(mg.avg_score) >= 55 THEN 'C' WHEN AVG(mg.avg_score) >= 50 THEN 'CD'
-       WHEN AVG(mg.avg_score) >= 40 THEN 'D' WHEN AVG(mg.avg_score) >= 30 THEN 'DE'
-       ELSE 'E' END as class_grade_letter
-FROM meeting_grades mg JOIN classes c ON c.id = mg.class_id
-GROUP BY mg.class_id, c.name, mg.meeting_id;
-```
+#### C. Pseudocode (Kode Semu Standar CLRS & Bab 3)
+1. **Struktur 3 Blok Wajib**:
+   - `PROGRAM NamaAlgoritma` (Format PascalCase, wajib disertai komentar deskripsi fungsi `// ...`).
+   - `KAMUS:` (Semua variabel wajib didaftarkan beserta tipe datanya: `integer`, `float`, `string`, `boolean`).
+   - `ALGORITMA:` (Urutan instruksi langkah program).
+2. **Nama Variabel Deskriptif (*Clean Code*)**:
+   - Wajib menggunakan nama variabel bermakna (`nilaiUjian`, `totalBelanja`, `usiaPengguna`).
+   - **DILARANG KERAS** menggunakan variabel satu huruf (`a`, `b`, `x`, `n`, `p`).
+3. **Instruksi I/O Universal**:
+   - Menerima masukan: `input(namaVariabel)`.
+   - Menampilkan keluaran: `output("Pesan", variabel)`.
+4. **Operator Penugasan (*Assignment*) — Standar CLRS**:
+   - Menggunakan tanda sama dengan tunggal `=` (contoh: `luas = panjang * lebar`, `sisaSaldo = saldo - jumlahTarik`).
+   - **DILARANG** menggunakan tanda panah klasik `<-`.
+5. **Operator Perbandingan Kesamaan (*Equality Comparison*) — Standar CLRS**:
+   - Wajib menggunakan tanda ganda `==` (contoh: `if status == "LUNAS" then`, `if angka % 2 == 0 then`).
+   - Penegasan: Tanda `=` adalah penugasan nilai, sedangkan `==` adalah pengujian kesamaan nilai.
+6. **Operator Ketidaksamaan (*Inequality*) — Standar CLRS**:
+   - Wajib menggunakan notasi `!=` (contoh: `if angka % 2 != 0 then`, `if pembagi != 0 then`).
+   - **DILARANG** menggunakan notasi Pascal klasik `<>`.
+7. **Operator Ambang Batas Relasional**:
+   - Menggunakan `>`, `>=`, `<`, `<=`.
+8. **Penutup Blok Percabangan**:
+   - Setiap struktur percabangan `if` (baik IF tunggal maupun IF-ELSE) **WAJIB diakhiri dengan `endif`**.
+9. **Percabangan Majemuk (*Cascading / Multi-Branch IF - ELSE IF - ELSE*)**:
+   - Kata kunci baku percabangan majemuk adalah **`else if <kondisi> then`** (dua kata terpisah).
+   - **DILARANG KERAS** menggunakan kata kunci Python `elif` di dalam pseudocode.
+   - Pada pola bertingkat sejajar (*cascading*), struktur ditutup dengan tepat **satu `endif`** pada baris penutup struktur.
 
 ---
 
-## 6. HALAMAN & ROUTING YANG DIRENCANAKAN
-
-```
-src/app/
-  page.tsx                         <- Home (SUDAH ADA)
-  login/page.tsx                   <- Halaman Login              [BARU - Fase 1]
-  theory/[id]/page.tsx             <- Materi per pertemuan (SUDAH ADA)
-  workspace/page.tsx               <- Studio Praktikum (SUDAH ADA)
-  student/                                                       [BARU - Fase 4]
-    dashboard/page.tsx             <- Dashboard Mahasiswa
-    meeting/[id]/page.tsx          <- Capaian per Pertemuan
-  lecturer/                                                      [BARU - Fase 5]
-    dashboard/page.tsx             <- Dashboard Dosen
-    class/page.tsx                 <- Analitik Kelas
-    student/[id]/page.tsx          <- Detail per Mahasiswa
-  api/                                                           [BARU - Fase 1]
-    ...                            <- Next.js API Routes
-```
+### 6.2 Standar Tabulasi & Indentasi Monospace (Perataan Kolom)
+1. **Algoritma Naratif**:
+   - Nomor urut `1.`, `2.`, `3.` wajib lurus sejajar pada kolom margin kiri yang sama (kolom 0).
+   - Aksi cabang berindentasi rapi (`pl-5`) tanpa box wrapper.
+2. **Pseudocode & Kode Program**:
+   - Blok `PROGRAM`, `KAMUS:`, `ALGORITMA:` berada di kolom 0.
+   - Instruksi di dalam `ALGORITMA:` (`input`, `if ... then`, `else`, `endif`) menjorok tepat **2 spasi**.
+   - Badan di dalam percabangan menjorok tepat **4 spasi**.
+   - Kode Python/JS di baris terluar (`var = ...`, `if ...:`) wajib mulai di kolom 0.
 
 ---
 
-## 7. FASE IMPLEMENTASI
-
-| Fase | Isi | Dependensi |
-|:---:|:---|:---|
-| **1** | Setup Supabase (koneksi, env vars, tabel, RLS) + Halaman Login (NIM/password) | - |
-| **2** | Komponen Badge System (9 warna, 4 kategori) + utilitas penilaian | Fase 1 |
-| **3** | Sistem Asesmen untuk Pertemuan 1–5 (kuis, lab scoring, anti-AI) | Fase 1, 2 |
-| **4** | Dashboard Mahasiswa (profil, lencana overall, lencana per pertemuan, progress) | Fase 1, 2, 3 |
-| **5** | Dashboard Dosen (analitik kelas, distribusi nilai, detail per mahasiswa) | Fase 1, 2, 3 |
-| **6** | Integrasi penuh (badge di Navbar, di header materi, leaderboard) | Fase 1–5 |
-
----
-
-## 8. KONVENSI KODE & DESAIN
-
-### UI/UX
-- **Warna primer**: Indigo (#4F46E5 light / #6366F1 dark)
-- **Tema**: Semantic tokens via CSS custom properties (--background, --foreground, --card, dll)
-- **Animasi**: Framer Motion untuk transisi dan micro-interactions
-- **Glassmorphism**: backdrop-blur + transparansi untuk panel-panel utama
-- **Responsif**: Mobile-first, breakpoints sm, md, lg
-
-### Kode
-- TypeScript strict mode
-- Semua komponen adalah Client Components ("use client")
-- State management via React Context (bukan Redux/Zustand)
-- Verifikasi kompilasi: `npx tsc --noEmit` harus exit code 0
-- Semua file Pertemuan: `src/components/theory/PertemuanX.tsx`
-- Komponen spesifik chapter: `src/components/theory/chapterX/NamaKomponen.tsx`
-
-### Prinsip Pedagogis
-- Validasi/peringatan harus **prominent di atas**, bukan tersembunyi di bawah
-- Lab interaktif harus memberikan **umpan balik instan**
-- Flowchart harus bisa diedit secara visual (bukan hanya teks)
-- Variabel yang belum didefinisikan harus langsung ditandai sebagai error
+### 6.3 Aturan Tipografi Kode: Penonaktifan Font Ligatures
+- **Font Ligatures WAJIB dinonaktifkan secara global** pada seluruh elemen `code`, `pre`, `.font-mono` melalui CSS:
+  ```css
+  code, pre, kbd, samp, .font-mono, [class*="font-mono"] {
+    font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "calt" 0, "dlig" 0 !important;
+  }
+  ```
+- **Tujuan**: Memastikan operator pemrograman seperti `==`, `!=`, `>=`, `<=` tampil sebagai karakter ASCII terpisah yang nyata (sesuai tombol yang diketik mahasiswa pada keyboard), bukan disatukan menjadi simbol tipografi matematika `═`, `≠`, `≥`, `≤`.
 
 ---
 
-## 9. CATATAN PENTING UNTUK AI AGENT / DEVELOPER BERIKUTNYA
-
-1. **Baca dokumen ini SEBELUM melakukan perubahan apapun.**
-2. **`@supabase/supabase-js` sudah terinstal** di `package.json`, tapi belum ada file konfigurasi (`src/lib/supabase.ts`) atau environment variables.
-3. **Jangan mengubah font** — Plus Jakarta Sans sudah disepakati sebagai font utama.
-4. **Jangan mengubah struktur komponen materi** yang sudah ada (Pertemuan 1–5) kecuali diminta secara eksplisit.
-5. **Setiap perubahan harus diverifikasi** dengan `npx tsc --noEmit` (harus exit code 0).
-6. **Pesan validasi/error untuk mahasiswa** harus selalu ditampilkan secara prominent (sticky/top), bukan di bagian bawah yang tidak terlihat.
+### 6.4 Studio Workspace: Layout Multi-Kolom Dinamis, Selektor Checkbox & Kursor Presisi
+1. **Penyajian Fleksibel dengan Kotak Cawang (Checkbox Multi-Selection)**:
+   - Header visualizer menyediakan 3 tombol representasi ber-kotak cawang interaktif:
+     - `[✓] 🔷 Flowchart`
+     - `[✓] 📋 Pseudocode`
+     - `[✓] 📝 Naratif`
+     - Serta tombol pintas `Semua` (Studio 4 Kolom) dan indikator jumlah kolom aktif.
+   - Pengguna bebas memilih 1, 2, atau ketiga representasi secara simultan bersama Editor Kode.
+   - *Safety Guard*: Minimal harus ada 1 representasi aktif (tidak dapat di-uncheck semua).
+2. **Penyesuaian Lebar Komponen Dinamis (*Auto-Adjust Grid Scaling*)**:
+   - Ketika kurang dari 4 kolom yang aktif, CSS grid secara dinamis memperlebar komponen terpilih:
+     - **4 Kolom**: `[1.05fr _ 1.6fr _ 1.15fr _ 1.35fr]` (Naratif, Flowchart, Pseudocode, Kode).
+     - **3 Kolom**: Flowchart (jika aktif) membesar hingga `1.85fr`, komponen pendamping `1.1fr–1.2fr`, dan Kode `1.4fr`.
+     - **2 Kolom**: Tampilan fokus mendalam di mana Flowchart mendapatkan `1.45fr` (~60%) dan Kode `1fr` (~40%) untuk analisis logika yang sangat detail dan lapang.
+3. **Sinkronisasi Sorotan Lintas Panel (*Cross-Highlighting on Hover*)**:
+   - Mengarahkan kursor pada salah satu langkah di salah satu kolom secara simultan menyorot langkah yang setara di seluruh panel aktif.
+   - Penyorotan langkah `Selain itu:` / `else` mengalirkan visual True/False beranimasi pada Flowchart dan menyorot baris `else:` di editor kode.
+4. **Arsitektur Editor Kode: Bebas Gangguan Kursor (*Zero Caret Metric Interference*)**:
+   - Gutter Nomor Baris vertikal (`sticky left-0`) dengan penanda `▶ X`.
+   - Layer Background Highlight (`bg-amber-400/20 border-l-4 border-amber-400`).
+   - Penonaktifan soft-wrapping (`white-space: pre !important; word-break: normal !important;`) memastikan rasio tinggi baris selalu tepat 1:1 setinggi 22px tanpa pergeseran kursor (*zero ghost caret offset*).
+   - Tidak boleh menyisipkan `<span>` pembungkus baris, `<div>`, margin/padding, atau `font-bold` di dalam tokenizer Prism.
+   - Metrik teks `<textarea>` (lapisan pengetikan kursor) dan `<pre>` (lapisan pewarnaan sintaks) pada `react-simple-code-editor` WAJIB identik 100% sub-piksel agar kursor pengetikan tidak pernah mengalami pergeseran (*ghost caret offset*).
+5. **Integrasi State Memory RAM (Live) pada Mode Maximize Studio**:
+   - Bilah `STATE MEMORY RAM (LIVE)` disematkan tepat di bawah header kartu Kode Program pada mode maximize studio.
+   - Menampilkan variabel memori aktif runtime secara real-time dengan status buka/tutup (*collapsible*) yang tersinkronisasi langsung dengan tombol pintas `RAM Live` di header studio.
 
 ---
 
-*Dokumen ini terakhir diperbarui: 20 Agustus 2026*
-*Dibuat oleh: AI Assistant bersama Hadiq, ST, M.Kom*
+### 6.5 Prinsip Desain UI/UX & Kontras
+1. **Elegan, Modern, dan Tidak Menor**: Menghindari lencana (*badge*) berlebihan atau kotak mencolok di tengah-tengah baris kode yang dapat merusak pemahaman mahasiswa.
+2. **Kontras Tinggi & Ramah Pemula**: Seluruh elemen teks harus memiliki rasio kontras tinggi yang nyaman dibaca baik pada mode gelap (*Dark Mode*) maupun terang (*Light Mode*).
+3. **Layout Penuh & Tidak Tertekan**: Navigasi tab modul menggunakan grid responsif (`grid-cols-2 lg:grid-cols-4`) agar judul modul dan tombol navigasi tidak tertekan (*squished*) atau memunculkan *scroll-bar* horizontal.
+
+---
+
+*Dokumen ini terakhir diperbarui: 7 September 2026*  
+*Disusun dan disepakati oleh: Hadiq, ST, M.Kom bersama Antigravity AI*
+
+

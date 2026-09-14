@@ -57,13 +57,14 @@ CREATE TABLE IF NOT EXISTS public.quiz_submissions (
   user_id              UUID         NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
   class_id             UUID         REFERENCES public.classes(id) ON DELETE SET NULL,  -- denormalized untuk query cepat
   meeting_id           INTEGER      NOT NULL CHECK (meeting_id BETWEEN 1 AND 16),
-  quiz_type            TEXT         NOT NULL CHECK (quiz_type IN ('quiz', 'lab', 'challenge', 'exam')),
+  quiz_type            TEXT         NOT NULL CHECK (quiz_type IN ('quiz', 'lab', 'challenge', 'exam', 'essay')),
   quiz_key             TEXT         NOT NULL,
   score                NUMERIC(5,2) NOT NULL CHECK (score BETWEEN 0 AND 100),
   max_score            NUMERIC(5,2) NOT NULL DEFAULT 100,
   answers_json         JSONB,
   time_spent_seconds   INTEGER,
   tab_switches         INTEGER      NOT NULL DEFAULT 0,
+  ai_feedback          TEXT,
   submitted_at         TIMESTAMPTZ  NOT NULL DEFAULT now(),
   created_at           TIMESTAMPTZ  NOT NULL DEFAULT now()
 );
@@ -72,6 +73,7 @@ COMMENT ON TABLE  public.quiz_submissions IS 'Rekaman setiap submission kuis, la
 COMMENT ON COLUMN public.quiz_submissions.class_id IS 'Denormalized dari users.class_id untuk mempercepat query analitik per kelas';
 COMMENT ON COLUMN public.quiz_submissions.quiz_key IS 'Identifier unik asesmen (contoh: p1-kuis-1, p3-lab-flowchart)';
 COMMENT ON COLUMN public.quiz_submissions.tab_switches IS 'Jumlah kali mahasiswa keluar tab saat mengerjakan asesmen (anti-AI Layer 4)';
+COMMENT ON COLUMN public.quiz_submissions.ai_feedback IS 'Feedback otomatis dari AI grader khusus untuk tipe ujian essay';
 
 -- Index untuk query dashboard
 CREATE INDEX IF NOT EXISTS idx_quiz_submissions_user_id      ON public.quiz_submissions(user_id);
@@ -89,25 +91,26 @@ SELECT
   qs.user_id,
   qs.class_id,
   qs.meeting_id,
-  ROUND(AVG(qs.score), 2) AS avg_score,
+  ROUND(MAX(qs.score), 2) AS avg_score,
   CASE
-    WHEN AVG(qs.score) >= 90 THEN 'A'
-    WHEN AVG(qs.score) >= 80 THEN 'AB'
-    WHEN AVG(qs.score) >= 70 THEN 'B'
-    WHEN AVG(qs.score) >= 65 THEN 'BC'
-    WHEN AVG(qs.score) >= 55 THEN 'C'
-    WHEN AVG(qs.score) >= 50 THEN 'CD'
-    WHEN AVG(qs.score) >= 40 THEN 'D'
-    WHEN AVG(qs.score) >= 30 THEN 'DE'
+    WHEN MAX(qs.score) >= 90 THEN 'A'
+    WHEN MAX(qs.score) >= 80 THEN 'AB'
+    WHEN MAX(qs.score) >= 70 THEN 'B'
+    WHEN MAX(qs.score) >= 65 THEN 'BC'
+    WHEN MAX(qs.score) >= 55 THEN 'C'
+    WHEN MAX(qs.score) >= 50 THEN 'CD'
+    WHEN MAX(qs.score) >= 40 THEN 'D'
+    WHEN MAX(qs.score) >= 30 THEN 'DE'
     ELSE 'E'
   END AS grade_letter,
   CASE
-    WHEN AVG(qs.score) >= 90 THEN 'Sempurna'
-    WHEN AVG(qs.score) >= 70 THEN 'Baik'
-    WHEN AVG(qs.score) >= 55 THEN 'Cukup'
+    WHEN MAX(qs.score) >= 90 THEN 'Sempurna'
+    WHEN MAX(qs.score) >= 70 THEN 'Baik'
+    WHEN MAX(qs.score) >= 55 THEN 'Cukup'
     ELSE 'Kurang'
   END AS grade_category
 FROM public.quiz_submissions qs
+WHERE qs.quiz_type != 'quiz'
 GROUP BY qs.user_id, qs.class_id, qs.meeting_id;
 
 -- ----------------------------------------------------------------

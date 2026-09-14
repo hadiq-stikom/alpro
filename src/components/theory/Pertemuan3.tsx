@@ -27,7 +27,7 @@ export default function Pertemuan3() {
         <div className="inline-flex items-center justify-center p-4 bg-primary/10 rounded-full mb-4 shadow-inner">
           <Binary className="w-10 h-10 text-primary" />
         </div>
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Pondasi Algoritma</h1>
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Fondasi Algoritma</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Gerbang utama menuju logika pemrograman. Memahami cara berpikir sistematis, terstruktur, dan efisien layaknya seorang insinyur perangkat lunak.
         </p>

@@ -90,3 +90,22 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
 }
+
+/* Matikan Font Ligatures agar operator programming (>=, !=, ==, <=) tampil sebagai karakter ASCII terpisah */
+code, pre, kbd, samp, .font-mono, [class*="font-mono"] {
+  font-variant-ligatures: none !important;
+  font-feature-settings: "liga" 0, "calt" 0, "dlig" 0 !important;
+}
+
+/* Nonaktifkan soft-wrapping pada react-simple-code-editor agar nomor baris gutter dan layer highlight selalu 1:1 presisi */
+.code-editor-root textarea,
+.code-editor-root pre,
+.npm__react-simple-code-editor__textarea,
+[class*="react-simple-code-editor"] textarea,
+[class*="react-simple-code-editor"] pre {
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+  word-wrap: normal !important;
+}
+

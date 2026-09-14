@@ -9,6 +9,8 @@ import {
 import { useTheme } from "@/components/ThemeProvider";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
+import { supabase } from "@/lib/supabase";
+import { getBadgeFromScore, BadgeConfig } from "@/lib/badges";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -19,9 +21,28 @@ export default function Navbar() {
 
   const [mounted, setMounted]       = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userBadge, setUserBadge]   = useState<BadgeConfig | null>(null);
   const dropdownRef                 = useRef<HTMLDivElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
+
+  // Ambil badge pengguna jika mahasiswa
+  useEffect(() => {
+    async function fetchBadge() {
+      if (profile?.role === "mahasiswa") {
+        const { data } = await supabase
+          .from('overall_grades')
+          .select('total_avg_score')
+          .eq('user_id', profile.id)
+          .single();
+        
+        if (data && (data as any).total_avg_score !== undefined) {
+          setUserBadge(getBadgeFromScore((data as any).total_avg_score));
+        }
+      }
+    }
+    fetchBadge();
+  }, [profile]);
 
   // Tutup dropdown saat klik di luar
   useEffect(() => {
@@ -118,8 +139,20 @@ export default function Navbar() {
                     aria-haspopup="true"
                   >
                     {/* Avatar */}
-                    <div className="h-7 w-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
-                      <span className="text-[10px] font-bold text-primary">{initials}</span>
+                    <div className="relative">
+                      <div className="h-7 w-7 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-primary">{initials}</span>
+                      </div>
+                      {/* Mini Badge Indicator */}
+                      {userBadge && (
+                        <div 
+                          className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border border-background shadow-sm flex items-center justify-center"
+                          style={{ backgroundColor: userBadge.hexColor }}
+                          title={`Lencana: ${userBadge.name}`}
+                        >
+                          <span className="text-[7px] font-bold text-white leading-none">{userBadge.level}</span>
+                        </div>
+                      )}
                     </div>
                     <div className="text-left hidden lg:block">
                       <p className="text-xs font-semibold leading-tight max-w-[120px] truncate">
@@ -194,15 +227,23 @@ export default function Navbar() {
                   </AnimatePresence>
                 </div>
               ) : (
-                /* Belum login: tampilkan profil dosen (desain asli) */
-                <div className="hidden md:flex items-center gap-3 pl-4 border-l border-border/50">
-                  <div className="text-left">
-                    <p className="text-sm font-semibold leading-tight">Hadiq, ST, M.Kom</p>
-                    <p className="text-[10px] text-muted-foreground">Dosen Pengampu</p>
+                /* Belum login: tampilkan profil dosen & tombol login */
+                <div className="hidden md:flex items-center gap-4 pl-4 border-l border-border/50">
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <p className="text-sm font-semibold leading-tight">Hadiq, ST, M.Kom</p>
+                      <p className="text-[10px] text-muted-foreground">Dosen Pengampu</p>
+                    </div>
+                    <div className="h-9 w-9 rounded-full border border-primary/30 shadow-sm flex items-center justify-center overflow-hidden bg-secondary relative shrink-0">
+                      <img src="/dosen.png" alt="Hadiq, ST, M.Kom" className="w-full h-full object-cover" />
+                    </div>
                   </div>
-                  <div className="h-11 w-11 rounded-full border-2 border-primary/30 shadow-sm flex items-center justify-center overflow-hidden bg-secondary relative shrink-0">
-                    <img src="/dosen.png" alt="Hadiq, ST, M.Kom" className="w-full h-full object-cover" />
-                  </div>
+                  <button
+                    onClick={() => router.push("/login")}
+                    className="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded-full hover:bg-primary/90 transition-colors shadow-sm"
+                  >
+                    Masuk
+                  </button>
                 </div>
               )}
             </>

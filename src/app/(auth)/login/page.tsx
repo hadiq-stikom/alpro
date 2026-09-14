@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useId } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, useId, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { Variants } from "framer-motion";
 import { motion, AnimatePresence } from "framer-motion";
 import { GraduationCap, Eye, EyeOff, LogIn, AlertCircle, Moon, Sun, Code2 } from "lucide-react";
@@ -21,10 +21,11 @@ const fadeUp: Variants = {
 };
 
 // ----------------------------------------------------------------
-// Komponen utama
+// Komponen Form Login
 // ----------------------------------------------------------------
-export default function LoginPage() {
+function LoginForm() {
   const router              = useRouter();
+  const searchParams        = useSearchParams();
   const { signIn, profile, loading: authLoading } = useAuth();
   const { theme, setTheme } = useTheme();
 
@@ -48,10 +49,15 @@ export default function LoginPage() {
       } else if (profile.role === "dosen") {
         router.replace("/lecturer/dashboard");
       } else {
-        router.replace("/student/dashboard");
+        const returnUrl = searchParams?.get("returnUrl");
+        if (returnUrl) {
+          router.replace(returnUrl);
+        } else {
+          router.replace("/student/dashboard");
+        }
       }
     }
-  }, [authLoading, profile, router]);
+  }, [authLoading, profile, router, searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,5 +292,13 @@ export default function LoginPage() {
         alpro.v1.auth
       </motion.div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#070b14] flex items-center justify-center text-white/50 font-mono text-sm">Memuat Halaman Login...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }

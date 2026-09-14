@@ -10,6 +10,9 @@ import Pertemuan2 from '@/components/theory/Pertemuan2';
 import Pertemuan3 from '@/components/theory/Pertemuan3';
 import Pertemuan4 from '@/components/theory/Pertemuan4';
 import Pertemuan5 from '@/components/theory/Pertemuan5';
+import Pertemuan6 from '@/components/theory/Pertemuan6';
+import Pertemuan7 from '@/components/theory/Pertemuan7';
+import { TheoryAssessment } from '@/components/assessment/TheoryAssessment';
 
 export default function TheoryPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
@@ -33,7 +36,7 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
     <div className="min-h-screen bg-background relative pb-32">
       {/* Sub-Header Navigation & Reading Progress (Berada di bawah Navbar Utama) */}
       <div className="sticky top-16 z-40 bg-background/90 backdrop-blur-md border-b border-border/50 shadow-xs">
-        <div className="max-w-4xl mx-auto flex items-center p-3 md:p-4">
+        <div className="max-w-6xl mx-auto flex items-center p-3 md:p-4">
           <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors mr-4 md:mr-6 shrink-0">
             <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
             <span className="font-semibold text-xs md:text-sm">Peta Utama</span>
@@ -42,9 +45,11 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
             <h1 className="font-bold text-xs md:text-base truncate text-foreground">
               {unwrappedParams.id === '1' ? 'Pertemuan 1: Pengenalan Komputer & Bahasa' : 
                unwrappedParams.id === '2' ? 'Pertemuan 2: Arsitektur & Organisasi Komputer' : 
-               unwrappedParams.id === '3' ? 'Pertemuan 3: Pondasi Algoritma' : 
+               unwrappedParams.id === '3' ? 'Pertemuan 3: Fondasi Algoritma' : 
                unwrappedParams.id === '4' ? 'Pertemuan 4: Tipe Data, Variabel & I/O Dasar' : 
                unwrappedParams.id === '5' ? 'Pertemuan 5: Operator, Ekspresi & Manipulasi Data' :
+               unwrappedParams.id === '6' ? 'Pertemuan 6: Struktur Percabangan Tunggal & Ganda' :
+               unwrappedParams.id === '7' ? 'Pertemuan 7: Percabangan Majemuk & Bersarang' :
                `Pertemuan ${unwrappedParams.id}`}
             </h1>
           </div>
@@ -62,18 +67,26 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
       </div>
 
       {/* Content Container */}
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-12 text-lg leading-relaxed text-foreground/90">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-12 text-lg leading-relaxed text-foreground/90">
         {unwrappedParams.id === '1' && <Pertemuan1 />}
         {unwrappedParams.id === '2' && <Pertemuan2 />}
         {unwrappedParams.id === '3' && <Pertemuan3 />}
         {unwrappedParams.id === '4' && <Pertemuan4 />}
         {unwrappedParams.id === '5' && <Pertemuan5 />}
-        {unwrappedParams.id !== '1' && unwrappedParams.id !== '2' && unwrappedParams.id !== '3' && unwrappedParams.id !== '4' && unwrappedParams.id !== '5' && (
+        {unwrappedParams.id === '6' && <Pertemuan6 />}
+        {unwrappedParams.id === '7' && <Pertemuan7 />}
+        {!['1','2','3','4','5','6','7'].includes(unwrappedParams.id) && (
            <div className="p-8 text-center mt-20 text-muted-foreground font-mono">Materi belum tersedia untuk pertemuan ini.</div>
         )}
+
+        {/* Asesmen & Uji Pemahaman */}
+        {['1', '2', '3', '4', '5', '6', '7'].includes(unwrappedParams.id) && (
+          <div className="pt-8">
+            <hr className="border-border/50 mb-6" />
+            <TheoryAssessment meetingId={Number(unwrappedParams.id)} />
+          </div>
+        )}
       </main>
-
-
 
     </div>
   );

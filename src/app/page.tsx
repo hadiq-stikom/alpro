@@ -33,9 +33,12 @@ import {
   Compass,
   Lightbulb,
   GraduationCap,
-  Workflow
+  Workflow,
+  MousePointerClick,
+  FileCheck
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
+import { Leaderboard } from "@/components/Leaderboard";
 
 interface Meeting {
   id: number;
@@ -135,10 +138,10 @@ const chaptersData: {
         id: 6,
         chapterNum: 6,
         title: "Struktur Percabangan Tunggal & Ganda (IF - ELSE)",
-        subtitle: "Alur keputusan biner, evaluasi kondisi, dan penanganan kondisi alternatif.",
+        subtitle: "Naratif, Flowchart, Pseudocode & Kode — 4 representasi algoritma percabangan IF & IF-ELSE.",
         type: "code",
-        labs: ["Flowchart Decision Splitter", "Condition Matrix Evaluator", "Misi Kelulusan SIM"],
-        status: "upcoming",
+        labs: ["Lab Simbol Flowchart", "Lab IF Tunggal & IF-ELSE", "Lab Studi Kasus Terpadu"],
+        status: "ready",
         description: "Membangun alur logika bercabang untuk merespons kondisi input yang berbeda secara dinamis.",
         badgeColor: "bg-amber-50 dark:bg-amber-950/70 text-amber-950 dark:text-amber-100 border-amber-300 dark:border-amber-700/80"
       },
@@ -146,23 +149,23 @@ const chaptersData: {
         id: 7,
         chapterNum: 7,
         title: "Percabangan Majemuk & Bersarang (Nested IF / ELIF)",
-        subtitle: "Struktur hierarki multi-kondisi dan evaluasi berjenjang.",
+        subtitle: "Struktur hierarki multi-kondisi, evaluasi berjenjang, dan seleksi diskrit.",
         type: "code",
-        labs: ["Multi-Branch Decision Tree", "Tarif Kasir & Diskon Bersarang"],
-        status: "upcoming",
-        description: "Menyelesaikan studi kasus kompleks dengan skenario keputusan lebih dari dua cabang logis.",
+        labs: ["Lab Predikat Nilai (Cascading IF-ELIF)", "Lab Skrining Donor Darah (Nested IF)", "Lab Menu ATM (Switch / Match-Case)", "Lab Kasir Restoran Terpadu"],
+        status: "ready",
+        description: "Menyelesaikan studi kasus kompleks dengan skenario keputusan multi-kondisi, hierarki bersarang (nested), dan seleksi diskrit berdasar 4 representasi standar.",
         badgeColor: "bg-orange-50 dark:bg-orange-950/70 text-orange-950 dark:text-orange-100 border-orange-300 dark:border-orange-700/80"
       },
       {
         id: 8,
         chapterNum: 8,
         title: "Evaluasi Tengah Semester (UTS)",
-        subtitle: "Ujian komprehensif logika komputasi, algoritma, dan pemrograman dasar.",
+        subtitle: "Uji komprehensif logika, flowchart, pseudocode, dan percabangan.",
         type: "exam",
-        labs: ["Live Coding Challenge", "Algorithmic Problem Solving Test"],
+        labs: ["Ujian Teori Online Anti-Cheat", "Coding Challenge Realtime", "Rapor Hasil Instan"],
         status: "upcoming",
-        description: "Uji kompetensi terpadu mencakup Fondasi Algoritma, Tipe Data, Operator, dan Percabangan.",
-        badgeColor: "bg-rose-50 dark:bg-rose-950/70 text-rose-900 dark:text-rose-100 border-rose-300 dark:border-rose-700/80"
+        description: "Evaluasi penguasaan konsep fundamental Pilar 1 dan Pilar 2.",
+        badgeColor: "bg-rose-50 dark:bg-rose-950/70 text-rose-950 dark:text-rose-100 border-rose-300 dark:border-rose-700/80"
       }
     ]
   },
@@ -170,53 +173,53 @@ const chaptersData: {
     pillarId: 3,
     pillarTitle: "Pilar 3: Struktur Perulangan & Koleksi Data",
     pillarSubtitle: "Pertemuan 9 s.d. 12",
-    pillarDesc: "Otomatisasi pemrosesan data secara berulang dengan loop efisien serta struktur array dan koleksi.",
+    pillarDesc: "Otomasi pemrosesan data bervolume besar melalui perulangan terkontrol dan struktur data majemuk.",
     pillarIcon: Repeat,
     pillarColor: "from-emerald-600 to-teal-600",
     meetings: [
       {
         id: 9,
         chapterNum: 9,
-        title: "Struktur Perulangan Dasar (FOR & WHILE)",
-        subtitle: "Inisialisasi counter, kondisi terminasi, dan update iterasi perulangan.",
+        title: "Perulangan Terhitung (FOR Loop)",
+        subtitle: "Iterasi sekuensial, range stepping, dan manipulasi index counter.",
         type: "code",
-        labs: ["Loop Trace Visualizer", "Infinite Loop Trap Watcher"],
+        labs: ["Loop Visualizer Stepper", "Deret Bilangan Generator", "Loop Unrolling Benchmarker"],
         status: "upcoming",
-        description: "Mengotomatisasi tugas komputasi berulang secara cepat dan mengendalikan syarat berhenti loop.",
-        badgeColor: "bg-emerald-50 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-100 border-emerald-300 dark:border-emerald-700/80"
+        description: "Mengeksekusi blok kode berulang dengan batas iterasi yang telah ditentukan secara pasti.",
+        badgeColor: "bg-emerald-50 dark:bg-emerald-950/70 text-emerald-950 dark:text-emerald-100 border-emerald-300 dark:border-emerald-700/80"
       },
       {
         id: 10,
         chapterNum: 10,
-        title: "Perulangan Bersarang & Pola Matriks (Nested Loops)",
-        subtitle: "Iterasi 2 dimensi untuk pengolahan baris-kolom dan pola geometris.",
+        title: "Perulangan Terkondisi (WHILE & DO-WHILE Loop)",
+        subtitle: "Loop berbasis state, penjaga infinite loop, dan sentinel values.",
         type: "code",
-        labs: ["2D Grid Matrix Generator", "Pola Geometri Algoritmik"],
+        labs: ["Infinite Loop Guard Simulator", "Sentinel Input Trap", "Live Convergence Tracker"],
         status: "upcoming",
-        description: "Menerapkan loop di dalam loop untuk memanipulasi koordinat matriks dan data bertingkat.",
-        badgeColor: "bg-teal-50 dark:bg-teal-950/70 text-teal-900 dark:text-teal-100 border-teal-300 dark:border-teal-700/80"
+        description: "Menjalankan perulangan dinamis selama syarat logis tertentu terpenuhi.",
+        badgeColor: "bg-teal-50 dark:bg-teal-950/70 text-teal-950 dark:text-teal-100 border-teal-300 dark:border-teal-700/80"
       },
       {
         id: 11,
         chapterNum: 11,
-        title: "Struktur Data Koleksi Linear (List & Array 1D)",
-        subtitle: "Penyimpanan data sekuensial, indexing, slicing, dan algoritma traversal.",
+        title: "Array 1 Dimensi & Manipulasi Vektor",
+        subtitle: "Struktur data sekuensial, alokasi memori berurutan, dan algoritma pencarian linear.",
         type: "code",
-        labs: ["Visual List Indexing", "Array Memory Allocator"],
+        labs: ["Array Memory Visualizer", "Linear Search vs Index Lookup", "Dynamic Resizing Sandbox"],
         status: "upcoming",
-        description: "Menyimpan dan mengolah kumpulan data terurut dalam satu variabel koleksi terstruktur.",
-        badgeColor: "bg-cyan-50 dark:bg-cyan-950/70 text-cyan-900 dark:text-cyan-100 border-cyan-300 dark:border-cyan-700/80"
+        description: "Mengorganisir kumpulan data sejenis dalam satu wadah dengan indeks bernomor.",
+        badgeColor: "bg-sky-50 dark:bg-sky-950/70 text-sky-950 dark:text-sky-100 border-sky-300 dark:border-sky-700/80"
       },
       {
         id: 12,
         chapterNum: 12,
-        title: "Koleksi Asosiatif (Dictionary, Set & Tuple)",
-        subtitle: "Pemetaan Key-Value, himpunan unik, dan data *immutable* berkinerja tinggi.",
+        title: "Array 2 Dimensi & Matriks",
+        subtitle: "Tabel baris-kolom, nested loop traversal, dan operasi matriks.",
         type: "code",
-        labs: ["Hash Map Key-Value Visualizer", "Set Theory Venn Diagrams"],
+        labs: ["Matrix Cell Heatmap", "Row-Major vs Column-Major Walk", "Game Board State Engine"],
         status: "upcoming",
-        description: "Mengorganisir data terelasi menggunakan pasangan kunci-nilai dan operasi himpunan matematika.",
-        badgeColor: "bg-sky-50 dark:bg-sky-950/70 text-sky-900 dark:text-sky-100 border-sky-300 dark:border-sky-700/80"
+        description: "Memodelkan data spasial berbentuk kisi (grid), tabel, dan representasi gambar digital.",
+        badgeColor: "bg-indigo-50 dark:bg-indigo-950/70 text-indigo-950 dark:text-indigo-100 border-indigo-300 dark:border-indigo-700/80"
       }
     ]
   },
@@ -224,74 +227,71 @@ const chaptersData: {
     pillarId: 4,
     pillarTitle: "Pilar 4: Modularitas, Rekursi & Rekayasa Perangkat Lunak",
     pillarSubtitle: "Pertemuan 13 s.d. 16",
-    pillarDesc: "Membangun arsitektur perangkat lunak modular, fungsi independen, rekursi, dan penanganan error profesional.",
+    pillarDesc: "Membangun perangkat lunak modular, fungsi mandiri, algoritma rekursif, dan proyek akhir aplikasi nyata.",
     pillarIcon: PackageCheck,
     pillarColor: "from-violet-600 to-purple-600",
     meetings: [
       {
         id: 13,
         chapterNum: 13,
-        title: "Fungsi & Prosedur Modular (Functions & Scope)",
-        subtitle: "Parameter, Return Value, prinsip DRY (Don't Repeat Yourself), dan Variable Scope.",
+        title: "Fungsi, Prosedur & Parameter Passing",
+        subtitle: "Dekonstruksi kode (DRY), scope variabel lokal vs global, dan call stack.",
         type: "code",
-        labs: ["Function Call Stack Inspector", "Scope Isolation Visualizer"],
+        labs: ["Call Stack Frame Visualizer", "Pass-by-Value vs Reference Lab", "Pure Function Inspector"],
         status: "upcoming",
-        description: "Memecah kode besar menjadi modul-modul fungsi yang dapat digunakan kembali secara bersih.",
-        badgeColor: "bg-violet-50 dark:bg-violet-950/70 text-violet-900 dark:text-violet-100 border-violet-300 dark:border-violet-700/80"
+        description: "Membagi program besar menjadi modul-modul fungsi kecil yang dapat digunakan kembali.",
+        badgeColor: "bg-purple-50 dark:bg-purple-950/70 text-purple-950 dark:text-purple-100 border-purple-300 dark:border-purple-700/80"
       },
       {
         id: 14,
         chapterNum: 14,
-        title: "Rekursi & Algoritma Divide and Conquer",
-        subtitle: "Fungsi memanggil dirinya sendiri, Base Case, dan pohon rekursi faktorial/fibonacci.",
+        title: "Algoritma Rekursif & Divide-and-Conquer",
+        subtitle: "Base case, recursive step, visualisasi call stack tree, dan rekursi memoisasi.",
         type: "code",
-        labs: ["Recursion Tree Call Stack", "Menara Hanoi Simulator"],
+        labs: ["Recursion Tree Generator", "Stack Overflow Simulator", "Tower of Hanoi Player"],
         status: "upcoming",
-        description: "Memahami pemecahan masalah rekursif dan mencegah terjadinya *Stack Overflow*.",
-        badgeColor: "bg-purple-50 dark:bg-purple-950/70 text-purple-900 dark:text-purple-100 border-purple-300 dark:border-purple-700/80"
+        description: "Menyelesaikan masalah komputasi kompleks dengan memanggil fungsi itu sendiri secara elegan.",
+        badgeColor: "bg-fuchsia-50 dark:bg-fuchsia-950/70 text-fuchsia-950 dark:text-fuchsia-100 border-fuchsia-300 dark:border-fuchsia-700/80"
       },
       {
         id: 15,
         chapterNum: 15,
-        title: "Penanganan Error & Validasi (Exception Handling)",
-        subtitle: "Try, Catch, Finally, validasi input pengguna, dan pembuatan kode anti-crash.",
+        title: "Algoritma Pengurutan (Sorting) & Pencarian (Searching)",
+        subtitle: "Bubble sort, insertion sort, binary search, dan analisis kompleksitas Big-O.",
         type: "code",
-        labs: ["Exception Flow Debugger", "Input Robustness Shield"],
+        labs: ["Live Sort Bar Race", "Binary Search Tree Stepper", "Big-O Curve Comparison"],
         status: "upcoming",
-        description: "Mengantisipasi *runtime error* dan menjaga kestabilan aplikasi saat menghadapi data tidak valid.",
-        badgeColor: "bg-pink-50 dark:bg-pink-950/70 text-pink-900 dark:text-pink-100 border-pink-300 dark:border-pink-700/80"
+        description: "Mengoptimalkan kecepatan komputasi data besar dengan algoritma standar industri.",
+        badgeColor: "bg-pink-50 dark:bg-pink-950/70 text-pink-950 dark:text-pink-100 border-pink-300 dark:border-pink-700/80"
       },
       {
         id: 16,
         chapterNum: 16,
-        title: "Evaluasi Akhir Semester (UAS & Proyek Mandiri)",
-        subtitle: "Proyek komprehensif mengintegrasikan seluruh materi semester.",
+        title: "Ujian Akhir Semester (UAS) & Proyek Aplikasi",
+        subtitle: "Penyusunan proyek aplikasi modular terintegrasi dan ujian akhir.",
         type: "exam",
-        labs: ["Final Capstone Project", "Comprehensive Algorithm Defense"],
+        labs: ["Terminal CLI App Sandbox", "Live Code Reviewer", "Sertifikat Kelulusan & Lencana Emas"],
         status: "upcoming",
-        description: "Membangun solusi perangkat lunak mandiri yang menerapkan seluruh 4 pilar pemrograman.",
-        badgeColor: "bg-rose-50 dark:bg-rose-950/70 text-rose-900 dark:text-rose-100 border-rose-300 dark:border-rose-700/80"
+        description: "Puncak evaluasi akademik dan portofolio proyek perangkat lunak mandiri mahasiswa.",
+        badgeColor: "bg-amber-50 dark:bg-amber-950/70 text-amber-950 dark:text-amber-100 border-amber-300 dark:border-amber-700/80"
       }
     ]
   }
 ];
 
-// Tema warna kontras & pasangan ikon per bab (Ilustrasi 3D Dual-Tone + Glow Aura)
-interface ChapterTheme {
-  FrontIcon: React.ElementType;
-  BackIcon: React.ElementType;
+const CHAPTER_THEMES: Record<number, {
+  FrontIcon: any;
+  BackIcon: any;
   frontGrad: string;
   backGrad: string;
   glowGrad: string;
-}
-
-const CHAPTER_THEMES: Record<number, ChapterTheme> = {
+}> = {
   1: {
-    FrontIcon: Terminal,
-    BackIcon: GitBranch,
-    frontGrad: 'from-violet-600 via-indigo-600 to-blue-600',
-    backGrad: 'from-amber-400 via-orange-500 to-rose-500',
-    glowGrad: 'from-violet-500/35 to-amber-500/25',
+    FrontIcon: Cpu,
+    BackIcon: Terminal,
+    frontGrad: 'from-blue-500 via-indigo-600 to-purple-600',
+    backGrad: 'from-cyan-400 via-teal-500 to-emerald-500',
+    glowGrad: 'from-blue-500/35 to-purple-500/25',
   },
   2: {
     FrontIcon: Cpu,
@@ -400,22 +400,16 @@ const CHAPTER_THEMES: Record<number, ChapterTheme> = {
   },
 };
 
-// Ilustrasi 3D per bab — dua ikon kontras tinggi + Ambient Glow Aura
 function ChapterIllustration({ num }: { num: number; pillarId?: number }) {
   const theme = CHAPTER_THEMES[num] ?? CHAPTER_THEMES[1];
   const { FrontIcon, BackIcon, frontGrad, backGrad, glowGrad } = theme;
 
   return (
     <div className="relative w-[76px] h-[76px] shrink-0 flex items-center justify-center select-none pointer-events-none">
-      {/* 1. Ambient Glow Aura di belakang ikon */}
       <div className={`absolute inset-1 rounded-full bg-gradient-to-tr ${glowGrad} blur-xl opacity-80 group-hover:opacity-100 group-hover:scale-125 transition-all duration-300 pointer-events-none`} />
-
-      {/* 2. Kartu belakang (Dual-Tone Contrast, rotasi -8deg) */}
       <div className={`absolute right-1 bottom-1 w-11 h-11 rounded-2xl bg-gradient-to-br ${backGrad} shadow-md border border-white/30 dark:border-white/15 flex items-center justify-center -rotate-8 transform transition-transform duration-300 group-hover:-rotate-12 group-hover:scale-105`}>
         <BackIcon className="w-5 h-5 text-white drop-shadow-xs" />
       </div>
-
-      {/* 3. Kartu depan (Primary Accent, rotasi 4deg, depth tinggi) */}
       <div className={`absolute left-0.5 top-0.5 w-12 h-12 rounded-2xl bg-gradient-to-br ${frontGrad} shadow-xl border border-white/40 dark:border-white/20 flex items-center justify-center rotate-4 transform transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`}>
         <FrontIcon className="w-6 h-6 text-white drop-shadow-sm" />
       </div>
@@ -423,9 +417,6 @@ function ChapterIllustration({ num }: { num: number; pillarId?: number }) {
   );
 }
 
-
-
-// Peta warna per pilar — digunakan di card & meeting cards
 const PILLAR_STYLES: Record<number, {
   gradient: string; glow: string; ring: string;
   cardBorderL: string; badgeBg: string; iconBg: string;
@@ -510,25 +501,25 @@ export default function Home() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-16">
         
         {/* ========================================================================= */}
-        {/* 1. HERO SECTION: HOLISTIC COURSE OVERVIEW & 4-STEP MASTERY JOURNEY       */}
+        {/* 1. HERO SECTION: INTUITIVE, STUDENT-CENTRIC & CLEAR CALL-TO-ACTION        */}
         {/* ========================================================================= */}
-        <div className="relative rounded-3xl border border-border/70 bg-card/90 dark:bg-slate-900/80 backdrop-blur-2xl p-6 md:p-12 shadow-xl dark:shadow-[0_20px_70px_rgba(0,0,0,0.5)] overflow-hidden transition-all">
+        <div className="relative rounded-3xl border border-border/70 bg-card/90 dark:bg-slate-900/80 backdrop-blur-2xl p-6 md:p-10 lg:p-12 shadow-xl dark:shadow-[0_20px_70px_rgba(0,0,0,0.5)] overflow-hidden transition-all">
           
-          {/* Subtle grid pattern overlay */}
+          {/* Subtle grid pattern */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
             
-            {/* Left Column: Course Academic Vision & Call to Action */}
+            {/* Left Column: Clear Value Proposition & Direct Entry Point */}
             <div className="lg:col-span-7 space-y-6 text-left">
               
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-mono font-bold shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-mono font-bold shadow-xs">
                 <GraduationCap className="w-4 h-4" />
-                <span>Mata Kuliah Inti: Algoritma &amp; Pemrograman (3 SKS)</span>
+                <span>Mata Kuliah: Algoritma &amp; Pemrograman (TI-101 • 3 SKS)</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15]">
-                Membangun Pondasi <br className="hidden sm:inline" />
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
+                Membangun Fondasi <br className="hidden sm:inline" />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400">
                   Logika Pemrograman
                 </span>
@@ -536,126 +527,129 @@ export default function Home() {
               </h1>
 
               <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl font-normal">
-                Platform pembelajaran interaktif komprehensif yang dirancang untuk membimbing mahasiswa dari tahap dasar berpikir algoritmik, representasi diagram alir (*Flowchart*), penguasaan struktur kontrol, manipulasi memori data, hingga perancangan perangkat lunak modular siap industri.
+                Platform perkuliahan interaktif modern. Pelajari algoritma melalui visualisasi diagram alir (*Flowchart*), inspeksi memori RAM secara langsung, simulasi eksekusi kode, dan uji pemahaman dengan evaluasi instan berbasis kecerdasan buatan.
               </p>
 
-              {/* Quick Action Navigation */}
+              {/* ACTION BUTTONS: Highly clear, no confusion */}
               <div className="flex flex-wrap items-center gap-3.5 pt-2">
                 <Link
-                  href="#roadmap"
-                  className="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-bold text-sm shadow-md hover:shadow-xl flex items-center gap-2.5 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                  href="/theory/1"
+                  className="px-7 py-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/40 flex items-center gap-3 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                 >
-                  <Compass className="w-4 h-4" />
-                  <span>Jelajahi Silabus (16 Pertemuan)</span>
+                  <Play className="w-4 h-4 fill-white" />
+                  <span>Mulai Belajar: Minggu 01</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
                 <Link
-                  href="/workspace"
-                  className="px-6 py-3.5 rounded-2xl bg-secondary/80 hover:bg-secondary border border-border text-foreground font-bold text-sm shadow-sm hover:shadow-md flex items-center gap-2 transition-all transform hover:-translate-y-0.5 cursor-pointer backdrop-blur"
+                  href="#jadwal-pertemuan"
+                  className="px-5 py-4 rounded-2xl bg-secondary/80 hover:bg-secondary border border-border text-foreground font-bold text-sm shadow-xs hover:shadow-md flex items-center gap-2 transition-all transform hover:-translate-y-0.5 cursor-pointer backdrop-blur"
                 >
-                  <Terminal className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
-                  <span>Buka Studio Praktikum</span>
+                  <Compass className="w-4 h-4 text-primary" />
+                  <span>Pilih Pertemuan Kuliah</span>
+                </Link>
+
+                <Link
+                  href="/workspace"
+                  className="px-4 py-4 rounded-2xl bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 text-muted-foreground hover:text-foreground font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                >
+                  <Terminal className="w-3.5 h-3.5 text-emerald-500" />
+                  <span>Studio Bebas</span>
                 </Link>
               </div>
 
-              {/* Course Highlights Bar */}
-              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/60 text-xs font-mono text-muted-foreground">
-                <div className="flex items-center gap-2">
+              {/* 3 Key Highlights */}
+              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/60 text-[11px] sm:text-xs font-mono text-muted-foreground">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <Cpu className="w-4 h-4 text-blue-500 dark:text-cyan-400 shrink-0" />
-                  <span>Bilingual: Python &amp; JS</span>
+                  <span>Python &amp; JavaScript</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <Workflow className="w-4 h-4 text-purple-500 dark:text-purple-400 shrink-0" />
-                  <span>Visual Flow &amp; RAM State</span>
+                  <span>Visual Flow &amp; RAM</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
-                  <span>Standar Akademik Baku</span>
+                  <span>Asesmen &amp; Lencana AI</span>
                 </div>
               </div>
 
             </div>
 
-            {/* Right Column: 4-Step Mastery Journey (Pedagogical Overview Card) */}
+            {/* Right Column: "Pusat Mulai Cepat Perkuliahan" (Actionable Hub) */}
             <div className="lg:col-span-5">
-              <div className="rounded-3xl bg-secondary/30 dark:bg-slate-950 border border-border/80 shadow-xl p-5 md:p-6 space-y-4 relative overflow-hidden">
+              <div className="rounded-3xl bg-secondary/40 dark:bg-slate-950 border border-border shadow-xl p-5 sm:p-6 space-y-5 relative overflow-hidden">
                 
+                {/* Header Hub */}
                 <div className="flex items-center justify-between border-b border-border/60 pb-3">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-amber-500" />
-                    <span className="font-extrabold text-xs md:text-sm text-foreground">
-                      4 Tahapan Penguasaan Materi
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                    <span className="font-extrabold text-xs sm:text-sm text-foreground">
+                      Modul Kuliah Minggu Ini
                     </span>
                   </div>
-                  <span className="text-[10px] font-mono bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full font-bold">
-                    Semester 1
+                  <span className="text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
+                    Siap Dipelajari
                   </span>
                 </div>
 
-                {/* 4 Progression Steps */}
-                <div className="space-y-2.5">
-                  
-                  {/* Step 1 */}
-                  <div className="p-3 rounded-2xl bg-card border border-border/70 flex items-start gap-3 shadow-xs hover:border-blue-500/50 transition-all">
-                    <div className="w-7 h-7 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                      1
+                {/* Featured Active Card: Minggu 1 */}
+                <div className="p-4 rounded-2xl bg-card border border-border shadow-sm space-y-3 relative overflow-hidden group hover:border-primary/50 transition-all">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-mono font-bold text-primary tracking-wider uppercase block">
+                        Pertemuan Pembuka
+                      </span>
+                      <h3 className="font-extrabold text-sm sm:text-base text-foreground leading-snug">
+                        Minggu 01: Pengenalan Komputer &amp; Pemrograman
+                      </h3>
                     </div>
-                    <div className="space-y-0.5">
-                      <h3 className="font-bold text-xs text-foreground">Fondasi Logika &amp; Notasi Algoritma</h3>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Naratif, Flowchart, Pseudocode 3 Blok, sistem biner, tipe data &amp; memori RAM.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Step 2 */}
-                  <div className="p-3 rounded-2xl bg-card border border-border/70 flex items-start gap-3 shadow-xs hover:border-amber-500/50 transition-all">
-                    <div className="w-7 h-7 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                      2
-                    </div>
-                    <div className="space-y-0.5">
-                      <h3 className="font-bold text-xs text-foreground">Struktur Kontrol &amp; Pengambilan Keputusan</h3>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Percabangan tunggal, ganda, majemuk (IF-ELSE, Nested IF) &amp; evaluasi kondisi Boolean.
-                      </p>
+                    <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
+                      <Code2 className="w-5 h-5" />
                     </div>
                   </div>
 
-                  {/* Step 3 */}
-                  <div className="p-3 rounded-2xl bg-card border border-border/70 flex items-start gap-3 shadow-xs hover:border-emerald-500/50 transition-all">
-                    <div className="w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                      3
-                    </div>
-                    <div className="space-y-0.5">
-                      <h3 className="font-bold text-xs text-foreground">Perulangan &amp; Struktur Koleksi Data</h3>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Looping (FOR/WHILE), iterasi matriks 2D, List, Array, Dictionary &amp; Set.
-                      </p>
-                    </div>
-                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Pelajari evolusi komputasi, siklus Fetch-Decode-Execute, dan struktur logika dasar pemrograman.
+                  </p>
 
-                  {/* Step 4 */}
-                  <div className="p-3 rounded-2xl bg-card border border-border/70 flex items-start gap-3 shadow-xs hover:border-purple-500/50 transition-all">
-                    <div className="w-7 h-7 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                      4
-                    </div>
-                    <div className="space-y-0.5">
-                      <h3 className="font-bold text-xs text-foreground">Modularitas, Rekursi &amp; Proyek Perangkat Lunak</h3>
-                      <p className="text-[11px] text-muted-foreground leading-relaxed">
-                        Fungsi independen, algoritma rekursif, error handling, dan proyek aplikasi mandiri.
-                      </p>
-                    </div>
+                  <div className="pt-2">
+                    <Link
+                      href="/theory/1"
+                      className="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+                    >
+                      <span>Buka Modul Minggu 1</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
-
                 </div>
 
-                {/* Footer preview */}
-                <div className="pt-2 border-t border-border/60 flex items-center justify-between text-[11px] text-muted-foreground font-mono">
-                  <span>Kurikulum Terintegrasi</span>
-                  <Link href="/theory/1" className="text-primary hover:underline font-bold flex items-center gap-1">
-                    Mulai dari Minggu 1 &rarr;
-                  </Link>
+                {/* Quick Jumps to Other Active Weeks (1-5) */}
+                <div className="space-y-2">
+                  <span className="text-[11px] font-mono text-muted-foreground block font-semibold">
+                    Lompat Cepat ke Pertemuan Lain:
+                  </span>
+                  <div className="grid grid-cols-4 gap-2">
+                    {[
+                      { week: 2, label: 'M-02', ready: true },
+                      { week: 3, label: 'M-03', ready: true },
+                      { week: 4, label: 'M-04', ready: true },
+                      { week: 5, label: 'M-05', ready: true }
+                    ].map((item) => (
+                      <Link
+                        key={item.week}
+                        href={`/theory/${item.week}`}
+                        className="p-2.5 rounded-xl bg-card hover:bg-primary/10 border border-border/80 hover:border-primary/40 text-center transition-all group"
+                      >
+                        <span className="block text-xs font-mono font-bold text-foreground group-hover:text-primary">
+                          {item.label}
+                        </span>
+                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono block">
+                          Aktif
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
 
               </div>
@@ -666,24 +660,85 @@ export default function Home() {
         </div>
 
         {/* ========================================================================= */}
-        {/* 2. 4 PILAR KURIKULUM PEMROGRAMAN: INTERACTIVE ROADMAP HUB                 */}
+        {/* 1.5. ONBOARDING ALUR: 3 LANGKAH MUDAH BELAJAR DI PLATFORM INI             */}
         {/* ========================================================================= */}
-        <div id="roadmap" className="space-y-8 scroll-mt-20">
+        <div className="space-y-6">
+          <div className="text-center space-y-1.5">
+            <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-primary uppercase tracking-widest">
+              <Sparkles className="w-4 h-4 text-amber-500" />
+              <span>Panduan Belajar Mahasiswa</span>
+            </div>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-foreground">
+              3 Langkah Menguasai Materi Perkuliahan
+            </h2>
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto">
+              Alur belajar mandiri yang terstruktur untuk membantu Anda memahami logika dari dasar hingga siap ujian.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+            
+            {/* Step 1 */}
+            <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-3 relative hover:border-blue-500/40 transition-all">
+              <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 flex items-center justify-center font-extrabold text-sm">
+                1
+              </div>
+              <h3 className="font-bold text-sm sm:text-base text-foreground">
+                Pelajari Teori &amp; Animasi Interaktif
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Buka modul mingguan. Konsep rumit seperti biner, pseudocode 3 blok, dan tipe data disajikan dalam animasi visual yang mudah dipahami.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-3 relative hover:border-emerald-500/40 transition-all">
+              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center justify-center font-extrabold text-sm">
+                2
+              </div>
+              <h3 className="font-bold text-sm sm:text-base text-foreground">
+                Eksperimen di Laboratorium Simulasi
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Ubah nilai input, geser slider, dan amati bagaimana alur diagram alir serta alamat memori RAM berubah secara langsung (*live state*).
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="p-6 rounded-2xl bg-card border border-border/80 shadow-xs space-y-3 relative hover:border-purple-500/40 transition-all">
+              <div className="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 flex items-center justify-center font-extrabold text-sm">
+                3
+              </div>
+              <h3 className="font-bold text-sm sm:text-base text-foreground">
+                Uji Pemahaman &amp; Raih Lencana Nilai
+              </h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Kerjakan 5 Soal Kuis Pilihan Ganda dan 5 Soal Esai. Jawaban Anda langsung dinilai oleh Dosen AI untuk membuka lencana capaian prestasi.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* 2. 4 PILAR KURIKULUM: ROADMAP & PERTEMUAN LENGKAP                         */}
+        {/* ========================================================================= */}
+        <div id="jadwal-pertemuan" className="space-y-8 scroll-mt-20">
           
           <div className="text-center md:text-left space-y-2">
             <div className="inline-flex items-center gap-2 text-xs font-mono font-bold text-primary uppercase tracking-widest">
               <Flame className="w-4 h-4 text-amber-500" />
-              <span>Struktur Silabus Akademik Lengkap</span>
+              <span>Jadwal &amp; Modul Perkuliahan Semester 1</span>
             </div>
             <h2 className="text-2xl md:text-4xl font-extrabold text-foreground">
-              Peta Jalan Pembelajaran (*Roadmap Silabus*)
+              Peta Jalan Pembelajaran (16 Pertemuan)
             </h2>
-            <p className="text-sm text-muted-foreground max-w-3xl">
-              Silabus disusun secara sistematis mencakup 16 pertemuan kuliah. Pilih salah satu pilar di bawah untuk melihat rincian capaian pembelajaran dan laboratorium pendukungnya.
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-3xl">
+              Silabus disusun terstruktur dalam 4 Pilar Keilmuan. Pilih salah satu pilar di bawah untuk melihat rincian modul pertemuan yang tersedia.
             </p>
           </div>
 
-          {/* Pillar Selector Tabs — redesigned with glassmorphism + per-pillar gradient */}
+          {/* Pillar Selector Tabs */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
             {chaptersData.map((pillar) => {
               const Icon = pillar.pillarIcon;
@@ -704,7 +759,6 @@ export default function Home() {
                       : `bg-white/80 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md`
                   }`}
                 >
-                  {/* Decorative blur orb — hanya saat aktif */}
                   {isActive && (
                     <motion.div
                       initial={{ opacity: 0, scale: 0.6 }}
@@ -713,9 +767,8 @@ export default function Home() {
                     />
                   )}
 
-                  {/* Icon + nomor pilar */}
                   <div className="flex items-center justify-between w-full relative z-10">
-                    <div className={`p-2.5 rounded-xl shadow-sm transition-all ${
+                    <div className={`p-2.5 rounded-xl shadow-xs transition-all ${
                       isActive ? `${ps.iconBg} shadow-lg` : 'bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
                     }`}>
                       <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-700 dark:text-slate-200'}`} />
@@ -730,7 +783,6 @@ export default function Home() {
                     </div>
                   </div>
 
-                  {/* Judul */}
                   <div className="relative z-10">
                     <h3 className={`font-extrabold text-sm md:text-base leading-snug ${
                       isActive ? 'text-slate-900 dark:text-white' : 'text-slate-800 dark:text-slate-200'
@@ -761,7 +813,7 @@ export default function Home() {
                 <div key={pillar.pillarId} className="space-y-4">
                   
                   {/* Pillar Banner description */}
-                  <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-[#141d30] border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+                  <div className="p-4 md:p-5 rounded-2xl bg-white dark:bg-[#141d30] border border-slate-200 dark:border-slate-700 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs dark:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
                     <div>
                       <h3 className="font-extrabold text-base md:text-lg text-slate-900 dark:text-white flex items-center gap-2">
                         <span>{pillar.pillarTitle}</span>
@@ -770,12 +822,12 @@ export default function Home() {
                         {pillar.pillarDesc}
                       </p>
                     </div>
-                    <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 shrink-0 self-start md:self-center shadow-xs">
+                    <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 shrink-0 self-start md:self-center shadow-2xs">
                       {pillar.meetings.length} Pertemuan Pembelajaran
                     </span>
                   </div>
 
-                  {/* Meeting Cards Grid — desain baru mengikuti mockup */}
+                  {/* Meeting Cards Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {pillar.meetings.map((meeting) => {
                       const isReady = meeting.status === 'ready';
@@ -787,13 +839,12 @@ export default function Home() {
                           key={meeting.id}
                           whileHover={{ y: -5 }}
                           transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-                          className={`relative rounded-3xl p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 bg-white dark:bg-[#141d30] border border-slate-200 dark:border-slate-700 shadow-sm dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)] ${
+                          className={`relative rounded-3xl p-6 flex flex-col gap-4 overflow-hidden transition-all duration-300 bg-white dark:bg-[#141d30] border border-slate-200 dark:border-slate-700 shadow-xs dark:shadow-[0_8px_30px_rgba(0,0,0,0.5)] ${
                             isReady
                               ? `${ps.glow} hover:shadow-xl dark:hover:shadow-indigo-500/10 hover:border-primary/50`
                               : 'hover:shadow-md hover:border-border'
                           }`}
                         >
-                          {/* Subtle gradient wash */}
                           <div className={`absolute inset-0 bg-gradient-to-br ${ps.activeBg} opacity-20 pointer-events-none rounded-3xl`} />
 
                           {/* Row 1: MINGGU XX + status badge */}
@@ -819,12 +870,12 @@ export default function Home() {
                             )}
                           </div>
 
-                          {/* Row 2: Judul besar & kontras */}
+                          {/* Row 2: Title */}
                           <h4 className="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white leading-snug tracking-tight relative z-10">
                             {meeting.title}
                           </h4>
 
-                          {/* Row 3: Subtitle (kiri) + Ilustrasi 3D (kanan) */}
+                          {/* Row 3: Subtitle + 3D Illustration */}
                           <div className="flex items-center gap-3 relative z-10">
                             <p className="text-sm md:text-[14.5px] text-slate-700 dark:text-slate-100 font-normal leading-relaxed flex-1">
                               {meeting.subtitle}
@@ -832,10 +883,10 @@ export default function Home() {
                             <ChapterIllustration num={meeting.chapterNum} pillarId={pillar.pillarId} />
                           </div>
 
-                          {/* Row 4: Lab tags dengan kontras tinggi */}
+                          {/* Row 4: Lab tags */}
                           <div className="space-y-2 relative z-10">
                             <span className="text-[11px] font-mono text-slate-600 dark:text-slate-200 font-bold uppercase tracking-wider block">
-                              Fitur Laboratorium:
+                              Laboratorium &amp; Praktik:
                             </span>
                             <div className="flex flex-wrap gap-2">
                               {meeting.labs.map((lab, lIdx) => (
@@ -849,7 +900,7 @@ export default function Home() {
                             </div>
                           </div>
 
-                          {/* Row 5: CTA Button (Glow Hover + Konsistensi Minggu) */}
+                          {/* Row 5: CTA Button */}
                           <div className="relative z-10 mt-auto pt-2">
                             {isReady ? (
                               <Link
@@ -878,66 +929,76 @@ export default function Home() {
         </div>
 
         {/* ========================================================================= */}
-        {/* 3. SHOWCASE 4 FITUR UTAMA TEKNOLOGI PEMBELAJARAN                         */}
+        {/* 3. LEADERBOARD KELAS (TOP 5)                                              */}
         {/* ========================================================================= */}
-        <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-10 space-y-8 backdrop-blur shadow-sm">
+        <div className="py-8 relative">
+          <div className="absolute inset-0 bg-yellow-500/5 dark:bg-yellow-500/10 -mx-4 sm:-mx-6 md:-mx-12 rounded-3xl blur-2xl"></div>
+          <div className="relative z-10">
+            <Leaderboard />
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* 4. SHOWCASE FITUR UTAMA TEKNOLOGI EDUKASI                                */}
+        {/* ========================================================================= */}
+        <div className="rounded-3xl border border-border/70 bg-card/60 p-6 md:p-10 space-y-8 backdrop-blur shadow-xs">
           
           <div className="text-center space-y-2 max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-primary uppercase tracking-widest">
               <Zap className="w-4 h-4 text-amber-500" />
-              <span>Metodologi &amp; Teknologi Edukasi</span>
+              <span>Metodologi &amp; Teknologi</span>
             </div>
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground">
-              Mengapa Belajar di Platform Studio Ini?
+              Fitur Pembelajaran Unggulan
             </h2>
             <p className="text-xs md:text-sm text-muted-foreground">
-              Dirancang secara pedagogis untuk menjembatani konsep abstrak logika komputer ke dalam bentuk visual yang dapat dimanipulasi langsung.
+              Dirancang untuk memudahkan visualisasi logika pemrograman secara dinamis.
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             
             {/* Feature 1 */}
-            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-xs hover:border-blue-500/40 transition-all">
+            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-2xs hover:border-blue-500/40 transition-all">
               <div className="p-3 bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl w-fit border border-blue-500/20">
                 <Cpu className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-sm md:text-base text-foreground">Bilingual WebAssembly</h3>
+              <h3 className="font-bold text-sm md:text-base text-foreground">Bilingual Python &amp; JS</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Eksekusi Python 3 (Pyodide) dan JavaScript berjalan 100% instan di peramban Anda tanpa perlu instalasi server yang rumit.
+                Beralih bebas antara Python 3 dan JavaScript modern langsung di browser dengan satu tombol.
               </p>
             </div>
 
             {/* Feature 2 */}
-            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-xs hover:border-emerald-500/40 transition-all">
+            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-2xs hover:border-emerald-500/40 transition-all">
               <div className="p-3 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl w-fit border border-emerald-500/20">
                 <Database className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-sm md:text-base text-foreground">State Memory RAM Inspector</h3>
+              <h3 className="font-bold text-sm md:text-base text-foreground">Inspeksi Memori RAM</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Visualisasi langsung bagaimana setiap variabel memesan alamat sel RAM dan bagaimana nilainya berubah secara <em>live</em>.
+                Visualisasi langsung bagaimana variabel memesan memori dan nilainya berubah saat kode dijalankan.
               </p>
             </div>
 
             {/* Feature 3 */}
-            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-xs hover:border-purple-500/40 transition-all">
+            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-2xs hover:border-purple-500/40 transition-all">
               <div className="p-3 bg-purple-500/10 text-purple-600 dark:text-purple-400 rounded-xl w-fit border border-purple-500/20">
-                <Wand2 className="w-6 h-6" />
+                <Workflow className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-sm md:text-base text-foreground">Tri-Converter &amp; Rule Linter</h3>
+              <h3 className="font-bold text-sm md:text-base text-foreground">Flowchart &amp; Pseudocode Baku</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Konversi otomatis antara Naratif, Flowchart, dan Pseudocode lengkap dengan pemeriksa kepatuhan aturan penulisan baku Bab 3.
+                Standar baku 3 blok pseudocode (Program, Kamus, Algoritma) dan diagram alir interaktif.
               </p>
             </div>
 
             {/* Feature 4 */}
-            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-xs hover:border-amber-500/40 transition-all">
+            <div className="p-5 rounded-2xl bg-card border border-border/80 space-y-3 shadow-2xs hover:border-amber-500/40 transition-all">
               <div className="p-3 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-xl w-fit border border-amber-500/20">
-                <Monitor className="w-6 h-6" />
+                <Bot className="w-6 h-6" />
               </div>
-              <h3 className="font-bold text-sm md:text-base text-foreground">Projector High-Contrast Mode</h3>
+              <h3 className="font-bold text-sm md:text-base text-foreground">Evaluasi Esai AI Instan</h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Dilengkapi mode layar penuh (*Quad-Split 4 Kolom*) dan pembesaran $1.45\times$ yang siap dipakai dosen saat presentasi kuliah di kelas.
+                Ujian esai diperiksa otomatis oleh Dosen AI secara mendalam dengan saran perbaikan yang instan.
               </p>
             </div>
 

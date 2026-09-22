@@ -234,8 +234,8 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
               <Sparkles className="w-3 h-3" /> Standar Modern
             </span>
           </div>
-          <p className="text-muted-foreground text-sm mt-1">
-            Standar Hibrida Akademik ITB & Pearson/ACM: Jembatan berpikir logis terstruktur menuju <strong>Python</strong> dan <strong>JavaScript</strong>.
+          <p className="text-slate-700 dark:text-slate-300 text-sm mt-1 font-medium">
+            Standar Hibrida Akademik ITB &amp; Pearson/ACM: Jembatan berpikir logis terstruktur menuju <strong>Python</strong> dan <strong>JavaScript</strong>.
           </p>
         </div>
       </div>
@@ -244,7 +244,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
         
         {/* 1. BAGIAN A: TEORI & FILOSOFI PSEUDOCODE */}
         <div className="space-y-4">
-          <p className="text-foreground leading-relaxed">
+          <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
             <strong>Pseudocode</strong> (berasal dari kata <em>pseudo</em> = semu/palsu dan <em>code</em> = kode pemrograman) adalah notasi penulisan algoritma yang memadukan bahasa manusia dengan struktur pemrograman. Pseudocode memungkinkan kita merancang solusi komputasi yang presisi <strong>tanpa terikat oleh kerumitan sintaksis bahasa tertentu</strong>.
           </p>
           
@@ -330,7 +330,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
               <Layers className="w-5 h-5" />
               Anatomi 3 Blok Pseudocode (Klik kartu untuk melihat detail)
             </h4>
-            <span className="text-xs text-muted-foreground hidden sm:inline-block">Interaktif • 3 Pilar Utama</span>
+            <span className="text-xs text-slate-700 dark:text-slate-300 font-semibold hidden sm:inline-block">Interaktif • 3 Pilar Utama</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 py-4 px-2 overflow-visible">
@@ -469,9 +469,9 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
           <div>
             <h4 className="font-bold flex items-center gap-2 text-foreground text-base md:text-lg">
               <Terminal className="w-5 h-5 text-emerald-500 shrink-0" />
-              <span>Jembatan Translasi ke Bahasa Nyata (Python & JavaScript)</span>
+              <span>Jembatan Translasi ke Bahasa Nyata (Python &amp; JavaScript)</span>
             </h4>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1">
+            <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium mt-1">
               Bandingkan bagaimana setiap baris pseudocode di atas diterjemahkan secara langsung (1-ke-1) ke dalam bahasa pemrograman nyata.
             </p>
           </div>

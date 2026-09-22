@@ -60,33 +60,33 @@ export default function DetailedDescriptive() {
           <FileText className="w-8 h-8" />
         </div>
         <div>
-          <h3 className="text-2xl md:text-3xl font-bold text-emerald-500">1. Algoritma Deskriptif (Naratif)</h3>
-          <p className="text-muted-foreground text-sm mt-1">Menyajikan algoritma dengan bahasa sehari-hari yang mudah dipahami manusia.</p>
+          <h3 className="text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-500">1. Algoritma Deskriptif (Naratif)</h3>
+          <p className="text-slate-700 dark:text-slate-300 text-sm mt-1 font-medium">Menyajikan algoritma dengan bahasa sehari-hari yang mudah dipahami manusia.</p>
         </div>
       </div>
 
       <div className="space-y-8 pt-2">
         {/* 1. BAGIAN A: TEORI & ATURAN PENULISAN */}
         <div className="space-y-4">
-          <p className="text-foreground leading-relaxed">
+          <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
             Penyajikan <strong>Deskriptif</strong> atau yang sering juga disebut sebagai <strong>Algoritma Naratif</strong> adalah bentuk yang paling alamiah. Kita menggunakan untaian kalimat (seperti bahasa Indonesia atau Inggris) untuk mendeskripsikan langkah-langkah penyelesaian masalah secara naratif seperti sedang bercerita.
           </p>
           <div className="bg-background border border-border rounded-xl p-5 shadow-sm">
-            <h4 className="font-bold flex items-center gap-2 mb-4 text-emerald-500">
+            <h4 className="font-bold flex items-center gap-2 mb-4 text-emerald-600 dark:text-emerald-500">
               <CheckCircle2 className="w-5 h-5" />
               Aturan Penulisan Utama
             </h4>
-            <ul className="space-y-3 text-sm text-muted-foreground">
+            <ul className="space-y-3 text-sm text-slate-700 dark:text-slate-300 font-medium">
               <li className="flex items-start gap-3">
-                <span className="font-bold text-emerald-500 mt-0.5">•</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-500 mt-0.5">•</span>
                 <span className="leading-relaxed">Setiap langkah harus diberi <strong>nomor urut</strong> yang jelas agar alurnya tidak melompat-lompat.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="font-bold text-emerald-500 mt-0.5">•</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-500 mt-0.5">•</span>
                 <span className="leading-relaxed">Menggunakan <strong>kalimat perintah (imperatif)</strong> yang singkat, padat, dan jelas.</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="font-bold text-emerald-500 mt-0.5">•</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-500 mt-0.5">•</span>
                 <span className="leading-relaxed">Bebas dari <strong>ambiguitas</strong> (jangan menggunakan kiasan, perumpamaan, atau kata bersayap).</span>
               </li>
             </ul>

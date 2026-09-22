@@ -1028,13 +1028,13 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     Editor Aktif ✍️
                   </span>
                 ) : (
-                  <span className="text-[9px] font-mono bg-secondary text-muted-foreground px-2 py-0.5 rounded-full border border-border/40">
+                  <span className="text-[9px] font-mono bg-secondary text-slate-700 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full border border-border/40">
                     Auto-Generated ⚡
                   </span>
                 )}
                 <button
                   onClick={() => copyToClipboard(activeNaratif, 'naratif')}
-                  className="text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+                  className="text-slate-600 dark:text-slate-400 hover:text-foreground p-1 cursor-pointer"
                   title="Salin Naratif"
                 >
                   {copiedTab === 'naratif' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -1081,7 +1081,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                 </div>
               )}
 
-              <div className="p-2.5 rounded-xl bg-secondary/30 border border-border/40 text-[11px] text-muted-foreground leading-relaxed">
+              <div className="p-2.5 rounded-xl bg-secondary/30 border border-border/40 text-[11px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                 💡 <strong>Format Naratif Bab 3:</strong> Langkah diberi nomor urut dan rumus ditulis pada baris baru di bawah kata hitung.
               </div>
             </div>
@@ -1276,7 +1276,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
             </div>
             
             <div className="p-3 bg-secondary/30 border-t border-border/40 text-center">
-              <p className="text-[11px] text-muted-foreground italic font-sans">
+              <p className="text-[11px] text-slate-700 dark:text-slate-300 font-medium italic font-sans">
                 Kapsul (Terminator) &bull; Jajar Genjang (Input/Output) &bull; Persegi Panjang (Proses/Hitung)
               </p>
             </div>
@@ -1305,13 +1305,13 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     Editor Aktif ✍️
                   </span>
                 ) : (
-                  <span className="text-[9px] font-mono bg-secondary text-muted-foreground px-2 py-0.5 rounded-full border border-border/40">
+                  <span className="text-[9px] font-mono bg-secondary text-slate-700 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full border border-border/40">
                     Auto-Generated ⚡
                   </span>
                 )}
                 <button
                   onClick={() => copyToClipboard(activePseudo, 'pseudo')}
-                  className="text-muted-foreground hover:text-foreground p-1 cursor-pointer"
+                  className="text-slate-600 dark:text-slate-400 hover:text-foreground p-1 cursor-pointer"
                   title="Salin Pseudocode"
                 >
                   {copiedTab === 'pseudo' ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -1358,7 +1358,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                 </div>
               )}
 
-              <div className="p-2.5 rounded-xl bg-secondary/30 border border-border/40 text-[11px] text-muted-foreground leading-relaxed">
+              <div className="p-2.5 rounded-xl bg-secondary/30 border border-border/40 text-[11px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
                 💡 <strong>Prinsip Pseudocode:</strong> Memuat 3 Blok (PROGRAM, KAMUS, ALGORITMA), operator modern (=), dan I/O universal input()/output().
               </div>
             </div>

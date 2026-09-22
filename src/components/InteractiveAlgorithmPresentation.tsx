@@ -346,7 +346,7 @@ export default function InteractiveAlgorithmPresentation() {
                 </li>
               </ul>
             </div>
-            <p className="text-[11px] text-slate-500 italic mt-2 pt-2 border-t border-slate-800/60 text-center shrink-0">
+            <p className="text-[11px] text-slate-400 font-medium italic mt-2 pt-2 border-t border-slate-800/60 text-center shrink-0">
               Bahasa naratif sehari-hari, sangat mudah dipahami manusia.
             </p>
           </div>
@@ -362,7 +362,7 @@ export default function InteractiveAlgorithmPresentation() {
                   2. Flowchart
                 </h4>
                 <span title="Menggunakan simbol-simbol bangun datar standar">
-                  <Info className="w-4 h-4 text-slate-500" />
+                  <Info className="w-4 h-4 text-slate-400" />
                 </span>
               </div>
 
@@ -385,7 +385,7 @@ export default function InteractiveAlgorithmPresentation() {
                 <FlowchartNode type="terminator" text="STOP" isActive={currentStep === 4} />
               </div>
             </div>
-            <p className="text-[11px] text-slate-500 italic mt-2 pt-2 border-t border-slate-800/60 text-center w-full shrink-0">
+            <p className="text-[11px] text-slate-400 font-medium italic mt-2 pt-2 border-t border-slate-800/60 text-center w-full shrink-0">
               Diagram visual matematis, mudah melacak alur eksekusi logika.
             </p>
           </div>
@@ -401,13 +401,13 @@ export default function InteractiveAlgorithmPresentation() {
                   3. Pseudocode
                 </h4>
                 <span title="Struktur kode mirip dengan bahasa pemrograman sungguhan">
-                  <Info className="w-4 h-4 text-slate-500" />
+                  <Info className="w-4 h-4 text-slate-400" />
                 </span>
               </div>
 
               <div className="space-y-0.5 md:space-y-1">
                 <CodeLine text="PROGRAM HitungLuas" color="text-violet-400 font-bold" />
-                <CodeLine text="// Menghitung luas persegi panjang" color="text-slate-500 text-xs" />
+                <CodeLine text="// Menghitung luas persegi panjang" color="text-slate-400 text-xs" />
                 <div className="h-1"></div>
                 <CodeLine text="KAMUS:" color="text-violet-400 font-bold text-xs" />
                 <CodeLine text="  panjang, lebar : float" color="text-slate-300" />
@@ -420,7 +420,7 @@ export default function InteractiveAlgorithmPresentation() {
                 <CodeLine text="  output(luas)" color="text-cyan-300" isActive={currentStep === 4} />
               </div>
             </div>
-            <p className="text-[11px] text-slate-500 italic mt-2 pt-2 border-t border-slate-800/60 text-center font-sans shrink-0">
+            <p className="text-[11px] text-slate-400 font-medium italic mt-2 pt-2 border-t border-slate-800/60 text-center font-sans shrink-0">
               Notasi semi-pemrograman, paling dekat dengan instruksi komputer.
             </p>
           </div>

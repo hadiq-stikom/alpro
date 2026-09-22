@@ -30,7 +30,7 @@ export default function Pertemuan3() {
           <Binary className="w-10 h-10 text-primary" />
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Fondasi Algoritma</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-xl text-slate-700 dark:text-slate-300 font-medium max-w-2xl mx-auto">
           Gerbang utama menuju logika pemrograman. Memahami cara berpikir sistematis, terstruktur, dan efisien layaknya seorang insinyur perangkat lunak.
         </p>
       </header>
@@ -46,12 +46,12 @@ export default function Pertemuan3() {
               <Network className="w-8 h-8" />
               1. Pengantar Algoritma
             </h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Memahami definisi, alasan pentingnya, serta 5 ciri utama algoritma yang baik.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen1 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-slate-600 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isOpen1 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
@@ -67,7 +67,7 @@ export default function Pertemuan3() {
                 <AnimatedAlgorithmDefinition />
 
                 <div className="prose prose-slate dark:prose-invert max-w-none space-y-4">
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Mengapa kita harus repot-repot memikirkan langkah-langkahnya? Karena algoritma bersifat universal. Ia tidak terikat pada satu bahasa pemrograman apa pun. Jika Anda menguasai algoritmanya, menerjemahkannya ke dalam bahasa C++, Python, atau Java hanyalah masalah sintaksis (tata bahasa).
                   </p>
                   
@@ -136,12 +136,12 @@ export default function Pertemuan3() {
               <Workflow className="w-8 h-8" />
               2. Metodologi Rekayasa Program: Dari Masalah ke Solusi
             </h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Menguasai 4 siklus rekayasa (Analisis Persamaan &amp; Tipe Data, Desain Algoritma, Coding, dan Testing).</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen2 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-slate-600 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isOpen2 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
@@ -171,12 +171,12 @@ export default function Pertemuan3() {
               <PenTool className="w-8 h-8" />
               3. Teknik Penyajian Algoritma
             </h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Mampu menyajikan algoritma menggunakan Deskriptif, Flowchart, dan Pseudocode.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen3 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-slate-600 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isOpen3 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
@@ -241,12 +241,12 @@ export default function Pertemuan3() {
               <Braces className="w-8 h-8" />
               4. Struktur Dasar Algoritma
             </h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Memahami dan membedakan alur Sequential, Selection, dan Looping.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen4 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-slate-600 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isOpen4 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>

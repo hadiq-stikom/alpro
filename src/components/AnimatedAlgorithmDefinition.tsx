@@ -15,11 +15,11 @@ export default function AnimatedAlgorithmDefinition() {
       animate={{ minHeight: isHovered ? 400 : 120 }}
       transition={{ duration: 0.5, type: "spring", bounce: 0.3 }}
     >
-      <div className="absolute top-3 right-4 text-emerald-500/60 text-xs flex items-center gap-1.5 font-medium animate-pulse z-20 cursor-default">
+      <div className="absolute top-3 right-4 text-emerald-700 dark:text-emerald-400 text-xs flex items-center gap-1.5 font-bold animate-pulse z-20 cursor-default">
         <MousePointerClick className="w-4 h-4" /> Arahkan Kursor (Hover) di area ini
       </div>
       
-      <div className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4 relative z-20">
+      <div className="text-sm font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-widest mb-4 relative z-20">
         Definisi Algoritma
       </div>
 
@@ -185,14 +185,14 @@ function AssemblyToSolutionAnimation() {
       </div>
 
       {/* TEXT EXPLANATION OVERLAY */}
-      <div className="absolute bottom-4 left-0 right-0 text-center font-bold text-muted-foreground text-sm z-30">
+      <div className="absolute bottom-4 left-0 right-0 text-center font-bold text-slate-800 dark:text-slate-200 text-sm z-30">
         {step === 0 && "Berbagai elemen yang berserakan (tidak beraturan)..."}
         {step === 1 && "Disusun langkah demi langkah..."}
         {step === 2 && "Dirangkai dengan logika yang tepat..."}
         {step === 3 && "Menjadi sistem yang utuh (Sistematis)..."}
         {step === 4 && "Diterapkan pada masalah (Mengeksekusi)..."}
         {step === 5 && "Memutar logika (Proses)..."}
-        {step >= 6 && <span className="text-amber-500 text-lg drop-shadow-md">AHA! Memecahkan masalah! 🎉</span>}
+        {step >= 6 && <span className="text-amber-800 dark:text-amber-400 text-lg drop-shadow-md font-black">AHA! Memecahkan masalah! 🎉</span>}
       </div>
 
     </div>

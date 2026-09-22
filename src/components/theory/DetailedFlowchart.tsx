@@ -384,25 +384,25 @@ export default function DetailedFlowchart() {
           <GitCommit className="w-8 h-8" />
         </div>
         <div>
-          <h3 className="text-2xl md:text-3xl font-bold text-blue-500">2. Flowchart (Diagram Alir)</h3>
-          <p className="text-muted-foreground text-sm mt-1">Menyajikan algoritma dengan simbol geometris untuk menggambarkan alur logika secara visual.</p>
+          <h3 className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-500">2. Flowchart (Diagram Alir)</h3>
+          <p className="text-slate-700 dark:text-slate-300 text-sm mt-1 font-medium">Menyajikan algoritma dengan simbol geometris untuk menggambarkan alur logika secara visual.</p>
         </div>
       </div>
 
       <div className="space-y-8 pt-2">
         {/* 1. BAGIAN A: TEORI & PENJELASAN */}
         <div className="space-y-4">
-          <p className="text-foreground leading-relaxed">
+          <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
             <strong>Flowchart (Diagram Alir)</strong> adalah representasi grafis atau bagan dari suatu algoritma yang mendeskripsikan urutan langkah-langkah penyelesaian masalah. Setiap langkah direpresentasikan menggunakan <strong>simbol-simbol geometri yang terstandarisasi</strong>.
           </p>
-          <p className="text-foreground leading-relaxed">
+          <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
             Dalam konteks rekayasa perangkat lunak, flowchart berfungsi sebagai instrumen pemodelan visual yang krusial untuk menganalisis, merancang, dan mendokumentasikan alur logika sebuah program sebelum ditranslasikan ke dalam sintaks bahasa pemrograman.
           </p>
         </div>
 
         {/* 2. BAGIAN B: KAMUS SIMBOL STANDAR FLOWCHART */}
         <div className="space-y-4 pt-2 border-t border-border/40">
-          <h4 className="font-bold flex items-center gap-2 text-blue-500 text-lg">
+          <h4 className="font-bold flex items-center gap-2 text-blue-600 dark:text-blue-500 text-lg">
             <LayoutGrid className="w-5 h-5" />
             Simbol Standar Flowchart
           </h4>
@@ -415,7 +415,7 @@ export default function DetailedFlowchart() {
 
         {/* 3. BAGIAN C: CONTOH FLOWCHART UTUH */}
         <div className="space-y-4 pt-4 border-t border-border/40">
-          <h4 className="font-bold flex items-center gap-2 text-blue-500 text-lg">
+          <h4 className="font-bold flex items-center gap-2 text-blue-600 dark:text-blue-500 text-lg">
             <GitCommit className="w-5 h-5" />
             Contoh Penerapan Flowchart Utuh (Studi Kasus: Menghitung Luas Persegi Panjang)
           </h4>
@@ -424,7 +424,7 @@ export default function DetailedFlowchart() {
             className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner font-mono text-sm text-slate-300 relative min-h-[380px] flex flex-col items-center justify-center gap-4 transition-all duration-300 ease-out origin-center hover:scale-[1.5] hover:z-50 hover:brightness-125 hover:border-blue-500/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] cursor-pointer antialiased"
             style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
           >
-            <p className="text-slate-500 absolute top-4 left-6 italic text-left w-full">// Contoh: Flowchart Menghitung Luas (Arahkan kursor untuk memperbesar)</p>
+            <p className="text-slate-400 absolute top-4 left-6 italic text-left w-full">// Contoh: Flowchart Menghitung Luas (Arahkan kursor untuk memperbesar)</p>
             
             <div className="flex flex-col items-center gap-0 mt-6">
               {/* Start */}

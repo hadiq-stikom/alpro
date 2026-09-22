@@ -138,9 +138,9 @@ export default function LogicPuzzleRiver() {
       {/* Header */}
       <div className="flex flex-col items-center w-full mb-8">
         <h3 className="text-2xl font-bold mb-2 text-primary">Teka-teki Menyeberang Sungai</h3>
-        <p className="text-sm text-muted-foreground text-justify max-w-lg">
-          Bantu Petani menyeberangkan Serigala, Domba, dan Sayur. Perahu hanya muat 2 orang (Petani wajib ikut). 
-          Jika ditinggal tanpa Petani: <strong className="text-red-500">Serigala memangsa Domba</strong>, dan <strong className="text-emerald-500">Domba memakan Sayur</strong>.
+        <p className="text-sm text-slate-700 dark:text-slate-300 font-medium text-justify max-w-lg">
+          Bantu Petani menyeberangkan Serigala, Domba, dan Sayur ke tepi seberang. Perahu hanya muat Petani dan 1 barang/hewan bawaan. 
+          Jika ditinggal tanpa Petani: <strong className="text-red-600 dark:text-red-400 font-bold">Serigala memangsa Domba</strong>, dan <strong className="text-emerald-700 dark:text-emerald-400 font-bold">Domba memakan Sayur</strong>.
         </p>
       </div>
 
@@ -155,7 +155,7 @@ export default function LogicPuzzleRiver() {
           <div className="flex justify-between items-start w-full z-10 relative">
             {/* Tepi Kiri */}
             <div className="w-28 sm:w-36 bg-emerald-700 min-h-[10rem] py-3 px-2 flex flex-col items-center rounded-2xl shadow-md border-4 border-emerald-900/50 relative overflow-hidden">
-              <div className="text-emerald-200/50 font-bold mb-3 text-sm sm:text-base">Tepi Kiri</div>
+              <div className="text-emerald-300 dark:text-emerald-200 font-extrabold mb-3 text-sm sm:text-base">Tepi Kiri</div>
               <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full place-items-center">
                 {getEntitiesAt('left').map(e => (
                   <motion.button 
@@ -173,7 +173,7 @@ export default function LogicPuzzleRiver() {
 
             {/* Tepi Kanan */}
             <div className="w-28 sm:w-36 bg-emerald-700 min-h-[10rem] py-3 px-2 flex flex-col items-center rounded-2xl shadow-md border-4 border-emerald-900/50 relative overflow-hidden">
-              <div className="text-emerald-200/50 font-bold mb-3 text-sm sm:text-base">Tepi Kanan</div>
+              <div className="text-emerald-300 dark:text-emerald-200 font-extrabold mb-3 text-sm sm:text-base">Tepi Kanan</div>
               <div className="grid grid-cols-2 gap-2 sm:gap-3 w-full place-items-center">
                 {getEntitiesAt('right').map(e => (
                   <motion.button 
@@ -207,7 +207,7 @@ export default function LogicPuzzleRiver() {
                   y: { repeat: Infinity, duration: 4, ease: "easeInOut" } 
                 }}
               >
-                <div className="absolute -left-14 top-1/2 -translate-y-1/2 text-xs font-bold text-amber-900/80">PERAHU</div>
+                <div className="absolute -left-14 top-1/2 -translate-y-1/2 text-xs font-black text-amber-900 dark:text-amber-200 bg-amber-100 dark:bg-amber-950/80 px-1 py-0.5 rounded border border-amber-300 dark:border-amber-800">PERAHU</div>
                 
                 {/* Boat Slots */}
                 <div className="w-10 h-10 sm:w-12 sm:h-12 border-2 border-dashed border-amber-900/40 rounded-full flex items-center justify-center">
@@ -294,7 +294,7 @@ export default function LogicPuzzleRiver() {
         </h4>
         <div className="flex-1 overflow-y-auto pt-3 space-y-2">
           {moveHistory.length === 0 ? (
-            <div className="text-sm text-muted-foreground italic text-center mt-10">Belum ada langkah yang diambil.</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400 italic text-center mt-10 font-medium">Belum ada langkah yang diambil.</div>
           ) : (
             moveHistory.map((move, i) => (
               <motion.div 
@@ -303,8 +303,8 @@ export default function LogicPuzzleRiver() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-sm p-2 bg-secondary/30 rounded-md border border-border flex gap-2 items-start"
               >
-                <span className="font-bold text-muted-foreground shrink-0">{i + 1}.</span>
-                <span>{move}</span>
+                <span className="font-bold text-slate-700 dark:text-slate-300 shrink-0">{i + 1}.</span>
+                <span className="text-slate-800 dark:text-slate-200 font-medium">{move}</span>
               </motion.div>
             ))
           )}

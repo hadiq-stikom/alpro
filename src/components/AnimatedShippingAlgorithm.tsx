@@ -15,7 +15,7 @@ export default function AnimatedShippingAlgorithm() {
       animate={{ minHeight: isHovered ? 260 : 160 }}
       transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
     >
-      <div className="absolute top-3 right-4 text-primary/60 text-xs flex items-center gap-1.5 font-medium animate-pulse cursor-default z-20">
+      <div className="absolute top-3 right-4 text-primary text-xs flex items-center gap-1.5 font-bold animate-pulse cursor-default z-20">
         <MousePointerClick className="w-4 h-4" /> Arahkan Kursor (Hover)
       </div>
 
@@ -31,7 +31,7 @@ export default function AnimatedShippingAlgorithm() {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 10 }}
-            className="list-decimal list-inside space-y-2 text-muted-foreground font-medium relative z-10"
+            className="list-decimal list-inside space-y-2 text-slate-800 dark:text-slate-200 font-semibold relative z-10"
           >
             <li>Siapkan barang yang dipesan.</li>
             <li>Kemas barang dalam kemasan yang aman.</li>
@@ -84,43 +84,43 @@ function ShippingAnimation() {
        {/* Step 1: Siapkan Barang */}
        <div className="flex flex-col items-center gap-2 relative">
          <motion.div 
-           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 0 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-muted-foreground'}`}
+           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 0 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-slate-500 dark:text-slate-400'}`}
            animate={step === 0 ? { scale: [1, 1.2, 1] } : { scale: 1 }}
            transition={{ duration: 0.3 }}
          >
            <Box className="w-6 h-6 sm:w-8 sm:h-8" />
          </motion.div>
-         <div className={`text-xs sm:text-sm font-bold ${step >= 0 ? 'text-primary' : 'text-muted-foreground'}`}>1. Siapkan</div>
+         <div className={`text-xs sm:text-sm font-bold ${step >= 0 ? 'text-primary' : 'text-slate-500 dark:text-slate-400'}`}>1. Siapkan</div>
        </div>
 
        {/* Step 2: Kemas */}
        <div className="flex flex-col items-center gap-2 relative">
          <motion.div 
-           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 1 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-muted-foreground'}`}
+           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 1 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-slate-500 dark:text-slate-400'}`}
            animate={step === 1 ? { scale: [1, 1.2, 1], rotate: [0, -10, 10, 0] } : { scale: 1 }}
            transition={{ duration: 0.4 }}
          >
            <Package className="w-6 h-6 sm:w-8 sm:h-8" />
          </motion.div>
-         <div className={`text-xs sm:text-sm font-bold ${step >= 1 ? 'text-primary' : 'text-muted-foreground'}`}>2. Kemas</div>
+         <div className={`text-xs sm:text-sm font-bold ${step >= 1 ? 'text-primary' : 'text-slate-500 dark:text-slate-400'}`}>2. Kemas</div>
        </div>
 
        {/* Step 3: Alamat */}
        <div className="flex flex-col items-center gap-2 relative">
          <motion.div 
-           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 2 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-muted-foreground'}`}
+           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 2 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-slate-500 dark:text-slate-400'}`}
            animate={step === 2 ? { scale: [1, 1.2, 1], y: [0, -5, 0] } : { scale: 1 }}
            transition={{ duration: 0.3 }}
          >
            <Tag className="w-6 h-6 sm:w-8 sm:h-8" />
          </motion.div>
-         <div className={`text-xs sm:text-sm font-bold ${step >= 2 ? 'text-primary' : 'text-muted-foreground'}`}>3. Label</div>
+         <div className={`text-xs sm:text-sm font-bold ${step >= 2 ? 'text-primary' : 'text-slate-500 dark:text-slate-400'}`}>3. Label</div>
        </div>
 
        {/* Step 4: Kurir */}
        <div className="flex flex-col items-center gap-2 relative">
          <motion.div 
-           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 3 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-muted-foreground'}`}
+           className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center border-4 bg-background ${step >= 3 ? 'border-primary text-primary shadow-lg shadow-primary/20' : 'border-border text-slate-500 dark:text-slate-400'}`}
            animate={
              step === 3 ? { scale: [1, 1.2, 1], x: [0, 5, -2, 0] } : 
              step === 4 ? { x: [0, 15], opacity: [1, 0.5] } : 
@@ -130,7 +130,7 @@ function ShippingAnimation() {
          >
            <Truck className="w-6 h-6 sm:w-8 sm:h-8" />
          </motion.div>
-         <div className={`text-xs sm:text-sm font-bold ${step >= 3 ? 'text-primary' : 'text-muted-foreground'}`}>4. Kirim</div>
+         <div className={`text-xs sm:text-sm font-bold ${step >= 3 ? 'text-primary' : 'text-slate-500 dark:text-slate-400'}`}>4. Kirim</div>
        </div>
     </div>
   );

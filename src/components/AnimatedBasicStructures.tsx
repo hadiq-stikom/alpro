@@ -269,7 +269,7 @@ export default function AnimatedBasicStructures() {
               className={`flex-1 flex items-center justify-center gap-2 py-3.5 px-3 text-xs md:text-sm font-bold transition-all relative cursor-pointer ${
                 isActive 
                   ? `${tab.color} bg-slate-950 border-b-2 ${tab.activeBorder}` 
-                  : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
+                  : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
               }`}
             >
               <Icon className={`w-4 h-4 ${isActive ? tab.color : 'text-slate-400'}`} />
@@ -288,7 +288,7 @@ export default function AnimatedBasicStructures() {
             <Sparkles className="w-3 h-3" />
             {currentTabInfo.flowTitle}
           </span>
-          <span className="hidden sm:inline-block text-xs text-slate-400">
+          <span className="hidden sm:inline-block text-xs text-slate-300 font-medium">
             {currentTabInfo.flowSubtitle}
           </span>
         </div>
@@ -617,7 +617,7 @@ export default function AnimatedBasicStructures() {
             )}
 
             {/* Bottom Realtime Status Text */}
-            <div className="w-full mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+            <div className="w-full mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300 font-medium">
               <span className="font-sans">Status Aliran:</span>
               <span className="font-bold font-mono text-slate-200">
                 {activeTab === 'sequential' && (
@@ -706,7 +706,7 @@ export default function AnimatedBasicStructures() {
                 
                 {/* Mode Selector: FOR vs WHILE */}
                 <div>
-                  <span className="text-[11px] font-bold text-slate-400 block mb-1.5 font-sans">
+                  <span className="text-[11px] font-bold text-slate-300 block mb-1.5 font-sans">
                     Pilih Jenis Perulangan:
                   </span>
                   <div className="grid grid-cols-2 gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
@@ -718,7 +718,7 @@ export default function AnimatedBasicStructures() {
                       className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
                         loopMode === 'counted' 
                           ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold' 
-                          : 'text-slate-400 hover:text-slate-200'
+                          : 'text-slate-300 hover:text-white'
                       }`}
                     >
                       <span>⬡ 1. Jumlah Pasti (FOR)</span>
@@ -732,7 +732,7 @@ export default function AnimatedBasicStructures() {
                       className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
                         loopMode === 'conditional' 
                           ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold' 
-                          : 'text-slate-400 hover:text-slate-200'
+                          : 'text-slate-300 hover:text-white'
                       }`}
                     >
                       <span>🔷 2. Bersyarat (WHILE)</span>
@@ -763,7 +763,7 @@ export default function AnimatedBasicStructures() {
                           className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                             forTarget === num 
                               ? 'bg-emerald-500 text-slate-950 font-extrabold shadow-md' 
-                              : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                              : 'bg-slate-800 text-slate-300 hover:text-white'
                           }`}
                         >
                           {num}&times;
@@ -806,7 +806,7 @@ export default function AnimatedBasicStructures() {
                           setIsPlaying(false);
                         }}
                         className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                          initialWater === 0 ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                          initialWater === 0 ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:text-white'
                         }`}
                       >
                         Mulai 0%
@@ -819,7 +819,7 @@ export default function AnimatedBasicStructures() {
                           setIsPlaying(false);
                         }}
                         className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                          initialWater === 50 ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                          initialWater === 50 ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:text-white'
                         }`}
                       >
                         Mulai 50%
@@ -832,7 +832,7 @@ export default function AnimatedBasicStructures() {
                           setIsPlaying(false);
                         }}
                         className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                          initialWater === 100 ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                          initialWater === 100 ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300 hover:text-white'
                         }`}
                         title="Jika mulai 100%, WHILE akan berputar 0 kali!"
                       >

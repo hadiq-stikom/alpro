@@ -46,7 +46,7 @@ export default function AnimatedAlgorithmCharacteristics() {
     <div className="border border-border/50 rounded-2xl overflow-hidden bg-background shadow-lg">
       <div className="p-4 md:p-6 bg-secondary/10 border-b border-border/50 text-center">
         <h3 className="text-2xl font-bold mb-2">Pabrik Logika: 5 Ciri Algoritma</h3>
-        <p className="text-muted-foreground text-sm max-w-2xl mx-auto">
+        <p className="text-slate-700 dark:text-slate-300 text-sm max-w-2xl mx-auto font-medium">
           Sebuah algoritma yang baik ibarat mesin pabrik yang sempurna. Ia membutuhkan bahan baku (Input), langkah pengolahan yang jelas dan efektif (Proses), batasan waktu berhenti (Stopping Role), dan menghasilkan produk akhir (Output).
         </p>
       </div>
@@ -92,7 +92,7 @@ export default function AnimatedAlgorithmCharacteristics() {
                 </motion.div>
               )}
             </AnimatePresence>
-            <div className="text-xs font-bold text-muted-foreground mt-2">Area Input</div>
+            <div className="text-xs font-bold text-slate-700 dark:text-slate-300 mt-2">Area Input</div>
           </div>
 
           {/* PROCESSOR (Machine) */}
@@ -144,14 +144,14 @@ export default function AnimatedAlgorithmCharacteristics() {
                 </motion.div>
               )}
             </AnimatePresence>
-            <div className="text-xs font-bold text-muted-foreground mt-2">Area Output</div>
+            <div className="text-xs font-bold text-slate-700 dark:text-slate-300 mt-2">Area Output</div>
           </div>
           
         </div>
 
         {/* Controls */}
         <div className="mt-2 flex flex-col items-center gap-2 z-20">
-          <p className="text-xs text-muted-foreground font-medium mb-1">Simulasikan Mesin Algoritma:</p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-bold mb-1">Simulasikan Mesin Algoritma:</p>
           <div className="flex gap-2 flex-wrap justify-center">
             <button 
               disabled={isRunning}
@@ -179,13 +179,13 @@ export default function AnimatedAlgorithmCharacteristics() {
 function Badge({ active, color, icon, label, desc }: { active: boolean, color: string, icon: React.ReactNode, label: string, desc: string }) {
   return (
     <div className={`flex flex-col items-center p-2 rounded-xl border transition-all duration-300 w-full text-center
-      ${active ? `${color} text-white shadow-lg scale-105 z-10 border-transparent` : 'bg-background border-border text-muted-foreground scale-100'}
+      ${active ? `${color} text-white shadow-lg scale-105 z-10 border-transparent` : 'bg-background border-border text-slate-700 dark:text-slate-300 scale-100 font-medium'}
     `}>
       <div className={`p-1.5 rounded-full mb-1 ${active ? 'bg-white/20' : 'bg-secondary'}`}>
         {icon}
       </div>
       <div className="font-bold text-[11px] leading-tight">{label}</div>
-      <div className={`text-[9px] mt-0.5 leading-tight ${active ? 'text-white/80' : 'text-muted-foreground/60'}`}>{desc}</div>
+      <div className={`text-[9px] mt-0.5 leading-tight ${active ? 'text-white/90' : 'text-slate-600 dark:text-slate-400 font-medium'}`}>{desc}</div>
     </div>
   );
 }

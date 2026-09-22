@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   Flame, Code2, Menu, Moon, Sun, GraduationCap,
   LogOut, ChevronDown, User, LayoutDashboard, ShieldCheck,
+  FlaskConical, BookOpen
 } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useLanguage } from "@/context/LanguageContext";
@@ -14,6 +16,7 @@ import { getBadgeFromScore, BadgeConfig } from "@/lib/badges";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
+  const pathname                    = usePathname();
   const { language, setLanguage }   = useLanguage();
   const { theme, setTheme }         = useTheme();
   const { profile, signOut, loading } = useAuth();
@@ -68,26 +71,59 @@ export default function Navbar() {
     ? profile.full_name.split(" ").slice(0, 2).map((w) => w[0]).join("").toUpperCase()
     : profile?.nim?.slice(0, 2).toUpperCase() ?? "?";
 
+  // Sembunyikan navbar sepenuhnya pada mode cetak PDF
+  if (pathname?.includes("/print")) {
+    return null;
+  }
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4">
         {/* Logo & Course Info */}
         <div className="flex items-center gap-4">
-          <div className="bg-primary/10 p-2.5 rounded-lg hidden sm:block">
-            <GraduationCap className="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <h1 className="font-bold text-lg leading-tight">
-              Algoritma &amp; Pemrograman
-            </h1>
-            <p className="text-xs text-muted-foreground font-medium">
-              TI-101 • Semester Ganjil
-            </p>
-          </div>
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="bg-primary/10 p-2.5 rounded-lg group-hover:bg-primary/20 transition-colors hidden sm:block">
+              <GraduationCap className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <h1 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors">
+                Algoritma &amp; Pemrograman
+              </h1>
+              <p className="text-xs text-muted-foreground font-medium">
+                TI-101 • Semester Ganjil
+              </p>
+            </div>
+          </Link>
+        </div>
+
+        {/* Central Switcher: Teori vs Praktikum */}
+        <div className="flex items-center gap-1.5 p-1 rounded-full bg-secondary/80 border border-border/60 shadow-inner">
+          <Link
+            href="/"
+            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all flex items-center gap-1.5 ${
+              !pathname?.startsWith("/praktikum")
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Teori</span>
+          </Link>
+          <Link
+            href="/praktikum"
+            className={`px-3.5 py-1.5 text-xs font-bold rounded-full transition-all flex items-center gap-1.5 ${
+              pathname?.startsWith("/praktikum")
+                ? "bg-cyan-500 text-white shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <FlaskConical className="w-3.5 h-3.5" />
+            <span>Praktikum (LKP)</span>
+          </Link>
         </div>
 
         {/* Language Toggle */}
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <div className="flex items-center rounded-full bg-secondary/80 p-1 border border-border/50">
             <button
               onClick={() => setLanguage("python")}

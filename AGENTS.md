@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # KESEPAKATAN PEDAGOGIS & STANDAR ATURAN WEB-ALPRO (SINGLE SOURCE OF TRUTH)
 
-Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/PROJECT_SPEC.md) dan [`.agents/rules/pedagogy_conventions.md`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/.agents/rules/pedagogy_conventions.md):
+Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/PROJECT_SPEC.md), [`PRAKTIKUM_SPEC.md`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/PRAKTIKUM_SPEC.md), dan [`.agents/rules/pedagogy_conventions.md`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/.agents/rules/pedagogy_conventions.md):
 
 1. **Algoritma Naratif**:
    - Blok IF-ELSE wajib dalam **SATU NOMOR URUT** yang sama (misal `2. Jika ... maka:`, di dalamnya `Selain itu:`).

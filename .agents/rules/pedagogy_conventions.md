@@ -39,6 +39,10 @@ Dokumen aturan ini WAJIB dipatuhi oleh seluruh AI Agent dan pengembang yang beke
    - Cabang Benar: `Ya` (atau `True`)
    - Cabang Salah: `Tidak` (atau `False`)
 5. **Flowline (Garis Alir Berpanah)**: Menunjukkan arah aliran logis (umumnya dari atas ke bawah).
+6. **Orientasi Fleksibel (Vertikal & Horisontal)**:
+   - Menyediakan opsi tata letak Vertikal (Atas-ke-Bawah) dan Horisontal (Kiri-ke-Kanan).
+   - Pada mode Vertikal, port panah keluar/masuk terminator (`MULAI`/`SELESAI`) wajib vertikal.
+7. **Pemisahan Jalur Cabang**: Garis alur dari cabang True dan False dilarang menabrak kotak statemen lawan, wajib mengalir rapi sebelum menyatu ke *merge node*.
 
 ### C. Pseudocode (Kode Semu Standar CLRS & Bab 3)
 1. **Struktur 3 Blok Wajib**:
@@ -51,6 +55,7 @@ Dokumen aturan ini WAJIB dipatuhi oleh seluruh AI Agent dan pengembang yang beke
 3. **Instruksi I/O Universal**:
    - Menerima masukan: `input(namaVariabel)`.
    - Menampilkan keluaran: `output("Pesan", variabel)`.
+   - **DILARANG KERAS** menggunakan fitur spesifik bahasa seperti format string Python (`f"..."`), interpolasi kurung kurawal `{variabel}`, atau perintah bawaan bahasa (`print(...)`). Pseudocode wajib universal dan netral (*language-agnostic*).
 4. **Operator Penugasan (*Assignment*) — Standar CLRS**:
    - Menggunakan tanda sama dengan tunggal `=` (contoh: `luas = panjang * lebar`, `sisaSaldo = saldo - jumlahTarik`).
    - **DILARANG** menggunakan tanda panah klasik `<-`.
@@ -68,6 +73,9 @@ Dokumen aturan ini WAJIB dipatuhi oleh seluruh AI Agent dan pengembang yang beke
    - Kata kunci baku percabangan majemuk adalah **`else if <kondisi> then`** (dua kata terpisah).
    - **DILARANG KERAS** menggunakan kata kunci Python `elif` di dalam pseudocode.
    - Pada pola bertingkat sejajar (*cascading*), struktur ditutup dengan tepat **satu `endif`** pada baris penutup struktur.
+10. **Perataan Indentasi Sejajar**:
+    - Kata kunci `if <kondisi> then`, `else if <kondisi> then`, `else`, dan `endif` wajib berada pada level kolom indentasi yang sama.
+    - Setiap instruksi di dalam tubuh percabangan menjorok ke dalam (+1 level / 4 spasi).
 
 ---
 
@@ -181,4 +189,18 @@ Untuk memastikan diagram alir tidak sekadar statis, tetapi hidup dan merefleksik
 1. **Elegan, Modern, dan Tidak Menor**: Menghindari lencana (*badge*) berlebihan atau kotak mencolok di tengah-tengah baris kode yang dapat merusak pemahaman mahasiswa.
 2. **Kontras Tinggi & Ramah Pemula**: Seluruh elemen teks harus memiliki rasio kontras tinggi yang nyaman dibaca baik pada mode gelap (*Dark Mode*) maupun terang (*Light Mode*).
 3. **Layout Penuh & Tidak Tertekan**: Navigasi tab modul menggunakan grid responsif (`grid-cols-2 lg:grid-cols-4`) agar judul modul dan tombol navigasi tidak tertekan (*squished*) atau memunculkan *scroll-bar* horizontal.
+
+---
+
+## 9. Sistem Gamifikasi & Lencana Capaian (Badge System)
+1. **Skala 9 Tingkat Capaian**:
+   - `E`, `DE`, `D`, `CD`, `C`, `BC`, `B`, `AB`, `A` dengan pembeda warna visual spesifik untuk setiap tingkat capaian.
+2. **4 Klaster Capaian Akademik**:
+   - **Kurang**: `E`, `DE`, `D`, `CD`
+   - **Cukup**: `C`, `BC`
+   - **Baik**: `B`, `AB`
+   - **Sempurna**: `A`
+3. **Integrasi Halaman**:
+   - **Halaman Mahasiswa**: Menampilkan lencana rata-rata capaian seluruh materi dan lencana capaian spesifik per pertemuan.
+   - **Halaman Dosen**: Menampilkan rekap agregat capaian kelas dan rincian performa per mahasiswa baik secara umum maupun per pertemuan.
 

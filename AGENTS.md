@@ -24,6 +24,8 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
    - **Jalur Aktif**: Garis tebal cerah ber-glow, **animasi aliran bergerak dinamis** (`animated: true`), label `✓ ...`, dan node ditandai `✓ DIJALANKAN`.
    - **Jalur Dilewati**: Garis redup (*opacity 0.35*, dashed), animasi mati, label `✗ ... (DILEWATI)`, dan node meredup dengan badge `🚫 DILEWATI`.
    - Jalur percabangan menyatu kembali ke lingkaran konektor (*merge node*).
+   - **Orientasi Fleksibel (Vertikal & Horisontal)**: Header kartu Flowchart menyediakan toggle orientasi Vertikal (`LayoutList` / Atas-ke-Bawah) dan Horisontal (`LayoutGrid` / Kiri-ke-Kanan).
+   - **Port Panah Alir Rapi**: Pada mode Vertikal, port panah keluar/masuk terminator (`MULAI`/`SELESAI`) wajib vertikal. Garis alur dari cabang True/False tidak boleh saling menabrak kotak statemen lawan sebelum menuju *merge node*.
 
 3. **Editor Kode & Bebas Gangguan Kursor (*Zero Caret Metric Interference*)**:
    - Gutter nomor baris vertikal di sisi kiri (`sticky left-0`) dengan indikator `▶ X`.
@@ -44,9 +46,22 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
    - Menampilkan variabel runtime secara real-time (nama variabel ungu `text-purple-400`, nilai hijau emerald `text-emerald-400`).
    - Tersinkronisasi penuh dengan tombol pintas `RAM Live` di header studio dan mendukung toggle buka/tutup (*collapse/expand*).
 
-6. **Standar Penulisan Pseudocode (CLRS & Bab 3)**:
-   - Format baku 3 blok: `PROGRAM` (PascalCase + komentar `// ...`), `KAMUS:` (`var : tipeData`), `ALGORITMA:` (urutan aksi).
-   - Operator: `=` (assignment), `==` (equality), `!=` (inequality).
-   - Percabangan Majemuk: Wajib menggunakan **`else if <kondisi> then`** (dua kata terpisah). **DILARANG KERAS** menggunakan kata kunci Python `elif` di dalam pseudocode.
-   - Penutup percabangan: Wajib menggunakan **`endif`**.
+6. **Standar Penulisan & Indentasi Pseudocode (CLRS & Bab 3)**:
+   - **Format Baku 3 Blok**: `PROGRAM` (PascalCase + komentar `// ...`), `KAMUS:` (`var : tipeData`), `ALGORITMA:` (urutan aksi).
+   - **Operator Baku**: `=` (assignment), `==` (equality), `!=` (inequality).
+   - **Percabangan Majemuk**: Wajib menggunakan **`else if <kondisi> then`** (dua kata terpisah). **DILARANG KERAS** menggunakan kata kunci Python `elif` di dalam pseudocode.
+   - **Instruksi I/O Universal**: Wajib berformat **`input(variabel)`** dan **`output("Pesan", variabel)`**. **DILARANG KERAS** menggunakan format string Python `f"..."`, kurung kurawal `{variabel}`, ataupun perintah bahasa tertentu (`print(...)`).
+   - **Struktur Indentasi Lurus Sejajar**: Kata kunci `if <kondisi> then`, `else if <kondisi> then`, `else`, dan `endif` wajib berada pada level kolom indentasi yang sama. Pernyataan di dalam badan cabang menjorok ke dalam (+1 level / 4 spasi / 24px).
+   - **Penutup Percabangan**: Wajib ditutup dengan **`endif`** pada level blok yang bersesuaian.
+
+7. **Sistem Gamifikasi & Lencana Capaian (*Badge System*)**:
+   - **Skala 9 Tingkat Capaian**: `E`, `DE`, `D`, `CD`, `C`, `BC`, `B`, `AB`, `A` dengan pembeda warna visual spesifik.
+   - **4 Klaster Capaian**:
+     - `Kurang`: E, DE, D, CD
+     - `Cukup`: C, BC
+     - `Baik`: B, AB
+     - `Sempurna`: A
+   - **Distribusi Lencana**:
+     - **Halaman Mahasiswa**: Menampilkan rata-rata capaian seluruh materi dan capaian spesifik per pertemuan.
+     - **Halaman Dosen**: Menampilkan statistik capaian kelas dan rincian performa per mahasiswa baik secara umum maupun per pertemuan.
 

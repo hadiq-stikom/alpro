@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Network, PenTool, Braces, ChevronDown, CheckCircle2, ChevronRight, Binary } from 'lucide-react';
+import { Network, PenTool, Braces, ChevronDown, CheckCircle2, ChevronRight, Binary, Workflow } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AnimatedAlgorithmCharacteristics from '@/components/AnimatedAlgorithmCharacteristics';
 import InteractiveAlgorithmPresentation from '@/components/InteractiveAlgorithmPresentation';
@@ -14,11 +14,13 @@ import DetailedDescriptive from '@/components/theory/DetailedDescriptive';
 import DetailedFlowchart from '@/components/theory/DetailedFlowchart';
 import DetailedPseudocode from '@/components/theory/DetailedPseudocode';
 import AlgorithmTriConverterLab from '@/components/theory/chapter3/AlgorithmTriConverterLab';
+import ProgramEngineeringMethodology from '@/components/theory/chapter3/ProgramEngineeringMethodology';
 
 export default function Pertemuan3() {
   const [isOpen1, setIsOpen1] = useState(true); // Open by default
-  const [isOpen2, setIsOpen2] = useState(false);
-  const [isOpen3, setIsOpen3] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(true); // Sub-Bab 2 Baru (Metodologi)
+  const [isOpen3, setIsOpen3] = useState(false); // Sub-Bab 3 (Teknik Penyajian)
+  const [isOpen4, setIsOpen4] = useState(false); // Sub-Bab 4 (Struktur Dasar)
   const [isPuzzlesOpen, setIsPuzzlesOpen] = useState(true);
 
   return (
@@ -77,7 +79,7 @@ export default function Pertemuan3() {
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <h3 className="text-2xl font-bold flex items-center gap-3 text-blue-500">
                       <span className="text-3xl">🧠</span>
-                      Pemanasan Otak & Pendalaman Konsep
+                      Pemanasan Otak &amp; Pendalaman Konsep
                     </h3>
                     <button 
                       onClick={() => setIsPuzzlesOpen(!isPuzzlesOpen)}
@@ -123,20 +125,20 @@ export default function Pertemuan3() {
         </AnimatePresence>
       </div>
 
-      {/* --- SUB BAB 2: PENYAJIAN ALGORITMA --- */}
-      <div className={`border border-border/50 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-amber-500/30 ${isOpen2 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      {/* --- SUB BAB 2 (BARU): METODOLOGI REKAYASA PROGRAM --- */}
+      <div className={`border border-border/50 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-indigo-500/30 ${isOpen2 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button 
           onClick={() => setIsOpen2(!isOpen2)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background rounded-t-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-amber-500 mb-2 flex items-center gap-3">
-              <PenTool className="w-8 h-8" />
-              2. Teknik Penyajian Algoritma
+            <h2 className="text-2xl md:text-3xl font-bold text-indigo-500 mb-2 flex items-center gap-3">
+              <Workflow className="w-8 h-8" />
+              2. Metodologi Rekayasa Program: Dari Masalah ke Solusi
             </h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span>Capaian: Mampu menyajikan algoritma menggunakan Deskriptif, Flowchart, dan Pseudocode.</span>
+              <span>Capaian: Menguasai 4 siklus rekayasa (Analisis Persamaan &amp; Tipe Data, Desain Algoritma, Coding, dan Testing).</span>
             </div>
           </div>
           <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen2 ? 'rotate-180' : ''}`} />
@@ -144,6 +146,41 @@ export default function Pertemuan3() {
 
         <AnimatePresence>
           {isOpen2 && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-visible"
+            >
+              <div className="p-6 md:p-8 pt-2 space-y-10">
+                <ProgramEngineeringMethodology />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* --- SUB BAB 3: PENYAJIAN ALGORITMA --- */}
+      <div className={`border border-border/50 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-amber-500/30 ${isOpen3 ? 'overflow-visible' : 'overflow-hidden'}`}>
+        <button 
+          onClick={() => setIsOpen3(!isOpen3)}
+          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background rounded-t-2xl"
+        >
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-amber-500 mb-2 flex items-center gap-3">
+              <PenTool className="w-8 h-8" />
+              3. Teknik Penyajian Algoritma
+            </h2>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>Capaian: Mampu menyajikan algoritma menggunakan Deskriptif, Flowchart, dan Pseudocode.</span>
+            </div>
+          </div>
+          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen3 ? 'rotate-180' : ''}`} />
+        </button>
+
+        <AnimatePresence>
+          {isOpen3 && (
             <motion.div 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
@@ -193,27 +230,27 @@ export default function Pertemuan3() {
         </AnimatePresence>
       </div>
 
-      {/* --- SUB BAB 3: STRUKTUR DASAR ALGORITMA --- */}
+      {/* --- SUB BAB 4: STRUKTUR DASAR ALGORITMA --- */}
       <div className="border border-border/50 rounded-2xl overflow-hidden bg-secondary/5 shadow-sm transition-all hover:border-emerald-500/30">
         <button 
-          onClick={() => setIsOpen3(!isOpen3)}
+          onClick={() => setIsOpen4(!isOpen4)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background"
         >
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-emerald-500 mb-2 flex items-center gap-3">
               <Braces className="w-8 h-8" />
-              3. Struktur Dasar Algoritma
+              4. Struktur Dasar Algoritma
             </h2>
             <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Memahami dan membedakan alur Sequential, Selection, dan Looping.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen3 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen4 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
-          {isOpen3 && (
+          {isOpen4 && (
             <motion.div 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
@@ -239,7 +276,6 @@ export default function Pertemuan3() {
           )}
         </AnimatePresence>
       </div>
-
     </div>
   );
 }

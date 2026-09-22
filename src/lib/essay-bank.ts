@@ -48,12 +48,13 @@ export const ESSAY_BANK: EssayQuestion[] = [
   {
     id: 'm1-essay-4',
     meetingId: 1,
-    text: 'Jelaskan perbedaan mendasar antara Algoritma dan Program! Berikan satu contoh aktivitas sehari-hari yang bisa disebut sebagai algoritma, namun bukan program komputer.',
+    text: 'Dalam sejarah perkembangan komputer, cara manusia memberikan instruksi kepada mesin mengalami evolusi yang sangat dramatis—mulai dari Era Mekanik (punch card), Generasi 1 (merangkai kabel fisik/patch cables pada komputer tabung vakum seperti ENIAC), hingga era modern (mengetik teks kode tingkat tinggi pada mikroprosesor). Jelaskan perbedaan mendasar bagaimana seorang "programmer" bekerja di Generasi 1 dibandingkan dengan programmer di era modern saat ini, serta mengapa evolusi tersebut sangat menentukan kemajuan teknologi!',
     timeLimit: 300,
     rubric: `
       Kriteria Penilaian (0-100):
-      1. Beda Konsep (40 poin): Algoritma adalah ide, rancangan logika, atau urutan langkah penyelesaian masalah (independen dari bahasa mesin). Program adalah implementasi dari algoritma tersebut ke dalam bahasa pemrograman yang bisa dijalankan komputer.
-      2. Contoh Logis (60 poin): Menyebutkan urutan instruksi di dunia nyata, misalnya "Resep membuat nasi goreng", "Langkah-langkah mengganti ban mobil", dsb.
+      1. Pemahaman Generasi 1 (40 poin): Harus menjelaskan bahwa memprogram di generasi awal adalah pekerjaan fisik yang berat dan manual, yaitu merangkai/mencolok ratusan kabel (patch cables), menyetel saklar listrik, atau melubangi kartu (punch cards) secara mekanis/elektronik langsung ke sirkuit mesin tanpa adanya monitor atau bahasa teks.
+      2. Pemahaman Era Modern (35 poin): Menjelaskan bahwa programmer modern bekerja di lapisan abstraksi perangkat lunak, mengetik kode menggunakan teks bahasa tingkat tinggi (mirip bahasa manusia/Inggris) melalui keyboard/layar, dan penerjemah (compiler/interpreter) yang mengurus konfigurasi sinyal perangkat keras secara otomatis.
+      3. Dampak & Urgensi Evolusi (25 poin): Menjelaskan bahwa evolusi dari fisik ke abstraksi teks membuat pembuatan program menjadi jauh lebih cepat, fleksibel, mudah didokumentasikan dan diperbaiki (debugging), serta memungkinkan terciptanya sistem perangkat lunak yang sangat kompleks dan canggih saat ini.
     `
   },
   {

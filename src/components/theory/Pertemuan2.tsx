@@ -23,13 +23,13 @@ export default function Pertemuan2() {
           <Server className="w-10 h-10 text-primary" />
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">Arsitektur dan Organisasi Komputer</h1>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-xl text-slate-700 dark:text-slate-300 max-w-2xl mx-auto font-medium">
           Menyelami struktur, cara kerja mesin, sistem bilangan radiks, dan hierarki satuan data komputasi.
         </p>
       </header>
 
       {/* --- SUB BAB 1: ARSITEKTUR & ORGANISASI KOMPUTER --- */}
-      <div className="border border-border/50 rounded-2xl overflow-hidden bg-secondary/10 shadow-sm transition-all hover:border-primary/30">
+      <div className={`border border-border/50 rounded-2xl bg-secondary/10 shadow-sm transition-all hover:border-primary/30 ${isArchOpen ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button 
           onClick={() => setIsArchOpen(!isArchOpen)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer"
@@ -39,12 +39,12 @@ export default function Pertemuan2() {
               <Server className="w-8 h-8" />
               Arsitektur &amp; Organisasi Komputer
             </h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Memahami struktur, komponen utama, dan siklus eksekusi instruksi pada komputer.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isArchOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-slate-600 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isArchOpen ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
@@ -53,7 +53,7 @@ export default function Pertemuan2() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden"
+              className={isArchOpen ? 'overflow-visible' : 'overflow-hidden'}
             >
               <div className="p-6 md:p-8 pt-2 space-y-16">
                 
@@ -63,7 +63,7 @@ export default function Pertemuan2() {
                     <Layers className="w-6 h-6" />
                     <h2 className="text-2xl font-bold">1. Arsitektur vs Organisasi Komputer</h2>
                   </div>
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Dalam dunia komputer, istilah <strong>Arsitektur</strong> dan <strong>Organisasi</strong> sering dianggap sama, namun sebenarnya merujuk pada dua hal yang berbeda.
                   </p>
                   
@@ -76,7 +76,7 @@ export default function Pertemuan2() {
                     <Cpu className="w-6 h-6" />
                     <h2 className="text-2xl font-bold">2. Struktur Sistem Komputer</h2>
                   </div>
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Secara umum, komputer tersusun atas beberapa perangkat utama (CPU, Memori, Input/Output) yang saling terhubung melalui jalur komunikasi yang disebut <strong>Bus</strong>.
                   </p>
                   
@@ -89,7 +89,7 @@ export default function Pertemuan2() {
                     <Workflow className="w-6 h-6" />
                     <h2 className="text-2xl font-bold">3. Cara Kerja Komputer</h2>
                   </div>
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Bagaimana tepatnya sebuah data atau program dieksekusi? Berikut adalah tahapan berurutan dari mulai data diambil hingga menghasilkan output.
                   </p>
 
@@ -104,7 +104,7 @@ export default function Pertemuan2() {
       </div>
 
       {/* --- SUB BAB 2: SISTEM BILANGAN & SATUAN DATA KOMPUTER --- */}
-      <div className="border border-border/50 rounded-2xl overflow-hidden bg-secondary/10 shadow-sm transition-all hover:border-primary/30">
+      <div className={`border border-border/50 rounded-2xl bg-secondary/10 shadow-sm transition-all hover:border-primary/30 ${isNumOpen ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button 
           onClick={() => setIsNumOpen(!isNumOpen)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer"
@@ -114,12 +114,12 @@ export default function Pertemuan2() {
               <Hash className="w-8 h-8" />
               Sistem Bilangan &amp; Satuan Data Komputer
             </h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
               <span>Capaian: Menguasai basis bilangan (Desimal, Biner, Oktal, Heksadesimal) serta hierarki satuan data (Bit hingga Terabyte).</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isNumOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-slate-600 dark:text-slate-400 shrink-0 transition-transform duration-300 ${isNumOpen ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
@@ -128,7 +128,7 @@ export default function Pertemuan2() {
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              className="overflow-hidden"
+              className={isNumOpen ? 'overflow-visible' : 'overflow-hidden'}
             >
               <div className="p-6 md:p-8 pt-2 space-y-16">
 
@@ -138,7 +138,7 @@ export default function Pertemuan2() {
                     <Hash className="w-6 h-6" />
                     <h2 className="text-2xl font-bold">4. Sistem Bilangan Komputer</h2>
                   </div>
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Komputer tidak memahami bahasa manusia. Mereka menyimpan dan mengolah data menggunakan sekumpulan simbol khusus yang disebut <strong>Sistem Bilangan</strong> (<em>Number System</em>). Mari berinteraksi dengan 4 sistem bilangan utama di bawah ini untuk memahami cara mereka dikonversi menjadi bilangan desimal!
                   </p>
 
@@ -151,7 +151,7 @@ export default function Pertemuan2() {
                     <Repeat className="w-6 h-6" />
                     <h2 className="text-2xl font-bold">5. Konversi Antar Basis Bilangan</h2>
                   </div>
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Sekarang Anda sudah mengenal 4 sistem bilangan utama. Lalu, bagaimana jika kita ingin menerjemahkan nilai dari satu basis ke basis lainnya? Jangan khawatir, Anda tidak perlu menghitung secara manual yang membosankan. Mari kita masuk ke dalam <strong>Laboratorium Konversi</strong> di bawah ini untuk melihat mesin pemotong dan mesin pembagi sisa bekerja secara visual!
                   </p>
 
@@ -164,7 +164,7 @@ export default function Pertemuan2() {
                     <Database className="w-6 h-6" />
                     <h2 className="text-2xl font-bold">6. Satuan Ukuran Data dalam Ilmu Komputer</h2>
                   </div>
-                  <p>
+                  <p className="text-slate-800 dark:text-slate-200 leading-relaxed font-medium">
                     Setelah memahami bagaimana angka biner dibentuk, mari pelajari bagaimana kumpulan bit-bit tersebut dikelompokkan ke dalam satuan-satuan ukuran data digital, mulai dari <strong>Bit</strong>, <strong>Byte</strong>, <strong>Kilobyte (KB)</strong>, <strong>Megabyte (MB)</strong>, <strong>Gigabyte (GB)</strong>, hingga <strong>Terabyte (TB)</strong> dan skala internet global!
                   </p>
 

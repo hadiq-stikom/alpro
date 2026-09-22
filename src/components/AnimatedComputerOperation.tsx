@@ -44,13 +44,13 @@ export default function AnimatedComputerOperation() {
   };
 
   return (
-    <div className="bg-primary/5 p-5 md:p-6 rounded-xl border border-primary/20 text-foreground relative overflow-hidden my-6">
+    <div className="bg-card dark:bg-primary/5 p-5 md:p-6 rounded-xl border border-primary/30 text-foreground relative overflow-hidden my-6 shadow-sm">
       
       {/* Controls */}
       <div className="flex items-center justify-between mb-8 pb-4 border-b border-border/50">
         <div>
           <h3 className="font-bold text-lg text-primary">Simulasi Aliran Data</h3>
-          <p className="text-xs text-muted-foreground">Bagaimana program bergerak dari penyimpanan ke layar.</p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Bagaimana program bergerak dari penyimpanan ke layar.</p>
         </div>
         <div className="flex gap-2">
           {isPlaying ? (
@@ -98,7 +98,7 @@ export default function AnimatedComputerOperation() {
               <motion.div 
                 className={`w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center shrink-0 border-4 transition-colors duration-500 relative
                   ${isActive ? 'bg-background border-primary shadow-[0_0_25px_rgba(var(--primary),0.5)]' : 
-                    isPast ? 'bg-primary/20 border-primary text-primary group-hover:bg-primary/40' : 'bg-background border-border text-muted-foreground group-hover:border-primary/50 group-hover:text-primary/70'
+                    isPast ? 'bg-primary/20 border-primary text-primary group-hover:bg-primary/40' : 'bg-card border-slate-300 dark:border-border text-slate-500 dark:text-slate-400 group-hover:border-primary/50 group-hover:text-primary'
                   }`}
                 animate={{ scale: isActive ? 1.1 : 1 }}
                 whileHover={{ scale: isActive ? 1.1 : 1.05 }}
@@ -115,7 +115,7 @@ export default function AnimatedComputerOperation() {
               </motion.div>
 
               <div className="text-left md:text-center w-full md:w-28">
-                <div className={`font-bold text-sm md:text-base ${isActive ? 'text-primary' : isPast ? 'text-foreground' : 'text-muted-foreground'}`}>
+                <div className={`font-bold text-sm md:text-base ${isActive ? 'text-primary' : isPast ? 'text-slate-900 dark:text-slate-100 font-extrabold' : 'text-slate-500 dark:text-slate-400'}`}>
                   {step.label}
                 </div>
               </div>
@@ -141,8 +141,8 @@ export default function AnimatedComputerOperation() {
             {React.createElement(steps[activeStep].icon, { className: "w-6 h-6" })}
           </div>
           <div>
-            <h4 className="font-bold text-primary mb-1">Tahap {activeStep + 1}: {steps[activeStep].label}</h4>
-            <p className="text-sm text-foreground/80 leading-relaxed">
+            <h4 className="font-extrabold text-primary mb-1">Tahap {activeStep + 1}: {steps[activeStep].label}</h4>
+            <p className="text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
               {steps[activeStep].desc}
             </p>
           </div>

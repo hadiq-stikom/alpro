@@ -58,15 +58,15 @@ export default function AnimatedFetchCycle() {
   const isActive = (comp: string) => currentStep.activeComponent.includes(comp);
 
   return (
-    <div className="bg-primary/5 p-5 md:p-6 rounded-xl border border-primary/20 text-foreground relative overflow-hidden my-8">
+    <div className="bg-card dark:bg-primary/5 p-5 md:p-6 rounded-xl border border-primary/30 text-foreground relative overflow-hidden my-8 shadow-sm">
       
       {/* Header & Controls */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 pb-4 border-b border-border/50 gap-4">
         <div>
           <h3 className="font-bold text-lg text-primary flex items-center gap-2">
-            <Zap className="w-5 h-5 text-yellow-400" /> Siklus Kerja Komputer (Fetch Cycle)
+            <Zap className="w-5 h-5 text-amber-500 dark:text-yellow-400" /> Siklus Kerja Komputer (Fetch Cycle)
           </h3>
-          <p className="text-xs text-muted-foreground mt-1">Siklus pengambilan dan pengeksekusian instruksi di dalam CPU.</p>
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-medium mt-1">Siklus pengambilan dan pengeksekusian instruksi di dalam CPU.</p>
         </div>
         <div className="flex gap-2 w-full md:w-auto">
           <button 
@@ -90,7 +90,7 @@ export default function AnimatedFetchCycle() {
         
         {/* BUS BACKGROUND */}
         <div className="absolute left-[35%] right-[25%] top-1/2 -translate-y-1/2 h-8 bg-secondary/30 flex items-center justify-center border-y border-dashed border-muted-foreground/30">
-           <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">System Bus</span>
+           <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-widest">System Bus</span>
         </div>
 
         {/* DATA FLOW ANIMATIONS */}
@@ -203,8 +203,8 @@ export default function AnimatedFetchCycle() {
             {activeStep + 1}
           </div>
           <div>
-            <h4 className="font-bold text-primary mb-1 md:text-lg">{currentStep.title}</h4>
-            <p className="text-sm text-foreground/90 leading-relaxed">
+            <h4 className="font-extrabold text-primary mb-1 md:text-lg">{currentStep.title}</h4>
+            <p className="text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
               {currentStep.desc}
             </p>
           </div>
@@ -223,21 +223,21 @@ export default function AnimatedFetchCycle() {
 
       {/* 4 Categories of CPU Actions (Static reference from slide) */}
       <div className="mt-6 p-4 rounded-lg bg-blue-500/5 border border-blue-500/20 text-sm">
-        <h4 className="font-bold text-blue-400 mb-2 flex items-center gap-2"><BookOpen className="w-4 h-4"/> 4 Kategori Aksi Eksekusi CPU:</h4>
+        <h4 className="font-bold text-blue-700 dark:text-blue-400 mb-2 flex items-center gap-2"><BookOpen className="w-4 h-4"/> 4 Kategori Aksi Eksekusi CPU:</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           
           {/* Action 1: CPU - Memory */}
           <div className="group bg-background border border-border rounded-lg p-3 flex flex-col gap-3 hover:border-blue-500 hover:shadow-md transition-all cursor-crosshair relative overflow-hidden">
              <div className="flex items-start gap-3 relative z-10">
-               <div className="bg-blue-500/20 p-1.5 rounded text-blue-600 dark:text-blue-400 mt-0.5 shrink-0">1</div>
+               <div className="bg-blue-500/20 p-1.5 rounded text-blue-600 dark:text-blue-400 mt-0.5 shrink-0 font-bold">1</div>
                <div>
                  <strong className="block text-foreground text-sm group-hover:text-blue-500 transition-colors">CPU ↔ Memori</strong> 
-                 <span className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Perpindahan data dari CPU ke memori / sebaliknya.</span>
+                 <span className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Perpindahan data dari CPU ke memori / sebaliknya.</span>
                </div>
              </div>
              {/* Illustration */}
              <div className="h-12 w-full bg-slate-500/5 rounded flex items-center justify-center gap-4 border border-dashed border-slate-500/20">
-                <Cpu className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                <Cpu className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-blue-500 transition-colors" />
                 <div className="relative w-16 h-px bg-slate-300 dark:bg-slate-700">
                    <motion.div 
                      className="absolute -top-1 w-2 h-2 rounded-full bg-blue-500 opacity-0 group-hover:opacity-100"
@@ -245,22 +245,22 @@ export default function AnimatedFetchCycle() {
                      transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                    />
                 </div>
-                <MemoryStick className="w-5 h-5 text-slate-400 group-hover:text-orange-500 transition-colors" />
+                <MemoryStick className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-orange-500 transition-colors" />
              </div>
           </div>
 
           {/* Action 2: CPU - I/O */}
           <div className="group bg-background border border-border rounded-lg p-3 flex flex-col gap-3 hover:border-green-500 hover:shadow-md transition-all cursor-crosshair relative overflow-hidden">
              <div className="flex items-start gap-3 relative z-10">
-               <div className="bg-green-500/20 p-1.5 rounded text-green-600 dark:text-green-400 mt-0.5 shrink-0">2</div>
+               <div className="bg-green-500/20 p-1.5 rounded text-green-600 dark:text-green-400 mt-0.5 shrink-0 font-bold">2</div>
                <div>
                  <strong className="block text-foreground text-sm group-hover:text-green-500 transition-colors">CPU ↔ I/O</strong> 
-                 <span className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Perpindahan data dari CPU ke modul I/O / sebaliknya.</span>
+                 <span className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Perpindahan data dari CPU ke modul I/O / sebaliknya.</span>
                </div>
              </div>
              {/* Illustration */}
              <div className="h-12 w-full bg-slate-500/5 rounded flex items-center justify-center gap-4 border border-dashed border-slate-500/20">
-                <Cpu className="w-5 h-5 text-slate-400 group-hover:text-blue-500 transition-colors" />
+                <Cpu className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-blue-500 transition-colors" />
                 <div className="relative w-16 h-px bg-slate-300 dark:bg-slate-700">
                    <motion.div 
                      className="absolute -top-1.5 opacity-0 group-hover:opacity-100 text-[10px] text-green-500 font-bold"
@@ -270,22 +270,22 @@ export default function AnimatedFetchCycle() {
                      DATA
                    </motion.div>
                 </div>
-                <Monitor className="w-5 h-5 text-slate-400 group-hover:text-green-500 transition-colors" />
+                <Monitor className="w-5 h-5 text-slate-600 dark:text-slate-400 group-hover:text-green-500 transition-colors" />
              </div>
           </div>
 
           {/* Action 3: Pengolahan Data */}
           <div className="group bg-background border border-border rounded-lg p-3 flex flex-col gap-3 hover:border-purple-500 hover:shadow-md transition-all cursor-crosshair relative overflow-hidden">
              <div className="flex items-start gap-3 relative z-10">
-               <div className="bg-purple-500/20 p-1.5 rounded text-purple-600 dark:text-purple-400 mt-0.5 shrink-0">3</div>
+               <div className="bg-purple-500/20 p-1.5 rounded text-purple-600 dark:text-purple-400 mt-0.5 shrink-0 font-bold">3</div>
                <div>
                  <strong className="block text-foreground text-sm group-hover:text-purple-500 transition-colors">Pengolahan Data</strong> 
-                 <span className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Operasi aritmatika & logika (dilakukan oleh ALU).</span>
+                 <span className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Operasi aritmatika & logika (dilakukan oleh ALU).</span>
                </div>
              </div>
              {/* Illustration */}
              <div className="h-12 w-full bg-slate-500/5 rounded flex items-center justify-center gap-6 border border-dashed border-slate-500/20 overflow-hidden">
-                <span className="text-slate-400 font-mono text-sm group-hover:text-purple-500 transition-colors">5 + 3</span>
+                <span className="text-slate-700 dark:text-slate-300 font-mono text-sm font-bold group-hover:text-purple-500 transition-colors">5 + 3</span>
                 <motion.div 
                   animate={{ rotate: 360 }} 
                   transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
@@ -293,34 +293,34 @@ export default function AnimatedFetchCycle() {
                 >
                   <Settings className="w-5 h-5 text-purple-500" />
                 </motion.div>
-                <span className="text-slate-400 font-mono text-sm group-hover:text-purple-500 transition-colors">= 8</span>
+                <span className="text-slate-700 dark:text-slate-300 font-mono text-sm font-bold group-hover:text-purple-500 transition-colors">= 8</span>
              </div>
           </div>
 
           {/* Action 4: Kontrol */}
-          <div className="group bg-background border border-border rounded-lg p-3 flex flex-col gap-3 hover:border-yellow-500 hover:shadow-md transition-all cursor-crosshair relative overflow-hidden">
+          <div className="group bg-background border border-border rounded-lg p-3 flex flex-col gap-3 hover:border-amber-500 hover:shadow-md transition-all cursor-crosshair relative overflow-hidden">
              <div className="flex items-start gap-3 relative z-10">
-               <div className="bg-yellow-500/20 p-1.5 rounded text-yellow-600 dark:text-yellow-400 mt-0.5 shrink-0">4</div>
+               <div className="bg-amber-500/20 p-1.5 rounded text-amber-800 dark:text-amber-400 mt-0.5 shrink-0 font-bold">4</div>
                <div>
-                 <strong className="block text-foreground text-sm group-hover:text-yellow-500 transition-colors">Kontrol</strong> 
-                 <span className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">Instruksi untuk mengubah urutan eksekusi program.</span>
+                 <strong className="block text-foreground text-sm group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">Kontrol</strong> 
+                 <span className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">Instruksi untuk mengubah urutan eksekusi program.</span>
                </div>
              </div>
              {/* Illustration */}
              <div className="h-12 w-full bg-slate-500/5 rounded flex items-center justify-center gap-2 border border-dashed border-slate-500/20">
                 <div className="flex flex-col gap-1 items-center">
-                   <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-yellow-500/20 transition-colors" />
-                   <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-yellow-500/50 transition-colors relative">
+                   <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-amber-500/20 transition-colors" />
+                   <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-amber-500/50 transition-colors relative">
                       <motion.div 
-                        className="absolute top-0 left-0 h-full bg-yellow-500 rounded-full opacity-0 group-hover:opacity-100"
+                        className="absolute top-0 left-0 h-full bg-amber-500 rounded-full opacity-0 group-hover:opacity-100"
                         animate={{ width: ["0%", "100%", "0%"] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       />
                    </div>
-                   <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-yellow-500/20 transition-colors" />
+                   <div className="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full group-hover:bg-amber-500/20 transition-colors" />
                 </div>
                 <motion.div 
-                  className="opacity-0 group-hover:opacity-100 text-[9px] font-bold text-yellow-600 bg-yellow-500/20 px-1 rounded"
+                  className="opacity-0 group-hover:opacity-100 text-[9px] font-bold text-amber-900 dark:text-yellow-200 bg-amber-500/30 px-1 rounded"
                   animate={{ y: [-2, 2, -2] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 >

@@ -100,7 +100,7 @@ export default function DetailedDescriptive() {
             Contoh Penerapan: Algoritma Naratif (Studi Kasus: Menghitung Luas Persegi Panjang)
           </h4>
           <div 
-            className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner text-sm text-slate-300 relative min-h-[260px] transition-all duration-300 ease-out origin-center hover:scale-[1.5] hover:z-50 hover:brightness-125 hover:border-emerald-500/80 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] cursor-pointer antialiased"
+            className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner text-sm text-slate-300 relative min-h-[260px] transition-all duration-300 ease-out origin-center hover:scale-[1.2] hover:z-50 hover:brightness-125 hover:border-emerald-500/80 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] cursor-pointer antialiased"
             style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
           >
             <div className="absolute top-0 left-0 w-1.5 h-full bg-emerald-500/60 rounded-l-2xl"></div>

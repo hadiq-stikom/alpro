@@ -421,7 +421,7 @@ export default function DetailedFlowchart() {
           </h4>
           
           <div 
-            className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner font-mono text-sm text-slate-300 relative min-h-[380px] flex flex-col items-center justify-center gap-4 transition-all duration-300 ease-out origin-center hover:scale-[1.5] hover:z-50 hover:brightness-125 hover:border-blue-500/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] cursor-pointer antialiased"
+            className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner font-mono text-sm text-slate-300 relative min-h-[380px] flex flex-col items-center justify-center gap-4 transition-all duration-300 ease-out origin-center hover:scale-[1.2] hover:z-50 hover:brightness-125 hover:border-blue-500/60 hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] cursor-pointer antialiased"
             style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
           >
             <p className="text-slate-400 absolute top-4 left-6 italic text-left w-full">// Contoh: Flowchart Menghitung Luas (Arahkan kursor untuk memperbesar)</p>

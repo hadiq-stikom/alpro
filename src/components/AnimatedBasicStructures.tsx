@@ -252,13 +252,13 @@ export default function AnimatedBasicStructures() {
       className={`transition-all duration-300 relative ${
         isMaximized 
           ? 'fixed top-0 left-0 right-0 bottom-0 inset-0 z-[99999] p-4 md:p-6 bg-slate-950/98 backdrop-blur-2xl flex flex-col justify-between w-screen h-screen overflow-y-auto text-slate-100 font-sans' 
-          : 'border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl mt-6'
+          : 'border border-border/60 rounded-3xl bg-slate-950 shadow-2xl mt-6'
       }`}
       style={isMaximized ? { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, margin: 0, width: '100vw', height: '100vh' } : {}}
     >
       
       {/* 1. TOP HEADER NAVIGATION TABS */}
-      <div className="flex flex-wrap md:flex-nowrap border-b border-slate-800 bg-slate-900/90 text-slate-200">
+      <div className="flex flex-wrap md:flex-nowrap border-b border-slate-800 bg-slate-900/90 text-slate-200 rounded-t-3xl">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
@@ -846,7 +846,16 @@ export default function AnimatedBasicStructures() {
             )}
 
             {/* Three Pillars of Understanding (Inti Konsep, Karakteristik, Analogi) */}
-            <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-4 md:p-5 shadow-md space-y-3.5 text-xs text-slate-300">
+            <div 
+              className={`bg-slate-900/95 border-2 rounded-2xl p-4 md:p-5 shadow-md space-y-3.5 text-xs text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] transition-all duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:brightness-110 antialiased ${
+                activeTab === 'sequential' 
+                  ? 'border-slate-800 hover:border-blue-500/80 hover:shadow-[0_25px_60px_rgba(59,130,246,0.3)]' 
+                  : activeTab === 'selection' 
+                    ? 'border-slate-800 hover:border-violet-500/80 hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]' 
+                    : 'border-slate-800 hover:border-emerald-500/80 hover:shadow-[0_25px_60px_rgba(16,185,129,0.3)]'
+              }`}
+              style={{ textRendering: "geometricPrecision" }}
+            >
               
               {/* Inti Aliran Data */}
               <div>

@@ -56,6 +56,15 @@ interface LintIssue {
   fixSuggestion?: string;
 }
 
+const FlowArrowDown = () => (
+  <div className="flex flex-col items-center justify-center -my-0.5 text-slate-500 dark:text-slate-400 shrink-0 select-none pointer-events-none">
+    <svg width="14" height="20" viewBox="0 0 14 20" fill="none" className="overflow-visible">
+      <line x1="7" y1="0" x2="7" y2="13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <polygon points="7,19 2,12 12,12" fill="currentColor" />
+    </svg>
+  </div>
+);
+
 const PRESETS = [
   {
     id: 'persegi_panjang',
@@ -1122,7 +1131,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
               <div className="px-5 py-1.5 rounded-full bg-emerald-500/20 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-300 font-mono font-extrabold text-xs shadow-sm">
                 START
               </div>
-              <div className="w-0.5 h-3 bg-border"></div>
+              <FlowArrowDown />
 
               {/* Editable Nodes when in Flowchart Mode */}
               {sourceMode === 'flowchart' ? (
@@ -1203,7 +1212,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                         )}
                       </div>
 
-                      <div className="w-0.5 h-3 bg-border"></div>
+                      <FlowArrowDown />
                     </div>
                   ))}
 
@@ -1264,7 +1273,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                       </div>
                     )}
 
-                    <div className="w-0.5 h-3 bg-border"></div>
+                    <FlowArrowDown />
                   </React.Fragment>
                 ))
               )}

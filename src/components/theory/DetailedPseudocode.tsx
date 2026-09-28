@@ -257,7 +257,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
               
               {/* Card 1 */}
               <div 
-                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-violet-500/40 hover:border-violet-400 hover:scale-[1.95] sm:hover:scale-[2.0] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
+                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-violet-500/40 hover:border-violet-400 hover:scale-[1.3] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
                 style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
               >
                 <div className="w-7 h-7 rounded-full bg-violet-500/25 text-violet-300 font-extrabold flex items-center justify-center text-xs shrink-0 border border-violet-500/40 mt-0.5">
@@ -273,7 +273,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
 
               {/* Card 2 */}
               <div 
-                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-emerald-500/40 hover:border-emerald-400 hover:scale-[1.95] sm:hover:scale-[2.0] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
+                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-emerald-500/40 hover:border-emerald-400 hover:scale-[1.3] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
                 style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
               >
                 <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 font-extrabold flex items-center justify-center text-xs shrink-0 border border-emerald-500/40 mt-0.5">
@@ -289,7 +289,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
 
               {/* Card 3 */}
               <div 
-                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-rose-500/40 hover:border-rose-400 hover:scale-[1.95] sm:hover:scale-[2.0] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
+                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-rose-500/40 hover:border-rose-400 hover:scale-[1.3] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
                 style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
               >
                 <div className="w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-extrabold flex items-center justify-center text-xs shrink-0 border border-rose-500/40 mt-0.5">
@@ -305,7 +305,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
 
               {/* Card 4 */}
               <div 
-                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-blue-500/40 hover:border-blue-400 hover:scale-[1.95] sm:hover:scale-[2.0] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
+                className="relative z-10 hover:z-50 flex items-start gap-3.5 p-4 rounded-2xl bg-slate-900/95 dark:bg-slate-950 text-slate-200 border-2 border-blue-500/40 hover:border-blue-400 hover:scale-[1.3] hover:shadow-[0_20px_45px_rgba(0,0,0,0.8)] hover:brightness-125 transition-all duration-300 ease-out origin-center cursor-pointer antialiased shadow-md"
                 style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
               >
                 <div className="w-7 h-7 rounded-full bg-blue-500/20 text-blue-400 font-extrabold flex items-center justify-center text-xs shrink-0 border border-blue-500/40 mt-0.5">
@@ -407,7 +407,7 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
           </h4>
 
           <div 
-            className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner font-mono text-sm text-slate-300 relative min-h-[360px] flex flex-col justify-center transition-all duration-300 ease-out origin-center hover:scale-[1.5] hover:z-50 hover:brightness-125 hover:border-violet-500/80 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] cursor-pointer antialiased"
+            className="bg-slate-900 border-2 border-slate-800 rounded-2xl p-6 md:p-8 shadow-inner font-mono text-sm text-slate-300 relative min-h-[360px] flex flex-col justify-center transition-all duration-300 ease-out origin-center hover:scale-[1.2] hover:z-50 hover:brightness-125 hover:border-violet-500/80 hover:shadow-[0_25px_60px_rgba(0,0,0,0.8)] cursor-pointer antialiased"
             style={{ transform: "translateZ(0)", textRendering: "geometricPrecision", WebkitFontSmoothing: "antialiased" }}
           >
             <div className="absolute top-0 left-0 w-1.5 h-full bg-violet-500/80 rounded-l-2xl"></div>

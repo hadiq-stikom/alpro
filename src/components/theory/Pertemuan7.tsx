@@ -30,7 +30,7 @@ import AnimatedMultiBranchDefinition from './AnimatedMultiBranchDefinition';
 import AnimatedNestedIfDefinition from './AnimatedNestedIfDefinition';
 
 export default function Pertemuan7() {
-  const [isOpen1, setIsOpen1] = useState(true); // Terbuka secara default
+  const [isOpen1, setIsOpen1] = useState(false); // Tertutup secara default
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
   const [isOpen4, setIsOpen4] = useState(false);

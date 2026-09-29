@@ -32,6 +32,31 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle auto-scroll jika ada parameter tes atau hash asesmen
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const hash = window.location.hash;
+    const urlParams = new URLSearchParams(window.location.search);
+    const shouldScrollToAssessment = hash === '#assessment' || hash === '#assessment-section' || urlParams.get('startTest') === 'true';
+
+    if (shouldScrollToAssessment) {
+      const scrollTimer = setTimeout(() => {
+        const el = document.getElementById('assessment') || document.getElementById('assessment-section');
+        if (el) {
+          const headerOffset = 90;
+          const currentScrollY = window.scrollY || window.pageYOffset;
+          const targetY = Math.max(0, currentScrollY + el.getBoundingClientRect().top - headerOffset);
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
+        }
+      }, 150);
+      return () => clearTimeout(scrollTimer);
+    } else {
+      // Akses normal dari menu/peta materi: selalu tampil rapi di paling atas halaman
+      window.scrollTo(0, 0);
+    }
+  }, [unwrappedParams.id]);
+
   return (
     <div className="min-h-screen bg-background relative pb-32">
       {/* Sub-Header Navigation & Reading Progress (Berada di bawah Navbar Utama) */}
@@ -41,7 +66,7 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
             <ArrowLeft className="w-4 h-4 md:w-5 md:h-5" />
             <span className="font-semibold text-xs md:text-sm">Peta Utama</span>
           </Link>
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <h1 className="font-bold text-xs md:text-base truncate text-foreground">
               {unwrappedParams.id === '1' ? 'Pertemuan 1: Pengenalan Komputer & Bahasa' : 
                unwrappedParams.id === '2' ? 'Pertemuan 2: Arsitektur & Organisasi Komputer' : 
@@ -53,9 +78,31 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
                `Pertemuan ${unwrappedParams.id}`}
             </h1>
           </div>
-          <div className="text-xs font-mono font-bold text-primary ml-4 shrink-0 bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
+          <div className="text-xs font-mono font-bold text-primary ml-3 shrink-0 bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
             {Math.round(scrollProgress * 100)}% Dibaca
           </div>
+
+          {/* Quick Jump to Assessment Button */}
+          {['1', '2', '3', '4', '5', '6', '7'].includes(unwrappedParams.id) && (
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('assessment') || document.getElementById('assessment-section');
+                if (el) {
+                  const headerOffset = 90;
+                  const currentScrollY = window.scrollY || window.pageYOffset;
+                  const targetY = Math.max(0, currentScrollY + el.getBoundingClientRect().top - headerOffset);
+                  window.scrollTo({ top: targetY, behavior: 'smooth' });
+                }
+              }}
+              className="ml-3 shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold transition-all shadow-xs hover:shadow-sm cursor-pointer active:scale-95"
+              title="Lompat langsung ke Uji Pemahaman / Tes"
+            >
+              <Trophy className="w-3.5 h-3.5 text-amber-300" />
+              <span className="hidden sm:inline">Uji Pemahaman</span>
+              <span className="sm:hidden">Tes</span>
+            </button>
+          )}
         </div>
         {/* Progress Bar Line */}
         <div className="h-1 w-full bg-secondary">
@@ -81,7 +128,8 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
 
         {/* Asesmen & Uji Pemahaman */}
         {['1', '2', '3', '4', '5', '6', '7'].includes(unwrappedParams.id) && (
-          <div className="pt-8">
+          <div id="assessment" className="pt-8 scroll-mt-28 md:scroll-mt-32 relative">
+            <span id="assessment-section" className="block -mt-28 pt-28 pointer-events-none" />
             <hr className="border-border/50 mb-6" />
             <TheoryAssessment meetingId={Number(unwrappedParams.id)} />
           </div>

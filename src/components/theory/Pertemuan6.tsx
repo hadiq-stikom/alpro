@@ -25,7 +25,7 @@ import AnimatedBranchingDefinition from './AnimatedBranchingDefinition';
 import AnimatedSingleIfDefinition from './AnimatedSingleIfDefinition';
 
 export default function Pertemuan6() {
-  const [isOpen1, setIsOpen1] = useState(true); // Open by default
+  const [isOpen1, setIsOpen1] = useState(false); // Closed by default
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
   const [isOpen4, setIsOpen4] = useState(false);

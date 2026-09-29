@@ -17,11 +17,11 @@ import AlgorithmTriConverterLab from '@/components/theory/chapter3/AlgorithmTriC
 import ProgramEngineeringMethodology from '@/components/theory/chapter3/ProgramEngineeringMethodology';
 
 export default function Pertemuan3() {
-  const [isOpen1, setIsOpen1] = useState(true); // Open by default
-  const [isOpen2, setIsOpen2] = useState(true); // Sub-Bab 2 Baru (Metodologi)
+  const [isOpen1, setIsOpen1] = useState(false); // Sub-Bab 1 (Pengantar Algoritma)
+  const [isOpen2, setIsOpen2] = useState(false); // Sub-Bab 2 (Metodologi)
   const [isOpen3, setIsOpen3] = useState(false); // Sub-Bab 3 (Teknik Penyajian)
   const [isOpen4, setIsOpen4] = useState(false); // Sub-Bab 4 (Struktur Dasar)
-  const [isPuzzlesOpen, setIsPuzzlesOpen] = useState(true);
+  const [isPuzzlesOpen, setIsPuzzlesOpen] = useState(false);
 
   return (
     <div className="space-y-12">

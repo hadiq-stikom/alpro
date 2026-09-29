@@ -26,7 +26,7 @@ import ConstantVsVariable from './chapter4/ConstantVsVariable';
 import IOBridgeVisualizer from './chapter4/IOBridgeVisualizer';
 
 export default function Pertemuan4() {
-  const [isOpen1, setIsOpen1] = useState(true); // Open by default
+  const [isOpen1, setIsOpen1] = useState(false); // Closed by default
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
   const [isOpen4, setIsOpen4] = useState(false);

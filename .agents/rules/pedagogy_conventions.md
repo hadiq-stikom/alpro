@@ -317,3 +317,81 @@ Untuk memastikan diagram alir tidak sekadar statis, tetapi hidup dan merefleksik
    - **Halaman Mahasiswa**: Menampilkan lencana rata-rata capaian seluruh materi dan lencana capaian spesifik per pertemuan.
    - **Halaman Dosen**: Menampilkan rekap agregat capaian kelas dan rincian performa per mahasiswa baik secara umum maupun per pertemuan.
 
+---
+
+## 10. Standar Pewarnaan Sintaks Kode (VS Code Palette & Dual-Mode Contrast)
+Pada seluruh komponen penampil kode (misal `DetailedPseudocode.tsx`, modul multi-tab bahasa, dan editor kode):
+1. **Prinsip Dual-Mode High Contrast**:
+   - **Light Mode (Mode Terang)**: WAJIB menggunakan warna *deep jewel tones* jenuh kontras tinggi. **DILARANG KERAS** menggunakan warna teks pastel muda (`text-*-300` / `text-*-400`) di atas latar terang karena tidak terbaca (*washed out*).
+     - Keywords (`PROGRAM`, `KAMUS`, `ALGORITMA`, `def`, `if`, `else`): Biru pekat jenuh (`text-blue-700` atau `text-blue-800`).
+     - Strings (`"Halo"`, `'teks'`): Hijau Emerald tua pekat (`text-emerald-700` atau `text-emerald-800`).
+     - Types (`integer`, `float`, `string`, `boolean`): Ungu / Violet pekat (`text-purple-700` atau `text-violet-700`).
+     - Functions / Built-in (`input`, `output`, `print`, `len`): Kuning Emas pekat / Cokelat emas (`text-amber-800` atau `text-yellow-800`).
+     - Numbers (`10`, `3.14`, `0`): Amber oranye jenuh (`text-amber-600` atau `text-amber-700`).
+     - Operators (`+`, `-`, `*`, `/`, `==`, `!=`, `=`): Rose / Merah muda tua tegas (`text-rose-600 font-bold`).
+     - Variables / Identifiers: Biru langit gelap (`text-sky-800` atau `text-slate-900`).
+     - Comments (`// ...`, `# ...`): Abu-abu medium miring (`text-slate-500 italic`).
+   - **Dark Mode (Mode Gelap)**: Menggunakan warna neon/luminous cerah berpijar di atas latar `dark:bg-slate-950`:
+     - Keywords: Biru terang berpendar (`dark:text-sky-400` / `dark:text-blue-400`).
+     - Strings: Hijau mint / Emerald cerah (`dark:text-emerald-300` / `dark:text-emerald-400`).
+     - Types: Violet / Ungu cerah (`dark:text-violet-400`).
+     - Functions: Kuning keemasan cerah (`dark:text-amber-300`).
+     - Numbers: Amber oranye cerah (`dark:text-amber-400`).
+     - Operators: Rose cerah (`dark:text-rose-400 font-bold`).
+     - Variables: Biru langit lembut (`dark:text-sky-300`).
+     - Comments: Abu-abu redup miring (`dark:text-slate-500 italic`).
+2. **Gutter Nomor Baris (Line Numbers)**:
+   - Wajib menyertakan atribut `select-none` (`user-select: none`) pada nomor baris agar saat mahasiswa melakukan drag selection atau copy manual, angka nomor baris tidak ikut tercopy ke clipboard.
+3. **Tombol Salin (Clipboard Copy)**:
+   - Tombol salin kode WAJIB menyalin string kode mentah bersih runnable (*clean raw string*), bukan elemen atau tag renderan HTML.
+
+---
+
+## 11. Standar Sinkronisasi Semantik Warna Lintas Representasi (Naratif, Flowchart, Pseudocode)
+Pada modul konversi dan lab perbandingan (*Tri-Converter Lab*, workspace, dsb.):
+1. **Pemetaan Warna Semantik Wajib Identik**:
+   - **Input / Masukan**: Biru Royal (`text-blue-700 dark:text-blue-400`, `bg-blue-500/10`, jajar genjang input ber-border biru).
+   - **Proses / Kalkulasi / Assignment**: Ungu / Violet (`text-purple-700 dark:text-purple-400`, `bg-purple-500/10`, kotak proses ber-border ungu).
+   - **Output / Keluaran**: Hijau Emerald (`text-emerald-700 dark:text-emerald-300`, `bg-emerald-500/10`, jajar genjang output ber-border hijau).
+   - **Percabangan / Kondisi**: Amber / Emas pekat (`text-amber-700 dark:text-amber-300`, belah ketupat keputusan `#451a03` border amber `#f59e0b`).
+   - **Operator Matematika & Relasional**: Merah Mawar / Rose tegas (`text-rose-600 dark:text-rose-400 font-bold`).
+   - **Angka / Literal Numerik**: Amber / Oranye (`text-amber-600 dark:text-amber-400`).
+   - **Variabel**: Biru Langit / Sky (`text-sky-800 dark:text-sky-300 font-medium`).
+   - **Nomor Langkah Naratif**: Hijau Emerald / Teal (`text-emerald-700 dark:text-emerald-400 font-bold`).
+2. **Editor Masukan Interaktif**:
+   - Panel konverter yang dapat disunting mahasiswa WAJIB menggunakan editor interaktif ber-syntax-highlighting (seperti `react-simple-code-editor` dengan regex tokenizer semantik), **DILARANG KERAS** menggunakan `<textarea>` monokrom polos.
+
+---
+
+## 12. Standar Ergonomi Dimensi Kartu Flip & Proteksi Overflow Teks
+Untuk seluruh kartu ber-animasi flip (misal *5 Ciri Algoritma Knuth*, kartu pilar, dan konsep interaktif):
+1. **Tinggi Kartu Adaptif & Ergonomis**:
+   - Pada tata letak grid multi-kolom (misalnya 5 kolom pada 5 Ciri Algoritma), tinggi kartu harus memadai minimal `min-h-[245px]` (responsif: `h-[245px] sm:h-[255px] md:h-[265px]` atau lebih).
+   - Menjamin seluruh 5–7 baris penjelasan akademis di sisi balik termuat utuh tanpa menabrak batas footer atau terpotong border bawah.
+2. **Larangan Teks Statis `text-white` pada Elemen Dinamis**:
+   - **DILARANG KERAS** menggunakan kelas `text-white` secara statis pada teks konten dalam elemen kartu berlatar `bg-card` atau adaptif tema, karena di Light Mode warna putih akan lenyap (*invisible/washed out*).
+   - WAJIB gunakan `text-slate-950 dark:text-white` dengan aksen dekoratif semantik (seperti `underline decoration-*/60 decoration-2` atau warna semantik bertema).
+3. **Proteksi Overflow Teks Footer**:
+   - Gunakan `line-clamp-2` (bukan `truncate`) pada catatan ringkasan atau takeaway di bagian bawah kartu agar teks yang panjang dapat mengalir secara alami menjadi 2 baris dan tidak terpotong kasar dengan `...` di tengah kata atau menabrak border.
+   - Sediakan ruang bawah yang cukup (`p-4` atau `p-4.5` dengan `space-y-2`) agar layout fleksibel dan estetik.
+
+---
+
+## 13. Standar Sisi Belakang Kartu Definisi Teori (Flip Back Content)
+Sisi muka (*Front Face*) menyajikan intisari konsep esensial, sedangkan sisi balik (*Back/Flip Face*) WAJIB menyajikan pembuktian konkret visual:
+1. **Definisi Algoritma**: Sisi balik menyajikan visualisasi Flowchart mini dengan simbol ANSI/ISO baku (Terminator, Input/Output jajar genjang, Proses persegi panjang, Decision diamond) sebagai bukti konkret bahwa algoritma disajikan dengan simbol-simbol grafis.
+2. **Definisi Pseudocode**: Sisi balik menyajikan struktur 3 blok baku (PROGRAM, KAMUS, ALGORITMA) dengan pewarnaan sintaks VS Code.
+3. **Definisi Bahasa Pemrograman**: Sisi balik menyajikan pembedahan kode runnable (Python & JavaScript) yang dapat disalin dan dijalankan.
+4. **Mekanisme Flip Bebas Blur**: Wajib menggunakan `AnimatePresence` 2D bersih tanpa `preserve-3d` permanen agar tetap tajam (*zero blur*) saat di-scale 1.2x.
+
+---
+
+## 14. Standar Database Seed & SQL Scripts (Supabase)
+1. **Idempotensi Skrip**:
+   - Setiap file seed data SQL (`supabase/*.sql`) wajib menggunakan klausa `ON CONFLICT (id) DO UPDATE ...` atau verifikasi eksistensi agar aman dijalankan berulang kali tanpa merusak integritas tabel.
+2. **Hashing Password Akun Auth**:
+   - Password mahasiswa dan dosen wajib di-hash menggunakan format bcrypt auth Supabase yang valid (`$2a$10$...` atau ekstensi `pgcrypto`).
+3. **Sinkronisasi Metadata & Role Profil**:
+   - Role akun wajib tersinkronisasi konsisten antara `raw_user_meta_data->>'role'` di `auth.users` dan kolom `role` di `public.profiles` (`mahasiswa` atau `dosen`).
+
+

@@ -13,7 +13,7 @@ import DataUnitsHierarchyLab from '@/components/theory/chapter2/DataUnitsHierarc
 import { Hash, Repeat, Database } from 'lucide-react';
 
 export default function Pertemuan2() {
-  const [isArchOpen, setIsArchOpen] = useState(true);
+  const [isArchOpen, setIsArchOpen] = useState(false);
   const [isNumOpen, setIsNumOpen] = useState(false);
 
   return (

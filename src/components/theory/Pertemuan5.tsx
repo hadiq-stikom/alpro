@@ -27,7 +27,7 @@ import OperatorPrecedenceLab from './chapter5/OperatorPrecedenceLab';
 import CompoundStringLab from './chapter5/CompoundStringLab';
 
 export default function Pertemuan5() {
-  const [isOpen1, setIsOpen1] = useState(true); // Open by default
+  const [isOpen1, setIsOpen1] = useState(false); // Closed by default
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
   const [isOpen4, setIsOpen4] = useState(false);

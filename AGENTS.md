@@ -104,3 +104,37 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
     - **Kotak Proses & SVG di Mode Gelap (Dark Mode)**: Menggunakan latar belakang gelap pekat (`dark:fill-slate-950` / `dark:fill-emerald-950/80`) dengan teks cerah kontras tinggi (`dark:fill-emerald-200`, `dark:fill-rose-200`).
     - **Lingkaran Connector**: Menggunakan warna biru solid `#0284c7` dengan teks putih murni `#ffffff` `font-black`.
 
+13. **Standar Pewarnaan Sintaks Kode (VS Code Palette & Dual-Mode High Contrast)**:
+    - **Pewarnaan Token Semantik**: Viewer kode (Pseudocode, Python, JavaScript) dan editor kode wajib menerapkan pewarnaan sintaks ala editor modern (VS Code / JetBrains).
+    - **Light Mode (Mode Terang)**: WAJIB menggunakan warna *deep jewel tones* / jenuh kontras tinggi (`text-emerald-700`, `text-blue-700`, `text-violet-700`, `text-rose-600`, `text-sky-800`, `text-amber-700`, `text-slate-900`) di atas latar terang (`bg-slate-50`, `bg-white`, `bg-card`). **DILARANG KERAS** menggunakan warna teks pastel muda (`text-*-300`/`text-*-400`) di mode terang karena pudar (*washed out*).
+    - **Dark Mode (Mode Gelap)**: Menggunakan warna neon/luminous cerah berpijar (`dark:text-emerald-400`, `dark:text-sky-300`, `dark:text-violet-400`, `dark:text-rose-400`, `dark:text-amber-300`, `dark:text-slate-100`) di atas latar gelap pekat (`dark:bg-slate-950`).
+    - **Gutter Nomor Baris (Line Numbers)**: Wajib menyertakan properti `select-none` (`user-select: none`) agar saat mahasiswa melakukan seleksi teks (drag select) atau salin manual, angka nomor baris tidak ikut tercopy sebagai teks liar ke clipboard.
+    - **Tombol Salin (Clipboard Copy)**: Tombol salin kode WAJIB menyalin string kode mentah bersih runnable (*clean raw string*), bukan elemen atau tag renderan HTML.
+
+14. **Standar Sinkronisasi Semantik Warna Lintas Representasi (Naratif, Flowchart, Pseudocode)**:
+    - Seluruh representasi dalam visualizer dan converter (seperti *Tri-Converter Lab*) wajib menggunakan token warna semantik yang identik:
+      - **Input / Masukan**: Biru Royal (`text-blue-700 dark:text-blue-400`, `bg-blue-500/10`, jajar genjang input).
+      - **Proses / Kalkulasi / Assignment**: Ungu / Violet (`text-purple-700 dark:text-purple-400`, `bg-purple-500/10`, persegi panjang proses).
+      - **Output / Keluaran**: Hijau Emerald (`text-emerald-700 dark:text-emerald-300`, `bg-emerald-500/10`, jajar genjang output).
+      - **Percabangan / Kondisi**: Amber / Emas pekat (`text-amber-700 dark:text-amber-300`, belah ketupat `#451a03` border amber).
+      - **Operator Matematika & Relasional**: Merah Mawar / Rose tegas (`text-rose-600 dark:text-rose-400 font-bold`).
+      - **Angka / Literal Numerik**: Amber / Oranye (`text-amber-600 dark:text-amber-400`).
+      - **Variabel**: Biru Langit / Sky (`text-sky-800 dark:text-sky-300 font-medium`).
+      - **Nomor Langkah Naratif**: Hijau Emerald / Teal (`text-emerald-700 dark:text-emerald-400 font-bold`).
+    - **Editor Masukan Interaktif**: Pada panel konverter yang dapat disunting mahasiswa, WAJIB menggunakan editor interaktif ber-syntax-highlighting (seperti `react-simple-code-editor`), bukan `<textarea>` monokrom polos.
+
+15. **Standar Ergonomi Dimensi Kartu Flip & Proteksi Overflow Teks**:
+    - **Tinggi Kartu Proporsional**: Pada layout grid multi-kolom (misalnya 5 kolom pada 5 Ciri Algoritma Knuth), tinggi kartu harus memadai minimal `min-h-[245px]` (responsif: `h-[245px] sm:h-[255px] md:h-[265px]` atau lebih) agar ruang konten di sisi balik (flip/back face) memuat 5–7 baris penjelasan tanpa menabrak batas footer atau tepi bawah kartu.
+    - **Larangan Teks Statis `text-white` pada Elemen Dinamis**:
+      - **DILARANG KERAS** menggunakan kelas `text-white` secara statis pada teks konten dalam elemen kartu berlatar `bg-card` atau adaptif tema, karena di Light Mode warna putih akan lenyap (*invisible/washed out*).
+      - WAJIB gunakan `text-slate-950 dark:text-white` dengan aksen dekoratif semantik (seperti `underline decoration-*/60 decoration-2` atau warna semantik bertema).
+    - **Proteksi Overflow Teks Footer**:
+      - Gunakan `line-clamp-2` (bukan `truncate`) pada catatan ringkasan atau takeaway di bagian bawah kartu agar teks yang panjang dapat mengalir secara alami menjadi 2 baris dan tidak terpotong kasar dengan `...` di tengah kata atau menabrak border.
+      - Sediakan ruang bawah yang cukup (`p-4` atau `p-4.5` dengan `space-y-2`) agar layout fleksibel dan estetik.
+
+16. **Standar Database & Migrasi SQL Supabase**:
+    - Setiap penulisan skrip SQL (`supabase/*.sql`) wajib idempotent menggunakan klausa `ON CONFLICT (id) DO UPDATE ...` atau verifikasi eksistensi.
+    - Password mahasiswa/dosen harus di-hash menggunakan format bcrypt auth Supabase yang valid.
+    - Role akun wajib tersinkronisasi konsisten antara `auth.users` (metadata) dan `public.profiles` (`mahasiswa` atau `dosen`).
+
+

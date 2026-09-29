@@ -303,7 +303,47 @@ Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu da
 
 ---
 
-*Dokumen ini terakhir diperbarui: 7 September 2026*  
+### 6.6 Standar Pewarnaan Sintaks Kode (VS Code Palette & Dual-Mode High Contrast)
+1. **Prinsip Dual-Mode High Contrast**:
+   - **Light Mode**: WAJIB menggunakan warna *deep jewel tones* / jenuh kontras tinggi (`text-emerald-700`, `text-blue-700`, `text-violet-700`, `text-rose-600`, `text-sky-800`, `text-amber-700`, `text-slate-900`) di atas latar terang (`bg-slate-50`, `bg-white`, `bg-card`). **DILARANG KERAS** menggunakan warna teks pastel muda (`text-*-300`/`text-*-400`) di mode terang karena pudar (*washed out*).
+   - **Dark Mode**: Menggunakan warna neon/luminous cerah berpijar (`dark:text-emerald-400`, `dark:text-sky-300`, `dark:text-violet-400`, `dark:text-rose-400`, `dark:text-amber-300`, `dark:text-slate-100`) di atas latar gelap pekat (`dark:bg-slate-950`).
+2. **Gutter Nomor Baris (Line Numbers)**: Wajib menyertakan properti `select-none` (`user-select: none`) agar saat mahasiswa menyeleksi atau menyalin teks secara manual, angka nomor baris tidak ikut tersalin ke clipboard.
+3. **Tombol Salin (Clipboard Copy)**: Tombol salin kode WAJIB menyalin string kode mentah bersih runnable (*clean raw string*), bukan elemen atau tag renderan HTML.
+
+---
+
+### 6.7 Standar Sinkronisasi Semantik Warna Lintas Representasi (Naratif, Flowchart, Pseudocode)
+1. **Token Warna Semantik Terpadu**:
+   - **Input / Masukan**: Biru Royal (`text-blue-700 dark:text-blue-400`, `bg-blue-500/10`, jajar genjang input).
+   - **Proses / Kalkulasi / Assignment**: Ungu / Violet (`text-purple-700 dark:text-purple-400`, `bg-purple-500/10`, persegi panjang proses).
+   - **Output / Keluaran**: Hijau Emerald (`text-emerald-700 dark:text-emerald-300`, `bg-emerald-500/10`, jajar genjang output).
+   - **Percabangan / Kondisi**: Amber / Emas pekat (`text-amber-700 dark:text-amber-300`, belah ketupat `#451a03` border amber).
+   - **Operator Matematika & Relasional**: Merah Mawar / Rose tegas (`text-rose-600 dark:text-rose-400 font-bold`).
+   - **Angka / Literal Numerik**: Amber / Oranye (`text-amber-600 dark:text-amber-400`).
+   - **Variabel**: Biru Langit / Sky (`text-sky-800 dark:text-sky-300 font-medium`).
+   - **Nomor Langkah Naratif**: Hijau Emerald / Teal (`text-emerald-700 dark:text-emerald-400 font-bold`).
+2. **Editor Masukan Interaktif**: Panel konverter yang dapat disunting mahasiswa WAJIB menggunakan editor interaktif ber-syntax-highlighting (seperti `react-simple-code-editor`), bukan `<textarea>` monokrom polos.
+
+---
+
+### 6.8 Standar Ergonomi Dimensi Kartu Flip & Proteksi Overflow Teks
+1. **Tinggi Kartu Proporsional**: Pada layout grid multi-kolom (misalnya 5 kolom pada 5 Ciri Algoritma Knuth), tinggi kartu harus memadai minimal `min-h-[245px]` (responsif: `h-[245px] sm:h-[255px] md:h-[265px]` atau lebih) agar ruang konten di sisi balik memuat seluruh penjelasan tanpa menabrak batas footer atau tepi bawah.
+2. **Larangan Teks Statis `text-white` pada Elemen Adaptif Tema**:
+   - DILARANG menggunakan kelas `text-white` secara statis pada teks konten dalam elemen kartu berlatar `bg-card` atau adaptif tema.
+   - WAJIB gunakan `text-slate-950 dark:text-white` dengan aksen dekoratif semantik (seperti `underline decoration-*/60 decoration-2`).
+3. **Proteksi Overflow Teks Footer**: Gunakan `line-clamp-2` (bukan `truncate`) pada catatan ringkasan atau takeaway di bagian bawah kartu agar teks yang panjang dapat mengalir rapi menjadi 2 baris tanpa terpotong kasar atau menabrak batas border.
+
+---
+
+### 6.9 Standar Database & Migrasi SQL Supabase
+1. **Idempotensi**: Seluruh file SQL migrasi atau seed data pengguna (`supabase/*.sql`) wajib menggunakan `ON CONFLICT (id) DO UPDATE ...` atau verifikasi eksistensi.
+2. **Hashing Password**: Menggunakan format hashing bcrypt auth Supabase yang valid.
+3. **Sinkronisasi Role**: Sinkron antara `auth.users` dan `public.profiles` (`mahasiswa` atau `dosen`).
+
+---
+
+*Dokumen ini terakhir diperbarui: 29 September 2026*  
 *Disusun dan disepakati oleh: Hadiq, ST, M.Kom bersama Antigravity AI*
+
 
 

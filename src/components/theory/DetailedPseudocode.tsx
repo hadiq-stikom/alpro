@@ -131,15 +131,15 @@ const PillarFlipCard = ({ number, title, subtitle, color, frontContent, backCont
                 <span className="w-7 h-7 rounded-full bg-violet-500/15 dark:bg-violet-500/25 text-violet-700 dark:text-violet-300 font-extrabold flex items-center justify-center text-xs border border-violet-500/30 dark:border-violet-500/40">
                   {number}
                 </span>
-                <div className="flex items-center gap-1 text-[11px] text-slate-600 dark:text-slate-300 font-semibold group-hover/flip:text-violet-600 dark:group-hover/flip:text-violet-300 transition-colors">
+                <div className="flex items-center gap-1 text-[11px] text-slate-600 dark:text-slate-300 font-bold group-hover/flip:text-violet-600 dark:group-hover/flip:text-violet-300 transition-colors">
                   <span>Klik balik</span>
                   <RotateCw className="w-3.5 h-3.5 group-hover/flip:rotate-90 transition-transform" />
                 </div>
               </div>
-              <h5 className="font-bold text-base text-foreground mb-1">{title}</h5>
-              <p className="text-xs text-slate-900 dark:text-slate-100 font-bold mb-3">{subtitle}</p>
+              <h5 className="font-black text-base text-foreground mb-1">{title}</h5>
+              <p className="text-xs text-slate-600 dark:text-slate-300 font-bold mb-3">{subtitle}</p>
             </div>
-            <div className="text-xs text-slate-900 dark:text-slate-100 leading-relaxed font-mono bg-slate-100 dark:bg-slate-950/80 p-2.5 rounded-xl border border-border dark:border-slate-800 group-hover/flip:border-violet-500/40 font-bold">
+            <div className="text-xs leading-relaxed font-mono bg-slate-100/90 dark:bg-slate-950 p-3 rounded-xl border border-border/80 dark:border-slate-800 group-hover/flip:border-violet-500/50 font-bold shadow-xs">
               {frontContent}
             </div>
           </motion.div>
@@ -154,17 +154,17 @@ const PillarFlipCard = ({ number, title, subtitle, color, frontContent, backCont
           >
             <div>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] text-violet-700 dark:text-violet-400 font-bold tracking-wider border-b border-violet-500/30 pb-0.5">
+                <span className="text-[10px] text-violet-700 dark:text-violet-300 font-black tracking-wider border-b border-violet-500/30 pb-0.5">
                   PENJELASAN AKADEMIS
                 </span>
-                <RotateCw className="w-3.5 h-3.5 text-violet-600/70 dark:text-violet-400/60 group-hover/flip:-rotate-90 transition-transform" />
+                <RotateCw className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400 group-hover/flip:-rotate-90 transition-transform" />
               </div>
-              <h6 className="font-bold text-sm text-foreground mb-2">{title}</h6>
-              <div className="text-xs text-slate-900 dark:text-slate-100 font-semibold leading-relaxed space-y-2">
+              <h6 className="font-black text-sm text-foreground mb-2">{title}</h6>
+              <div className="text-xs text-slate-800 dark:text-slate-200 font-semibold leading-relaxed space-y-2">
                 {backContent}
               </div>
             </div>
-            <div className="pt-2 text-[11px] text-violet-600 dark:text-violet-400 font-bold italic">
+            <div className="pt-2 text-[11px] text-violet-700 dark:text-violet-400 font-black italic">
               Klik kartu untuk membalik kembali
             </div>
           </motion.div>
@@ -386,18 +386,18 @@ const PseudocodeDefinitionCard = () => {
                     <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold leading-relaxed mb-2">
                       Memadukan kata kunci terstruktur tanpa sintaks compiler yang rumit:
                     </p>
-                    <pre className="p-2.5 rounded-lg bg-slate-950 text-slate-100 font-mono text-[11px] leading-snug border border-violet-500/40 overflow-x-auto">
-{`PROGRAM EvaluasiNilai
-KAMUS:
-  nilai : integer
-ALGORITMA:
-  input(nilai)
-  if nilai >= 75 then
-    output("LULUS")
-  else
-    output("REMEDIAL")
-  endif`}
-                    </pre>
+                    <div className="p-2.5 rounded-lg bg-slate-950 text-slate-100 font-mono text-[11px] leading-relaxed border border-violet-500/40 overflow-x-auto whitespace-pre">
+                      <span className="text-violet-400 font-black">PROGRAM</span> <span className="text-sky-300 font-bold">EvaluasiNilai</span>{'\n'}
+                      <span className="text-violet-400 font-black">KAMUS:</span>{'\n'}
+                      {'  '}<span className="text-sky-300 font-bold">nilai</span> : <span className="text-teal-300 font-bold">integer</span>{'\n'}
+                      <span className="text-violet-400 font-black">ALGORITMA:</span>{'\n'}
+                      {'  '}<span className="text-amber-300 font-bold">input</span>(<span className="text-sky-300 font-bold">nilai</span>){'\n'}
+                      {'  '}<span className="text-violet-400 font-bold">if</span> <span className="text-sky-300 font-bold">nilai</span> &gt;= <span className="text-amber-200 font-bold">75</span> <span className="text-violet-400 font-bold">then</span>{'\n'}
+                      {'    '}<span className="text-amber-300 font-bold">output</span>(<span className="text-amber-200">"LULUS"</span>){'\n'}
+                      {'  '}<span className="text-violet-400 font-bold">else</span>{'\n'}
+                      {'    '}<span className="text-amber-300 font-bold">output</span>(<span className="text-amber-200">"REMEDIAL"</span>){'\n'}
+                      {'  '}<span className="text-violet-400 font-bold">endif</span>
+                    </div>
                   </div>
                   <div className="mt-3 pt-2 border-t border-violet-500/30 text-[10px] text-violet-700 dark:text-violet-300 font-black">
                     ✓ Presisi &amp; bebas kesalahan sintaks<br />✓ Menjadi cetak biru sebelum coding
@@ -416,26 +416,28 @@ ALGORITMA:
                     <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold leading-relaxed mb-2">
                       Translasi 1:1 langsung dari blok pseudocode di samping:
                     </p>
-                    <pre className="p-2.5 rounded-lg bg-slate-950 text-emerald-300 font-mono text-[11px] leading-snug border border-emerald-500/30 overflow-x-auto">
-{targetLang === 'python' ? (
-`# Sintaksis Python
-nilai = int(input())
-
-if nilai >= 75:
-    print("LULUS")
-else:
-    print("REMEDIAL")`
-) : (
-`// Sintaksis JavaScript
-const nilai = Number(prompt());
-
-if (nilai >= 75) {
-    console.log("LULUS");
-} else {
-    console.log("REMEDIAL");
-}`
-)}
-                    </pre>
+                    <div className="p-2.5 rounded-lg bg-slate-950 text-slate-100 font-mono text-[11px] leading-relaxed border border-emerald-500/30 overflow-x-auto whitespace-pre">
+                      {targetLang === 'python' ? (
+                        <>
+                          <span className="text-emerald-400 italic font-semibold"># Sintaksis Python</span>{'\n'}
+                          <span className="text-sky-300 font-bold">nilai</span> = <span className="text-teal-300 font-bold">int</span>(<span className="text-amber-300 font-bold">input</span>()){'\n\n'}
+                          <span className="text-violet-400 font-bold">if</span> <span className="text-sky-300 font-bold">nilai</span> &gt;= <span className="text-amber-200 font-bold">75</span>:{'\n'}
+                          {'    '}<span className="text-amber-300 font-bold">print</span>(<span className="text-amber-200">"LULUS"</span>){'\n'}
+                          <span className="text-violet-400 font-bold">else</span>:{'\n'}
+                          {'    '}<span className="text-amber-300 font-bold">print</span>(<span className="text-amber-200">"REMEDIAL"</span>)
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-emerald-400 italic font-semibold">// Sintaksis JavaScript</span>{'\n'}
+                          <span className="text-blue-400 font-bold">const</span> <span className="text-sky-300 font-bold">nilai</span> = <span className="text-teal-300 font-bold">Number</span>(<span className="text-amber-300 font-bold">prompt</span>());{'\n\n'}
+                          <span className="text-violet-400 font-bold">if</span> (<span className="text-sky-300 font-bold">nilai</span> &gt;= <span className="text-amber-200 font-bold">75</span>) {'{'}{'\n'}
+                          {'    '}<span className="text-teal-300 font-bold">console</span>.<span className="text-amber-300 font-bold">log</span>(<span className="text-amber-200">"LULUS"</span>);{'\n'}
+                          {'}'} <span className="text-violet-400 font-bold">else</span> {'{'}{'\n'}
+                          {'    '}<span className="text-teal-300 font-bold">console</span>.<span className="text-amber-300 font-bold">log</span>(<span className="text-amber-200">"REMEDIAL"</span>);{'\n'}
+                          {'}'}
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className="mt-3 pt-2 border-t border-emerald-500/20 text-[10px] text-emerald-700 dark:text-emerald-300 font-bold">
                     ✓ Siap dieksekusi mesin komputer<br />✓ Hasil translasi mudah &amp; presisi
@@ -530,6 +532,114 @@ let luas = panjang * lebar;
 
 // 3. Output Hasil
 console.log(\`Luas persegi panjang: \${luas}\`);`
+  };
+
+  const highlightedCodeLines: Record<'pseudocode' | 'python' | 'javascript', React.ReactNode[]> = {
+    pseudocode: [
+      <>
+        <span className="text-violet-700 dark:text-violet-400 font-black">PROGRAM</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">HitungLuas</span>
+      </>,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold">// Program untuk menghitung dan menampilkan luas persegi panjang</span>,
+      null,
+      <span className="text-violet-700 dark:text-violet-400 font-black">KAMUS:</span>,
+      <>
+        {'  '}<span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span><span className="text-slate-500 dark:text-slate-400">,</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span>{' '}
+        <span className="text-slate-600 dark:text-slate-400 font-bold">:</span>{' '}
+        <span className="text-teal-700 dark:text-teal-300 font-bold">float</span>
+      </>,
+      <>
+        {'  '}<span className="text-sky-800 dark:text-sky-300 font-bold">luas</span>{' '}
+        <span className="text-slate-600 dark:text-slate-400 font-bold">:</span>{' '}
+        <span className="text-teal-700 dark:text-teal-300 font-bold">float</span>
+      </>,
+      null,
+      <span className="text-violet-700 dark:text-violet-400 font-black">ALGORITMA:</span>,
+      <>
+        {'  '}<span className="text-amber-700 dark:text-amber-300 font-black">input</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span><span className="text-slate-500 dark:text-slate-400">)</span>
+      </>,
+      <>
+        {'  '}<span className="text-amber-700 dark:text-amber-300 font-black">input</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span><span className="text-slate-500 dark:text-slate-400">)</span>
+      </>,
+      null,
+      <>
+        {'  '}<span className="text-sky-800 dark:text-sky-300 font-bold">luas</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">*</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span>
+      </>,
+      null,
+      <>
+        {'  '}<span className="text-amber-700 dark:text-amber-300 font-black">output</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-sky-800 dark:text-sky-300 font-bold">luas</span><span className="text-slate-500 dark:text-slate-400">)</span>
+      </>
+    ],
+
+    python: [
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold"># Program: HitungLuas</span>,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold"># Menghitung dan menampilkan luas persegi panjang</span>,
+      null,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold"># 1. Input &amp; Konversi Tipe Data</span>,
+      <>
+        <span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-teal-700 dark:text-teal-300 font-bold">float</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-700 dark:text-amber-300 font-black">input</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-800 dark:text-amber-200 font-medium">"Masukkan panjang: "</span><span className="text-slate-500 dark:text-slate-400">))</span>
+      </>,
+      <>
+        <span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-teal-700 dark:text-teal-300 font-bold">float</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-700 dark:text-amber-300 font-black">input</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-800 dark:text-amber-200 font-medium">"Masukkan lebar: "</span><span className="text-slate-500 dark:text-slate-400">))</span>
+      </>,
+      null,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold"># 2. Algoritma / Perhitungan</span>,
+      <>
+        <span className="text-sky-800 dark:text-sky-300 font-bold">luas</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">*</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span>
+      </>,
+      null,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold"># 3. Output Hasil</span>,
+      <>
+        <span className="text-amber-700 dark:text-amber-300 font-black">print</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-blue-600 dark:text-blue-400 font-bold">f</span><span className="text-amber-800 dark:text-amber-200 font-medium">"Luas persegi panjang: </span><span className="text-cyan-700 dark:text-cyan-400 font-black">{`{`}</span><span className="text-sky-800 dark:text-sky-300 font-bold">luas</span><span className="text-cyan-700 dark:text-cyan-400 font-black">{`}`}</span><span className="text-amber-800 dark:text-amber-200 font-medium">"</span><span className="text-slate-500 dark:text-slate-400">)</span>
+      </>
+    ],
+
+    javascript: [
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold">// Program: HitungLuas</span>,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold">// Menghitung dan menampilkan luas persegi panjang</span>,
+      null,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold">// 1. Deklarasi &amp; Input</span>,
+      <>
+        <span className="text-blue-700 dark:text-blue-400 font-bold">let</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-amber-700 dark:text-amber-300 font-black">parseFloat</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-700 dark:text-amber-300 font-black">prompt</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-800 dark:text-amber-200 font-medium">"Masukkan panjang:"</span><span className="text-slate-500 dark:text-slate-400">));</span>
+      </>,
+      <>
+        <span className="text-blue-700 dark:text-blue-400 font-bold">let</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-amber-700 dark:text-amber-300 font-black">parseFloat</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-700 dark:text-amber-300 font-black">prompt</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-800 dark:text-amber-200 font-medium">"Masukkan lebar:"</span><span className="text-slate-500 dark:text-slate-400">));</span>
+      </>,
+      null,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold">// 2. Algoritma / Perhitungan</span>,
+      <>
+        <span className="text-blue-700 dark:text-blue-400 font-bold">let</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">luas</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">=</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">panjang</span>{' '}
+        <span className="text-rose-600 dark:text-rose-400 font-black">*</span>{' '}
+        <span className="text-sky-800 dark:text-sky-300 font-bold">lebar</span><span className="text-slate-500 dark:text-slate-400">;</span>
+      </>,
+      null,
+      <span className="text-emerald-700 dark:text-emerald-400 italic font-semibold">// 3. Output Hasil</span>,
+      <>
+        <span className="text-teal-700 dark:text-teal-300 font-bold">console</span><span className="text-slate-500 dark:text-slate-400">.</span><span className="text-amber-700 dark:text-amber-300 font-black">log</span><span className="text-slate-500 dark:text-slate-400">(</span><span className="text-amber-800 dark:text-amber-200 font-medium">`Luas persegi panjang: </span><span className="text-cyan-700 dark:text-cyan-400 font-black">{`\${`}</span><span className="text-sky-800 dark:text-sky-300 font-bold">luas</span><span className="text-cyan-700 dark:text-cyan-400 font-black">{`}`}</span><span className="text-amber-800 dark:text-amber-200 font-medium">`</span><span className="text-slate-500 dark:text-slate-400">);</span>
+      </>
+    ]
   };
 
   const handleCopy = () => {
@@ -654,15 +764,19 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
               subtitle="Identitas & spesifikasi algoritma"
               color="border-violet-500/40"
               frontContent={
-                <>
-                  <div className="text-violet-300 font-bold">PROGRAM HitungLuas</div>
-                  <div className="text-slate-500 italic">// Menghitung luas persegi</div>
-                </>
+                <div className="space-y-1">
+                  <div className="text-violet-950 dark:text-violet-300 font-black">
+                    PROGRAM <span className="text-slate-950 dark:text-white font-black">HitungLuas</span>
+                  </div>
+                  <div className="text-slate-600 dark:text-slate-400 italic font-bold">
+                    // Menghitung luas persegi
+                  </div>
+                </div>
               }
               backContent={
                 <>
                   <p>Menjelaskan nama program (menggunakan <em>PascalCase</em> seperti <code>HitungLuas</code> atau <em>snake_case</em> tanpa spasi) dan spesifikasi ringkas apa yang dikerjakan algoritma.</p>
-                  <p className="text-emerald-400 font-mono text-[11px]">Komentar diawali tanda // (seperti JS/C++)</p>
+                  <p className="text-emerald-700 dark:text-emerald-300 font-mono text-xs font-black">Komentar diawali tanda // (seperti JS/C++)</p>
                 </>
               }
             />
@@ -674,16 +788,20 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
               subtitle="Pemetaan variabel & memori"
               color="border-blue-500/40"
               frontContent={
-                <>
-                  <div className="text-violet-300 font-bold">KAMUS:</div>
-                  <div className="text-emerald-300">panjang, lebar : <span className="text-blue-400 font-bold">float</span></div>
-                  <div className="text-emerald-300">luas : <span className="text-blue-400 font-bold">float</span></div>
-                </>
+                <div className="space-y-1">
+                  <div className="text-violet-950 dark:text-violet-300 font-black">KAMUS:</div>
+                  <div className="text-emerald-950 dark:text-emerald-300 font-black">
+                    panjang, lebar <span className="text-slate-700 dark:text-slate-400 font-bold">:</span> <span className="text-blue-800 dark:text-sky-300 font-black">float</span>
+                  </div>
+                  <div className="text-emerald-950 dark:text-emerald-300 font-black">
+                    luas <span className="text-slate-700 dark:text-slate-400 font-bold">:</span> <span className="text-blue-800 dark:text-sky-300 font-black">float</span>
+                  </div>
+                </div>
               }
               backContent={
                 <>
                   <p>Tempat mendaftarkan semua variabel beserta tipe datanya (<code>integer</code>, <code>float</code>, <code>string</code>, <code>boolean</code>).</p>
-                  <p className="text-blue-300 font-mono text-[11px]">Melatih pemahaman alokasi memori sebelum coding.</p>
+                  <p className="text-blue-800 dark:text-blue-300 font-mono text-xs font-black">Melatih pemahaman alokasi memori sebelum coding.</p>
                 </>
               }
             />
@@ -695,17 +813,19 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
               subtitle="Langkah instruksi komputasi"
               color="border-emerald-500/40"
               frontContent={
-                <>
-                  <div className="text-violet-300 font-bold">ALGORITMA:</div>
-                  <div className="text-fuchsia-400">input(panjang, lebar)</div>
-                  <div className="text-slate-200">luas <span className="text-rose-400 font-bold">=</span> panjang * lebar</div>
-                  <div className="text-cyan-400">output(luas)</div>
-                </>
+                <div className="space-y-1">
+                  <div className="text-violet-950 dark:text-violet-300 font-black">ALGORITMA:</div>
+                  <div className="text-fuchsia-950 dark:text-fuchsia-400 font-black">input(panjang, lebar)</div>
+                  <div className="text-slate-950 dark:text-slate-100 font-black">
+                    luas <span className="text-rose-700 dark:text-rose-400 font-black">=</span> panjang * lebar
+                  </div>
+                  <div className="text-teal-950 dark:text-cyan-300 font-black">output(luas)</div>
+                </div>
               }
               backContent={
                 <>
                   <p>Bagian inti yang memuat urutan aksi terstruktur: Pembacaan input, proses perhitungan matematis, dan penampilan hasil.</p>
-                  <p className="text-rose-300 font-mono text-[11px]">Menggunakan operator = yang identik dengan Python & JS.</p>
+                  <p className="text-rose-700 dark:text-rose-300 font-mono text-xs font-black">Menggunakan operator = yang identik dengan Python & JS.</p>
                 </>
               }
             />
@@ -844,7 +964,11 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
 
               {/* Right: Filename & Copy Button */}
               <div className="flex items-center gap-3">
-                <span className="hidden md:inline-block text-xs text-slate-500 dark:text-slate-400 font-sans">
+                <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white dark:bg-slate-800 text-[11px] font-mono text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 shadow-2xs">
+                  <span className={`w-2 h-2 rounded-full ${
+                    activeCodeTab === 'pseudocode' ? 'bg-violet-500' :
+                    activeCodeTab === 'python' ? 'bg-blue-500' : 'bg-amber-400'
+                  }`} />
                   {activeCodeTab === 'pseudocode' && 'hitung_luas.pseudo'}
                   {activeCodeTab === 'python' && 'hitung_luas.py'}
                   {activeCodeTab === 'javascript' && 'hitung_luas.js'}
@@ -862,19 +986,31 @@ console.log(\`Luas persegi panjang: \${luas}\`);`
 
             </div>
 
-            {/* Code Body with Smooth Animation */}
-            <div className="p-5 md:p-6 overflow-x-auto text-slate-900 dark:text-slate-200 bg-white dark:bg-slate-950 leading-relaxed text-xs md:text-sm">
+            {/* Code Body with Smooth Animation & VS Code styling */}
+            <div className="p-4 md:p-6 overflow-x-auto bg-white dark:bg-slate-950 leading-relaxed text-xs md:text-sm font-mono border-t border-border/30 dark:border-slate-800/80">
               <AnimatePresence mode="wait">
-                <motion.pre
+                <motion.div
                   key={activeCodeTab}
-                  initial={{ opacity: 0, y: 5 }}
+                  initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  transition={{ duration: 0.2 }}
-                  className="whitespace-pre"
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.15 }}
+                  className="min-w-fit space-y-0.5"
                 >
-                  {codeSnippets[activeCodeTab]}
-                </motion.pre>
+                  {highlightedCodeLines[activeCodeTab].map((line, index) => (
+                    <div 
+                      key={index} 
+                      className="flex items-center hover:bg-slate-100/70 dark:hover:bg-slate-900/60 rounded px-1.5 -mx-1.5 transition-colors group"
+                    >
+                      <span className="w-7 md:w-8 text-right pr-3.5 select-none text-slate-400 dark:text-slate-600 group-hover:text-slate-600 dark:group-hover:text-slate-300 text-[11px] md:text-xs font-mono shrink-0 border-r border-slate-200 dark:border-slate-800">
+                        {index + 1}
+                      </span>
+                      <span className="flex-1 whitespace-pre pl-3">
+                        {line || '\u00A0'}
+                      </span>
+                    </div>
+                  ))}
+                </motion.div>
               </AnimatePresence>
             </div>
           </div>

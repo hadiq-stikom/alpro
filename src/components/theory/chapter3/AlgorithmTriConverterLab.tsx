@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import Editor from 'react-simple-code-editor';
 import { 
   FileText, 
   GitCommit, 
@@ -169,6 +170,69 @@ SELESAI`,
     ]
   }
 ];
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function highlightNaratif(text: string): string {
+  if (!text) return '';
+  return text.split('\n').map(line => {
+    const escaped = escapeHtml(line);
+    const tokenRegex = /(^\s*\d+\.)|(\b(?:Masukkan|Input|Baca|read)\b)|(\b(?:Tampilkan|Cetak|Tulis|Print|write)\b)|(\b(?:Hitung|Tentukan|Proses|Simpan|Kalkulasi)\b)|(\b(?:Jika|Kalau|Apabila|Selain\s+itu|Maka)\b)|(\b(?:nilai|hasil|dari|adalah|ke\s+layar)\b)|(\b(?:dikali|dibagi|ditambah|dikurang|per)\b)|(\b\d+(?:\.\d+)?\b)|(&lt;=|&gt;=|==|!=|&lt;-|&lt;|&gt;|=|\*|\/|\+|-|\(|\))|([a-zA-Z_][a-zA-Z0-9_]*)|(\s+)|(.)/gi;
+
+    return escaped.replace(tokenRegex, (match, stepNum, inputVerb, outputVerb, calcVerb, condVerb, descWord, opWord, num, op, id, ws, other) => {
+      if (stepNum) return `<span class="text-emerald-700 dark:text-emerald-400 font-black font-mono">${stepNum}</span>`;
+      if (inputVerb) return `<span class="text-blue-700 dark:text-blue-400 font-bold">${inputVerb}</span>`;
+      if (outputVerb) return `<span class="text-emerald-700 dark:text-emerald-300 font-bold">${outputVerb}</span>`;
+      if (calcVerb) return `<span class="text-purple-700 dark:text-purple-400 font-bold">${calcVerb}</span>`;
+      if (condVerb) return `<span class="text-amber-700 dark:text-amber-300 font-bold">${condVerb}</span>`;
+      if (descWord) {
+        if (/ke\s+layar/i.test(descWord)) {
+          return `<span class="text-slate-500 dark:text-slate-400 italic">${descWord}</span>`;
+        }
+        return `<span class="text-slate-600 dark:text-slate-400 font-medium">${descWord}</span>`;
+      }
+      if (opWord) return `<span class="text-rose-600 dark:text-rose-400 font-bold">${opWord}</span>`;
+      if (num) return `<span class="text-amber-600 dark:text-amber-400 font-bold">${num}</span>`;
+      if (op) return `<span class="text-rose-600 dark:text-rose-400 font-black">${op}</span>`;
+      if (id) return `<span class="text-sky-800 dark:text-sky-300 font-bold">${id}</span>`;
+      return match;
+    });
+  }).join('\n');
+}
+
+function highlightPseudocode(code: string): string {
+  if (!code) return '';
+  return code.split('\n').map(line => {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('//')) {
+      return `<span class="text-emerald-700 dark:text-emerald-400 italic font-semibold">${escapeHtml(line)}</span>`;
+    }
+
+    const escaped = escapeHtml(line);
+    const tokenRegex = /(\/\/[^\n]*)|("[^"]*"|'[^']*')|(\b(?:PROGRAM|MULAI|SELESAI)\b|\b(?:KAMUS|ALGORITMA|DEKLARASI):?)|(\b(?:if|then|else\s+if|else|endif|while|do|endwhile|for|to|endfor|repeat|until)\b)|(\b(?:float|integer|string|boolean|real|char|data)\b)|(\b(?:input|output|READ|WRITE|print)\b)|(\b\d+(?:\.\d+)?\b)|(&lt;=|&gt;=|==|!=|&lt;-|&lt;|&gt;|=|\*|\/|\+|-)|([a-zA-Z_][a-zA-Z0-9_]*)|(:|,|\(|\))|(\s+)|(.)/g;
+
+    return escaped.replace(tokenRegex, (match, comment, str, blockKw, ctrlKw, typeKw, ioKw, num, op, id, punct, ws, other) => {
+      if (comment) return `<span class="text-emerald-700 dark:text-emerald-400 italic font-semibold">${comment}</span>`;
+      if (str) return `<span class="text-amber-800 dark:text-amber-200 font-medium">${str}</span>`;
+      if (blockKw) return `<span class="text-violet-700 dark:text-violet-400 font-black">${blockKw}</span>`;
+      if (ctrlKw) return `<span class="text-violet-600 dark:text-violet-400 font-bold">${ctrlKw}</span>`;
+      if (typeKw) return `<span class="text-teal-700 dark:text-teal-300 font-bold">${typeKw}</span>`;
+      if (ioKw) return `<span class="text-amber-700 dark:text-amber-300 font-black">${ioKw}</span>`;
+      if (num) return `<span class="text-amber-600 dark:text-amber-400 font-bold">${num}</span>`;
+      if (op) return `<span class="text-rose-600 dark:text-rose-400 font-black">${op}</span>`;
+      if (punct) return `<span class="text-slate-600 dark:text-slate-400 font-bold">${punct}</span>`;
+      if (id) return `<span class="text-sky-800 dark:text-sky-300 font-semibold">${id}</span>`;
+      return match;
+    });
+  }).join('\n');
+}
 
 export default function AlgorithmTriConverterLab() {
   const [sourceMode, setSourceMode] = useState<'naratif' | 'flowchart' | 'pseudocode'>('naratif');
@@ -1054,15 +1118,26 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
             <div className="p-4 flex-1 flex flex-col justify-between space-y-3 text-xs md:text-sm">
               {sourceMode === 'naratif' ? (
                 <div className="space-y-2">
-                  <textarea
-                    value={naratifInput}
-                    onChange={(e) => setNaratifInput(e.target.value)}
-                    rows={10}
-                    className={`w-full bg-slate-50 dark:bg-slate-950 border rounded-2xl p-4 text-foreground dark:text-slate-100 font-mono text-xs leading-relaxed focus:outline-none focus:ring-1 transition-all shadow-inner ${
-                      activeLintIssues.length > 0 ? 'border-amber-500/60 focus:border-amber-400 focus:ring-amber-400' : 'border-border dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500'
-                    }`}
-                    placeholder="1. Masukkan nilai panjang.&#10;2. Masukkan nilai lebar.&#10;3. Hitung nilai luas&#10;   luas = panjang * lebar&#10;4. Tampilkan hasil luas ke layar."
-                  />
+                  <div className={`w-full bg-slate-50 dark:bg-slate-950 border rounded-2xl overflow-hidden focus-within:ring-1 transition-all shadow-inner ${
+                    activeLintIssues.length > 0 ? 'border-amber-500/60 focus-within:border-amber-400 focus-within:ring-amber-400' : 'border-border dark:border-slate-800 focus-within:border-emerald-500 focus-within:ring-emerald-500'
+                  }`}>
+                    <Editor
+                      value={naratifInput}
+                      onValueChange={(code) => setNaratifInput(code)}
+                      highlight={highlightNaratif}
+                      padding={16}
+                      className="code-editor-root font-mono text-xs leading-[22px] min-h-[190px] max-h-[380px] overflow-y-auto"
+                      style={{
+                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                        fontSize: 12,
+                        lineHeight: '22px',
+                        minHeight: '190px',
+                        background: 'transparent',
+                        caretColor: '#059669',
+                      }}
+                      placeholder="1. Masukkan nilai panjang.&#10;2. Masukkan nilai lebar.&#10;3. Hitung nilai luas&#10;   luas = panjang * lebar&#10;4. Tampilkan hasil luas ke layar."
+                    />
+                  </div>
                   
                   {activeLintIssues.length > 0 && (
                     <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/70 border border-amber-500/60 text-amber-900 dark:text-amber-200 text-xs flex items-start gap-2 shadow-inner">
@@ -1085,9 +1160,10 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                   </div>
                 </div>
               ) : (
-                <div className="bg-secondary/20 border border-border/40 rounded-2xl p-4 text-foreground/90 font-sans text-xs md:text-sm leading-loose whitespace-pre-wrap flex-1 shadow-inner">
-                  {activeNaratif}
-                </div>
+                <div 
+                  className="bg-slate-50 dark:bg-slate-950 border border-border/40 dark:border-slate-800 rounded-2xl p-4 font-mono text-xs md:text-sm leading-[22px] whitespace-pre-wrap flex-1 shadow-inner overflow-x-auto min-h-[190px]"
+                  dangerouslySetInnerHTML={{ __html: highlightNaratif(activeNaratif) }}
+                />
               )}
 
               <div className="p-2.5 rounded-xl bg-secondary/30 border border-border/40 text-[11px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
@@ -1331,15 +1407,26 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
             <div className="p-4 flex-1 flex flex-col justify-between space-y-3 text-xs md:text-sm">
               {sourceMode === 'pseudocode' ? (
                 <div className="space-y-2">
-                  <textarea
-                    value={pseudoInput}
-                    onChange={(e) => setPseudoInput(e.target.value)}
-                    rows={10}
-                    className={`w-full bg-slate-50 dark:bg-slate-950 border rounded-2xl p-4 text-foreground dark:text-slate-100 font-mono text-xs leading-relaxed focus:outline-none focus:ring-1 transition-all shadow-inner ${
-                      activeLintIssues.length > 0 ? 'border-amber-500/60 focus:border-amber-400 focus:ring-amber-400' : 'border-border dark:border-slate-800 focus:border-violet-500 focus:ring-violet-500'
-                    }`}
-                    placeholder="PROGRAM NamaProgram&#10;// deskripsi&#10;&#10;KAMUS:&#10;  a, b : float&#10;&#10;ALGORITMA:&#10;  input(a)&#10;  ..."
-                  />
+                  <div className={`w-full bg-slate-50 dark:bg-slate-950 border rounded-2xl overflow-hidden focus-within:ring-1 transition-all shadow-inner ${
+                    activeLintIssues.length > 0 ? 'border-amber-500/60 focus-within:border-amber-400 focus-within:ring-amber-400' : 'border-border dark:border-slate-800 focus-within:border-violet-500 focus-within:ring-violet-500'
+                  }`}>
+                    <Editor
+                      value={pseudoInput}
+                      onValueChange={(code) => setPseudoInput(code)}
+                      highlight={highlightPseudocode}
+                      padding={16}
+                      className="code-editor-root font-mono text-xs leading-[22px] min-h-[190px] max-h-[380px] overflow-y-auto"
+                      style={{
+                        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                        fontSize: 12,
+                        lineHeight: '22px',
+                        minHeight: '190px',
+                        background: 'transparent',
+                        caretColor: '#8b5cf6',
+                      }}
+                      placeholder="PROGRAM NamaProgram&#10;// deskripsi&#10;&#10;KAMUS:&#10;  a, b : float&#10;&#10;ALGORITMA:&#10;  input(a)&#10;  ..."
+                    />
+                  </div>
 
                   {activeLintIssues.length > 0 && (
                     <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/70 border border-amber-500/60 text-amber-900 dark:text-amber-200 text-xs flex items-start gap-2 shadow-inner">
@@ -1362,9 +1449,10 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                   </div>
                 </div>
               ) : (
-                <div className="bg-secondary/20 border border-border/40 rounded-2xl p-4 text-foreground/90 font-mono text-xs md:text-sm leading-relaxed whitespace-pre-wrap flex-1 shadow-inner">
-                  {activePseudo}
-                </div>
+                <div 
+                  className="bg-slate-50 dark:bg-slate-950 border border-border/40 dark:border-slate-800 rounded-2xl p-4 font-mono text-xs md:text-sm leading-[22px] whitespace-pre-wrap flex-1 shadow-inner overflow-x-auto min-h-[190px]"
+                  dangerouslySetInnerHTML={{ __html: highlightPseudocode(activePseudo) }}
+                />
               )}
 
               <div className="p-2.5 rounded-xl bg-secondary/30 border border-border/40 text-[11px] text-slate-700 dark:text-slate-300 font-medium leading-relaxed">

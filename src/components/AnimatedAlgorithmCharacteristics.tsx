@@ -75,11 +75,11 @@ export default function AnimatedAlgorithmCharacteristics() {
       color: "text-blue-500",
       activeBg: "bg-blue-600 text-white border-blue-400 shadow-[0_0_20px_rgba(37,99,235,0.6)]",
       borderColor: "border-blue-500/80 shadow-[0_0_25px_rgba(59,130,246,0.35)]",
-      badgeColor: "bg-blue-500/20 text-blue-400 border-blue-500/40",
+      badgeColor: "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30 dark:border-blue-400/40",
       isActive: step === 1,
       explanation: (
         <span>
-          Algoritma menerima <strong className="text-blue-400 font-bold">nol atau lebih masukan</strong> (<em>raw data</em>) dari luar sistem (keyboard, sensor, file) yang disimpan ke <strong className="text-white font-bold">RAM</strong> untuk diproses.
+          Algoritma menerima <strong className="text-blue-700 dark:text-blue-300 font-bold">nol atau lebih masukan</strong> (<em>raw data</em>) dari luar sistem (keyboard, sensor, file) yang disimpan ke <strong className="text-slate-950 dark:text-white font-black underline decoration-blue-500/60 decoration-2">RAM</strong> untuk diproses.
         </span>
       ),
       highlight: "Variabel Bebas (Keyboard → RAM)"
@@ -93,11 +93,11 @@ export default function AnimatedAlgorithmCharacteristics() {
       color: "text-amber-500",
       activeBg: "bg-amber-600 text-white border-amber-400 shadow-[0_0_20px_rgba(217,119,6,0.6)]",
       borderColor: "border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.35)]",
-      badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/40",
+      badgeColor: "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30 dark:border-amber-400/40",
       isActive: step === 2,
       explanation: (
         <span>
-          Setiap langkah instruksi wajib <strong className="text-amber-400 font-bold">jelas, pasti, dan bermakna tunggal</strong>. Dilarang multitafsir agar <strong className="text-white font-bold">tidak membingungkan CPU</strong> maupun programmer.
+          Setiap langkah instruksi wajib <strong className="text-amber-700 dark:text-amber-300 font-bold">jelas, pasti, dan bermakna tunggal</strong>. Dilarang multitafsir agar <strong className="text-slate-950 dark:text-white font-black underline decoration-amber-500/60 decoration-2">tidak membingungkan CPU</strong> maupun programmer.
         </span>
       ),
       highlight: "Instruksi Pasti & Makna Tunggal"
@@ -111,11 +111,11 @@ export default function AnimatedAlgorithmCharacteristics() {
       color: "text-purple-500",
       activeBg: "bg-purple-600 text-white border-purple-400 shadow-[0_0_20px_rgba(147,51,234,0.6)]",
       borderColor: "border-purple-500/80 shadow-[0_0_25px_rgba(168,85,247,0.35)]",
-      badgeColor: "bg-purple-500/20 text-purple-400 border-purple-500/40",
+      badgeColor: "bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30 dark:border-purple-400/40",
       isActive: step === 2,
       explanation: (
         <span>
-          Setiap langkah operasi harus <strong className="text-purple-400 font-bold">cukup sederhana dan realistis</strong> untuk diselesaikan mesin dalam <strong className="text-white font-bold">rentang waktu yang wajar</strong>.
+          Setiap langkah operasi harus <strong className="text-purple-700 dark:text-purple-300 font-bold">cukup sederhana dan realistis</strong> untuk diselesaikan mesin dalam <strong className="text-slate-950 dark:text-white font-black underline decoration-purple-500/60 decoration-2">rentang waktu yang wajar</strong>.
         </span>
       ),
       highlight: "Operasi Wajar & Efisien"
@@ -129,11 +129,11 @@ export default function AnimatedAlgorithmCharacteristics() {
       color: "text-red-500",
       activeBg: "bg-red-600 text-white border-red-400 shadow-[0_0_20px_rgba(220,38,38,0.6)]",
       borderColor: "border-red-500/80 shadow-[0_0_25px_rgba(239,68,68,0.35)]",
-      badgeColor: "bg-red-500/20 text-red-400 border-red-500/40",
+      badgeColor: "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30 dark:border-rose-400/40",
       isActive: step >= 3 && hasStoppingRole,
       explanation: (
         <span>
-          Algoritma <strong className="text-rose-400 font-bold">harus memiliki titik akhir</strong> dan berhenti setelah sejumlah langkah terbatas. Wajib bebas dari <strong className="text-white font-bold">Infinite Loop</strong> (macet).
+          Algoritma <strong className="text-rose-700 dark:text-rose-300 font-bold">harus memiliki titik akhir</strong> dan berhenti setelah sejumlah langkah terbatas. Wajib bebas dari <strong className="text-slate-950 dark:text-white font-black underline decoration-rose-500/60 decoration-2">Infinite Loop</strong> (macet).
         </span>
       ),
       highlight: "Stopping Role (Bebas Macet)"
@@ -147,11 +147,11 @@ export default function AnimatedAlgorithmCharacteristics() {
       color: "text-emerald-500",
       activeBg: "bg-emerald-600 text-white border-emerald-400 shadow-[0_0_20px_rgba(5,150,105,0.6)]",
       borderColor: "border-emerald-500/80 shadow-[0_0_25px_rgba(16,185,129,0.35)]",
-      badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40",
+      badgeColor: "bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border-emerald-500/30 dark:border-emerald-400/40",
       isActive: step === 3,
       explanation: (
         <span>
-          Algoritma wajib menghasilkan <strong className="text-emerald-400 font-bold">minimal satu nilai keluaran</strong> sebagai solusi permasalahan yang diserahkan ke <strong className="text-white font-bold">layar atau media simpan</strong>.
+          Algoritma wajib menghasilkan <strong className="text-emerald-700 dark:text-emerald-300 font-bold">minimal satu nilai keluaran</strong> sebagai solusi permasalahan yang diserahkan ke <strong className="text-slate-950 dark:text-white font-black underline decoration-emerald-500/60 decoration-2">layar atau media simpan</strong>.
         </span>
       ),
       highlight: "Variabel Terikat (Solusi Akhir)"
@@ -318,7 +318,7 @@ function FlipCharacteristicCard({
 }) {
   return (
     <div 
-      className="relative w-full h-48 sm:h-52 cursor-pointer select-none z-10 hover:z-50 group"
+      className="relative w-full h-[245px] sm:h-[255px] md:h-[265px] cursor-pointer select-none z-10 hover:z-50 group"
       onClick={onToggle}
       role="button"
       tabIndex={0}
@@ -342,7 +342,7 @@ function FlipCharacteristicCard({
               animate={{ rotateY: 0, opacity: 1 }}
               exit={{ rotateY: 90, opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeInOut" }}
-              className={`w-full h-full rounded-2xl p-3.5 flex flex-col items-center justify-between border-2 shadow-sm transition-colors duration-200 select-none
+              className={`w-full h-full rounded-2xl p-4 flex flex-col items-center justify-between border-2 shadow-sm transition-colors duration-200 select-none
                 ${card.isActive 
                   ? `${card.activeBg} shadow-lg border-transparent` 
                   : 'bg-card border-border/80 text-foreground group-hover:border-primary/60 dark:bg-slate-900/95'
@@ -350,23 +350,23 @@ function FlipCharacteristicCard({
               `}
             >
               {/* Icon Circle */}
-              <div className={`p-2.5 rounded-full mt-1 transition-transform group-hover:scale-110 duration-200 ${card.isActive ? 'bg-white/20 text-white' : 'bg-secondary text-foreground group-hover:bg-primary/10'}`}>
+              <div className={`p-3 rounded-full mt-1.5 transition-transform group-hover:scale-110 duration-200 ${card.isActive ? 'bg-white/20 text-white' : 'bg-secondary text-foreground group-hover:bg-primary/10'}`}>
                 {card.icon}
               </div>
 
               {/* Title & Subtitle */}
-              <div className="text-center space-y-1">
-                <div className="font-black text-xs sm:text-sm tracking-tight text-foreground dark:text-white">
+              <div className="text-center space-y-1.5 my-auto">
+                <div className="font-black text-sm tracking-tight text-foreground dark:text-white">
                   {card.number}. {card.name}
                 </div>
-                <div className={`text-[11px] sm:text-xs leading-tight font-semibold ${card.isActive ? 'text-white' : 'text-slate-700 dark:text-slate-300'}`}>
+                <div className={`text-xs leading-snug font-semibold ${card.isActive ? 'text-white' : 'text-slate-700 dark:text-slate-300'}`}>
                   {card.subtitle}
                 </div>
               </div>
 
               {/* Hint Badge */}
-              <div className="flex items-center gap-1 text-[10px] font-bold text-primary/80 group-hover:text-primary dark:text-slate-300 py-0.5 px-2 rounded-full bg-secondary/60 group-hover:bg-primary/10 transition-colors">
-                <RotateCcw className="w-2.5 h-2.5" />
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold text-primary group-hover:text-primary dark:text-slate-200 py-1 px-2.5 rounded-full bg-secondary/80 group-hover:bg-primary/15 border border-border/50 dark:border-white/10 transition-colors">
+                <RotateCcw className="w-3 h-3" />
                 <span>Klik balik kartu</span>
               </div>
             </motion.div>
@@ -377,26 +377,27 @@ function FlipCharacteristicCard({
               animate={{ rotateY: 0, opacity: 1 }}
               exit={{ rotateY: -90, opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeInOut" }}
-              className={`w-full h-full rounded-2xl p-3.5 flex flex-col justify-between border-2 shadow-sm dark:shadow-2xl bg-card dark:bg-slate-950 text-foreground dark:text-slate-100 ${card.borderColor} select-none`}
+              className={`w-full h-full rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between border-2 shadow-sm dark:shadow-2xl bg-card dark:bg-slate-950 text-foreground dark:text-slate-100 ${card.borderColor} select-none`}
             >
               {/* Header Back */}
-              <div className="flex items-center justify-between w-full border-b border-border/60 dark:border-white/10 pb-1.5">
-                <span className={`text-[11px] font-black px-1.5 py-0.5 rounded border ${card.badgeColor}`}>
+              <div className="flex items-center justify-between w-full border-b border-border/60 dark:border-white/10 pb-1.5 shrink-0">
+                <span className={`text-[11px] font-black px-2 py-0.5 rounded border ${card.badgeColor}`}>
                   {card.number}. {card.name}
                 </span>
-                <span className="text-[10px] text-slate-600 dark:text-slate-300 flex items-center gap-1 font-bold group-hover:text-primary dark:group-hover:text-white">
-                  <RotateCcw className="w-2.5 h-2.5" /> Balik
+                <span className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 font-bold group-hover:text-primary dark:group-hover:text-white transition-colors">
+                  <RotateCcw className="w-3 h-3" /> Balik
                 </span>
               </div>
 
               {/* Explanation Body */}
-              <div className="text-xs leading-relaxed text-slate-800 dark:text-slate-100 text-left font-semibold my-auto">
+              <div className="text-xs leading-relaxed text-slate-800 dark:text-slate-200 text-left font-medium my-auto py-1">
                 {card.explanation}
               </div>
 
               {/* Highlight Footer */}
-              <div className="pt-1.5 border-t border-border/60 dark:border-white/10 text-[10px] font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1 truncate">
-                <span className="truncate">💡 {card.highlight}</span>
+              <div className="pt-1.5 border-t border-border/60 dark:border-white/10 text-[10px] sm:text-[11px] font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1.5 shrink-0 leading-tight">
+                <span className="shrink-0 text-amber-500">💡</span>
+                <span className="line-clamp-2">{card.highlight}</span>
               </div>
             </motion.div>
           )}

@@ -65,3 +65,42 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
      - **Halaman Mahasiswa**: Menampilkan rata-rata capaian seluruh materi dan capaian spesifik per pertemuan.
      - **Halaman Dosen**: Menampilkan statistik capaian kelas dan rincian performa per mahasiswa baik secara umum maupun per pertemuan.
 
+8. **Standar Penyajian Definisi & Visualisasi Konsep Interaktif**:
+   - **Kartu Definisi Berdimensi Ganda (Front & Back/Flip)**:
+     - **Sisi Depan (Front)**: Menyajikan intisari konsep fundamental, ikonografi semantik visual, nomor langkah/pilar, dan deskripsi singkat padat yang terarah.
+     - **Sisi Belakang (Back/Flip)**: Menyajikan contoh penerapan nyata (*concrete example*), pembedahan sintaks, atau penjelasan akademis mendalam.
+   - **Visualisasi Aktif & Interaktif**: Definisi teori tidak boleh berupa teks pasif semata; wajib didukung analogi visual konkret (misal simulator loker memori RAM, verifikator sintaks real-time, atau visualisasi alir otomata algoritma).
+
+9. **Standar Zoom / Fokus Pembahasan (Strict 1.2x Scale)**:
+   - **Skala Zoom Mutlak 1.2x**: Seluruh kartu konsep, simbol flowchart, pilar pseudocode, kaidah naratif, dan modul lab yang memiliki interaksi pembesaran WAJIB menggunakan skala standar tepat **1.2x**:
+     `hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center`
+   - **Prioritas Lapisan Visual (Z-Index)**: Wajib menyertakan `relative z-0 hover:z-50` agar kartu yang sedang diperbesar melayang bebas di atas kartu tetangga tanpa terpotong batas kontainer (*overflow-visible*).
+   - **Elevasi Kedalaman Fokus**: Menggunakan bayangan tegas (`hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]`) untuk menciptakan efek kedalaman visual yang kuat bagi mahasiswa.
+
+10. **Mekanisme Flip Kartu Bebas Buram (*Zero 3D Texture Blur Pattern*)**:
+    - **DILARANG MENGGUNAKAN** `perspective: 1000` + `transformStyle: "preserve-3d"` + `backfaceVisibility: "hidden"` secara permanen pada elemen kartu yang memiliki zoom/scale.
+      - *Alasan Teknis*: Chromium/WebKit mengisolasi elemen 3D ke dalam buffer tekstur GPU beresolusi tetap 1.0x. Saat kontainer diperbesar 1.2x, browser hanya meregangkan (*bilinear stretch*) tekstur 1x tersebut sehingga teks, garis, dan diagram SVG menjadi buram/kabur (*blurry*).
+    - **WAJIB Menggunakan Pola `AnimatePresence` 2D Bersih**:
+      - Transisi balik kartu dikelola melalui `<AnimatePresence mode="wait" initial={false}>` dengan animasi `rotateY` saat pertukaran sisi muka dan belakang.
+      - Saat kartu dalam keadaan diam (*idle/resting state*), kartu adalah elemen 2D murni (`rotateY: 0`) tanpa konteks 3D, sehingga saat di-hover 1.2x, browser me-rasterisasi teks dan kurva vektor SVG langsung pada resolusi layar penuh secara tajam dan presisi.
+
+11. **Standar Ketajaman Tipografi & Anti-Blur Rendering Global**:
+    - **Font Smoothing Grayscale**:
+      ```css
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      text-rendering: optimizeLegibility !important;
+      ```
+    - **DILARANG KERAS Menggunakan `subpixel-antialiased` pada Elemen Ber-Zoom/Scale**:
+      Subpixel antialiasing mengasumsikan grid fisik sub-piksel RGB monitor 1:1. Ketika di-scale 1.2x, kisi sub-piksel tersebut bergeser dan menimbulkan efek pelangi kabur (*rainbow color fringing*) serta huruf menjadi tebal buram. Grayscale antialiasing menjamin kurva font tetap tajam dan bersih pada sembarang skala pembesaran.
+    - **DILARANG Menggunakan `filter: blur(0)` atau `backface-visibility: hidden` Global**:
+      Properti tersebut memaksa browser mengunci rasterisasi layer bitmap pada skala 1x, yang menyebabkan efek blur saat kartu membesar.
+    - **Ketebalan Tipografi (Font Weight) Padat**:
+      Gunakan minimal **`font-semibold`**, **`font-bold`**, atau **`font-black`** pada kartu ber-zoom agar batang karakter terisi penuh piksel fisik layar dan tidak menghasilkan pecahan piksel abu-abu lembut (*gray fringe*).
+
+12. **Standar Kontras Tinggi Elemen Visual & Diagram SVG**:
+    - **Belah Ketupat Decision Flowchart**: Wajib berlatar cokelat pekat `#451a03`, border amber `#f59e0b` (`strokeWidth="2.5"`), dan teks kondisi kuning keemasan `#fde68a` (amber-200) `font-black` (`fontWeight="900"`, `fontFamily="monospace"`).
+    - **Kotak Proses & SVG di Mode Terang (Light Mode)**: Wajib menggunakan atribut `fill="..."` dan `stroke="..."` eksplisit ber-kontras tinggi (misal: kotak proses benar menggunakan border hijau pekat `#059669`, background lembut `#ecfdf5`, dan teks hijau gelap pekat `#064e3b`). DILARANG menampilkan teks kuning/terang di atas latar terang.
+    - **Kotak Proses & SVG di Mode Gelap (Dark Mode)**: Menggunakan latar belakang gelap pekat (`dark:fill-slate-950` / `dark:fill-emerald-950/80`) dengan teks cerah kontras tinggi (`dark:fill-emerald-200`, `dark:fill-rose-200`).
+    - **Lingkaran Connector**: Menggunakan warna biru solid `#0284c7` dengan teks putih murni `#ffffff` `font-black`.
+

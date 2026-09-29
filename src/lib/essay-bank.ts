@@ -181,21 +181,25 @@ export const ESSAY_BANK: EssayQuestion[] = [
   {
     id: 'm3-essay-5',
     meetingId: 3,
-    text: 'Buatlah rancangan Pseudocode lengkap dan terstruktur sesuai standar materi kuliah untuk mengecek kelayakan seorang calon pendonor darah! (Syarat: Usia minimal 17 tahun DAN berat badan minimal 45 kg). Terapkan struktur 3 Blok Baku (PROGRAM, KAMUS, ALGORITMA), instruksi I/O (input & output), serta struktur percabangan IF-ELSE dengan rapi!',
+    text: 'Sebuah toko grosir bahan bangunan membutuhkan rancangan algoritma terstruktur untuk menghitung total pembayaran faktur pelanggan. Aturan perhitungannya adalah:\n1. Membaca masukan jumlah sak semen yang dibeli (bilangan bulat) dan harga satuan per sak semen (bilangan bulat).\n2. Menghitung subtotal = jumlah_semen * harga_satuan.\n3. Menghitung nilai Pajak Pertambahan Nilai (PPN) sebesar 11% (0.11) dari subtotal (bilangan pecahan/float).\n4. Menghitung total_bayar = subtotal + pajak_ppn.\n5. Menampilkan nilai total_bayar ke layar faktur kasir.\n\nTerapkan Metodologi Rekayasa Program & Pola IPO (Input - Proses - Output) dengan merancang Pseudocode Baku 3 Blok (PROGRAM, KAMUS, ALGORITMA) yang rapi! Bedakan tipe data variabel bulat (integer) dan pecahan (float/real), gunakan instruksi I/O universal (input & output), dan selesaikan seluruh komputasi secara runtut (Sequential) tanpa percabangan!',
     timeLimit: 300,
     rubric: `
-      Kriteria Penilaian Standar Pseudocode Akademik (0-100):
-      1. Struktur 3 Blok Baku (30 poin):
-         - Blok Header: PROGRAM NamaProgram (misal: PROGRAM CekDonorDarah) beserta komentar ringkas.
-         - Blok Deklarasi: KAMUS: (deklarasi variabel seperti usia, berat_badan : integer/float).
+      Kriteria Penilaian Standar Rekayasa Pseudocode Akademik (0-100):
+      1. Struktur 3 Blok Baku CLRS (30 poin):
+         - Blok Header: PROGRAM NamaProgram (misal: PROGRAM FakturKasirGrosir) beserta komentar deskriptif ringkas.
+         - Blok Deklarasi: KAMUS: (deklarasi variabel terpisah dengan tipe data yang tepat: jumlah_semen, harga_satuan : integer; subtotal, pajak_ppn, total_bayar : float atau real).
          - Blok Eksekusi: ALGORITMA:
-      2. Logika Input & Seleksi IF-ELSE (45 poin):
-         - Menggunakan instruksi I/O universal: input(usia) dan input(berat_badan).
-         - Menggunakan kondisi IF usia >= 17 AND berat_badan >= 45 THEN (wajib memakai operator logika AND/DAN).
-         - Menyediakan cabang ELSE jika salah satu atau kedua syarat tidak terpenuhi.
-      3. Output & Kerapian Tata Tulis (25 poin):
-         - Menggunakan instruksi output(...) untuk mencetak status boleh/tidak boleh donor.
-         - Menggunakan penamaan variabel deskriptif (clean code, dilarang singkatan 1 huruf) dan penulisan kata kunci berhuruf kapital.
+      2. Implementasi Pola IPO Murni & Persamaan Matematis (45 poin):
+         - Corong Input (15 poin): Membaca variabel bebas menggunakan instruksi universal input(jumlah_semen) dan input(harga_satuan). Tetapan pajak 0.11 tidak boleh diminta lewat input keyboard!
+         - Ruang Proses (20 poin): Mengeksekusi urutan persamaan matematis secara berurutan (Sequential):
+           subtotal = jumlah_semen * harga_satuan
+           pajak_ppn = subtotal * 0.11
+           total_bayar = subtotal + pajak_ppn
+         - Saluran Output (10 poin): Menyajikan variabel terikat ke layar dengan instruksi universal output("Total Bayar: ", total_bayar) atau output(total_bayar).
+      3. Disiplin Tata Tulis Notasi Baku (25 poin):
+         - Menggunakan operator penugasan baku (=).
+         - Menggunakan penamaan variabel deskriptif (clean code, tidak memakai singkatan 1 huruf tanpa arti).
+         - Bebas dari sintaks bahasa pemrograman spesifik (tidak memakai print, f"...", atau kurung kurawal).
     `
   },
 

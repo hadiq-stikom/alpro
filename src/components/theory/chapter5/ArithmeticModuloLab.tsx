@@ -217,7 +217,7 @@ export default function ArithmeticModuloLab() {
                 </div>
 
                 {/* AHA Box */}
-                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-slate-200 space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.03] transition-all duration-300 origin-center hover:shadow-xl">
+                <div className="p-4 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 text-xs text-slate-100 space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]">
                   <strong className="text-amber-300 font-bold block font-mono text-sm">
                     💡 Momen AHA: Mengapa Modulo (%) Sangat Sakti dalam Algoritma?
                   </strong>
@@ -243,7 +243,7 @@ export default function ArithmeticModuloLab() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible">
               
               {/* Card 1: True Division */}
-              <div className="p-5 rounded-2xl bg-slate-900/90 border border-blue-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+              <div className="p-5 rounded-2xl bg-slate-900/90 border border-blue-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
                 <div className="flex items-center justify-between border-b border-blue-500/30 pb-2">
                   <h4 className="font-extrabold text-blue-400 text-sm">
                     1. True Division ( / )
@@ -263,7 +263,7 @@ export default function ArithmeticModuloLab() {
               </div>
 
               {/* Card 2: Floor Division */}
-              <div className="p-5 rounded-2xl bg-slate-900/90 border border-purple-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
+              <div className="p-5 rounded-2xl bg-slate-900/90 border border-purple-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-purple-400">
                 <div className="flex items-center justify-between border-b border-purple-500/30 pb-2">
                   <h4 className="font-extrabold text-purple-400 text-sm">
                     2. Floor Division ( // )
@@ -283,7 +283,7 @@ export default function ArithmeticModuloLab() {
               </div>
 
               {/* Card 3: Modulo */}
-              <div className="p-5 rounded-2xl bg-slate-900/90 border border-amber-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
+              <div className="p-5 rounded-2xl bg-slate-900/90 border border-amber-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
                 <div className="flex items-center justify-between border-b border-amber-500/30 pb-2">
                   <h4 className="font-extrabold text-amber-400 text-sm">
                     3. Modulo ( % )
@@ -377,7 +377,7 @@ export default function ArithmeticModuloLab() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible">
                 
                 {/* Step 1: Jam */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
                   <span className="text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded uppercase">
                     Langkah 1: Hitung Jam
                   </span>
@@ -393,7 +393,7 @@ export default function ArithmeticModuloLab() {
                 </div>
 
                 {/* Step 2: Menit */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-purple-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-purple-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-purple-400">
                   <span className="text-[10px] font-mono font-bold bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded uppercase">
                     Langkah 2: Hitung Menit
                   </span>
@@ -409,7 +409,7 @@ export default function ArithmeticModuloLab() {
                 </div>
 
                 {/* Step 3: Detik */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-emerald-400">
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded uppercase">
                     Langkah 3: Sisa Detik
                   </span>

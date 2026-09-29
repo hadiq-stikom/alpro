@@ -131,12 +131,12 @@ export default function CompoundStringLab() {
             </div>
 
             {/* RAM Memory State Box */}
-            <div className="lg:col-span-5 p-4 rounded-2xl bg-slate-950 border border-cyan-500/40 text-center space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-400">
-              <span className="text-[10px] text-slate-500 font-mono block">Lokasi Memori RAM (saldo):</span>
+            <div className="lg:col-span-5 p-4 rounded-2xl bg-slate-950 border-2 border-cyan-500/40 text-center space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-cyan-400">
+              <span className="text-xs text-slate-300 font-mono font-bold block">Lokasi Memori RAM (saldo):</span>
               <div className="text-2xl font-mono font-black text-cyan-300 py-1">
                 Rp {balance.toLocaleString('id-ID')}
               </div>
-              <span className="text-[10px] text-emerald-400 font-mono block">
+              <span className="text-xs text-emerald-400 font-mono font-bold block">
                 Ekuivalen: <code>saldo = saldo {compoundOp.replace('=', '')} {deltaValue}</code>
               </span>
             </div>
@@ -209,9 +209,9 @@ export default function CompoundStringLab() {
             <div className="lg:col-span-7 space-y-3 font-mono text-xs overflow-visible">
               
               {/* Python f-string Card */}
-              <div className="p-3.5 bg-slate-950 rounded-xl border border-blue-500/40 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.15] sm:hover:scale-[1.2] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
-                <span className="text-[10px] text-blue-400 font-sans block font-bold">🐍 Python 3 (f-string):</span>
-                <div className="text-slate-300">
+              <div className="p-3.5 bg-slate-950 rounded-xl border-2 border-blue-500/40 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
+                <span className="text-xs text-blue-400 font-sans block font-bold">🐍 Python 3 (f-string):</span>
+                <div className="text-slate-100 font-bold">
                   pesan = f&quot;Halo &#123;nama&#125;, nilai kamu adalah &#123;skor&#125;!&quot;
                 </div>
                 <div className="text-emerald-400 font-bold bg-slate-900 p-2 rounded-lg border border-slate-800 mt-1">
@@ -220,9 +220,9 @@ export default function CompoundStringLab() {
               </div>
 
               {/* JS Template Literal Card */}
-              <div className="p-3.5 bg-slate-950 rounded-xl border border-amber-500/40 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.15] sm:hover:scale-[1.2] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
-                <span className="text-[10px] text-amber-400 font-sans block font-bold">🌐 JavaScript (Template Literal):</span>
-                <div className="text-slate-300">
+              <div className="p-3.5 bg-slate-950 rounded-xl border-2 border-amber-500/40 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
+                <span className="text-xs text-amber-400 font-sans block font-bold">🌐 JavaScript (Template Literal):</span>
+                <div className="text-slate-100 font-bold">
                   let pesan = `Halo $&#123;nama&#125;, nilai kamu adalah $&#123;skor&#125;!`;
                 </div>
                 <div className="text-emerald-400 font-bold bg-slate-900 p-2 rounded-lg border border-slate-800 mt-1">
@@ -231,9 +231,9 @@ export default function CompoundStringLab() {
               </div>
 
               {/* Python String Replication Card */}
-              <div className="p-3.5 bg-slate-950 rounded-xl border border-purple-500/40 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.15] sm:hover:scale-[1.2] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
-                <span className="text-[10px] text-purple-400 font-sans block font-bold">🐍 Replikasi Teks Python (&quot;Kata&quot; * N):</span>
-                <div className="text-slate-300">
+              <div className="p-3.5 bg-slate-950 rounded-xl border-2 border-purple-500/40 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-purple-400">
+                <span className="text-xs text-purple-400 font-sans block font-bold">🐍 Replikasi Teks Python (&quot;Kata&quot; * N):</span>
+                <div className="text-slate-100 font-bold">
                   sorak = &quot;{baseWord} &quot; * {multiplier}
                 </div>
                 <div className="text-purple-300 font-bold bg-slate-900 p-2 rounded-lg border border-slate-800 mt-1 truncate">

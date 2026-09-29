@@ -217,9 +217,9 @@ export default function AnimatedBasicStructures() {
       id: 'sequential', 
       label: '1. Sequential (Runtunan)', 
       icon: AlignJustify, 
-      color: 'text-blue-400',
+      color: 'text-blue-600 dark:text-blue-400',
       activeBorder: 'border-blue-500',
-      badge: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
+      badge: 'bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30',
       flowTitle: 'Aliran Data Lurus (Linear)',
       flowSubtitle: 'Instruksi mengalir satu arah dari atas ke bawah tanpa belokan.'
     },
@@ -227,9 +227,9 @@ export default function AnimatedBasicStructures() {
       id: 'selection', 
       label: '2. Selection (Percabangan)', 
       icon: GitBranch, 
-      color: 'text-violet-400',
+      color: 'text-violet-600 dark:text-violet-400',
       activeBorder: 'border-violet-500',
-      badge: 'bg-violet-500/15 text-violet-300 border-violet-500/30',
+      badge: 'bg-violet-500/15 text-violet-700 dark:text-violet-300 border-violet-500/30',
       flowTitle: 'Aliran Data Bercabang (Decision)',
       flowSubtitle: 'Aliran data memilih SATU dari beberapa jalur berdasarkan kondisi.'
     },
@@ -237,9 +237,9 @@ export default function AnimatedBasicStructures() {
       id: 'looping', 
       label: '3. Looping (Perulangan)', 
       icon: Repeat, 
-      color: 'text-emerald-400',
+      color: 'text-emerald-600 dark:text-emerald-400',
       activeBorder: 'border-emerald-500',
-      badge: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+      badge: 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30',
       flowTitle: 'Aliran Data Berputar (Cycle)',
       flowSubtitle: 'Aliran data berputar kembali mengulang aksi selama syarat terpenuhi.'
     },
@@ -251,14 +251,14 @@ export default function AnimatedBasicStructures() {
     <div 
       className={`transition-all duration-300 relative ${
         isMaximized 
-          ? 'fixed top-0 left-0 right-0 bottom-0 inset-0 z-[99999] p-4 md:p-6 bg-slate-950/98 backdrop-blur-2xl flex flex-col justify-between w-screen h-screen overflow-y-auto text-slate-100 font-sans' 
-          : 'border border-border/60 rounded-3xl bg-slate-950 shadow-2xl mt-6'
+          ? 'fixed top-0 left-0 right-0 bottom-0 inset-0 z-[99999] p-4 md:p-6 bg-white/98 dark:bg-slate-950/98 backdrop-blur-2xl flex flex-col justify-between w-screen h-screen overflow-y-auto text-foreground dark:text-slate-100 font-sans' 
+          : 'border border-border/60 rounded-3xl bg-card dark:bg-slate-950 shadow-md dark:shadow-2xl mt-6'
       }`}
       style={isMaximized ? { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, margin: 0, width: '100vw', height: '100vh' } : {}}
     >
       
       {/* 1. TOP HEADER NAVIGATION TABS */}
-      <div className="flex flex-wrap md:flex-nowrap border-b border-slate-800 bg-slate-900/90 text-slate-200 rounded-t-3xl">
+      <div className="flex flex-wrap md:flex-nowrap border-b border-border dark:border-slate-800 bg-slate-100/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 rounded-t-3xl">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
           const Icon = tab.icon;
@@ -268,8 +268,8 @@ export default function AnimatedBasicStructures() {
               onClick={() => setActiveTab(tab.id as Tab)}
               className={`flex-1 flex items-center justify-center gap-2 py-3.5 px-3 text-xs md:text-sm font-bold transition-all relative cursor-pointer ${
                 isActive 
-                  ? `${tab.color} bg-slate-950 border-b-2 ${tab.activeBorder}` 
-                  : 'text-slate-300 hover:bg-slate-800/60 hover:text-white'
+                  ? `${tab.color} bg-white dark:bg-slate-950 border-b-2 ${tab.activeBorder}` 
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/60 hover:text-foreground dark:hover:text-white'
               }`}
             >
               <Icon className={`w-4 h-4 ${isActive ? tab.color : 'text-slate-400'}`} />
@@ -280,7 +280,7 @@ export default function AnimatedBasicStructures() {
       </div>
 
       {/* 2. TOOLBAR CONTROLS BAR */}
-      <div className="px-4 md:px-6 py-2.5 border-b border-slate-800/80 bg-slate-950 flex flex-wrap items-center justify-between gap-3">
+      <div className="px-4 md:px-6 py-2.5 border-b border-border/60 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-950 flex flex-wrap items-center justify-between gap-3">
         
         {/* Left: Core Subtitle */}
         <div className="flex items-center gap-2.5">
@@ -288,13 +288,13 @@ export default function AnimatedBasicStructures() {
             <Sparkles className="w-3 h-3" />
             {currentTabInfo.flowTitle}
           </span>
-          <span className="hidden sm:inline-block text-xs text-slate-300 font-medium">
+          <span className="hidden sm:inline-block text-xs text-slate-600 dark:text-slate-300 font-medium">
             {currentTabInfo.flowSubtitle}
           </span>
         </div>
 
         {/* Right: Controls */}
-        <div className="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800 shadow-sm">
+        <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 p-1 rounded-xl border border-border dark:border-slate-800 shadow-sm">
           {/* Play/Pause */}
           <button
             onClick={() => {
@@ -330,7 +330,7 @@ export default function AnimatedBasicStructures() {
           <button
             onClick={handleNextStep}
             disabled={isPlaying}
-            className="p-1 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+            className="p-1 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 dark:text-slate-300 text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border border-border/40 dark:border-transparent"
             title="Langkah Berikutnya"
           >
             <SkipForward className="w-3.5 h-3.5" />
@@ -340,36 +340,36 @@ export default function AnimatedBasicStructures() {
           {/* Reset */}
           <button
             onClick={resetAll}
-            className="p-1 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+            className="p-1 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-foreground dark:hover:text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border border-border/40 dark:border-transparent"
             title="Reset Aliran"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Reset</span>
           </button>
 
-          <div className="w-[1px] h-3.5 bg-slate-800 mx-0.5"></div>
+          <div className="w-[1px] h-3.5 bg-border dark:bg-slate-800 mx-0.5"></div>
 
           {/* Fullscreen Modal Toggle */}
           <button
             onClick={() => setIsMaximized(!isMaximized)}
-            className="p-1 px-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer"
+            className="p-1 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-foreground dark:hover:text-white text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer border border-border/40 dark:border-transparent"
             title={isMaximized ? "Perkecil (Esc)" : "Layar Penuh"}
           >
-            {isMaximized ? <Minimize2 className="w-3.5 h-3.5 text-emerald-400" /> : <Maximize2 className="w-3.5 h-3.5" />}
+            {isMaximized ? <Minimize2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
         </div>
 
       </div>
 
       {/* 3. MAIN WORKSPACE: FOCUSED DATA-FLOW VIEWER */}
-      <div className="p-4 md:p-6 bg-slate-950 flex flex-col justify-center">
+      <div className="p-4 md:p-6 bg-card dark:bg-slate-950 flex flex-col justify-center">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           
           {/* ========================================================================= */}
           {/* LEFT SIDE: VECTOR FLOWCHART DATA FLOW ANIMATION (COL-SPAN 7)             */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-7 bg-slate-900/90 border border-slate-800/90 rounded-2xl p-4 md:p-5 shadow-inner flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden">
+          <div className="lg:col-span-7 bg-slate-50 dark:bg-slate-900/90 border border-border dark:border-slate-800/90 rounded-2xl p-4 md:p-5 shadow-inner flex flex-col items-center justify-center min-h-[380px] relative overflow-hidden">
             
             {/* ------------------------------------------------------------- */}
             {/* A. SEQUENTIAL FLOWCHART SVG                                   */}
@@ -388,48 +388,48 @@ export default function AnimatedBasicStructures() {
 
                   {/* Node 1: START */}
                   <rect x="75" y="8" width="110" height="28" rx="14" 
-                    className={`transition-all duration-300 ${seqStep >= 1 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_12px_rgba(59,130,246,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="130" y="27" textAnchor="middle" className="fill-white font-bold text-xs font-sans">START</text>
+                    className={`transition-all duration-300 ${seqStep >= 1 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_12px_rgba(59,130,246,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="130" y="27" textAnchor="middle" className={`font-bold text-xs font-sans ${seqStep >= 1 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>START</text>
 
                   {/* Flow 1 */}
                   <line x1="130" y1="36" x2="130" y2="65" 
-                    className={`transition-all duration-300 ${seqStep >= 1 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${seqStep >= 1 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={seqStep >= 1 ? 'url(#arrow-blue)' : 'url(#arrow-dim)'} />
 
                   {/* Node 2: Input Data */}
                   <polygon points="50,98 210,98 190,68 30,68" 
-                    className={`transition-all duration-300 ${seqStep === 1 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="120" y="87" textAnchor="middle" className="fill-white font-bold text-xs font-mono">1. Masukkan Data</text>
+                    className={`transition-all duration-300 ${seqStep === 1 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="120" y="87" textAnchor="middle" className={`font-bold text-xs font-mono ${seqStep === 1 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>1. Masukkan Data</text>
 
                   {/* Flow 2 */}
                   <line x1="130" y1="98" x2="130" y2="128" 
-                    className={`transition-all duration-300 ${seqStep >= 2 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${seqStep >= 2 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={seqStep >= 2 ? 'url(#arrow-blue)' : 'url(#arrow-dim)'} />
 
                   {/* Node 3: Proses Hitung */}
                   <rect x="35" y="132" width="190" height="32" rx="6" 
-                    className={`transition-all duration-300 ${seqStep === 2 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="130" y="153" textAnchor="middle" className="fill-white font-bold text-xs font-mono">2. Proses Perhitungan</text>
+                    className={`transition-all duration-300 ${seqStep === 2 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="130" y="153" textAnchor="middle" className={`font-bold text-xs font-mono ${seqStep === 2 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>2. Proses Perhitungan</text>
 
                   {/* Flow 3 */}
                   <line x1="130" y1="164" x2="130" y2="194" 
-                    className={`transition-all duration-300 ${seqStep >= 3 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${seqStep >= 3 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={seqStep >= 3 ? 'url(#arrow-blue)' : 'url(#arrow-dim)'} />
 
                   {/* Node 4: Tampilkan Hasil */}
                   <polygon points="50,228 210,228 190,198 30,198" 
-                    className={`transition-all duration-300 ${seqStep === 3 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="120" y="217" textAnchor="middle" className="fill-white font-bold text-xs font-mono">3. Tampilkan Hasil</text>
+                    className={`transition-all duration-300 ${seqStep === 3 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_15px_rgba(59,130,246,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="120" y="217" textAnchor="middle" className={`font-bold text-xs font-mono ${seqStep === 3 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>3. Tampilkan Hasil</text>
 
                   {/* Flow 4 */}
                   <line x1="130" y1="228" x2="130" y2="258" 
-                    className={`transition-all duration-300 ${seqStep >= 4 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${seqStep >= 4 ? 'stroke-blue-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={seqStep >= 4 ? 'url(#arrow-blue)' : 'url(#arrow-dim)'} />
 
                   {/* Node 5: STOP */}
                   <rect x="75" y="264" width="110" height="28" rx="14" 
-                    className={`transition-all duration-300 ${seqStep === 4 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_12px_rgba(59,130,246,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="130" y="283" textAnchor="middle" className="fill-white font-bold text-xs font-sans">STOP</text>
+                    className={`transition-all duration-300 ${seqStep === 4 ? 'fill-blue-600 stroke-white filter drop-shadow-[0_0_12px_rgba(59,130,246,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="130" y="283" textAnchor="middle" className={`font-bold text-xs font-sans ${seqStep === 4 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>STOP</text>
                 </svg>
               </div>
             )}
@@ -451,62 +451,62 @@ export default function AnimatedBasicStructures() {
                       <polygon points="0 1, 8 4, 0 7" fill="#f43f5e" />
                     </marker>
                     <marker id="arrow-dim-branch" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-                      <polygon points="0 1, 8 4, 0 7" fill="#475569" />
+                      <polygon points="0 1, 8 4, 0 7" fill="#64748b" />
                     </marker>
                   </defs>
 
                   {/* START */}
                   <rect x="120" y="8" width="100" height="26" rx="13" 
-                    className={`transition-all duration-300 ${selStep >= 1 ? 'fill-violet-600 stroke-white filter drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="170" y="25" textAnchor="middle" className="fill-white font-bold text-xs font-sans">START</text>
+                    className={`transition-all duration-300 ${selStep >= 1 ? 'fill-violet-600 stroke-white filter drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="170" y="25" textAnchor="middle" className={`font-bold text-xs font-sans ${selStep >= 1 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>START</text>
 
                   {/* Flow to Diamond */}
                   <line x1="170" y1="34" x2="170" y2="60" 
-                    className={`transition-all duration-300 ${selStep >= 1 ? 'stroke-violet-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${selStep >= 1 ? 'stroke-violet-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={selStep >= 1 ? 'url(#arrow-purple)' : 'url(#arrow-dim-branch)'} />
 
                   {/* Decision Diamond: Kondisi Terpenuhi? */}
                   <polygon points="170,62 230,95 170,128 110,95" 
-                    className={`transition-all duration-300 ${selStep >= 1 ? 'fill-slate-950 stroke-violet-400 stroke-2 filter drop-shadow-[0_0_14px_rgba(139,92,246,0.6)]' : 'fill-slate-950 stroke-slate-700 stroke-2'}`} />
-                  <text x="170" y="99" textAnchor="middle" className="fill-slate-100 font-bold text-[11px] font-sans">Kondisi Benar?</text>
+                    className={`transition-all duration-300 ${selStep >= 1 ? 'fill-white dark:fill-slate-950 stroke-violet-500 stroke-2 filter drop-shadow-[0_0_14px_rgba(139,92,246,0.6)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700 stroke-2'}`} />
+                  <text x="170" y="99" textAnchor="middle" className="fill-slate-800 dark:fill-slate-100 font-bold text-[11px] font-sans">Kondisi Benar?</text>
 
                   {/* Left Branch: TRUE */}
                   <path d="M 110 95 L 65 95 L 65 145" fill="none"
-                    className={`transition-all duration-300 ${selStep >= 2 && isConditionTrue ? 'stroke-emerald-400 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${selStep >= 2 && isConditionTrue ? 'stroke-emerald-400 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={selStep >= 2 && isConditionTrue ? 'url(#arrow-emerald)' : 'url(#arrow-dim-branch)'} />
-                  <text x="52" y="87" textAnchor="middle" className={`text-xs font-extrabold font-mono transition-colors ${isConditionTrue ? 'fill-emerald-400' : 'fill-slate-500'}`}>TRUE</text>
+                  <text x="52" y="87" textAnchor="middle" className={`text-xs font-extrabold font-mono transition-colors ${isConditionTrue ? 'fill-emerald-500 dark:fill-emerald-400' : 'fill-slate-400 dark:fill-slate-500'}`}>TRUE</text>
 
                   {/* Right Branch: FALSE */}
                   <path d="M 230 95 L 275 95 L 275 145" fill="none"
-                    className={`transition-all duration-300 ${selStep >= 2 && !isConditionTrue ? 'stroke-rose-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${selStep >= 2 && !isConditionTrue ? 'stroke-rose-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={selStep >= 2 && !isConditionTrue ? 'url(#arrow-rose)' : 'url(#arrow-dim-branch)'} />
-                  <text x="288" y="87" textAnchor="middle" className={`text-xs font-extrabold font-mono transition-colors ${!isConditionTrue ? 'fill-rose-400' : 'fill-slate-500'}`}>FALSE</text>
+                  <text x="288" y="87" textAnchor="middle" className={`text-xs font-extrabold font-mono transition-colors ${!isConditionTrue ? 'fill-rose-500 dark:fill-rose-400' : 'fill-slate-400 dark:fill-slate-500'}`}>FALSE</text>
 
                   {/* Branch Action Left (Aksi Cabang A) */}
                   <rect x="15" y="150" width="100" height="32" rx="6" 
-                    className={`transition-all duration-300 ${selStep === 2 && isConditionTrue ? 'fill-emerald-600 stroke-white filter drop-shadow-[0_0_15px_rgba(16,185,129,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="65" y="170" textAnchor="middle" className="fill-white font-bold text-[11px] font-sans">Jalur Aksi A</text>
+                    className={`transition-all duration-300 ${selStep === 2 && isConditionTrue ? 'fill-emerald-600 stroke-white filter drop-shadow-[0_0_15px_rgba(16,185,129,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="65" y="170" textAnchor="middle" className={`font-bold text-[11px] font-sans ${selStep === 2 && isConditionTrue ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>Jalur Aksi A</text>
 
                   {/* Branch Action Right (Aksi Cabang B) */}
                   <rect x="225" y="150" width="100" height="32" rx="6" 
-                    className={`transition-all duration-300 ${selStep === 2 && !isConditionTrue ? 'fill-rose-600 stroke-white filter drop-shadow-[0_0_15px_rgba(244,63,94,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="275" y="170" textAnchor="middle" className="fill-white font-bold text-[11px] font-sans">Jalur Aksi B</text>
+                    className={`transition-all duration-300 ${selStep === 2 && !isConditionTrue ? 'fill-rose-600 stroke-white filter drop-shadow-[0_0_15px_rgba(244,63,94,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="275" y="170" textAnchor="middle" className={`font-bold text-[11px] font-sans ${selStep === 2 && !isConditionTrue ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>Jalur Aksi B</text>
 
                   {/* Connector Merging Back */}
                   <path d="M 65 182 L 65 230 L 170 230" fill="none"
-                    className={`transition-all duration-300 ${selStep >= 3 && isConditionTrue ? 'stroke-violet-400 stroke-[2]' : 'stroke-slate-700 stroke-[1.5]'}`} />
+                    className={`transition-all duration-300 ${selStep >= 3 && isConditionTrue ? 'stroke-violet-400 stroke-[2]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} />
                   <path d="M 275 182 L 275 230 L 170 230" fill="none"
-                    className={`transition-all duration-300 ${selStep >= 3 && !isConditionTrue ? 'stroke-violet-400 stroke-[2]' : 'stroke-slate-700 stroke-[1.5]'}`} />
+                    className={`transition-all duration-300 ${selStep >= 3 && !isConditionTrue ? 'stroke-violet-400 stroke-[2]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} />
 
                   {/* Flow to STOP */}
                   <line x1="170" y1="230" x2="170" y2="260" 
-                    className={`transition-all duration-300 ${selStep >= 3 ? 'stroke-violet-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${selStep >= 3 ? 'stroke-violet-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={selStep >= 3 ? 'url(#arrow-purple)' : 'url(#arrow-dim-branch)'} />
 
                   {/* STOP */}
                   <rect x="120" y="264" width="100" height="26" rx="13" 
-                    className={`transition-all duration-300 ${selStep === 3 ? 'fill-violet-600 stroke-white filter drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="170" y="281" textAnchor="middle" className="fill-white font-bold text-xs font-sans">STOP</text>
+                    className={`transition-all duration-300 ${selStep === 3 ? 'fill-violet-600 stroke-white filter drop-shadow-[0_0_10px_rgba(139,92,246,0.8)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="170" y="281" textAnchor="middle" className={`font-bold text-xs font-sans ${selStep === 3 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>STOP</text>
                 </svg>
               </div>
             )}
@@ -525,18 +525,18 @@ export default function AnimatedBasicStructures() {
                       <polygon points="0 1, 8 4, 0 7" fill="#f43f5e" />
                     </marker>
                     <marker id="arrow-dim-loop" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
-                      <polygon points="0 1, 8 4, 0 7" fill="#475569" />
+                      <polygon points="0 1, 8 4, 0 7" fill="#64748b" />
                     </marker>
                   </defs>
 
                   {/* START */}
                   <rect x="130" y="8" width="90" height="26" rx="13" 
-                    className={`transition-all duration-300 ${((loopMode === 'counted' && forStep >= 1) || (loopMode === 'conditional' && whileStep >= 1)) ? 'fill-emerald-600 stroke-white filter drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="175" y="25" textAnchor="middle" className="fill-white font-bold text-xs font-sans">START</text>
+                    className={`transition-all duration-300 ${((loopMode === 'counted' && forStep >= 1) || (loopMode === 'conditional' && whileStep >= 1)) ? 'fill-emerald-600 stroke-white filter drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="175" y="25" textAnchor="middle" className={`font-bold text-xs font-sans ${((loopMode === 'counted' && forStep >= 1) || (loopMode === 'conditional' && whileStep >= 1)) ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>START</text>
 
                   {/* Flow to Looping Symbol */}
                   <line x1="175" y1="34" x2="175" y2="68" 
-                    className={`transition-all duration-300 ${((loopMode === 'counted' && forStep >= 1) || (loopMode === 'conditional' && whileStep >= 1)) ? 'stroke-emerald-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                    className={`transition-all duration-300 ${((loopMode === 'counted' && forStep >= 1) || (loopMode === 'conditional' && whileStep >= 1)) ? 'stroke-emerald-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                     markerEnd={((loopMode === 'counted' && forStep >= 1) || (loopMode === 'conditional' && whileStep >= 1)) ? 'url(#arrow-emerald-loop)' : 'url(#arrow-dim-loop)'} />
 
                   {/* ========================================================================= */}
@@ -546,31 +546,31 @@ export default function AnimatedBasicStructures() {
                     <>
                       {/* Hexagon Symbol */}
                       <polygon points="100,92 122,72 228,72 250,92 228,112 122,112" 
-                        className={`transition-all duration-300 ${forStep === 1 ? 'fill-slate-950 stroke-emerald-400 stroke-2 filter drop-shadow-[0_0_18px_rgba(16,185,129,0.7)]' : 'fill-slate-950 stroke-slate-700 stroke-2'}`} />
-                      <text x="175" y="96" textAnchor="middle" className="fill-emerald-300 font-bold text-xs font-mono">for i = 1 to {forTarget}</text>
+                        className={`transition-all duration-300 ${forStep === 1 ? 'fill-white dark:fill-slate-950 stroke-emerald-500 stroke-2 filter drop-shadow-[0_0_18px_rgba(16,185,129,0.7)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700 stroke-2'}`} />
+                      <text x="175" y="96" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-300 font-bold text-xs font-mono">for i = 1 to {forTarget}</text>
 
                       {/* TRUE Path */}
                       <line x1="175" y1="112" x2="175" y2="150" 
-                        className={`transition-all duration-300 ${forStep >= 2 && forStep < 4 ? 'stroke-emerald-400 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                        className={`transition-all duration-300 ${forStep >= 2 && forStep < 4 ? 'stroke-emerald-400 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                         markerEnd={forStep >= 2 && forStep < 4 ? 'url(#arrow-emerald-loop)' : 'url(#arrow-dim-loop)'} />
-                      <text x="190" y="136" textAnchor="start" className="fill-emerald-400 text-[10px] font-bold font-mono">TRUE</text>
+                      <text x="190" y="136" textAnchor="start" className="fill-emerald-600 dark:fill-emerald-400 text-[10px] font-bold font-mono">TRUE</text>
 
                       {/* Action Body */}
                       <rect x="95" y="155" width="160" height="34" rx="6" 
-                        className={`transition-all duration-300 ${forStep === 2 ? 'fill-emerald-600 stroke-white filter drop-shadow-[0_0_15px_rgba(16,185,129,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                      <text x="175" y="176" textAnchor="middle" className="fill-white font-bold text-xs font-sans">Eksekusi Tugas Berulang</text>
+                        className={`transition-all duration-300 ${forStep === 2 ? 'fill-emerald-600 stroke-white filter drop-shadow-[0_0_15px_rgba(16,185,129,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                      <text x="175" y="176" textAnchor="middle" className={`font-bold text-xs font-sans ${forStep === 2 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>Eksekusi Tugas Berulang</text>
 
                       {/* Loop Back Arc */}
                       <path d="M 175 189 L 175 225 L 45 225 L 45 92 L 93 92" fill="none"
-                        className={`transition-all duration-300 ${forStep === 3 ? 'stroke-emerald-400 stroke-[2.5] stroke-dasharray-[5_3]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                        className={`transition-all duration-300 ${forStep === 3 ? 'stroke-emerald-400 stroke-[2.5] stroke-dasharray-[5_3]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                         markerEnd={forStep === 3 ? 'url(#arrow-emerald-loop)' : 'url(#arrow-dim-loop)'} />
-                      <text x="32" y="165" textAnchor="middle" transform="rotate(-90 32 165)" className="fill-emerald-400 text-[10px] font-bold font-sans">Putar Balik</text>
+                      <text x="32" y="165" textAnchor="middle" transform="rotate(-90 32 165)" className="fill-emerald-600 dark:fill-emerald-400 text-[10px] font-bold font-sans">Putar Balik</text>
 
                       {/* FALSE / Selesai Path */}
                       <path d="M 250 92 L 305 92 L 305 255" fill="none"
-                        className={`transition-all duration-300 ${forStep === 4 ? 'stroke-rose-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                        className={`transition-all duration-300 ${forStep === 4 ? 'stroke-rose-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                         markerEnd={forStep === 4 ? 'url(#arrow-rose-loop)' : 'url(#arrow-dim-loop)'} />
-                      <text x="275" y="84" textAnchor="middle" className={`text-[10px] font-extrabold font-mono transition-colors ${forStep === 4 ? 'fill-rose-400' : 'fill-slate-500'}`}>SELESAI</text>
+                      <text x="275" y="84" textAnchor="middle" className={`text-[10px] font-extrabold font-mono transition-colors ${forStep === 4 ? 'fill-rose-500 dark:fill-rose-400' : 'fill-slate-400 dark:fill-slate-500'}`}>SELESAI</text>
                     </>
                   ) : (
                     <>
@@ -580,46 +580,46 @@ export default function AnimatedBasicStructures() {
 
                       {/* Diamond Symbol */}
                       <polygon points="175,62 245,95 175,128 105,95" 
-                        className={`transition-all duration-300 ${whileStep === 1 ? 'fill-slate-950 stroke-emerald-400 stroke-2 filter drop-shadow-[0_0_18px_rgba(16,185,129,0.7)]' : 'fill-slate-950 stroke-slate-700 stroke-2'}`} />
-                      <text x="175" y="99" textAnchor="middle" className="fill-emerald-300 font-bold text-[11px] font-mono">Air &lt; 100%?</text>
+                        className={`transition-all duration-300 ${whileStep === 1 ? 'fill-white dark:fill-slate-950 stroke-emerald-500 stroke-2 filter drop-shadow-[0_0_18px_rgba(16,185,129,0.7)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700 stroke-2'}`} />
+                      <text x="175" y="99" textAnchor="middle" className="fill-emerald-600 dark:fill-emerald-300 font-bold text-[11px] font-mono">Air &lt; 100%?</text>
 
                       {/* TRUE Path */}
                       <line x1="175" y1="128" x2="175" y2="155" 
-                        className={`transition-all duration-300 ${whileStep >= 2 && whileStep < 4 ? 'stroke-emerald-400 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                        className={`transition-all duration-300 ${whileStep >= 2 && whileStep < 4 ? 'stroke-emerald-400 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                         markerEnd={whileStep >= 2 && whileStep < 4 ? 'url(#arrow-emerald-loop)' : 'url(#arrow-dim-loop)'} />
-                      <text x="190" y="145" textAnchor="start" className="fill-emerald-400 text-[10px] font-bold font-mono">TRUE (Isi)</text>
+                      <text x="190" y="145" textAnchor="start" className="fill-emerald-600 dark:fill-emerald-400 text-[10px] font-bold font-mono">TRUE (Isi)</text>
 
                       {/* Action Body: Pompa Air */}
                       <rect x="90" y="160" width="170" height="34" rx="6" 
-                        className={`transition-all duration-300 ${whileStep === 2 ? 'fill-cyan-600 stroke-white filter drop-shadow-[0_0_15px_rgba(6,182,212,0.9)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                      <text x="175" y="181" textAnchor="middle" className="fill-white font-bold text-xs font-sans">Pompa Isi Air (+25%)</text>
+                        className={`transition-all duration-300 ${whileStep === 2 ? 'fill-cyan-600 stroke-white filter drop-shadow-[0_0_15px_rgba(6,182,212,0.9)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                      <text x="175" y="181" textAnchor="middle" className={`font-bold text-xs font-sans ${whileStep === 2 ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>Pompa Isi Air (+25%)</text>
 
                       {/* Loop Back Arc (Returns into Diamond at 105, 95) */}
                       <path d="M 175 194 L 175 225 L 45 225 L 45 95 L 98 95" fill="none"
-                        className={`transition-all duration-300 ${whileStep === 3 ? 'stroke-emerald-400 stroke-[2.5] stroke-dasharray-[5_3]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                        className={`transition-all duration-300 ${whileStep === 3 ? 'stroke-emerald-400 stroke-[2.5] stroke-dasharray-[5_3]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                         markerEnd={whileStep === 3 ? 'url(#arrow-emerald-loop)' : 'url(#arrow-dim-loop)'} />
-                      <text x="32" y="165" textAnchor="middle" transform="rotate(-90 32 165)" className="fill-emerald-400 text-[10px] font-bold font-sans">Cek Ulang</text>
+                      <text x="32" y="165" textAnchor="middle" transform="rotate(-90 32 165)" className="fill-emerald-600 dark:fill-emerald-400 text-[10px] font-bold font-sans">Cek Ulang</text>
 
                       {/* FALSE Path (Tangki Penuh -> STOP) */}
                       <path d="M 245 95 L 305 95 L 305 255" fill="none"
-                        className={`transition-all duration-300 ${whileStep === 4 ? 'stroke-rose-500 stroke-[2.5]' : 'stroke-slate-700 stroke-[1.5]'}`} 
+                        className={`transition-all duration-300 ${whileStep === 4 ? 'stroke-rose-500 stroke-[2.5]' : 'stroke-slate-300 dark:stroke-slate-700 stroke-[1.5]'}`} 
                         markerEnd={whileStep === 4 ? 'url(#arrow-rose-loop)' : 'url(#arrow-dim-loop)'} />
-                      <text x="275" y="87" textAnchor="middle" className={`text-[10px] font-extrabold font-mono transition-colors ${whileStep === 4 ? 'fill-rose-400' : 'fill-slate-500'}`}>FALSE (Penuh)</text>
+                      <text x="275" y="87" textAnchor="middle" className={`text-[10px] font-extrabold font-mono transition-colors ${whileStep === 4 ? 'fill-rose-500 dark:fill-rose-400' : 'fill-slate-400 dark:fill-slate-500'}`}>FALSE (Penuh)</text>
                     </>
                   )}
 
                   {/* STOP */}
                   <rect x="260" y="260" width="90" height="26" rx="13" 
-                    className={`transition-all duration-300 ${((loopMode === 'counted' && forStep === 4) || (loopMode === 'conditional' && whileStep === 4)) ? 'fill-rose-600 stroke-white filter drop-shadow-[0_0_12px_rgba(244,63,94,0.8)]' : 'fill-slate-950 stroke-slate-700'}`} strokeWidth="2" />
-                  <text x="305" y="277" textAnchor="middle" className="fill-white font-bold text-xs font-sans">STOP</text>
+                    className={`transition-all duration-300 ${((loopMode === 'counted' && forStep === 4) || (loopMode === 'conditional' && whileStep === 4)) ? 'fill-rose-600 stroke-white filter drop-shadow-[0_0_12px_rgba(244,63,94,0.8)]' : 'fill-white dark:fill-slate-950 stroke-slate-300 dark:stroke-slate-700'}`} strokeWidth="2" />
+                  <text x="305" y="277" textAnchor="middle" className={`font-bold text-xs font-sans ${((loopMode === 'counted' && forStep === 4) || (loopMode === 'conditional' && whileStep === 4)) ? 'fill-white' : 'fill-slate-700 dark:fill-slate-300'}`}>STOP</text>
                 </svg>
               </div>
             )}
 
             {/* Bottom Realtime Status Text */}
-            <div className="w-full mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-300 font-medium">
+            <div className="w-full mt-3 pt-2.5 border-t border-border/60 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300 font-medium">
               <span className="font-sans">Status Aliran:</span>
-              <span className="font-bold font-mono text-slate-200">
+              <span className="font-bold font-mono text-slate-800 dark:text-slate-200">
                 {activeTab === 'sequential' && (
                   seqStep === 0 ? "Siap menjalankan aliran linear..." :
                   seqStep === 1 ? "1. Aliran data masuk ke proses input" :
@@ -660,9 +660,9 @@ export default function AnimatedBasicStructures() {
             
             {/* Selection Branch Trigger */}
             {activeTab === 'selection' && (
-              <div className="bg-slate-900/90 border border-violet-500/30 rounded-2xl p-4 shadow-md space-y-2">
-                <span className="text-xs font-bold text-violet-300 flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5 text-violet-400" />
+              <div className="bg-slate-50 dark:bg-slate-900/90 border border-violet-500/30 rounded-2xl p-4 shadow-sm dark:shadow-md space-y-2">
+                <span className="text-xs font-bold text-violet-700 dark:text-violet-300 flex items-center gap-1.5">
+                  <Sliders className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
                   Uji Pilihan Cabang:
                 </span>
                 <div className="flex gap-2">
@@ -675,7 +675,7 @@ export default function AnimatedBasicStructures() {
                     className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       isConditionTrue 
                         ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold' 
-                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-foreground dark:hover:text-slate-200 border border-border/60 dark:border-transparent'
                     }`}
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
@@ -690,7 +690,7 @@ export default function AnimatedBasicStructures() {
                     className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       !isConditionTrue 
                         ? 'bg-rose-500 text-white shadow-md font-extrabold' 
-                        : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-foreground dark:hover:text-slate-200 border border-border/60 dark:border-transparent'
                     }`}
                   >
                     <AlertCircle className="w-3.5 h-3.5" />
@@ -702,14 +702,14 @@ export default function AnimatedBasicStructures() {
 
             {/* Looping Mode & Parameter Trigger */}
             {activeTab === 'looping' && (
-              <div className="bg-slate-900/90 border border-emerald-500/30 rounded-2xl p-4 shadow-md space-y-3">
+              <div className="bg-slate-50 dark:bg-slate-900/90 border border-emerald-500/30 rounded-2xl p-4 shadow-sm dark:shadow-md space-y-3">
                 
                 {/* Mode Selector: FOR vs WHILE */}
                 <div>
-                  <span className="text-[11px] font-bold text-slate-300 block mb-1.5 font-sans">
+                  <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1.5 font-sans">
                     Pilih Jenis Perulangan:
                   </span>
-                  <div className="grid grid-cols-2 gap-1.5 bg-slate-950 p-1 rounded-xl border border-slate-800">
+                  <div className="grid grid-cols-2 gap-1.5 bg-white dark:bg-slate-950 p-1 rounded-xl border border-border dark:border-slate-800">
                     <button
                       onClick={() => {
                         setLoopMode('counted');
@@ -718,7 +718,7 @@ export default function AnimatedBasicStructures() {
                       className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
                         loopMode === 'counted' 
                           ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold' 
-                          : 'text-slate-300 hover:text-white'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-foreground dark:hover:text-white'
                       }`}
                     >
                       <span>⬡ 1. Jumlah Pasti (FOR)</span>
@@ -732,7 +732,7 @@ export default function AnimatedBasicStructures() {
                       className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer ${
                         loopMode === 'conditional' 
                           ? 'bg-emerald-500 text-slate-950 shadow-md font-extrabold' 
-                          : 'text-slate-300 hover:text-white'
+                          : 'text-slate-600 dark:text-slate-300 hover:text-foreground dark:hover:text-white'
                       }`}
                     >
                       <span>🔷 2. Bersyarat (WHILE)</span>
@@ -744,11 +744,11 @@ export default function AnimatedBasicStructures() {
                 {loopMode === 'counted' ? (
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-xs font-bold text-emerald-300 flex items-center gap-1">
-                        <Repeat className="w-3.5 h-3.5 text-emerald-400" />
+                      <span className="text-xs font-bold text-emerald-700 dark:text-emerald-300 flex items-center gap-1">
+                        <Repeat className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                         Target Putaran (Pasti):
                       </span>
-                      <span className="text-xs font-extrabold font-mono bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/40">
+                      <span className="text-xs font-extrabold font-mono bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/40">
                         {forTarget} Kali
                       </span>
                     </div>
@@ -763,7 +763,7 @@ export default function AnimatedBasicStructures() {
                           className={`flex-1 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                             forTarget === num 
                               ? 'bg-emerald-500 text-slate-950 font-extrabold shadow-md' 
-                              : 'bg-slate-800 text-slate-300 hover:text-white'
+                              : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-foreground dark:hover:text-white border border-border/60 dark:border-transparent'
                           }`}
                         >
                           {num}&times;
@@ -775,21 +775,21 @@ export default function AnimatedBasicStructures() {
                   /* MODE 2: WHILE Param -> Water Tank Level Simulator */
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-cyan-300 flex items-center gap-1">
-                        <Droplets className="w-3.5 h-3.5 text-cyan-400" />
+                      <span className="text-xs font-bold text-cyan-700 dark:text-cyan-300 flex items-center gap-1">
+                        <Droplets className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                         Level Air Saat Ini:
                       </span>
                       <span className={`text-xs font-extrabold font-mono px-2 py-0.5 rounded border ${
                         currentWater < 100 
-                          ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40' 
-                          : 'bg-rose-500/20 text-rose-400 border-rose-500/40'
+                          ? 'bg-cyan-500/20 text-cyan-700 dark:text-cyan-400 border-cyan-500/40' 
+                          : 'bg-rose-500/20 text-rose-700 dark:text-rose-400 border-rose-500/40'
                       }`}>
                         {currentWater}% {currentWater >= 100 ? '(Penuh)' : '(Belum Penuh)'}
                       </span>
                     </div>
 
                     {/* Progress Bar of Water Tank */}
-                    <div className="w-full bg-slate-950 h-3 rounded-full border border-slate-800 overflow-hidden p-0.5">
+                    <div className="w-full bg-slate-200 dark:bg-slate-950 h-3 rounded-full border border-border dark:border-slate-800 overflow-hidden p-0.5">
                       <motion.div 
                         className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-500"
                         style={{ width: `${currentWater}%` }}
@@ -806,7 +806,7 @@ export default function AnimatedBasicStructures() {
                           setIsPlaying(false);
                         }}
                         className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                          initialWater === 0 ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:text-white'
+                          initialWater === 0 ? 'bg-cyan-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-foreground dark:hover:text-white border border-border/60 dark:border-transparent'
                         }`}
                       >
                         Mulai 0%
@@ -819,7 +819,7 @@ export default function AnimatedBasicStructures() {
                           setIsPlaying(false);
                         }}
                         className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                          initialWater === 50 ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-300 hover:text-white'
+                          initialWater === 50 ? 'bg-cyan-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-foreground dark:hover:text-white border border-border/60 dark:border-transparent'
                         }`}
                       >
                         Mulai 50%
@@ -832,7 +832,7 @@ export default function AnimatedBasicStructures() {
                           setIsPlaying(false);
                         }}
                         className={`flex-1 py-1 px-1.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
-                          initialWater === 100 ? 'bg-rose-600 text-white' : 'bg-slate-800 text-slate-300 hover:text-white'
+                          initialWater === 100 ? 'bg-rose-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-foreground dark:hover:text-white border border-border/60 dark:border-transparent'
                         }`}
                         title="Jika mulai 100%, WHILE akan berputar 0 kali!"
                       >
@@ -847,23 +847,22 @@ export default function AnimatedBasicStructures() {
 
             {/* Three Pillars of Understanding (Inti Konsep, Karakteristik, Analogi) */}
             <div 
-              className={`bg-slate-900/95 border-2 rounded-2xl p-4 md:p-5 shadow-md space-y-3.5 text-xs text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] transition-all duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:brightness-110 antialiased ${
+              className={`bg-white dark:bg-slate-900/95 border-2 rounded-2xl p-4 md:p-5 shadow-sm dark:shadow-md space-y-3.5 text-xs md:text-sm text-slate-900 dark:text-slate-100 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] dark:hover:brightness-110 ${
                 activeTab === 'sequential' 
-                  ? 'border-slate-800 hover:border-blue-500/80 hover:shadow-[0_25px_60px_rgba(59,130,246,0.3)]' 
+                  ? 'border-border dark:border-slate-800 hover:border-blue-500/80 hover:shadow-blue-500/10 dark:hover:shadow-[0_25px_60px_rgba(59,130,246,0.3)]' 
                   : activeTab === 'selection' 
-                    ? 'border-slate-800 hover:border-violet-500/80 hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]' 
-                    : 'border-slate-800 hover:border-emerald-500/80 hover:shadow-[0_25px_60px_rgba(16,185,129,0.3)]'
+                    ? 'border-border dark:border-slate-800 hover:border-violet-500/80 hover:shadow-violet-500/10 dark:hover:shadow-[0_25px_60px_rgba(168,85,247,0.3)]' 
+                    : 'border-border dark:border-slate-800 hover:border-emerald-500/80 hover:shadow-emerald-500/10 dark:hover:shadow-[0_25px_60px_rgba(16,185,129,0.3)]'
               }`}
-              style={{ textRendering: "geometricPrecision" }}
             >
               
               {/* Inti Aliran Data */}
               <div>
-                <h5 className="font-bold text-slate-100 flex items-center gap-1.5 mb-1">
-                  <Compass className="w-4 h-4 text-cyan-400" />
+                <h5 className="font-bold text-foreground dark:text-slate-100 flex items-center gap-1.5 mb-1">
+                  <Compass className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
                   Inti Aliran Data:
                 </h5>
-                <p className="text-slate-300 leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
                   {activeTab === 'sequential' && "Data dieksekusi langkah demi langkah secara lurus dari awal sampai akhir. Tidak ada baris yang dilewati dan tidak ada instruksi yang melompat."}
                   {activeTab === 'selection' && "Program memiliki jalur bercabang. Aliran data mengevaluasi suatu syarat logika dan hanya mengeksekusi SATU jalur yang tepat."}
                   {activeTab === 'looping' && (
@@ -875,12 +874,12 @@ export default function AnimatedBasicStructures() {
               </div>
 
               {/* Ciri Kunci & Simbol Baku */}
-              <div className="pt-2 border-t border-slate-800/80">
-                <h5 className="font-bold text-slate-100 flex items-center gap-1.5 mb-1">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <div className="pt-2 border-t border-border/60 dark:border-slate-800/80">
+                <h5 className="font-bold text-foreground dark:text-slate-100 flex items-center gap-1.5 mb-1">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   Standar Simbol Flowchart:
                 </h5>
-                <ul className="text-slate-300 space-y-1 pl-4 list-disc leading-relaxed">
+                <ul className="text-slate-600 dark:text-slate-300 space-y-1 pl-4 list-disc leading-relaxed">
                   {activeTab === 'sequential' && (
                     <>
                       <li>Hanya memiliki <strong>1 pintu masuk</strong> dan <strong>1 pintu keluar</strong>.</li>
@@ -910,12 +909,12 @@ export default function AnimatedBasicStructures() {
               </div>
 
               {/* Analogi Nyata */}
-              <div className="pt-2 border-t border-slate-800/80">
-                <h5 className="font-bold text-slate-100 flex items-center gap-1.5 mb-1">
-                  <Coffee className="w-4 h-4 text-amber-400" />
+              <div className="pt-2 border-t border-border/60 dark:border-slate-800/80">
+                <h5 className="font-bold text-foreground dark:text-slate-100 flex items-center gap-1.5 mb-1">
+                  <Coffee className="w-4 h-4 text-amber-600 dark:text-amber-400" />
                   Analogi Sederhana di Kehidupan:
                 </h5>
-                <p className="text-slate-300 italic leading-relaxed">
+                <p className="text-slate-600 dark:text-slate-300 italic leading-relaxed">
                   {activeTab === 'sequential' && '"Resep Membuat Kopi: Masukkan bubuk -> Tuang air panas -> Aduk. Harus urut dari atas ke bawah."'}
                   {activeTab === 'selection' && '"Persimpangan Rel Kereta: Kereta hanya bisa memilih jalur rel kiri ATAU kanan, tidak bisa keduanya."'}
                   {activeTab === 'looping' && (

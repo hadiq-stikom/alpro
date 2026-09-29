@@ -339,7 +339,7 @@ export default function ProgramEngineeringMethodology() {
   };
 
   // --- TAHAP 2: Blueprint View State ---
-  const [designBlueprintView, setDesignBlueprintView] = useState<'naratif' | 'flowchart' | 'pseudocode'>('pseudocode');
+  const [designBlueprintView, setDesignBlueprintView] = useState<'naratif' | 'flowchart' | 'pseudocode'>('naratif');
 
   // --- TAHAP 3: Rosetta Transcriber State ---
   const [activeRosettaLine, setActiveRosettaLine] = useState<number>(0);
@@ -553,7 +553,20 @@ export default function ProgramEngineeringMethodology() {
               Prinsip 70/30: <span className="text-indigo-600 dark:text-indigo-400">Think First</span>, Code Later
             </h3>
             <p className="text-slate-700 dark:text-slate-300 text-sm md:text-base leading-relaxed max-w-3xl font-medium">
-              Kesalahan fatal yang paling sering menjebak pemrogram pemula adalah <em>terburu-buru membuka editor dan langsung mengetik baris kode</em>. Di era rekayasa modern, menulis sintaksis kode adalah pekerjaan hilir yang mekanis. Nilai intelektual sejati seorang analis dan pemrogram terletak pada **kematangan analisis hulu**: menemukan persamaan, membedah variabel beserta tipe datanya, dan merancang arsitektur alur algoritma sebelum satu baris kode pun dieksekusi.
+              <strong className="text-rose-600 dark:text-rose-400 font-extrabold">Kesalahan fatal</strong> yang paling sering menjebak pemrogram pemula adalah{' '}
+              <span className="bg-rose-500/10 dark:bg-rose-950/50 text-rose-700 dark:text-rose-300 px-2 py-0.5 rounded-md border border-rose-500/30 font-semibold italic">
+                terburu-buru membuka editor dan langsung mengetik baris kode
+              </span>. Di era rekayasa modern, menulis sintaksis kode adalah{' '}
+              <span className="text-slate-900 dark:text-slate-100 font-bold underline decoration-slate-400/60 dark:decoration-slate-500/60 underline-offset-4">
+                pekerjaan hilir yang mekanis
+              </span>. Nilai intelektual sejati seorang analis dan pemrogram terletak pada{' '}
+              <span className="bg-indigo-500/15 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 px-2.5 py-0.5 rounded-md border border-indigo-500/30 font-black shadow-xs">
+                kematangan analisis hulu
+              </span>
+              : <strong className="text-slate-950 dark:text-white font-bold">menemukan persamaan</strong>,{' '}
+              <strong className="text-slate-950 dark:text-white font-bold">membedah variabel beserta tipe datanya</strong>, dan{' '}
+              <strong className="text-slate-950 dark:text-white font-bold">merancang arsitektur alur algoritma</strong>{' '}
+              sebelum <strong className="text-amber-600 dark:text-amber-400 font-extrabold underline decoration-amber-500/60 decoration-2 underline-offset-2">satu baris kode pun dieksekusi</strong>.
             </p>
           </div>
           <div className="shrink-0 flex items-center justify-center">
@@ -575,43 +588,79 @@ export default function ProgramEngineeringMethodology() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-border/50">
           <div 
             onClick={() => setActiveStage(1)}
-            className={`p-4 rounded-xl bg-card border-2 border-indigo-500/40 space-y-1.5 relative overflow-hidden transition-all duration-300 ease-out hover:scale-[1.05] hover:z-30 hover:shadow-xl hover:border-indigo-600 cursor-pointer ${activeStage === 1 ? 'ring-2 ring-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/20' : ''}`}
+            className={`p-4 rounded-xl bg-card border-2 border-indigo-500/40 space-y-1.5 relative z-10 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center lg:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-indigo-600 hover:brightness-105 ${activeStage === 1 ? 'ring-2 ring-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/20' : ''}`}
           >
             <div className="text-xs font-mono font-black text-indigo-700 dark:text-indigo-400 uppercase tracking-wider">FASE 1 (HULU)</div>
             <div className="font-extrabold text-base text-foreground flex items-center gap-1.5">
               <Brain className="w-4 h-4 text-indigo-700 dark:text-indigo-400" /> Analisis Masalah
             </div>
-            <p className="text-xs md:text-sm text-slate-800 dark:text-slate-200 font-semibold leading-snug">Mencari rumus/persamaan &amp; membedah tipe data tiap variabel.</p>
+            <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+              Mencari{' '}
+              <span className="bg-indigo-500/15 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded border border-indigo-500/30">
+                rumus / persamaan
+              </span>{' '}
+              &amp; membedah{' '}
+              <strong className="text-slate-950 dark:text-white font-extrabold underline decoration-indigo-500/50 underline-offset-2">
+                tipe data tiap variabel
+              </strong>.
+            </p>
           </div>
           <div 
             onClick={() => setActiveStage(2)}
-            className={`p-4 rounded-xl bg-card border-2 border-amber-500/40 space-y-1.5 relative overflow-hidden transition-all duration-300 ease-out hover:scale-[1.05] hover:z-30 hover:shadow-xl hover:border-amber-600 cursor-pointer ${activeStage === 2 ? 'ring-2 ring-amber-600 bg-amber-50/40 dark:bg-amber-950/20' : ''}`}
+            className={`p-4 rounded-xl bg-card border-2 border-amber-500/40 space-y-1.5 relative z-10 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-600 hover:brightness-105 ${activeStage === 2 ? 'ring-2 ring-amber-600 bg-amber-50/40 dark:bg-amber-950/20' : ''}`}
           >
             <div className="text-xs font-mono font-black text-amber-800 dark:text-amber-400 uppercase tracking-wider">FASE 2 (ARSITEKTUR)</div>
             <div className="font-extrabold text-base text-foreground flex items-center gap-1.5">
               <Workflow className="w-4 h-4 text-amber-700 dark:text-amber-400" /> Desain Algoritma
             </div>
-            <p className="text-xs md:text-sm text-slate-800 dark:text-slate-200 font-semibold leading-snug">Merangkai alur bebas ambiguitas (Naratif, Flowchart, Pseudocode).</p>
+            <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+              Merangkai{' '}
+              <span className="bg-amber-500/15 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-bold px-1.5 py-0.5 rounded border border-amber-500/30">
+                alur bebas ambiguitas
+              </span>{' '}
+              (
+              <strong className="text-slate-950 dark:text-white font-bold">Naratif</strong>,{' '}
+              <strong className="text-slate-950 dark:text-white font-bold">Flowchart</strong>,{' '}
+              <strong className="text-slate-950 dark:text-white font-bold">Pseudocode</strong>
+              ).
+            </p>
           </div>
           <div 
             onClick={() => setActiveStage(3)}
-            className={`p-4 rounded-xl bg-card border-2 border-cyan-500/40 space-y-1.5 relative overflow-hidden transition-all duration-300 ease-out hover:scale-[1.05] hover:z-30 hover:shadow-xl hover:border-cyan-600 cursor-pointer ${activeStage === 3 ? 'ring-2 ring-cyan-600 bg-cyan-50/40 dark:bg-cyan-950/20' : ''}`}
+            className={`p-4 rounded-xl bg-card border-2 border-cyan-500/40 space-y-1.5 relative z-10 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-600 hover:brightness-105 ${activeStage === 3 ? 'ring-2 ring-cyan-600 bg-cyan-50/40 dark:bg-cyan-950/20' : ''}`}
           >
             <div className="text-xs font-mono font-black text-cyan-800 dark:text-cyan-400 uppercase tracking-wider">FASE 3 (HILIR)</div>
             <div className="font-extrabold text-base text-foreground flex items-center gap-1.5">
               <Code2 className="w-4 h-4 text-cyan-700 dark:text-cyan-400" /> Implementasi (Coding)
             </div>
-            <p className="text-xs md:text-sm text-slate-800 dark:text-slate-200 font-semibold leading-snug">Menerjemahkan alur ke sintaks bahasa pemrograman resmi.</p>
+            <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+              Menerjemahkan alur ke{' '}
+              <span className="bg-cyan-500/15 dark:bg-cyan-950/60 text-cyan-800 dark:text-cyan-300 font-bold px-1.5 py-0.5 rounded border border-cyan-500/30">
+                sintaks resmi
+              </span>{' '}
+              <strong className="text-slate-950 dark:text-white font-extrabold underline decoration-cyan-500/50 underline-offset-2">
+                bahasa pemrograman
+              </strong>.
+            </p>
           </div>
           <div 
             onClick={() => setActiveStage(4)}
-            className={`p-4 rounded-xl bg-card border-2 border-emerald-500/40 space-y-1.5 relative overflow-hidden transition-all duration-300 ease-out hover:scale-[1.05] hover:z-30 hover:shadow-xl hover:border-emerald-600 cursor-pointer ${activeStage === 4 ? 'ring-2 ring-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20' : ''}`}
+            className={`p-4 rounded-xl bg-card border-2 border-emerald-500/40 space-y-1.5 relative z-10 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center lg:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-600 hover:brightness-105 ${activeStage === 4 ? 'ring-2 ring-emerald-600 bg-emerald-50/40 dark:bg-emerald-950/20' : ''}`}
           >
             <div className="text-xs font-mono font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-wider">FASE 4 (VALIDASI)</div>
             <div className="font-extrabold text-base text-foreground flex items-center gap-1.5">
               <CheckSquare className="w-4 h-4 text-emerald-700 dark:text-emerald-400" /> Pengujian (Testing)
             </div>
-            <p className="text-xs md:text-sm text-slate-800 dark:text-slate-200 font-semibold leading-snug">Menguji kasus normal, batas ekstrem, dan mendeteksi logic error.</p>
+            <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+              Menguji{' '}
+              <strong className="text-slate-950 dark:text-white font-bold">kasus normal</strong>,{' '}
+              <span className="bg-emerald-500/15 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold px-1.5 py-0.5 rounded border border-emerald-500/30">
+                batas ekstrem
+              </span>, dan mendeteksi{' '}
+              <span className="bg-rose-500/15 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 font-bold px-1.5 py-0.5 rounded border border-rose-500/30">
+                logic error
+              </span>.
+            </p>
           </div>
         </div>
       </div>
@@ -1071,33 +1120,63 @@ export default function ProgramEngineeringMethodology() {
 
               {/* 3 Pilar Desain Kartu */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-5 bg-card rounded-2xl border-2 border-border space-y-2.5 shadow-sm">
+                <div 
+                  className="p-5 bg-card rounded-2xl border-2 border-border space-y-2.5 shadow-sm relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/80 hover:brightness-105"
+                >
                   <div className="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-amber-600 text-white dark:bg-amber-500/30 dark:text-amber-200 flex items-center justify-center font-mono font-black text-xs shadow-sm">1</span>
                     Agnostik Bahasa (Universal)
                   </div>
-                  <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-semibold">
-                    Tidak terikat sintaks Python, C++, atau Java. Algoritma yang benar bersifat abadi, meski bahasa pemrograman berganti dekade demi dekade.
+                  <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                    <strong className="text-slate-950 dark:text-white font-bold">Tidak terikat sintaks</strong>{' '}
+                    <code className="text-[11px] font-mono font-bold bg-amber-500/10 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/20">Python</code>,{' '}
+                    <code className="text-[11px] font-mono font-bold bg-amber-500/10 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/20">C++</code>, atau{' '}
+                    <code className="text-[11px] font-mono font-bold bg-amber-500/10 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded border border-amber-500/20">Java</code>. Algoritma yang benar{' '}
+                    <span className="text-emerald-700 dark:text-emerald-400 font-extrabold underline decoration-emerald-500/50 underline-offset-2">
+                      bersifat abadi
+                    </span>, meski bahasa pemrograman berganti <strong className="text-slate-950 dark:text-white font-bold">dekade demi dekade</strong>.
                   </p>
                 </div>
 
-                <div className="p-5 bg-card rounded-2xl border-2 border-border space-y-2.5 shadow-sm">
+                <div 
+                  className="p-5 bg-card rounded-2xl border-2 border-border space-y-2.5 shadow-sm relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/80 hover:brightness-105"
+                >
                   <div className="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-amber-600 text-white dark:bg-amber-500/30 dark:text-amber-200 flex items-center justify-center font-mono font-black text-xs shadow-sm">2</span>
                     Deterministik &amp; Sekuensial
                   </div>
-                  <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-semibold">
-                    Instruksi dieksekusi langkah demi langkah dari atas ke bawah. Setiap persamaan matematis hanya dapat dihitung setelah variabel masukannya tersedia di memori.
+                  <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                    Instruksi dieksekusi <strong className="text-slate-950 dark:text-white font-bold">langkah demi langkah dari atas ke bawah</strong>. Setiap{' '}
+                    <span className="bg-amber-500/15 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 font-bold px-1.5 py-0.5 rounded border border-amber-500/30">
+                      persamaan matematis
+                    </span>{' '}
+                    hanya dapat dihitung setelah{' '}
+                    <strong className="text-cyan-700 dark:text-cyan-300 font-extrabold underline decoration-cyan-500/50 underline-offset-2">
+                      variabel masukannya tersedia di memori
+                    </strong>.
                   </p>
                 </div>
 
-                <div className="p-5 bg-card rounded-2xl border-2 border-border space-y-2.5 shadow-sm">
+                <div 
+                  className="p-5 bg-card rounded-2xl border-2 border-border space-y-2.5 shadow-sm relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/80 hover:brightness-105"
+                >
                   <div className="font-black text-base text-slate-900 dark:text-white flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-amber-600 text-white dark:bg-amber-500/30 dark:text-amber-200 flex items-center justify-center font-mono font-black text-xs shadow-sm">3</span>
                     Sinkronisasi Tri-Perspektif
                   </div>
-                  <p className="text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-semibold">
-                    Naratif berbicara kepada manusia awam, Flowchart memetakan alur visual 2D, dan Pseudocode menyusun struktur blok formal siap coding.
+                  <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                    <strong className="text-slate-950 dark:text-white font-bold">Naratif</strong> berbicara kepada{' '}
+                    <span className="bg-indigo-500/15 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold px-1.5 py-0.5 rounded border border-indigo-500/30">
+                      manusia awam
+                    </span>,{' '}
+                    <strong className="text-slate-950 dark:text-white font-bold">Flowchart</strong> memetakan{' '}
+                    <span className="bg-blue-500/15 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 font-bold px-1.5 py-0.5 rounded border border-blue-500/30">
+                      alur visual 2D
+                    </span>, dan{' '}
+                    <strong className="text-slate-950 dark:text-white font-bold">Pseudocode</strong> menyusun{' '}
+                    <span className="bg-purple-500/15 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 font-bold px-1.5 py-0.5 rounded border border-purple-500/30">
+                      struktur blok formal
+                    </span> siap coding.
                   </p>
                 </div>
               </div>
@@ -1228,14 +1307,14 @@ export default function ProgramEngineeringMethodology() {
 
                         {/* Kolom Kanan: Notasi Universal & Kaidah */}
                         <div className="space-y-2.5">
-                          <div className="p-3 bg-slate-950 rounded-xl font-mono text-xs text-cyan-300 space-y-1 border border-slate-800">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                          <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-xl font-mono text-xs text-cyan-800 dark:text-cyan-300 space-y-1 border border-border dark:border-slate-800">
+                            <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block">
                               Notasi Universal (1 Baris per Masukan):
                             </span>
                             <div className="space-y-1">
                               {ipoScenariosData[selectedIpoScenario].inputPhase.universalCode.map((code, idx) => (
                                 <div key={idx} className="font-black font-mono flex items-center gap-2">
-                                  <span className="text-cyan-500 font-bold text-xs">{idx + 1}.</span>
+                                  <span className="text-cyan-600 dark:text-cyan-500 font-bold text-xs">{idx + 1}.</span>
                                   <span>{code}</span>
                                 </div>
                               ))}
@@ -1326,15 +1405,15 @@ export default function ProgramEngineeringMethodology() {
 
                       {/* INSTRUKSI PROSEDURAL & KAIDAH CPU */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="p-3.5 bg-slate-950 rounded-xl font-mono text-xs md:text-sm text-amber-300 space-y-2 border border-slate-800">
-                          <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block border-b border-slate-800 pb-1.5">
+                        <div className="p-3.5 bg-slate-100 dark:bg-slate-950 rounded-xl font-mono text-xs md:text-sm text-amber-900 dark:text-amber-300 space-y-2 border border-border dark:border-slate-800">
+                          <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block border-b border-border dark:border-slate-800 pb-1.5">
                             Instruksi Prosedural (Kode Universal 1 Baris per Aksi):
                           </span>
                           <div className="space-y-1.5">
                             {ipoScenariosData[selectedIpoScenario].processPhase.universalCode.map((code, idx) => (
                               <div key={idx} className="flex items-center gap-2.5 font-black">
-                                <span className="text-amber-500 font-mono text-xs w-4">{idx + 1}.</span>
-                                <span className="text-amber-100">{code}</span>
+                                <span className="text-amber-600 dark:text-amber-500 font-mono text-xs w-4">{idx + 1}.</span>
+                                <span className="text-amber-950 dark:text-amber-100">{code}</span>
                               </div>
                             ))}
                           </div>
@@ -1421,14 +1500,14 @@ export default function ProgramEngineeringMethodology() {
 
                         {/* Kolom Kanan: Notasi Universal & Kaidah */}
                         <div className="space-y-2.5">
-                          <div className="p-3 bg-slate-950 rounded-xl font-mono text-xs text-emerald-300 space-y-1 border border-slate-800">
-                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block">
+                          <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-xl font-mono text-xs text-emerald-800 dark:text-emerald-300 space-y-1 border border-border dark:border-slate-800">
+                            <span className="text-[10px] text-slate-600 dark:text-slate-400 font-bold uppercase tracking-wider block">
                               Notasi Universal (1 Baris per Keluaran):
                             </span>
                             <div className="space-y-1">
                               {ipoScenariosData[selectedIpoScenario].outputPhase.universalCode.map((code, idx) => (
                                 <div key={idx} className="font-black font-mono flex items-center gap-2">
-                                  <span className="text-emerald-500 font-bold text-xs">{idx + 1}.</span>
+                                  <span className="text-emerald-600 dark:text-emerald-500 font-bold text-xs">{idx + 1}.</span>
                                   <span>{code}</span>
                                 </div>
                               ))}
@@ -1458,12 +1537,47 @@ export default function ProgramEngineeringMethodology() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm">
-                    {/* Flowchart Mapping - REAL VISUAL ANSI FLOWCHART DIAGRAM */}
+                    {/* 1. Naratif Mapping */}
+                    <div className="p-4 md:p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border-2 border-border space-y-3 flex flex-col justify-between shadow-sm">
+                      <div className="space-y-1.5">
+                        <div className="font-black text-slate-900 dark:text-white flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <FileText className="w-4 h-4 text-emerald-600" /> 1. Algoritma Naratif
+                          </span>
+                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 uppercase">
+                            BAHASA MANUSIA
+                          </span>
+                        </div>
+                        <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
+                          Bahasa alami terstruktur bernomor urut 1 sampai 5 yang mencerminkan urutan waktu pemrosesan, diakhiri penutup tanpa nomor urut.
+                        </p>
+                      </div>
+                      <pre className="p-3 bg-white dark:bg-slate-900 rounded-xl font-mono text-[11px] text-emerald-900 dark:text-emerald-300 border border-border whitespace-pre-wrap font-bold leading-relaxed overflow-x-auto shadow-inner max-h-[220px]">
+{ipoScenariosData[selectedIpoScenario].triBlueprintSummary.naratif}
+                      </pre>
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-bold">
+                          ✓ Prosedur bebas ambiguitas
+                        </span>
+                        <button
+                          onClick={() => {
+                            setDesignBlueprintView('naratif');
+                            const el = document.getElementById('blueprint-simulator-section');
+                            if (el) el.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          className="text-[11px] text-primary hover:underline font-extrabold flex items-center gap-1 cursor-pointer"
+                        >
+                          Buka Detail &darr;
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* 2. Flowchart Mapping - REAL VISUAL ANSI FLOWCHART DIAGRAM */}
                     <div className="p-4 md:p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border-2 border-amber-500/50 space-y-3 flex flex-col justify-between shadow-sm">
                       <div className="space-y-1.5">
                         <div className="font-black text-slate-900 dark:text-white flex items-center justify-between">
                           <span className="flex items-center gap-2">
-                            <Workflow className="w-4 h-4 text-amber-600" /> 1. Flowchart ANSI / ISO
+                            <Workflow className="w-4 h-4 text-amber-600" /> 2. Flowchart ANSI / ISO
                           </span>
                           <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 uppercase">
                             DIAGRAM VISUAL
@@ -1560,12 +1674,12 @@ export default function ProgramEngineeringMethodology() {
                       </div>
                     </div>
 
-                    {/* Pseudocode Mapping */}
+                    {/* 3. Pseudocode Mapping */}
                     <div className="p-4 md:p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border-2 border-border space-y-3 flex flex-col justify-between shadow-sm">
                       <div className="space-y-1.5">
                         <div className="font-black text-slate-900 dark:text-white flex items-center justify-between">
                           <span className="flex items-center gap-2">
-                            <FileCode2 className="w-4 h-4 text-cyan-600" /> 2. Pseudocode CLRS
+                            <FileCode2 className="w-4 h-4 text-cyan-600" /> 3. Pseudocode CLRS
                           </span>
                           <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30 uppercase">
                             TEKS STRUKTURAL
@@ -1585,41 +1699,6 @@ export default function ProgramEngineeringMethodology() {
                         <button
                           onClick={() => {
                             setDesignBlueprintView('pseudocode');
-                            const el = document.getElementById('blueprint-simulator-section');
-                            if (el) el.scrollIntoView({ behavior: 'smooth' });
-                          }}
-                          className="text-[11px] text-primary hover:underline font-extrabold flex items-center gap-1 cursor-pointer"
-                        >
-                          Buka Detail &darr;
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Naratif Mapping */}
-                    <div className="p-4 md:p-5 rounded-2xl bg-slate-50 dark:bg-slate-950 border-2 border-border space-y-3 flex flex-col justify-between shadow-sm">
-                      <div className="space-y-1.5">
-                        <div className="font-black text-slate-900 dark:text-white flex items-center justify-between">
-                          <span className="flex items-center gap-2">
-                            <FileText className="w-4 h-4 text-emerald-600" /> 3. Algoritma Naratif
-                          </span>
-                          <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 uppercase">
-                            BAHASA MANUSIA
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">
-                          Bahasa alami terstruktur bernomor urut 1 sampai 5 yang mencerminkan urutan waktu pemrosesan, diakhiri penutup tanpa nomor urut.
-                        </p>
-                      </div>
-                      <pre className="p-3 bg-white dark:bg-slate-900 rounded-xl font-mono text-[11px] text-emerald-900 dark:text-emerald-300 border border-border whitespace-pre-wrap font-bold leading-relaxed overflow-x-auto shadow-inner max-h-[220px]">
-{ipoScenariosData[selectedIpoScenario].triBlueprintSummary.naratif}
-                      </pre>
-                      <div className="flex items-center justify-between pt-1">
-                        <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-bold">
-                          ✓ Prosedur bebas ambiguitas
-                        </span>
-                        <button
-                          onClick={() => {
-                            setDesignBlueprintView('naratif');
                             const el = document.getElementById('blueprint-simulator-section');
                             if (el) el.scrollIntoView({ behavior: 'smooth' });
                           }}
@@ -1669,6 +1748,16 @@ export default function ProgramEngineeringMethodology() {
                   {/* Switcher 3 Representasi */}
                   <div className="inline-flex p-1.5 bg-background rounded-xl border-2 border-border shadow-sm shrink-0">
                     <button
+                      onClick={() => setDesignBlueprintView('naratif')}
+                      className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-extrabold flex items-center gap-2 transition-all cursor-pointer ${
+                        designBlueprintView === 'naratif'
+                          ? 'bg-amber-600 text-white shadow-md'
+                          : 'text-slate-800 dark:text-slate-200 hover:text-foreground'
+                      }`}
+                    >
+                      <FileText className="w-4 h-4" /> 1. Algoritma Naratif
+                    </button>
+                    <button
                       onClick={() => setDesignBlueprintView('flowchart')}
                       className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-extrabold flex items-center gap-2 transition-all cursor-pointer ${
                         designBlueprintView === 'flowchart'
@@ -1676,7 +1765,7 @@ export default function ProgramEngineeringMethodology() {
                           : 'text-slate-800 dark:text-slate-200 hover:text-foreground'
                       }`}
                     >
-                      <Workflow className="w-4 h-4" /> Flowchart ANSI
+                      <Workflow className="w-4 h-4" /> 2. Flowchart ANSI
                     </button>
                     <button
                       onClick={() => setDesignBlueprintView('pseudocode')}
@@ -1686,17 +1775,7 @@ export default function ProgramEngineeringMethodology() {
                           : 'text-slate-800 dark:text-slate-200 hover:text-foreground'
                       }`}
                     >
-                      <FileCode2 className="w-4 h-4" /> Pseudocode CLRS
-                    </button>
-                    <button
-                      onClick={() => setDesignBlueprintView('naratif')}
-                      className={`px-3.5 py-2 rounded-lg text-xs md:text-sm font-extrabold flex items-center gap-2 transition-all cursor-pointer ${
-                        designBlueprintView === 'naratif'
-                          ? 'bg-amber-600 text-white shadow-md'
-                          : 'text-slate-800 dark:text-slate-200 hover:text-foreground'
-                      }`}
-                    >
-                      <FileText className="w-4 h-4" /> Algoritma Naratif
+                      <FileCode2 className="w-4 h-4" /> 3. Pseudocode CLRS
                     </button>
                   </div>
                 </div>
@@ -1816,24 +1895,24 @@ export default function ProgramEngineeringMethodology() {
                       <span className="text-slate-700 dark:text-slate-300 font-extrabold">PROGRAM &bull; KAMUS: &bull; ALGORITMA:</span>
                     </div>
 
-                    <div className="p-5 bg-slate-950 text-slate-100 rounded-xl font-mono text-sm md:text-base leading-relaxed overflow-x-auto shadow-inner border-2 border-slate-800">
-                      <div className="text-emerald-400 font-black">PROGRAM KasirGrosir <span className="text-slate-400 font-normal">// Menghitung faktur penjualan grosir &amp; PPN 11%</span></div>
-                      <div className="pt-2 text-purple-400 font-black">KAMUS:</div>
-                      <div className="pl-6 space-y-0.5 text-slate-200 font-semibold text-xs md:text-sm">
-                        <div><span className="text-amber-400 font-bold">const</span> TARIF_PPN : <span className="text-cyan-400 font-bold">real</span> = 0.11 <span className="text-slate-400 font-normal">// tetapan pajak 11%</span></div>
-                        <div>jumlahBarang : <span className="text-cyan-400 font-bold">integer</span> <span className="text-slate-400 font-normal">// kuantitas barang utuh (bilangan bulat)</span></div>
-                        <div>hargaSatuan, subtotal, nominalPpn, totalBayar : <span className="text-cyan-400 font-bold">real</span> <span className="text-slate-400 font-normal">// nilai moneter (pecahan)</span></div>
+                    <div className="p-5 bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-100 rounded-xl font-mono text-sm md:text-base leading-relaxed overflow-x-auto shadow-inner border-2 border-border dark:border-slate-800">
+                      <div className="text-emerald-700 dark:text-emerald-400 font-black">PROGRAM KasirGrosir <span className="text-slate-500 dark:text-slate-400 font-normal">// Menghitung faktur penjualan grosir &amp; PPN 11%</span></div>
+                      <div className="pt-2 text-purple-700 dark:text-purple-400 font-black">KAMUS:</div>
+                      <div className="pl-6 space-y-0.5 text-slate-700 dark:text-slate-200 font-semibold text-xs md:text-sm">
+                        <div><span className="text-amber-700 dark:text-amber-400 font-bold">const</span> TARIF_PPN : <span className="text-cyan-700 dark:text-cyan-400 font-bold">real</span> = 0.11 <span className="text-slate-500 dark:text-slate-400 font-normal">// tetapan pajak 11%</span></div>
+                        <div>jumlahBarang : <span className="text-cyan-700 dark:text-cyan-400 font-bold">integer</span> <span className="text-slate-500 dark:text-slate-400 font-normal">// kuantitas barang utuh (bilangan bulat)</span></div>
+                        <div>hargaSatuan, subtotal, nominalPpn, totalBayar : <span className="text-cyan-700 dark:text-cyan-400 font-bold">real</span> <span className="text-slate-500 dark:text-slate-400 font-normal">// nilai moneter (pecahan)</span></div>
                       </div>
-                      <div className="pt-2 text-amber-400 font-black">ALGORITMA:</div>
+                      <div className="pt-2 text-amber-700 dark:text-amber-400 font-black">ALGORITMA:</div>
                       <div className="pl-6 space-y-1 font-semibold text-xs md:text-sm">
-                        <div className="text-cyan-300 font-bold">input(jumlahBarang)</div>
-                        <div className="text-cyan-300 font-bold">input(hargaSatuan)</div>
-                        <div className="text-amber-300 font-bold">subtotal = jumlahBarang * hargaSatuan</div>
-                        <div className="text-amber-300 font-bold">nominalPpn = subtotal * TARIF_PPN</div>
-                        <div className="text-amber-300 font-bold">totalBayar = subtotal + nominalPpn</div>
-                        <div className="text-emerald-300 font-bold">output("Subtotal   : Rp ", subtotal)</div>
-                        <div className="text-emerald-300 font-bold">output("PPN (11%)  : Rp ", nominalPpn)</div>
-                        <div className="text-emerald-300 font-bold">output("Total Bayar: Rp ", totalBayar)</div>
+                        <div className="text-cyan-800 dark:text-cyan-300 font-bold">input(jumlahBarang)</div>
+                        <div className="text-cyan-800 dark:text-cyan-300 font-bold">input(hargaSatuan)</div>
+                        <div className="text-amber-800 dark:text-amber-300 font-bold">subtotal = jumlahBarang * hargaSatuan</div>
+                        <div className="text-amber-800 dark:text-amber-300 font-bold">nominalPpn = subtotal * TARIF_PPN</div>
+                        <div className="text-amber-800 dark:text-amber-300 font-bold">totalBayar = subtotal + nominalPpn</div>
+                        <div className="text-emerald-800 dark:text-emerald-300 font-bold">output("Subtotal   : Rp ", subtotal)</div>
+                        <div className="text-emerald-800 dark:text-emerald-300 font-bold">output("PPN (11%)  : Rp ", nominalPpn)</div>
+                        <div className="text-emerald-800 dark:text-emerald-300 font-bold">output("Total Bayar: Rp ", totalBayar)</div>
                       </div>
                     </div>
 
@@ -2053,7 +2132,7 @@ export default function ProgramEngineeringMethodology() {
                       <span>CETAK BIRU: PSEUDOCODE BAKU</span>
                       <span>STANDAR CLRS</span>
                     </div>
-                    <div className="p-3.5 bg-slate-950 rounded-xl border-2 border-slate-800 space-y-1.5 font-mono text-xs md:text-sm">
+                    <div className="p-3.5 bg-white dark:bg-slate-950 rounded-xl border-2 border-border dark:border-slate-800 space-y-1.5 font-mono text-xs md:text-sm">
                       {rosettaLines.map((row, idx) => {
                         const isSelected = activeRosettaLine === idx;
                         return (
@@ -2062,16 +2141,16 @@ export default function ProgramEngineeringMethodology() {
                             onClick={() => setActiveRosettaLine(idx)}
                             className={`p-2.5 rounded-lg cursor-pointer transition-all flex items-center justify-between gap-2 ${
                               isSelected
-                                ? 'bg-cyan-500/25 text-cyan-200 border-2 border-cyan-400 font-black shadow-md'
-                                : 'text-slate-200 hover:bg-slate-900 hover:text-white font-medium'
+                                ? 'bg-cyan-500/15 dark:bg-cyan-500/25 text-cyan-900 dark:text-cyan-200 border-2 border-cyan-500 font-black shadow-sm'
+                                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-foreground dark:hover:text-white font-medium'
                             }`}
                           >
                             <div className="flex items-center gap-3">
-                              <span className="text-slate-400 font-bold w-5 text-right text-xs md:text-sm">{row.lineNum}</span>
+                              <span className="text-slate-500 dark:text-slate-400 font-bold w-5 text-right text-xs md:text-sm">{row.lineNum}</span>
                               <span className="leading-relaxed">{row.pseudo}</span>
                             </div>
                             {isSelected && (
-                              <ArrowRight className="w-4 h-4 text-cyan-300 shrink-0" />
+                              <ArrowRight className="w-4 h-4 text-cyan-600 dark:text-cyan-300 shrink-0" />
                             )}
                           </div>
                         );
@@ -2083,9 +2162,9 @@ export default function ProgramEngineeringMethodology() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between text-xs md:text-sm px-2 font-mono font-black text-cyan-700 dark:text-cyan-400 uppercase tracking-wider">
                       <span>KODE MESIN: {transcriptionLang.toUpperCase()}</span>
-                      <span className="text-xs text-slate-400 font-bold">Sintaksis Terpadu</span>
+                      <span className="text-xs text-slate-500 dark:text-slate-400 font-bold">Sintaksis Terpadu</span>
                     </div>
-                    <div className="p-3.5 bg-slate-950 rounded-xl border-2 border-slate-800 space-y-1.5 font-mono text-xs md:text-sm">
+                    <div className="p-3.5 bg-white dark:bg-slate-950 rounded-xl border-2 border-border dark:border-slate-800 space-y-1.5 font-mono text-xs md:text-sm">
                       {rosettaLines.map((row, idx) => {
                         const isSelected = activeRosettaLine === idx;
                         const codeText = transcriptionLang === 'python' 
@@ -2100,13 +2179,13 @@ export default function ProgramEngineeringMethodology() {
                             onClick={() => setActiveRosettaLine(idx)}
                             className={`p-2.5 rounded-lg cursor-pointer transition-all flex items-center justify-between gap-2 ${
                               isSelected
-                                ? 'bg-cyan-500/25 text-emerald-300 border-2 border-cyan-400 font-black shadow-md'
-                                : 'text-slate-200 hover:bg-slate-900 hover:text-white font-medium'
+                                ? 'bg-cyan-500/15 dark:bg-cyan-500/25 text-emerald-900 dark:text-emerald-300 border-2 border-cyan-500 font-black shadow-sm'
+                                : 'text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-foreground dark:hover:text-white font-medium'
                             }`}
                           >
                             <div className="flex items-center gap-3">
-                              <span className="text-slate-400 font-bold w-5 text-right text-xs md:text-sm">{row.lineNum}</span>
-                              <span className={`leading-relaxed ${isSelected ? 'text-emerald-300 font-black' : 'text-slate-200 font-medium'}`}>{codeText}</span>
+                              <span className="text-slate-500 dark:text-slate-400 font-bold w-5 text-right text-xs md:text-sm">{row.lineNum}</span>
+                              <span className={`leading-relaxed ${isSelected ? 'text-emerald-800 dark:text-emerald-300 font-black' : 'text-slate-800 dark:text-slate-200 font-medium'}`}>{codeText}</span>
                             </div>
                             {isSelected && (
                               <span className="text-xs uppercase font-mono font-black px-2 py-0.5 rounded bg-cyan-500 text-slate-950 shadow-sm shrink-0">
@@ -2833,7 +2912,7 @@ export default function ProgramEngineeringMethodology() {
                             </div>
                             <span className="text-[11px] text-slate-600 dark:text-slate-400 font-sans font-medium block mt-0.5">Massa tubuh dalam satuan kilogram (kg)</span>
                           </div>
-                          <code className="px-3 py-1.5 rounded-lg bg-slate-950 text-cyan-300 font-black text-xs shrink-0 border border-slate-800 shadow-xs">
+                          <code className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-950 text-cyan-800 dark:text-cyan-300 font-black text-xs shrink-0 border border-border dark:border-slate-800 shadow-xs">
                             input(beratBadan)
                           </code>
                         </div>
@@ -2847,7 +2926,7 @@ export default function ProgramEngineeringMethodology() {
                             </div>
                             <span className="text-[11px] text-slate-600 dark:text-slate-400 font-sans font-medium block mt-0.5">Panjang tubuh dalam satuan sentimeter (cm)</span>
                           </div>
-                          <code className="px-3 py-1.5 rounded-lg bg-slate-950 text-cyan-300 font-black text-xs shrink-0 border border-slate-800 shadow-xs">
+                          <code className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-950 text-cyan-800 dark:text-cyan-300 font-black text-xs shrink-0 border border-border dark:border-slate-800 shadow-xs">
                             input(tinggiBadan)
                           </code>
                         </div>
@@ -2914,13 +2993,13 @@ export default function ProgramEngineeringMethodology() {
                             </div>
 
                             {/* Universal Instruction */}
-                            <div className="px-4 py-3 bg-slate-950 rounded-lg border border-slate-800 text-slate-100 font-mono text-xs md:text-sm whitespace-nowrap shadow-xs">
-                              <span className="text-slate-500 mr-2 font-normal">// Instruksi Universal:</span>
-                              <span className="text-amber-400 font-black">tinggiMeter</span>
-                              <span className="text-slate-300"> = </span>
-                              <span className="text-cyan-300 font-bold">tinggiBadan</span>
-                              <span className="text-rose-400 font-black"> / </span>
-                              <span className="text-amber-300 font-black">100.0</span>
+                            <div className="px-4 py-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-border dark:border-slate-800 text-slate-800 dark:text-slate-100 font-mono text-xs md:text-sm whitespace-nowrap shadow-xs">
+                              <span className="text-slate-500 dark:text-slate-400 mr-2 font-normal">// Instruksi Universal:</span>
+                              <span className="text-amber-700 dark:text-amber-400 font-black">tinggiMeter</span>
+                              <span className="text-slate-700 dark:text-slate-300"> = </span>
+                              <span className="text-cyan-700 dark:text-cyan-300 font-bold">tinggiBadan</span>
+                              <span className="text-rose-600 dark:text-rose-400 font-black"> / </span>
+                              <span className="text-amber-700 dark:text-amber-300 font-black">100.0</span>
                             </div>
                           </div>
                           <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">
@@ -2955,17 +3034,17 @@ export default function ProgramEngineeringMethodology() {
                             </div>
 
                             {/* Universal Instruction */}
-                            <div className="px-4 py-3 bg-slate-950 rounded-lg border border-slate-800 text-slate-100 font-mono text-xs md:text-sm whitespace-nowrap shadow-xs">
-                              <span className="text-slate-500 mr-2 font-normal">// Instruksi Universal:</span>
-                              <span className="text-amber-400 font-black">nilaiBmi</span>
-                              <span className="text-slate-300"> = </span>
-                              <span className="text-cyan-300 font-bold">beratBadan</span>
-                              <span className="text-rose-400 font-black"> / </span>
-                              <span className="text-slate-200">(</span>
-                              <span className="text-amber-300 font-black">tinggiMeter</span>
-                              <span className="text-rose-400 font-black"> * </span>
-                              <span className="text-amber-300 font-black">tinggiMeter</span>
-                              <span className="text-slate-200">)</span>
+                            <div className="px-4 py-3 bg-slate-50 dark:bg-slate-950 rounded-lg border border-border dark:border-slate-800 text-slate-800 dark:text-slate-100 font-mono text-xs md:text-sm whitespace-nowrap shadow-xs">
+                              <span className="text-slate-500 dark:text-slate-400 mr-2 font-normal">// Instruksi Universal:</span>
+                              <span className="text-amber-700 dark:text-amber-400 font-black">nilaiBmi</span>
+                              <span className="text-slate-700 dark:text-slate-300"> = </span>
+                              <span className="text-cyan-700 dark:text-cyan-300 font-bold">beratBadan</span>
+                              <span className="text-rose-600 dark:text-rose-400 font-black"> / </span>
+                              <span className="text-slate-700 dark:text-slate-200">(</span>
+                              <span className="text-amber-700 dark:text-amber-300 font-black">tinggiMeter</span>
+                              <span className="text-rose-600 dark:text-rose-400 font-black"> * </span>
+                              <span className="text-amber-700 dark:text-amber-300 font-black">tinggiMeter</span>
+                              <span className="text-slate-700 dark:text-slate-200">)</span>
                             </div>
                           </div>
                           <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium">
@@ -3055,7 +3134,7 @@ export default function ProgramEngineeringMethodology() {
                             </div>
                             <span className="text-[11px] text-slate-600 dark:text-slate-400 font-sans font-medium block mt-0.5">Angka terikat hasil kalkulasi rumus WHO</span>
                           </div>
-                          <code className="px-3 py-1.5 rounded-lg bg-slate-950 text-emerald-300 font-black text-xs shrink-0 border border-slate-800 shadow-xs">
+                          <code className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-950 text-emerald-800 dark:text-emerald-300 font-black text-xs shrink-0 border border-border dark:border-slate-800 shadow-xs">
                             output(nilaiBmi)
                           </code>
                         </div>
@@ -3069,7 +3148,7 @@ export default function ProgramEngineeringMethodology() {
                             </div>
                             <span className="text-[11px] text-slate-600 dark:text-slate-400 font-sans font-medium block mt-0.5">Label diagnosis hasil percabangan 4 kategori</span>
                           </div>
-                          <code className="px-3 py-1.5 rounded-lg bg-slate-950 text-emerald-300 font-black text-xs shrink-0 border border-slate-800 shadow-xs">
+                          <code className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-950 text-emerald-800 dark:text-emerald-300 font-black text-xs shrink-0 border border-border dark:border-slate-800 shadow-xs">
                             output(kategori)
                           </code>
                         </div>
@@ -3794,29 +3873,29 @@ export default function ProgramEngineeringMethodology() {
                   </span>
                 </div>
 
-                <div className="p-5 md:p-6 bg-slate-950 rounded-xl border-2 border-slate-800 text-xs md:text-sm font-mono text-slate-100 leading-relaxed overflow-x-auto space-y-1.5 shadow-inner" style={{ fontVariantLigatures: 'none' }}>
-                  <div className="text-slate-400 font-semibold"># =========================================================================</div>
-                  <div className="text-slate-400 font-semibold"># PROGRAM: Hitung Indeks Massa Tubuh (BMI)</div>
-                  <div className="text-slate-400 font-semibold"># Ditranskripsikan langsung dari hasil Analisis dan Desain Pseudocode Bab 3</div>
-                  <div className="text-slate-400 font-semibold"># =========================================================================</div>
-                  <div className="pt-2 text-slate-400 font-semibold"># 1. INPUT: Membaca data masukan dan melakukan konversi tipe ke Float</div>
-                  <div><span className="text-cyan-300 font-bold">berat_badan</span> = <span className="text-amber-400 font-bold">float</span>(<span className="text-emerald-400 font-bold">input</span>(<span className="text-emerald-300">"Masukkan berat badan (kg): "</span>))</div>
-                  <div><span className="text-cyan-300 font-bold">tinggi_badan</span> = <span className="text-amber-400 font-bold">float</span>(<span className="text-emerald-400 font-bold">input</span>(<span className="text-emerald-300">"Masukkan tinggi badan (cm): "</span>))</div>
-                  <div className="pt-2 text-slate-400 font-semibold"># 2. PROSES: Menghitung persamaan BMI</div>
-                  <div><span className="text-cyan-300 font-bold">tinggi_meter</span> = <span className="text-cyan-300 font-bold">tinggi_badan</span> / <span className="text-purple-300 font-bold">100.0</span></div>
-                  <div><span className="text-cyan-300 font-bold">nilai_bmi</span> = <span className="text-cyan-300 font-bold">berat_badan</span> / (<span className="text-cyan-300 font-bold">tinggi_meter</span> ** <span className="text-purple-300 font-bold">2</span>)</div>
-                  <div className="pt-2 text-slate-400 font-semibold"># 3. KEPUTUSAN &amp; OUTPUT: Menentukan status kesehatan berdasarkan ambang batas</div>
-                  <div><span className="text-indigo-400 font-black">if</span> <span className="text-cyan-300 font-bold">nilai_bmi</span> &lt; <span className="text-purple-300 font-bold">18.5</span>:</div>
-                  <div className="pl-4"><span className="text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-300">"Kurus (Underweight)"</span></div>
-                  <div><span className="text-indigo-400 font-black">elif</span> <span className="text-cyan-300 font-bold">nilai_bmi</span> &lt;= <span className="text-purple-300 font-bold">24.9</span>:</div>
-                  <div className="pl-4"><span className="text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-300">"Normal (Ideal)"</span></div>
-                  <div><span className="text-indigo-400 font-black">elif</span> <span className="text-cyan-300 font-bold">nilai_bmi</span> &lt;= <span className="text-purple-300 font-bold">29.9</span>:</div>
-                  <div className="pl-4"><span className="text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-300">"Kelebihan Berat Badan (Overweight)"</span></div>
-                  <div><span className="text-indigo-400 font-black">else</span>:</div>
-                  <div className="pl-4"><span className="text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-300">"Obesitas (Obese)"</span></div>
-                  <div className="pt-3 text-slate-400 font-semibold"># 4. Menampilkan hasil terformat</div>
-                  <div><span className="text-emerald-400 font-bold">print</span>(<span className="text-emerald-300">f"Skor BMI Anda : {"{"}nilai_bmi:.1f{"}"}"</span>)</div>
-                  <div><span className="text-emerald-400 font-bold">print</span>(<span className="text-emerald-300">f"Kategori      : {"{"}kategori{"}"}"</span>)</div>
+                <div className="p-5 md:p-6 bg-slate-50 dark:bg-slate-950 rounded-xl border-2 border-border dark:border-slate-800 text-xs md:text-sm font-mono text-slate-800 dark:text-slate-100 leading-relaxed overflow-x-auto space-y-1.5 shadow-inner" style={{ fontVariantLigatures: 'none' }}>
+                  <div className="text-slate-500 dark:text-slate-400 font-semibold"># =========================================================================</div>
+                  <div className="text-slate-500 dark:text-slate-400 font-semibold"># PROGRAM: Hitung Indeks Massa Tubuh (BMI)</div>
+                  <div className="text-slate-500 dark:text-slate-400 font-semibold"># Ditranskripsikan langsung dari hasil Analisis dan Desain Pseudocode Bab 3</div>
+                  <div className="text-slate-500 dark:text-slate-400 font-semibold"># =========================================================================</div>
+                  <div className="pt-2 text-slate-500 dark:text-slate-400 font-semibold"># 1. INPUT: Membaca data masukan dan melakukan konversi tipe ke Float</div>
+                  <div><span className="text-cyan-700 dark:text-cyan-300 font-bold">berat_badan</span> = <span className="text-amber-600 dark:text-amber-400 font-bold">float</span>(<span className="text-emerald-700 dark:text-emerald-400 font-bold">input</span>(<span className="text-emerald-800 dark:text-emerald-300 font-medium">"Masukkan berat badan (kg): "</span>))</div>
+                  <div><span className="text-cyan-700 dark:text-cyan-300 font-bold">tinggi_badan</span> = <span className="text-amber-600 dark:text-amber-400 font-bold">float</span>(<span className="text-emerald-700 dark:text-emerald-400 font-bold">input</span>(<span className="text-emerald-800 dark:text-emerald-300 font-medium">"Masukkan tinggi badan (cm): "</span>))</div>
+                  <div className="pt-2 text-slate-500 dark:text-slate-400 font-semibold"># 2. PROSES: Menghitung persamaan BMI</div>
+                  <div><span className="text-cyan-700 dark:text-cyan-300 font-bold">tinggi_meter</span> = <span className="text-cyan-700 dark:text-cyan-300 font-bold">tinggi_badan</span> / <span className="text-purple-700 dark:text-purple-300 font-bold">100.0</span></div>
+                  <div><span className="text-cyan-700 dark:text-cyan-300 font-bold">nilai_bmi</span> = <span className="text-cyan-700 dark:text-cyan-300 font-bold">berat_badan</span> / (<span className="text-cyan-700 dark:text-cyan-300 font-bold">tinggi_meter</span> ** <span className="text-purple-700 dark:text-purple-300 font-bold">2</span>)</div>
+                  <div className="pt-2 text-slate-500 dark:text-slate-400 font-semibold"># 3. KEPUTUSAN &amp; OUTPUT: Menentukan status kesehatan berdasarkan ambang batas</div>
+                  <div><span className="text-indigo-700 dark:text-indigo-400 font-black">if</span> <span className="text-cyan-700 dark:text-cyan-300 font-bold">nilai_bmi</span> &lt; <span className="text-purple-700 dark:text-purple-300 font-bold">18.5</span>:</div>
+                  <div className="pl-4"><span className="text-cyan-700 dark:text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-800 dark:text-emerald-300 font-medium">"Kurus (Underweight)"</span></div>
+                  <div><span className="text-indigo-700 dark:text-indigo-400 font-black">elif</span> <span className="text-cyan-700 dark:text-cyan-300 font-bold">nilai_bmi</span> &lt;= <span className="text-purple-700 dark:text-purple-300 font-bold">24.9</span>:</div>
+                  <div className="pl-4"><span className="text-cyan-700 dark:text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-800 dark:text-emerald-300 font-medium">"Normal (Ideal)"</span></div>
+                  <div><span className="text-indigo-700 dark:text-indigo-400 font-black">elif</span> <span className="text-cyan-700 dark:text-cyan-300 font-bold">nilai_bmi</span> &lt;= <span className="text-purple-700 dark:text-purple-300 font-bold">29.9</span>:</div>
+                  <div className="pl-4"><span className="text-cyan-700 dark:text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-800 dark:text-emerald-300 font-medium">"Kelebihan Berat Badan (Overweight)"</span></div>
+                  <div><span className="text-indigo-700 dark:text-indigo-400 font-black">else</span>:</div>
+                  <div className="pl-4"><span className="text-cyan-700 dark:text-cyan-300 font-bold">kategori</span> = <span className="text-emerald-800 dark:text-emerald-300 font-medium">"Obesitas (Obese)"</span></div>
+                  <div className="pt-3 text-slate-500 dark:text-slate-400 font-semibold"># 4. Menampilkan hasil terformat</div>
+                  <div><span className="text-emerald-700 dark:text-emerald-400 font-bold">print</span>(<span className="text-emerald-800 dark:text-emerald-300 font-medium">f"Skor BMI Anda : {"{"}nilai_bmi:.1f{"}"}"</span>)</div>
+                  <div><span className="text-emerald-700 dark:text-emerald-400 font-bold">print</span>(<span className="text-emerald-800 dark:text-emerald-300 font-medium">f"Kategori      : {"{"}kategori{"}"}"</span>)</div>
                 </div>
 
                 <div className="p-4 md:p-5 bg-cyan-100/70 dark:bg-cyan-950/50 rounded-2xl border-2 border-cyan-500/50 text-sm md:text-base text-cyan-950 dark:text-cyan-100 font-medium leading-relaxed shadow-sm">

@@ -213,7 +213,7 @@ export default function DataTypeTaxonomyAndEditor() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               {/* Branch 1: Tipe Sederhana (Fokus Utama) */}
-              <div className="p-4 rounded-2xl bg-slate-900/90 border border-blue-500/40 shadow-inner space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] sm:hover:scale-[1.4] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+              <div className="p-4 rounded-2xl bg-slate-900/90 border border-blue-500/40 shadow-inner space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <h4 className="font-extrabold text-sm md:text-base text-blue-400 flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-mono">1</span>
@@ -243,7 +243,7 @@ export default function DataTypeTaxonomyAndEditor() {
               </div>
 
               {/* Branch 2: Tipe Kompleks (Pengenalan Singkat) */}
-              <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-500/40 shadow-inner space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] sm:hover:scale-[1.4] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
+              <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-500/40 shadow-inner space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-2">
                   <h4 className="font-extrabold text-sm md:text-base text-purple-400 flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs font-mono">2</span>
@@ -292,7 +292,7 @@ export default function DataTypeTaxonomyAndEditor() {
                     <button
                       key={prim.id}
                       onClick={() => setSelectedPrimitive(prim.id)}
-                      className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] sm:hover:scale-[1.3] duration-300 ease-out origin-center hover:shadow-[0_15px_30px_rgba(0,0,0,0.8)] ${
+                      className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-[0_15px_30px_rgba(0,0,0,0.8)] ${
                         isSelected 
                           ? 'border-amber-400 bg-slate-900 shadow-md ring-1 ring-amber-400' 
                           : 'border-slate-800 bg-slate-950 hover:bg-slate-900/60'
@@ -326,7 +326,7 @@ export default function DataTypeTaxonomyAndEditor() {
                     </h4>
                     <p className="text-xs text-slate-300 mt-0.5">{currentPrim.desc}</p>
                   </div>
-                  <span className="text-[11px] font-mono bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-slate-300 shrink-0 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-lg hover:border-cyan-400">
+                  <span className="text-[11px] font-mono bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-slate-300 shrink-0 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-lg hover:border-cyan-400">
                     Alokasi Memori: <strong className="text-white">{currentPrim.size}</strong>
                   </span>
                 </div>
@@ -334,19 +334,19 @@ export default function DataTypeTaxonomyAndEditor() {
                 {/* Syntax Comparison Grid with Hover Magnification */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs overflow-visible py-1">
                   {/* 1. Pseudocode (Left) -> md:origin-left */}
-                  <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
+                  <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
                     <span className="text-[10px] text-slate-400 font-sans block font-bold">📄 Pseudocode:</span>
                     <div className="text-purple-300 font-bold text-xs sm:text-sm">{currentPrim.pseudoEx}</div>
                   </div>
 
                   {/* 2. Python 3 (Center) -> origin-center */}
-                  <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+                  <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
                     <span className="text-[10px] text-slate-400 font-sans block font-bold">🐍 Python 3:</span>
                     <div className="text-blue-300 font-bold text-xs sm:text-sm">{currentPrim.pythonEx}</div>
                   </div>
 
                   {/* 3. JavaScript (Right) -> md:origin-right */}
-                  <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
+                  <div className="bg-slate-950 p-3.5 rounded-xl border border-slate-800/80 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
                     <span className="text-[10px] text-slate-400 font-sans block font-bold">🌐 JavaScript:</span>
                     <div className="text-amber-300 font-bold text-xs sm:text-sm">{currentPrim.jsEx}</div>
                   </div>
@@ -380,7 +380,7 @@ export default function DataTypeTaxonomyAndEditor() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 {/* Tier 1: Raw Data */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-500/50">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-500/50">
                   <span className="text-[10px] font-mono font-bold bg-slate-800 text-slate-400 px-2 py-0.5 rounded uppercase">
                     Tahap 1: Data Mentah
                   </span>
@@ -393,7 +393,7 @@ export default function DataTypeTaxonomyAndEditor() {
                 </div>
 
                 {/* Tier 2: Information */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
                   <span className="text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded uppercase">
                     Tahap 2: Informasi Berlabel
                   </span>
@@ -406,7 +406,7 @@ export default function DataTypeTaxonomyAndEditor() {
                 </div>
 
                 {/* Tier 3: Knowledge / Logic */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
                   <span className="text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded uppercase">
                     Tahap 3: Pengetahuan / Logika
                   </span>

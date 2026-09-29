@@ -2,12 +2,35 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Package, Cog, ArrowRight, StopCircle, PackageCheck, AlertTriangle, ShieldCheck } from 'lucide-react';
+import { Play, Package, Cog, ArrowRight, StopCircle, PackageCheck, AlertTriangle, ShieldCheck, Zap, RotateCcw, Sparkles, Info } from 'lucide-react';
+
+interface CharacteristicItem {
+  id: number;
+  number: string;
+  name: string;
+  subtitle: string;
+  icon: React.ReactNode;
+  color: string;
+  activeBg: string;
+  borderColor: string;
+  badgeColor: string;
+  isActive: boolean;
+  explanation: React.ReactNode;
+  highlight: string;
+}
 
 export default function AnimatedAlgorithmCharacteristics() {
   const [isRunning, setIsRunning] = useState(false);
   const [step, setStep] = useState(0); // 0: idle, 1: input, 2: process, 3: output, 4: error
   const [hasStoppingRole, setHasStoppingRole] = useState(true);
+  const [flippedCards, setFlippedCards] = useState<Record<number, boolean>>({});
+
+  const toggleFlip = (id: number) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
 
   // Auto-run simulation when isRunning is true
   useEffect(() => {
@@ -42,23 +65,131 @@ export default function AnimatedAlgorithmCharacteristics() {
     setIsRunning(true);
   };
 
+  const characteristics: CharacteristicItem[] = [
+    {
+      id: 1,
+      number: "1",
+      name: "Input",
+      subtitle: "Mempunyai Masukan",
+      icon: <Package className="w-5 h-5" />,
+      color: "text-blue-500",
+      activeBg: "bg-blue-600 text-white border-blue-400 shadow-[0_0_20px_rgba(37,99,235,0.6)]",
+      borderColor: "border-blue-500/80 shadow-[0_0_25px_rgba(59,130,246,0.35)]",
+      badgeColor: "bg-blue-500/20 text-blue-400 border-blue-500/40",
+      isActive: step === 1,
+      explanation: (
+        <span>
+          Algoritma menerima <strong className="text-blue-400 font-bold">nol atau lebih masukan</strong> (<em>raw data</em>) dari luar sistem (keyboard, sensor, file) yang disimpan ke <strong className="text-white font-bold">RAM</strong> untuk diproses.
+        </span>
+      ),
+      highlight: "Variabel Bebas (Keyboard → RAM)"
+    },
+    {
+      id: 2,
+      number: "2",
+      name: "Definiteness",
+      subtitle: "Pasti & Tak Ambigu",
+      icon: <Cog className="w-5 h-5" />,
+      color: "text-amber-500",
+      activeBg: "bg-amber-600 text-white border-amber-400 shadow-[0_0_20px_rgba(217,119,6,0.6)]",
+      borderColor: "border-amber-500/80 shadow-[0_0_25px_rgba(245,158,11,0.35)]",
+      badgeColor: "bg-amber-500/20 text-amber-400 border-amber-500/40",
+      isActive: step === 2,
+      explanation: (
+        <span>
+          Setiap langkah instruksi wajib <strong className="text-amber-400 font-bold">jelas, pasti, dan bermakna tunggal</strong>. Dilarang multitafsir agar <strong className="text-white font-bold">tidak membingungkan CPU</strong> maupun programmer.
+        </span>
+      ),
+      highlight: "Instruksi Pasti & Makna Tunggal"
+    },
+    {
+      id: 3,
+      number: "3",
+      name: "Effectiveness",
+      subtitle: "Efisien & Terarah",
+      icon: <Zap className="w-5 h-5" />,
+      color: "text-purple-500",
+      activeBg: "bg-purple-600 text-white border-purple-400 shadow-[0_0_20px_rgba(147,51,234,0.6)]",
+      borderColor: "border-purple-500/80 shadow-[0_0_25px_rgba(168,85,247,0.35)]",
+      badgeColor: "bg-purple-500/20 text-purple-400 border-purple-500/40",
+      isActive: step === 2,
+      explanation: (
+        <span>
+          Setiap langkah operasi harus <strong className="text-purple-400 font-bold">cukup sederhana dan realistis</strong> untuk diselesaikan mesin dalam <strong className="text-white font-bold">rentang waktu yang wajar</strong>.
+        </span>
+      ),
+      highlight: "Operasi Wajar & Efisien"
+    },
+    {
+      id: 4,
+      number: "4",
+      name: "Finiteness",
+      subtitle: "Keterbatasan (Berhenti)",
+      icon: <StopCircle className="w-5 h-5" />,
+      color: "text-red-500",
+      activeBg: "bg-red-600 text-white border-red-400 shadow-[0_0_20px_rgba(220,38,38,0.6)]",
+      borderColor: "border-red-500/80 shadow-[0_0_25px_rgba(239,68,68,0.35)]",
+      badgeColor: "bg-red-500/20 text-red-400 border-red-500/40",
+      isActive: step >= 3 && hasStoppingRole,
+      explanation: (
+        <span>
+          Algoritma <strong className="text-rose-400 font-bold">harus memiliki titik akhir</strong> dan berhenti setelah sejumlah langkah terbatas. Wajib bebas dari <strong className="text-white font-bold">Infinite Loop</strong> (macet).
+        </span>
+      ),
+      highlight: "Stopping Role (Bebas Macet)"
+    },
+    {
+      id: 5,
+      number: "5",
+      name: "Output",
+      subtitle: "Menghasilkan Keluaran",
+      icon: <PackageCheck className="w-5 h-5" />,
+      color: "text-emerald-500",
+      activeBg: "bg-emerald-600 text-white border-emerald-400 shadow-[0_0_20px_rgba(5,150,105,0.6)]",
+      borderColor: "border-emerald-500/80 shadow-[0_0_25px_rgba(16,185,129,0.35)]",
+      badgeColor: "bg-emerald-500/20 text-emerald-400 border-emerald-500/40",
+      isActive: step === 3,
+      explanation: (
+        <span>
+          Algoritma wajib menghasilkan <strong className="text-emerald-400 font-bold">minimal satu nilai keluaran</strong> sebagai solusi permasalahan yang diserahkan ke <strong className="text-white font-bold">layar atau media simpan</strong>.
+        </span>
+      ),
+      highlight: "Variabel Terikat (Solusi Akhir)"
+    }
+  ];
+
   return (
-    <div className="border border-border/50 rounded-2xl overflow-hidden bg-background shadow-lg">
-      <div className="p-4 md:p-6 bg-secondary/10 border-b border-border/50 text-center">
-        <h3 className="text-2xl font-bold mb-2">Pabrik Logika: 5 Ciri Algoritma</h3>
-        <p className="text-slate-700 dark:text-slate-300 text-sm max-w-2xl mx-auto font-medium">
-          Sebuah algoritma yang baik ibarat mesin pabrik yang sempurna. Ia membutuhkan bahan baku (Input), langkah pengolahan yang jelas dan efektif (Proses), batasan waktu berhenti (Stopping Role), dan menghasilkan produk akhir (Output).
+    <div className="border border-border/50 rounded-2xl overflow-visible bg-background shadow-lg">
+      <div className="p-4 md:p-6 bg-secondary/10 border-b border-border/50 text-center rounded-t-2xl">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold mb-2">
+          <span>Standar Donald E. Knuth (1968)</span>
+        </div>
+        <h3 className="text-2xl font-bold mb-2">Pabrik Logika: 5 Ciri Mutlak Algoritma</h3>
+        <p className="text-slate-700 dark:text-slate-300 text-sm max-w-2xl mx-auto font-medium leading-relaxed">
+          Menurut ilmuwan komputer legendaris <strong className="text-primary font-bold">Donald E. Knuth</strong>, sebuah algoritma yang sahih wajib memenuhi 5 ciri mutlak: <strong className="text-blue-600 dark:text-blue-400">Input</strong> (masukan), <strong className="text-amber-600 dark:text-amber-400">Definiteness</strong> (kepastian), <strong className="text-purple-600 dark:text-purple-400">Effectiveness</strong> (efektivitas), <strong className="text-red-600 dark:text-red-400">Finiteness</strong> (keterbatasan/titik henti), dan <strong className="text-emerald-600 dark:text-emerald-400">Output</strong> (keluaran).
         </p>
       </div>
 
-      <div className="p-4 md:p-6 relative flex flex-col items-center overflow-hidden bg-dot-pattern">
+      <div className="p-4 md:p-6 pt-6 pb-6 relative flex flex-col items-center overflow-visible bg-dot-pattern">
         
-        {/* Characteristics Indicators */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-2 relative z-10 w-full max-w-3xl">
-          <Badge active={step === 1} color="bg-blue-500" icon={<Package className="w-4 h-4"/>} label="1. Input" desc="Mempunyai Masukan" />
-          <Badge active={step === 2} color="bg-yellow-500" icon={<Cog className="w-4 h-4"/>} label="2 & 3. Proses (Efektif & Jelas)" desc="Tidak Ambigu, Efisien" />
-          <Badge active={step >= 3 && hasStoppingRole} color="bg-red-500" icon={<StopCircle className="w-4 h-4"/>} label="4. Stopping Role" desc="Kondisi Berhenti" />
-          <Badge active={step === 3} color="bg-emerald-500" icon={<PackageCheck className="w-4 h-4"/>} label="5. Output" desc="Menghasilkan Keluaran" />
+        {/* Panduan Interaktif Pengguna */}
+        <div className="flex items-center justify-center gap-2 mb-3">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs shadow-sm border border-primary/20">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+            <span>Hover: Zoom 1.2x • Klik: Balik Kartu Penjelasan</span>
+          </span>
+        </div>
+
+        {/* Characteristics Indicators - 5 Ciri Knuth Eksplisit (2D Flip & Zoom 1.2x) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-4 relative z-10 w-full max-w-5xl py-2">
+          {characteristics.map(card => (
+            <FlipCharacteristicCard
+              key={card.id}
+              card={card}
+              isFlipped={!!flippedCards[card.id]}
+              onToggle={() => toggleFlip(card.id)}
+            />
+          ))}
         </div>
 
         {/* Factory Conveyor Belt Simulation */}
@@ -159,7 +290,7 @@ export default function AnimatedAlgorithmCharacteristics() {
               className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-2 px-4 text-sm rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ShieldCheck className="w-4 h-4" />
-              Jalankan Algoritma Sehat (Berhasil)
+              Jalankan Algoritma Sehat (Memenuhi Finiteness)
             </button>
             <button 
               disabled={isRunning}
@@ -167,7 +298,7 @@ export default function AnimatedAlgorithmCharacteristics() {
               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 text-sm rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <AlertTriangle className="w-4 h-4" />
-              Hilangkan "Stopping Role" (Error)
+              Hilangkan Finiteness (Uji Infinite Loop)
             </button>
           </div>
         </div>
@@ -176,16 +307,101 @@ export default function AnimatedAlgorithmCharacteristics() {
   );
 }
 
-function Badge({ active, color, icon, label, desc }: { active: boolean, color: string, icon: React.ReactNode, label: string, desc: string }) {
+function FlipCharacteristicCard({ 
+  card, 
+  isFlipped, 
+  onToggle 
+}: { 
+  card: CharacteristicItem; 
+  isFlipped: boolean; 
+  onToggle: () => void;
+}) {
   return (
-    <div className={`flex flex-col items-center p-2 rounded-xl border transition-all duration-300 w-full text-center
-      ${active ? `${color} text-white shadow-lg scale-105 z-10 border-transparent` : 'bg-background border-border text-slate-700 dark:text-slate-300 scale-100 font-medium'}
-    `}>
-      <div className={`p-1.5 rounded-full mb-1 ${active ? 'bg-white/20' : 'bg-secondary'}`}>
-        {icon}
+    <div 
+      className="relative w-full h-48 sm:h-52 cursor-pointer select-none z-10 hover:z-50 group"
+      onClick={onToggle}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
+      aria-label={`Kartu ciri ${card.name}. Klik untuk membalik penjelasan.`}
+    >
+      {/* ZOOM CONTAINER (Hover) */}
+      <div 
+        className="relative w-full h-full rounded-2xl transition-transform duration-300 ease-out origin-center group-hover:scale-[1.2] group-hover:-translate-y-2 group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {!isFlipped ? (
+            <motion.div
+              key="front"
+              initial={{ rotateY: -90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              exit={{ rotateY: 90, opacity: 0 }}
+              transition={{ duration: 0.18, ease: "easeInOut" }}
+              className={`w-full h-full rounded-2xl p-3.5 flex flex-col items-center justify-between border-2 shadow-sm transition-colors duration-200 select-none
+                ${card.isActive 
+                  ? `${card.activeBg} shadow-lg border-transparent` 
+                  : 'bg-card border-border/80 text-foreground group-hover:border-primary/60 dark:bg-slate-900/95'
+                }
+              `}
+            >
+              {/* Icon Circle */}
+              <div className={`p-2.5 rounded-full mt-1 transition-transform group-hover:scale-110 duration-200 ${card.isActive ? 'bg-white/20 text-white' : 'bg-secondary text-foreground group-hover:bg-primary/10'}`}>
+                {card.icon}
+              </div>
+
+              {/* Title & Subtitle */}
+              <div className="text-center space-y-1">
+                <div className="font-black text-xs sm:text-sm tracking-tight text-foreground dark:text-white">
+                  {card.number}. {card.name}
+                </div>
+                <div className={`text-[11px] sm:text-xs leading-tight font-semibold ${card.isActive ? 'text-white' : 'text-slate-700 dark:text-slate-300'}`}>
+                  {card.subtitle}
+                </div>
+              </div>
+
+              {/* Hint Badge */}
+              <div className="flex items-center gap-1 text-[10px] font-bold text-primary/80 group-hover:text-primary dark:text-slate-300 py-0.5 px-2 rounded-full bg-secondary/60 group-hover:bg-primary/10 transition-colors">
+                <RotateCcw className="w-2.5 h-2.5" />
+                <span>Klik balik kartu</span>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="back"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              exit={{ rotateY: -90, opacity: 0 }}
+              transition={{ duration: 0.18, ease: "easeInOut" }}
+              className={`w-full h-full rounded-2xl p-3.5 flex flex-col justify-between border-2 shadow-sm dark:shadow-2xl bg-card dark:bg-slate-950 text-foreground dark:text-slate-100 ${card.borderColor} select-none`}
+            >
+              {/* Header Back */}
+              <div className="flex items-center justify-between w-full border-b border-border/60 dark:border-white/10 pb-1.5">
+                <span className={`text-[11px] font-black px-1.5 py-0.5 rounded border ${card.badgeColor}`}>
+                  {card.number}. {card.name}
+                </span>
+                <span className="text-[10px] text-slate-600 dark:text-slate-300 flex items-center gap-1 font-bold group-hover:text-primary dark:group-hover:text-white">
+                  <RotateCcw className="w-2.5 h-2.5" /> Balik
+                </span>
+              </div>
+
+              {/* Explanation Body */}
+              <div className="text-xs leading-relaxed text-slate-800 dark:text-slate-100 text-left font-semibold my-auto">
+                {card.explanation}
+              </div>
+
+              {/* Highlight Footer */}
+              <div className="pt-1.5 border-t border-border/60 dark:border-white/10 text-[10px] font-bold text-amber-800 dark:text-amber-300 flex items-center gap-1 truncate">
+                <span className="truncate">💡 {card.highlight}</span>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-      <div className="font-bold text-[11px] leading-tight">{label}</div>
-      <div className={`text-[9px] mt-0.5 leading-tight ${active ? 'text-white/90' : 'text-slate-600 dark:text-slate-400 font-medium'}`}>{desc}</div>
     </div>
   );
 }

@@ -93,7 +93,7 @@ export default function Pertemuan5() {
               <div className="p-6 md:p-8 pt-2 space-y-8 overflow-visible">
                 
                 {/* Definisi Akademik Formal */}
-                <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -113,29 +113,29 @@ export default function Pertemuan5() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible py-2">
                     
                     {/* Pilar 1: Operand (Left) -> origin-center sm:origin-left */}
-                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center sm:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-500/50">
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-blue-500/50">
                       <div className="text-2xl">🏷️</div>
-                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
+                      <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
                         1. Operand (Bahan Baku)
                       </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                         Nilai konstan (misal: <code>15000</code>) atau variabel (misal: <code>harga</code>) yang menjadi target operasi komputasi.
                       </p>
                     </div>
 
                     {/* Pilar 2: Operator (Center) -> origin-center */}
-                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-500/50">
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/50">
                       <div className="text-2xl">⚙️</div>
-                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
+                      <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
                         2. Operator (Instruksi Aksi)
                       </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                         Simbol pemroses seperti <code>+</code>, <code>*</code>, <code>==</code>, atau <code>not</code> yang memberi perintah apa yang harus dilakukan terhadap operand.
                       </p>
                     </div>
 
                     {/* Pilar 3: Ekspresi (Right) -> origin-center sm:origin-right */}
-                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center sm:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-500/50">
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-500/50">
                       <div className="text-2xl">✨</div>
                       <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
                         3. Ekspresi (Hasil Evaluasi)
@@ -189,7 +189,7 @@ export default function Pertemuan5() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Aritmatika & Modulo */}
-                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -240,7 +240,7 @@ export default function Pertemuan5() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Relasional & Logika */}
-                <div className="p-5 md:p-6 bg-emerald-500/10 dark:bg-emerald-950/30 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-emerald-500/10 dark:bg-emerald-950/30 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -291,7 +291,7 @@ export default function Pertemuan5() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Presedensi */}
-                <div className="p-5 md:p-6 bg-purple-500/10 dark:bg-purple-950/30 border-l-4 border-purple-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-purple-500/10 dark:bg-purple-950/30 border-l-4 border-purple-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -342,7 +342,7 @@ export default function Pertemuan5() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Compound & String */}
-                <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>

@@ -80,7 +80,7 @@ export default function Pertemuan4() {
               <div className="p-6 md:p-8 pt-2 space-y-8 overflow-visible">
                 
                 {/* 1. Definisi Akademik Formal dengan Hover Magnification & High-Contrast Keyword Tags */}
-                <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -120,29 +120,29 @@ export default function Pertemuan4() {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible py-2">
                     
                     {/* Analogi 1 (Kiri) -> origin-center sm:origin-left agar tidak terpotong tepi kiri */}
-                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center sm:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-500/50">
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-500/50">
                       <div className="text-2xl">📦</div>
-                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
+                      <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
                         1. Kotak Kardus Berlabel
                       </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                         Label di luar kardus adalah <strong>Nama Variabel</strong> (misal: <code>sepatu</code>). Barang di dalam kardus adalah <strong>Nilai Data</strong>. Anda bebas mengganti isinya tanpa perlu mengganti kardusnya.
                       </p>
                     </div>
 
                     {/* Analogi 2 (Tengah) -> origin-center */}
-                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-500/50">
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/50">
                       <div className="text-2xl">🔢</div>
-                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
+                      <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
                         2. Papan Skor Pertandingan
                       </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
                         Tulisan &ldquo;SKOR&rdquo; di papan adalah <strong>Identifier</strong>. Angka pada papan dimulai dari 0, lalu berubah menjadi 1, 2, dst. Tempatnya tetap sama, namun nilainya dinamis seiring jalannya pertandingan.
                       </p>
                     </div>
 
                     {/* Analogi 3 (Kanan) -> origin-center sm:origin-right agar tidak terpotong tepi kanan */}
-                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.35] sm:hover:scale-[1.45] transition-all duration-300 ease-out origin-center sm:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-500/50">
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-500/50">
                       <div className="text-2xl">🏷️</div>
                       <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
                         3. Loker Penitipan Barang
@@ -167,9 +167,9 @@ export default function Pertemuan4() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs overflow-visible py-2">
                     {/* Left Card -> origin-center md:origin-left */}
-                    <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] sm:hover:scale-[1.4] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-500/50">
-                      <strong className="text-cyan-400 font-bold block">4 Aturan Wajib Kompiler:</strong>
-                      <ul className="space-y-1 pl-4 list-disc">
+                    <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 text-slate-200 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-500/50">
+                      <strong className="text-cyan-400 font-bold block text-sm">4 Aturan Wajib Kompiler:</strong>
+                      <ul className="space-y-1 pl-4 list-disc text-xs md:text-sm font-medium">
                         <li>Wajib diawali oleh huruf (a-z, A-Z) atau garis bawah (_).</li>
                         <li>Dilarang diawali angka (misal: <code>1st_winner</code> ❌).</li>
                         <li>Dilarang menggunakan spasi atau tanda minus (<code>total-harga</code> ❌).</li>
@@ -178,7 +178,7 @@ export default function Pertemuan4() {
                     </div>
 
                     {/* Right Card -> origin-center md:origin-right */}
-                    <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] sm:hover:scale-[1.4] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-500/50">
+                    <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-2 text-slate-200 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/50">
                       <strong className="text-amber-400 font-bold block">Konvensi Gaya Industri:</strong>
                       <ul className="space-y-1 pl-4 list-disc">
                         <li>🐍 <strong>Python (PEP 8):</strong> Menggunakan <code>snake_case</code> (contoh: <code>total_belanja</code>).</li>
@@ -235,7 +235,7 @@ export default function Pertemuan4() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Tipe Data */}
-                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -292,7 +292,7 @@ export default function Pertemuan4() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Type Casting */}
-                <div className="p-5 md:p-6 bg-emerald-500/10 dark:bg-emerald-950/30 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-emerald-500/10 dark:bg-emerald-950/30 border-l-4 border-emerald-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -349,7 +349,7 @@ export default function Pertemuan4() {
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
                 {/* Definisi Akademik Konstanta */}
-                <div className="p-5 md:p-6 bg-purple-500/10 dark:bg-purple-950/30 border-l-4 border-purple-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.06] sm:hover:scale-[1.1] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-purple-500/10 dark:bg-purple-950/30 border-l-4 border-purple-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -410,7 +410,7 @@ export default function Pertemuan4() {
                     Program komputer menjadi hidup dan interaktif karena dapat berkomunikasi dengan pengguna manusia. Komputer membaca masukan (<strong className="text-cyan-700 dark:text-cyan-300 font-bold">Input</strong>) dari papan ketik, menyimpannya ke variabel di RAM, lalu menampilkan hasilnya (<strong className="text-emerald-700 dark:text-emerald-300 font-bold">Output</strong>) ke layar terminal monitor.
                   </p>
                   
-                  <div className="p-4 bg-rose-500/10 border-l-4 border-rose-500 rounded-r-xl text-xs md:text-sm text-slate-800 dark:text-slate-200 shadow-sm space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.04] sm:hover:scale-[1.06] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-rose-400 bg-background/95 dark:bg-slate-950/95">
+                  <div className="p-4 bg-rose-500/10 border-l-4 border-rose-500 rounded-r-xl text-xs md:text-sm text-slate-800 dark:text-slate-200 shadow-sm space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-rose-400 bg-background/95 dark:bg-slate-950/95">
                     <strong className="text-rose-600 dark:text-rose-400 font-bold flex items-center gap-1.5 font-mono uppercase text-xs">
                       <span>⚠️ Aturan Emas Yang Wajib Diingat:</span>
                     </strong>

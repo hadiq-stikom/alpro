@@ -107,7 +107,7 @@ export default function RelationalLogicLab() {
             className="space-y-6 overflow-visible"
           >
             {/* Fatal Trap Box: = vs == */}
-            <div className="p-4 md:p-5 rounded-2xl bg-rose-500/10 border border-rose-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.03] transition-all duration-300 origin-center hover:shadow-[0_20px_40px_rgba(244,63,94,0.3)]">
+            <div className="p-4 md:p-5 rounded-2xl bg-rose-500/10 border-2 border-rose-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]">
               <div className="flex items-center gap-2 text-rose-400 font-extrabold text-sm">
                 <AlertTriangle className="w-5 h-5" />
                 <span>JEBAKAN FATAL NOMOR 1 PEMULA: Perbedaan Tanda = vs ==</span>
@@ -265,7 +265,7 @@ export default function RelationalLogicLab() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-visible">
                   
                   {/* Gate 1: AND */}
-                  <div className={`p-4 rounded-2xl border-2 transition-all space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] ${
+                  <div className={`p-4 rounded-2xl border-2 transition-transform space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
                     andResult ? 'bg-emerald-500/15 border-emerald-500 text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.2)]' : 'bg-slate-900 border-slate-800 text-slate-400'
                   }`}>
                     <div className="flex justify-between items-center border-b border-white/10 pb-1.5">
@@ -283,7 +283,7 @@ export default function RelationalLogicLab() {
                   </div>
 
                   {/* Gate 2: OR */}
-                  <div className={`p-4 rounded-2xl border-2 transition-all space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] ${
+                  <div className={`p-4 rounded-2xl border-2 transition-transform space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
                     orResult ? 'bg-blue-500/15 border-blue-500 text-blue-300 shadow-[0_0_20px_rgba(59,130,246,0.2)]' : 'bg-slate-900 border-slate-800 text-slate-400'
                   }`}>
                     <div className="flex justify-between items-center border-b border-white/10 pb-1.5">
@@ -301,7 +301,7 @@ export default function RelationalLogicLab() {
                   </div>
 
                   {/* Gate 3: NOT P */}
-                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-purple-400">
                     <div className="flex justify-between items-center border-b border-slate-800 pb-1.5">
                       <strong className="text-sm font-bold text-white">Logika NOT P ( !P )</strong>
                       <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${notPResult ? 'bg-purple-500 text-white' : 'bg-slate-950 text-slate-500'}`}>
@@ -317,7 +317,7 @@ export default function RelationalLogicLab() {
                   </div>
 
                   {/* Gate 4: NOT Q */}
-                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
                     <div className="flex justify-between items-center border-b border-slate-800 pb-1.5">
                       <strong className="text-sm font-bold text-white">Logika NOT Q ( !Q )</strong>
                       <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${notQResult ? 'bg-amber-500 text-slate-950' : 'bg-slate-950 text-slate-500'}`}>
@@ -364,7 +364,7 @@ export default function RelationalLogicLab() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 overflow-visible">
                 
                 {/* Short Circuit AND */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-rose-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-rose-400">
                   <span className="text-xs font-bold text-rose-400 block font-mono">
                     1. Short-Circuit pada AND (False &amp;&amp; ...):
                   </span>
@@ -378,7 +378,7 @@ export default function RelationalLogicLab() {
                 </div>
 
                 {/* Short Circuit OR */}
-                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
+                <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-emerald-400">
                   <span className="text-xs font-bold text-emerald-400 block font-mono">
                     2. Short-Circuit pada OR (True || ...):
                   </span>

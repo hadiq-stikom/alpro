@@ -208,12 +208,7 @@ export default function Pertemuan6() {
                     ].map(item => (
                       <div
                         key={item.lang}
-                        className={`rounded-2xl border ${item.borderColor} bg-slate-900 shadow-md overflow-hidden transition-all duration-300 ease-out origin-center relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.3] hover:shadow-[0_20px_50px_rgba(0,0,0,0.9)]`}
-                        style={{
-                          transform: 'translateZ(0)',
-                          textRendering: 'geometricPrecision',
-                          WebkitFontSmoothing: 'antialiased',
-                        }}
+                        className={`rounded-2xl border ${item.borderColor} bg-slate-900 shadow-md overflow-hidden transition-transform duration-300 ease-out origin-center relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]`}
                       >
                         <div className="px-3.5 py-2 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
                           <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold font-mono border ${item.badgeColor}`}>
@@ -274,7 +269,7 @@ export default function Pertemuan6() {
               <div className="p-6 md:p-8 pt-2 space-y-8 overflow-visible">
 
                 {/* Definisi */}
-                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
+                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
@@ -340,12 +335,7 @@ export default function Pertemuan6() {
                     ].map(item => (
                       <div
                         key={item.lang}
-                        className={`rounded-2xl border ${item.borderColor} bg-slate-900 shadow-md overflow-hidden transition-all duration-300 ease-out origin-center relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.3] hover:shadow-[0_20px_50px_rgba(0,0,0,0.9)]`}
-                        style={{
-                          transform: 'translateZ(0)',
-                          textRendering: 'geometricPrecision',
-                          WebkitFontSmoothing: 'antialiased',
-                        }}
+                        className={`rounded-2xl border ${item.borderColor} bg-slate-900 shadow-md overflow-hidden transition-transform duration-300 ease-out origin-center relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]`}
                       >
                         <div className="px-3.5 py-2 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
                           <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold font-mono border ${item.badgeColor}`}>

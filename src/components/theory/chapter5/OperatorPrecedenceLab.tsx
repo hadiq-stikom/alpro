@@ -132,7 +132,7 @@ export default function OperatorPrecedenceLab() {
                 <button
                   key={c.id}
                   onClick={() => handleSelectCase(c.id)}
-                  className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.05] duration-300 ease-out origin-center hover:shadow-[0_15px_30px_rgba(0,0,0,0.8)] ${
+                  className={`p-3 rounded-2xl border-2 transition-transform text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
                     isSelected 
                       ? 'border-purple-400 bg-slate-900 shadow-md ring-1 ring-purple-400' 
                       : 'border-slate-800 bg-slate-950 hover:bg-slate-900/60'
@@ -237,7 +237,7 @@ export default function OperatorPrecedenceLab() {
           </div>
 
           {/* AHA Box */}
-          <div className="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-xs text-slate-200 space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.03] transition-all duration-300 origin-center hover:shadow-xl">
+          <div className="p-4 rounded-2xl bg-purple-500/10 border-2 border-purple-500/30 text-xs text-slate-100 space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]">
             <strong className="text-purple-300 font-bold block font-mono text-sm">
               💡 Insight Evaluasi Kompiler:
             </strong>

@@ -790,21 +790,21 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
   const mainContentJSX = (
     <div className={`transition-all duration-300 ${
       isMaximized 
-        ? 'fixed top-0 left-0 right-0 bottom-0 inset-0 z-[99999] p-4 md:p-6 bg-slate-950/98 backdrop-blur-2xl flex flex-col justify-between w-screen h-screen overflow-y-auto text-slate-100 font-sans' 
-        : 'border border-border/60 rounded-3xl overflow-visible bg-slate-950 shadow-2xl space-y-0 text-slate-100'
+        ? 'fixed top-0 left-0 right-0 bottom-0 inset-0 z-[99999] p-4 md:p-6 bg-white/98 dark:bg-slate-950/98 backdrop-blur-2xl flex flex-col justify-between w-screen h-screen overflow-y-auto text-foreground dark:text-slate-100 font-sans' 
+        : 'border border-border/60 rounded-3xl overflow-visible bg-card dark:bg-slate-950 shadow-sm dark:shadow-2xl space-y-0 text-foreground dark:text-slate-100'
     }`}>
       
       {/* 1. Header Toolbar */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-amber-500/20 rounded-xl text-amber-400 border border-amber-500/30">
+          <div className="p-2 bg-amber-500/15 dark:bg-amber-500/20 rounded-xl text-amber-600 dark:text-amber-400 border border-amber-500/30">
             <Wand2 className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="font-bold text-sm md:text-base text-slate-100 flex items-center gap-2">
+            <h3 className="font-bold text-sm md:text-base text-foreground dark:text-slate-100 flex items-center gap-2">
               Simulator Konversi Tri-Arah &amp; Validator Algoritma (Bab 3)
             </h3>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-slate-600 dark:text-slate-400">
               Ketik/edit salah satu dari 3 representasi (Naratif &harr; Flowchart &harr; Pseudocode) &rarr; Dua lainnya otomatis tersinkronisasi!
             </p>
           </div>
@@ -812,8 +812,8 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
 
         <div className="flex items-center gap-3">
           {/* Preset Case Selector */}
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
-            <span className="text-[10px] text-slate-400 px-2 font-mono hidden sm:inline-block">Preset:</span>
+          <div className="flex items-center gap-1 bg-white dark:bg-slate-950 p-1 rounded-xl border border-border dark:border-slate-800 shadow-xs">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 px-2 font-mono hidden sm:inline-block">Preset:</span>
             {PRESETS.map((p) => (
               <button
                 key={p.id}
@@ -821,7 +821,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                   selectedPresetId === p.id 
                     ? 'bg-amber-600 text-white shadow-md' 
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {p.name.split(' ')[1] || p.name}
@@ -832,10 +832,10 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
           {/* Maximize Toggle Button */}
           <button
             onClick={() => setIsMaximized(!isMaximized)}
-            className="p-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-500/50 text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+            className="p-2 rounded-xl bg-white dark:bg-slate-900 border border-border dark:border-slate-800 hover:border-amber-500/50 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white transition-all cursor-pointer flex items-center gap-1.5 shadow-xs"
             title={isMaximized ? "Perkecil (Tekan ESC untuk keluar)" : "Perbesar Layar Penuh (Maximize)"}
           >
-            {isMaximized ? <Minimize2 className="w-4 h-4 text-amber-400" /> : <Maximize2 className="w-4 h-4 text-amber-400" />}
+            {isMaximized ? <Minimize2 className="w-4 h-4 text-amber-500 dark:text-amber-400" /> : <Maximize2 className="w-4 h-4 text-amber-500 dark:text-amber-400" />}
             <span className="text-xs font-mono hidden md:inline-block">
               {isMaximized ? 'Keluar Layar Penuh' : 'Layar Penuh'}
             </span>
@@ -847,13 +847,13 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
       <div className="p-4 md:p-6 space-y-6 overflow-visible">
         
         {/* Source Mode Toggle (Pilih dari mana Anda ingin mengetik/mengedit) */}
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-3">
+        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/80 border border-border dark:border-slate-800 space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <span className="text-xs font-mono font-bold text-amber-400 flex items-center gap-1.5">
+            <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
               <Sparkles className="w-4 h-4" />
               Pilih Representasi Awal yang Ingin Anda Edit / Bangun:
             </span>
-            <span className="text-[10px] text-slate-400 font-mono">
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
               💡 Klik salah satu mode di bawah untuk membuka editor aktif pada kolom tersebut
             </span>
           </div>
@@ -863,19 +863,19 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
               onClick={() => setSourceMode('naratif')}
               className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
                 sourceMode === 'naratif' 
-                  ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300 ring-2 ring-emerald-500/50 shadow-lg' 
-                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  ? 'bg-emerald-500/15 dark:bg-emerald-500/20 border-emerald-500 text-emerald-800 dark:text-emerald-300 ring-2 ring-emerald-500/50 shadow-md' 
+                  : 'bg-white dark:bg-slate-950 border-border dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <FileText className="w-4 h-4 text-emerald-400" />
+                <FileText className={`w-4 h-4 ${sourceMode === 'naratif' ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500'}`} />
                 <div>
-                  <div className="text-xs font-bold text-white">Mode 1: Edit Naratif</div>
-                  <div className="text-[10px] text-slate-400">Ketik teks deskriptif baku</div>
+                  <div className="text-xs font-bold text-foreground dark:text-white">Mode 1: Edit Naratif</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Ketik teks deskriptif baku</div>
                 </div>
               </div>
               {sourceMode === 'naratif' && (
-                <span className="text-[9px] bg-emerald-500 text-slate-950 px-1.5 py-0.5 rounded font-extrabold">
+                <span className="text-[9px] bg-emerald-500 text-white dark:text-slate-950 px-1.5 py-0.5 rounded font-extrabold">
                   AKTIF
                 </span>
               )}
@@ -897,19 +897,19 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
               }}
               className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
                 sourceMode === 'flowchart' 
-                  ? 'bg-blue-500/20 border-blue-500 text-blue-300 ring-2 ring-blue-500/50 shadow-lg' 
-                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  ? 'bg-blue-500/15 dark:bg-blue-500/20 border-blue-500 text-blue-800 dark:text-blue-300 ring-2 ring-blue-500/50 shadow-md' 
+                  : 'bg-white dark:bg-slate-950 border-border dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <GitCommit className="w-4 h-4 text-blue-400" />
+                <GitCommit className={`w-4 h-4 ${sourceMode === 'flowchart' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500'}`} />
                 <div>
-                  <div className="text-xs font-bold text-white">Mode 2: Edit Flowchart</div>
-                  <div className="text-[10px] text-slate-400">Susun visual node alur diagram</div>
+                  <div className="text-xs font-bold text-foreground dark:text-white">Mode 2: Edit Flowchart</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Susun visual node alur diagram</div>
                 </div>
               </div>
               {sourceMode === 'flowchart' && (
-                <span className="text-[9px] bg-blue-500 text-white px-1.5 py-0.5 rounded font-extrabold">
+                <span className="text-[9px] bg-blue-600 text-white px-1.5 py-0.5 rounded font-extrabold">
                   AKTIF
                 </span>
               )}
@@ -919,19 +919,19 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
               onClick={() => setSourceMode('pseudocode')}
               className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
                 sourceMode === 'pseudocode' 
-                  ? 'bg-violet-500/20 border-violet-500 text-violet-300 ring-2 ring-violet-500/50 shadow-lg' 
-                  : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  ? 'bg-violet-500/15 dark:bg-violet-500/20 border-violet-500 text-violet-800 dark:text-violet-300 ring-2 ring-violet-500/50 shadow-md' 
+                  : 'bg-white dark:bg-slate-950 border-border dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-900 shadow-xs'
               }`}
             >
               <div className="flex items-center gap-2.5">
-                <Code2 className="w-4 h-4 text-violet-400" />
+                <Code2 className={`w-4 h-4 ${sourceMode === 'pseudocode' ? 'text-violet-600 dark:text-violet-400' : 'text-slate-500'}`} />
                 <div>
-                  <div className="text-xs font-bold text-white">Mode 3: Edit Pseudocode</div>
-                  <div className="text-[10px] text-slate-400">Ketik struktur 3 blok baku</div>
+                  <div className="text-xs font-bold text-foreground dark:text-white">Mode 3: Edit Pseudocode</div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">Ketik struktur 3 blok baku</div>
                 </div>
               </div>
               {sourceMode === 'pseudocode' && (
-                <span className="text-[9px] bg-violet-500 text-white px-1.5 py-0.5 rounded font-extrabold">
+                <span className="text-[9px] bg-violet-600 text-white px-1.5 py-0.5 rounded font-extrabold">
                   AKTIF
                 </span>
               )}
@@ -940,16 +940,16 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
         </div>
 
         {/* 2. TOP PROMINENT VALIDATION STATUS BANNER */}
-        <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 shadow-lg">
+        <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-border dark:border-slate-800 space-y-3 shadow-xs dark:shadow-lg">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <div className="flex items-center gap-2">
-              <div className={`p-1.5 rounded-xl border ${activeLintIssues.length === 0 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/20 text-amber-400 border-amber-500/30'}`}>
+              <div className={`p-1.5 rounded-xl border ${activeLintIssues.length === 0 ? 'bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30' : 'bg-amber-500/15 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-500/30'}`}>
                 <ShieldCheck className="w-4 h-4" />
               </div>
               <div>
-                <h4 className="font-bold text-xs md:text-sm text-slate-100 flex items-center gap-2">
+                <h4 className="font-bold text-xs md:text-sm text-foreground dark:text-slate-100 flex items-center gap-2">
                   <span>Status Kepatuhan Aturan Penulisan (Live Pedagogical Linter)</span>
-                  <span className="text-[10px] text-slate-400 font-normal hidden sm:inline-block">
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal hidden sm:inline-block">
                     &bull; Otomatis mengevaluasi kesesuaian dengan Bab 3
                   </span>
                 </h4>
@@ -957,21 +957,21 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
             </div>
             
             {activeLintIssues.length === 0 ? (
-              <span className="text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-full flex items-center gap-1.5 self-start sm:self-center shadow-sm">
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-xs font-mono font-bold bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-full flex items-center gap-1.5 self-start sm:self-center shadow-xs">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                 100% Sesuai Standar Bab 3
               </span>
             ) : (
-              <span className="text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/50 px-3 py-1 rounded-full flex items-center gap-1.5 self-start sm:self-center shadow-sm animate-pulse">
-                <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-xs font-mono font-bold bg-amber-500/15 dark:bg-amber-500/20 text-amber-800 dark:text-amber-300 border border-amber-500/50 px-3 py-1 rounded-full flex items-center gap-1.5 self-start sm:self-center shadow-xs animate-pulse">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 Ditemukan {activeLintIssues.length} Catatan / Peringatan Aturan
               </span>
             )}
           </div>
 
           {activeLintIssues.length === 0 ? (
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-300 flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" />
+            <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2.5">
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
               <span>
                 <strong>Bagus sekali!</strong> Algoritma Anda telah mematuhi seluruh kaidah imperatif dan 4 prinsip baku Bab 3.
               </span>
@@ -981,26 +981,26 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
               {activeLintIssues.map((issue) => (
                 <div 
                   key={issue.id}
-                  className={`p-3 rounded-xl border text-xs flex flex-col justify-between gap-2 shadow-sm ${
+                  className={`p-3 rounded-xl border text-xs flex flex-col justify-between gap-2 shadow-xs ${
                     issue.type === 'error'
-                      ? 'bg-rose-950/50 border-rose-500/50 text-rose-200'
+                      ? 'bg-rose-500/10 dark:bg-rose-950/50 border-rose-500/40 text-rose-900 dark:text-rose-200'
                       : issue.type === 'warning'
-                      ? 'bg-amber-950/50 border-amber-500/50 text-amber-200'
-                      : 'bg-blue-950/50 border-blue-500/50 text-blue-200'
+                      ? 'bg-amber-500/10 dark:bg-amber-950/50 border-amber-500/40 text-amber-900 dark:text-amber-200'
+                      : 'bg-blue-500/10 dark:bg-blue-950/50 border-blue-500/40 text-blue-900 dark:text-blue-200'
                   }`}
                 >
                   <div className="space-y-1">
                     <div className="font-bold flex items-center gap-1.5">
-                      <AlertTriangle className={`w-3.5 h-3.5 shrink-0 ${issue.type === 'error' ? 'text-rose-400' : 'text-amber-400'}`} />
+                      <AlertTriangle className={`w-3.5 h-3.5 shrink-0 ${issue.type === 'error' ? 'text-rose-600 dark:text-rose-400' : 'text-amber-600 dark:text-amber-400'}`} />
                       <span>{issue.title}</span>
                     </div>
-                    <p className="text-[11px] text-slate-300 leading-relaxed font-sans pl-5">
+                    <p className="text-[11px] text-slate-700 dark:text-slate-300 leading-relaxed font-sans pl-5">
                       {issue.message}
                     </p>
                   </div>
 
                   {issue.fixSuggestion && (
-                    <div className="text-[11px] font-mono bg-slate-950/80 px-2.5 py-1 rounded-lg border border-white/10 text-amber-300 mt-1 flex items-center gap-1.5">
+                    <div className="text-[11px] font-mono bg-white dark:bg-slate-950/80 px-2.5 py-1 rounded-lg border border-border dark:border-white/10 text-amber-800 dark:text-amber-300 mt-1 flex items-center gap-1.5 shadow-xs">
                       <span>💡 <strong>Saran:</strong></span>
                       <span>{issue.fixSuggestion}</span>
                     </div>
@@ -1019,21 +1019,21 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
           {/* ========================================================================= */}
           <div className={`rounded-3xl border transition-all flex flex-col justify-between overflow-hidden shadow-xl ${
             sourceMode === 'naratif' 
-              ? 'bg-slate-900/95 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)] ring-1 ring-emerald-500' 
+              ? 'bg-card dark:bg-slate-900/95 border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.2)] ring-1 ring-emerald-500' 
               : 'bg-card border-border/60 text-foreground'
           }`}>
             <div className={`p-4 border-b flex items-center justify-between ${
-              sourceMode === 'naratif' ? 'bg-slate-950 border-slate-800' : 'bg-secondary/30 border-border/40'
+              sourceMode === 'naratif' ? 'bg-secondary/40 dark:bg-slate-950 border-emerald-500/30 dark:border-slate-800' : 'bg-secondary/30 border-border/40'
             }`}>
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-emerald-500" />
-                <h4 className="font-extrabold text-sm text-emerald-500">1. Algoritma Naratif</h4>
+                <h4 className="font-extrabold text-sm text-emerald-600 dark:text-emerald-500">1. Algoritma Naratif</h4>
               </div>
               
               <div className="flex items-center gap-1.5">
                 {sourceMode === 'naratif' ? (
-                  <span className="text-[9px] font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/40 font-bold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  <span className="text-[9px] font-mono bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/40 font-bold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
                     Editor Aktif ✍️
                   </span>
                 ) : (
@@ -1058,20 +1058,20 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     value={naratifInput}
                     onChange={(e) => setNaratifInput(e.target.value)}
                     rows={10}
-                    className={`w-full bg-slate-950 border rounded-2xl p-4 text-slate-100 font-mono text-xs leading-relaxed focus:outline-none focus:ring-1 transition-all shadow-inner ${
-                      activeLintIssues.length > 0 ? 'border-amber-500/60 focus:border-amber-400 focus:ring-amber-400' : 'border-slate-800 focus:border-emerald-500 focus:ring-emerald-500'
+                    className={`w-full bg-slate-50 dark:bg-slate-950 border rounded-2xl p-4 text-foreground dark:text-slate-100 font-mono text-xs leading-relaxed focus:outline-none focus:ring-1 transition-all shadow-inner ${
+                      activeLintIssues.length > 0 ? 'border-amber-500/60 focus:border-amber-400 focus:ring-amber-400' : 'border-border dark:border-slate-800 focus:border-emerald-500 focus:ring-emerald-500'
                     }`}
                     placeholder="1. Masukkan nilai panjang.&#10;2. Masukkan nilai lebar.&#10;3. Hitung nilai luas&#10;   luas = panjang * lebar&#10;4. Tampilkan hasil luas ke layar."
                   />
                   
                   {activeLintIssues.length > 0 && (
-                    <div className="p-2.5 rounded-xl bg-amber-950/70 border border-amber-500/60 text-amber-200 text-xs flex items-start gap-2 shadow-inner">
-                      <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/70 border border-amber-500/60 text-amber-900 dark:text-amber-200 text-xs flex items-start gap-2 shadow-inner">
+                      <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <div className="space-y-0.5">
-                        <span className="font-bold text-amber-300">Catatan Baris: </span>
+                        <span className="font-bold text-amber-800 dark:text-amber-300">Catatan Baris: </span>
                         <span>{activeLintIssues[0].message}</span>
                         {activeLintIssues[0].fixSuggestion && (
-                          <div className="text-[11px] font-mono text-amber-400 font-semibold mt-0.5">
+                          <div className="text-[11px] font-mono text-amber-700 dark:text-amber-400 font-semibold mt-0.5">
                             👉 {activeLintIssues[0].fixSuggestion}
                           </div>
                         )}
@@ -1079,9 +1079,9 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 font-mono px-1">
+                  <div className="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400 font-mono px-1">
                     <span>{naratifInput.split('\n').filter(l => l.trim()).length} Baris Langkah</span>
-                    <span className="text-emerald-400 font-semibold">Live Auto-Sync &rarr;</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold">Live Auto-Sync &rarr;</span>
                   </div>
                 </div>
               ) : (
@@ -1101,24 +1101,24 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
           {/* ========================================================================= */}
           <div className={`rounded-3xl border transition-all flex flex-col justify-between overflow-hidden shadow-xl ${
             sourceMode === 'flowchart' 
-              ? 'bg-slate-900/95 border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.2)] ring-1 ring-blue-500' 
+              ? 'bg-card dark:bg-slate-900/95 border-blue-500 shadow-[0_0_30px_rgba(59,130,246,0.2)] ring-1 ring-blue-500' 
               : 'bg-card border-border/60 text-foreground'
           }`}>
             <div className={`p-4 border-b flex items-center justify-between ${
-              sourceMode === 'flowchart' ? 'bg-slate-950 border-slate-800' : 'bg-secondary/30 border-border/40'
+              sourceMode === 'flowchart' ? 'bg-secondary/40 dark:bg-slate-950 border-blue-500/30 dark:border-slate-800' : 'bg-secondary/30 border-border/40'
             }`}>
               <div className="flex items-center gap-2">
                 <GitCommit className="w-4 h-4 text-blue-500" />
-                <h4 className="font-extrabold text-sm text-blue-500">2. Flowchart (Diagram Alir)</h4>
+                <h4 className="font-extrabold text-sm text-blue-600 dark:text-blue-500">2. Flowchart (Diagram Alir)</h4>
               </div>
               
               {sourceMode === 'flowchart' ? (
-                <span className="text-[9px] font-mono bg-blue-500/20 text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/40 font-bold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping"></span>
+                <span className="text-[9px] font-mono bg-blue-500/20 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full border border-blue-500/40 font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-ping"></span>
                   Visual Builder 🛠️
                 </span>
               ) : (
-                <span className="text-[9px] font-mono bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/30 font-bold">
+                <span className="text-[9px] font-mono bg-blue-500/20 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/30 font-bold">
                   Auto-Synced ⚡
                 </span>
               )}
@@ -1139,24 +1139,24 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                   {customFlowSteps.map((step, idx) => (
                     <div key={step.id || idx} className="flex flex-col items-center gap-1 w-full">
                       
-                      <div className="w-full p-2.5 bg-slate-900 border border-slate-800 rounded-2xl shadow-sm flex flex-col gap-2 relative group">
-                        <div className="flex items-center justify-between border-b border-slate-800 pb-1.5 text-[10px] font-mono text-slate-400">
+                      <div className="w-full p-2.5 bg-slate-50 dark:bg-slate-900 border border-border dark:border-slate-800 rounded-2xl shadow-sm flex flex-col gap-2 relative group">
+                        <div className="flex items-center justify-between border-b border-border/60 dark:border-slate-800 pb-1.5 text-[10px] font-mono text-slate-500 dark:text-slate-400">
                           <span className="font-bold flex items-center gap-1">
                             <span>#{idx + 1}</span>
-                            <span className={step.type === 'input' ? 'text-blue-400' : (step.type === 'calc' ? 'text-purple-400' : 'text-emerald-400')}>
+                            <span className={step.type === 'input' ? 'text-blue-600 dark:text-blue-400' : (step.type === 'calc' ? 'text-purple-600 dark:text-purple-400' : 'text-emerald-600 dark:text-emerald-400')}>
                               {step.type === 'input' ? 'Input Data (Jajar Genjang)' : (step.type === 'calc' ? 'Hitung Rumus (Persegi Panjang)' : 'Output Hasil')}
                             </span>
                           </span>
                           
                           {/* Reorder and Delete Controls */}
                           <div className="flex items-center gap-1">
-                            <button onClick={() => moveFlowStep(idx, 'up')} disabled={idx === 0} className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer" title="Geser ke Atas">
+                            <button onClick={() => moveFlowStep(idx, 'up')} disabled={idx === 0} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-foreground disabled:opacity-30 cursor-pointer" title="Geser ke Atas">
                               <ArrowUp className="w-3 h-3" />
                             </button>
-                            <button onClick={() => moveFlowStep(idx, 'down')} disabled={idx === customFlowSteps.length - 1} className="p-1 hover:bg-slate-800 rounded text-slate-400 hover:text-white disabled:opacity-30 cursor-pointer" title="Geser ke Bawah">
+                            <button onClick={() => moveFlowStep(idx, 'down')} disabled={idx === customFlowSteps.length - 1} className="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded text-slate-500 dark:text-slate-400 hover:text-foreground disabled:opacity-30 cursor-pointer" title="Geser ke Bawah">
                               <ArrowDown className="w-3 h-3" />
                             </button>
-                            <button onClick={() => deleteFlowStep(idx)} className="p-1 hover:bg-rose-500/20 text-rose-400 rounded cursor-pointer" title="Hapus Node">
+                            <button onClick={() => deleteFlowStep(idx)} className="p-1 hover:bg-rose-500/20 text-rose-500 dark:text-rose-400 rounded cursor-pointer" title="Hapus Node">
                               <Trash2 className="w-3 h-3" />
                             </button>
                           </div>
@@ -1165,15 +1165,15 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                         {/* Input Fields depending on Node Type */}
                         {step.type === 'input' && (
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-mono text-blue-400 font-bold">input(</span>
+                            <span className="text-xs font-mono text-blue-600 dark:text-blue-400 font-bold">input(</span>
                             <input 
                               type="text" 
                               value={step.varName} 
                               onChange={(e) => updateFlowStep(idx, 'varName', e.target.value)} 
                               placeholder="nama_variabel" 
-                              className="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:border-blue-400"
+                              className="flex-1 bg-white dark:bg-slate-950 border border-border dark:border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-foreground dark:text-slate-200 focus:outline-none focus:border-blue-400"
                             />
-                            <span className="text-xs font-mono text-blue-400 font-bold">)</span>
+                            <span className="text-xs font-mono text-blue-600 dark:text-blue-400 font-bold">)</span>
                           </div>
                         )}
 
@@ -1184,30 +1184,30 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                               value={step.varName} 
                               onChange={(e) => updateFlowStep(idx, 'varName', e.target.value)} 
                               placeholder="hasil" 
-                              className="w-24 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 font-mono text-purple-300 focus:outline-none focus:border-purple-400 font-bold"
+                              className="w-24 bg-white dark:bg-slate-950 border border-border dark:border-slate-700 rounded-lg px-2 py-1 font-mono text-purple-700 dark:text-purple-300 focus:outline-none focus:border-purple-400 font-bold"
                             />
-                            <span className="text-rose-400 font-bold">=</span>
+                            <span className="text-rose-600 dark:text-rose-400 font-bold">=</span>
                             <input 
                               type="text" 
                               value={step.expr || ''} 
                               onChange={(e) => updateFlowStep(idx, 'expr', e.target.value)} 
                               placeholder="ekspresi rumus (misal: a * b)" 
-                              className="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 font-mono text-amber-300 focus:outline-none focus:border-purple-400 font-bold"
+                              className="flex-1 bg-white dark:bg-slate-950 border border-border dark:border-slate-700 rounded-lg px-2 py-1 font-mono text-amber-700 dark:text-amber-300 focus:outline-none focus:border-purple-400 font-bold"
                             />
                           </div>
                         )}
 
                         {step.type === 'output' && (
                           <div className="flex items-center gap-2">
-                            <span className="text-xs font-mono text-emerald-400 font-bold">output(</span>
+                            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">output(</span>
                             <input 
                               type="text" 
                               value={step.outputArgs || ''} 
                               onChange={(e) => updateFlowStep(idx, 'outputArgs', e.target.value)} 
                               placeholder="variabel_atau_pesan" 
-                              className="flex-1 bg-slate-950 border border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-slate-200 focus:outline-none focus:border-emerald-400"
+                              className="flex-1 bg-white dark:bg-slate-950 border border-border dark:border-slate-700 rounded-lg px-2 py-1 text-xs font-mono text-foreground dark:text-slate-200 focus:outline-none focus:border-emerald-400"
                             />
-                            <span className="text-xs font-mono text-emerald-400 font-bold">)</span>
+                            <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">)</span>
                           </div>
                         )}
                       </div>
@@ -1217,24 +1217,24 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                   ))}
 
                   {/* Add Node Tool Bar */}
-                  <div className="pt-2 flex flex-col gap-1.5 border-t border-slate-800">
-                    <span className="text-[10px] font-mono text-slate-400 font-bold">+ Tambah Node Simbol:</span>
+                  <div className="pt-2 flex flex-col gap-1.5 border-t border-border/60 dark:border-slate-800">
+                    <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 font-bold">+ Tambah Node Simbol:</span>
                     <div className="grid grid-cols-3 gap-1.5">
                       <button 
                         onClick={() => addFlowStep('input')} 
-                        className="p-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-300 border border-blue-500/30 rounded-xl text-[10px] font-mono font-bold flex items-center justify-center gap-1 cursor-pointer"
+                        className="p-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-300 border border-blue-500/30 rounded-xl text-[10px] font-mono font-bold flex items-center justify-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3 h-3" /> + Input
                       </button>
                       <button 
                         onClick={() => addFlowStep('calc')} 
-                        className="p-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-xl text-[10px] font-mono font-bold flex items-center justify-center gap-1 cursor-pointer"
+                        className="p-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/30 rounded-xl text-[10px] font-mono font-bold flex items-center justify-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3 h-3" /> + Hitung
                       </button>
                       <button 
                         onClick={() => addFlowStep('output')} 
-                        className="p-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-[10px] font-mono font-bold flex items-center justify-center gap-1 cursor-pointer"
+                        className="p-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-300 border border-emerald-500/30 rounded-xl text-[10px] font-mono font-bold flex items-center justify-center gap-1 cursor-pointer"
                       >
                         <Plus className="w-3 h-3" /> + Output
                       </button>
@@ -1268,7 +1268,7 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     )}
 
                     {node.type === 'unknown' && (
-                      <div className="px-3 py-1 text-xs font-mono bg-rose-500/20 border-2 border-rose-500 text-rose-400 rounded-lg">
+                      <div className="px-3 py-1 text-xs font-mono bg-rose-500/20 border-2 border-rose-500 text-rose-500 dark:text-rose-400 rounded-lg">
                         ⚠️ ? ({node.error})
                       </div>
                     )}
@@ -1296,21 +1296,21 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
           {/* ========================================================================= */}
           <div className={`rounded-3xl border transition-all flex flex-col justify-between overflow-hidden shadow-xl ${
             sourceMode === 'pseudocode' 
-              ? 'bg-slate-900/95 border-violet-500 shadow-[0_0_30px_rgba(168,85,247,0.2)] ring-1 ring-violet-500' 
+              ? 'bg-card dark:bg-slate-900/95 border-violet-500 shadow-[0_0_30px_rgba(168,85,247,0.2)] ring-1 ring-violet-500' 
               : 'bg-card border-border/60 text-foreground'
           }`}>
             <div className={`p-4 border-b flex items-center justify-between ${
-              sourceMode === 'pseudocode' ? 'bg-slate-950 border-slate-800' : 'bg-secondary/30 border-border/40'
+              sourceMode === 'pseudocode' ? 'bg-secondary/40 dark:bg-slate-950 border-violet-500/30 dark:border-slate-800' : 'bg-secondary/30 border-border/40'
             }`}>
               <div className="flex items-center gap-2">
                 <Code2 className="w-4 h-4 text-violet-500" />
-                <h4 className="font-extrabold text-sm text-violet-500">3. Pseudocode (Standar Baku)</h4>
+                <h4 className="font-extrabold text-sm text-violet-600 dark:text-violet-500">3. Pseudocode (Standar Baku)</h4>
               </div>
               
               <div className="flex items-center gap-1.5">
                 {sourceMode === 'pseudocode' ? (
-                  <span className="text-[9px] font-mono bg-violet-500/20 text-violet-300 px-2 py-0.5 rounded-full border border-violet-500/40 font-bold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping"></span>
+                  <span className="text-[9px] font-mono bg-violet-500/20 text-violet-700 dark:text-violet-300 px-2 py-0.5 rounded-full border border-violet-500/40 font-bold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-violet-500 animate-ping"></span>
                     Editor Aktif ✍️
                   </span>
                 ) : (
@@ -1335,20 +1335,20 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     value={pseudoInput}
                     onChange={(e) => setPseudoInput(e.target.value)}
                     rows={10}
-                    className={`w-full bg-slate-950 border rounded-2xl p-4 text-slate-100 font-mono text-xs leading-relaxed focus:outline-none focus:ring-1 transition-all shadow-inner ${
-                      activeLintIssues.length > 0 ? 'border-amber-500/60 focus:border-amber-400 focus:ring-amber-400' : 'border-slate-800 focus:border-violet-500 focus:ring-violet-500'
+                    className={`w-full bg-slate-50 dark:bg-slate-950 border rounded-2xl p-4 text-foreground dark:text-slate-100 font-mono text-xs leading-relaxed focus:outline-none focus:ring-1 transition-all shadow-inner ${
+                      activeLintIssues.length > 0 ? 'border-amber-500/60 focus:border-amber-400 focus:ring-amber-400' : 'border-border dark:border-slate-800 focus:border-violet-500 focus:ring-violet-500'
                     }`}
                     placeholder="PROGRAM NamaProgram&#10;// deskripsi&#10;&#10;KAMUS:&#10;  a, b : float&#10;&#10;ALGORITMA:&#10;  input(a)&#10;  ..."
                   />
 
                   {activeLintIssues.length > 0 && (
-                    <div className="p-2.5 rounded-xl bg-amber-950/70 border border-amber-500/60 text-amber-200 text-xs flex items-start gap-2 shadow-inner">
-                      <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="p-2.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/70 border border-amber-500/60 text-amber-900 dark:text-amber-200 text-xs flex items-start gap-2 shadow-inner">
+                      <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                       <div className="space-y-0.5">
-                        <span className="font-bold text-amber-300">Catatan Baris: </span>
+                        <span className="font-bold text-amber-800 dark:text-amber-300">Catatan Baris: </span>
                         <span>{activeLintIssues[0].message}</span>
                         {activeLintIssues[0].fixSuggestion && (
-                          <div className="text-[11px] font-mono text-amber-400 font-semibold mt-0.5">
+                          <div className="text-[11px] font-mono text-amber-700 dark:text-amber-400 font-semibold mt-0.5">
                             👉 {activeLintIssues[0].fixSuggestion}
                           </div>
                         )}
@@ -1356,9 +1356,9 @@ ${algoLines.length > 0 ? algoLines.join('\n') : '  // Belum ada instruksi'}`;
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 font-mono px-1">
+                  <div className="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400 font-mono px-1">
                     <span>{pseudoInput.split('\n').filter(l => l.trim()).length} Baris Kode</span>
-                    <span className="text-violet-400 font-semibold">Live Auto-Sync &rarr;</span>
+                    <span className="text-violet-600 dark:text-violet-400 font-semibold">Live Auto-Sync &rarr;</span>
                   </div>
                 </div>
               ) : (

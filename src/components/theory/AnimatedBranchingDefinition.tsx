@@ -540,15 +540,15 @@ export default function AnimatedBranchingDefinition() {
         {/* 2. SISI BELAKANG KARTU (GAMBAR 2: DESAIN 2-KOLOM SPLIT WIDESCREEN)   */}
         {/* ═══════════════════════════════════════════════════════════════════════ */}
         <div
-          className={`w-full p-4 md:p-6 bg-sky-50 dark:bg-slate-950 border-2 border-sky-400 dark:border-sky-600 rounded-3xl shadow-2xl space-y-4 transition-all antialiased ${
+          className={`w-full p-4 md:p-6 bg-sky-50 dark:bg-slate-950 border-2 border-sky-400 dark:border-sky-600 rounded-3xl shadow-2xl space-y-4 transition-all subpixel-antialiased ${
             !isFlipped ? 'pointer-events-none absolute inset-0 opacity-0' : 'relative opacity-100'
           }`}
           style={{
             backfaceVisibility: 'hidden',
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg) translate3d(0, 0, 1px)',
-            textRendering: 'geometricPrecision',
-            WebkitFontSmoothing: 'antialiased',
+            textRendering: 'optimizeLegibility',
+            WebkitFontSmoothing: 'subpixel-antialiased',
           }}
         >
           

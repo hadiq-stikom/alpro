@@ -153,7 +153,7 @@ export const QUESTION_BANK: Question[] = [
   {
     id: 'm3-q1',
     meetingId: 3,
-    text: 'Menurut Donald E. Knuth, sebuah algoritma yang baik harus selalu berakhir setelah melakukan sejumlah langkah tertentu (tidak berputar tanpa henti). Ciri algoritma ini dikenal dengan istilah...',
+    text: 'Menurut ilmuwan komputer legendaris Donald E. Knuth (1968), sebuah algoritma yang baik harus selalu berakhir setelah memproses sejumlah langkah terhingga (tidak berputar tanpa henti). Ciri mutlak algoritma ini dikenal dengan istilah...',
     options: [
       { id: 'opt1', text: 'Definiteness (Kepastian)' },
       { id: 'opt2', text: 'Effectiveness (Efektivitas)' },
@@ -161,59 +161,59 @@ export const QUESTION_BANK: Question[] = [
       { id: 'opt4', text: 'Output (Keluaran)' }
     ],
     correctOptionId: 'opt3',
-    explanation: 'Finiteness (Keterbatasan) berarti algoritma harus memiliki titik berhenti setelah mengeksekusi sejumlah langkah. Jika algoritma tidak pernah berhenti (infinite loop), maka algoritma tersebut cacat.'
+    explanation: 'Finiteness (Keterbatasan) menegaskan bahwa algoritma harus memiliki kondisi penghenti (stopping role) setelah mengeksekusi sejumlah langkah terbatas. Jika algoritma tidak pernah berhenti, komputer akan terjebak dalam Infinite Loop yang menyebabkan sistem hang atau kehabisan memori.'
   },
   {
     id: 'm3-q2',
     meetingId: 3,
-    text: 'Dalam teknik penyajian algoritma menggunakan Diagram Alir (Flowchart), simbol geometri berbentuk Belah Ketupat (Diamond) digunakan untuk merepresentasikan...',
+    text: 'Dalam metodologi rekayasa program, seorang insinyur perangkat lunak menerapkan Prinsip 70/30 (Think First, Code Later). Maksud dari penerapan prinsip ini adalah...',
     options: [
-      { id: 'opt1', text: 'Proses perhitungan matematis (Process)' },
-      { id: 'opt2', text: 'Titik awal dan akhir program (Terminal)' },
-      { id: 'opt3', text: 'Membaca atau menulis data (Input/Output)' },
-      { id: 'opt4', text: 'Pengambilan keputusan atau kondisi (Decision)' }
+      { id: 'opt1', text: 'Mengetik kode program sebanyak 70 baris dan menyisakan 30 baris untuk komentar dokumentasi' },
+      { id: 'opt2', text: 'Mengalokasikan 70% waktu dan energi untuk analisis masalah serta perancangan algoritma di hulu, dan 30% untuk pengetikan sintaks kode di hilir' },
+      { id: 'opt3', text: 'Menggunakan memori komputer maksimal 70% dan mencadangkan 30% untuk proses sistem operasi' },
+      { id: 'opt4', text: 'Mengharuskan program menyelesaikan 70% pekerjaan secara otomatis dan 30% secara manual' }
     ],
-    correctOptionId: 'opt4',
-    explanation: 'Belah ketupat (Decision) digunakan untuk menanyakan sebuah kondisi (Ya/Tidak atau Benar/Salah), yang kemudian akan memecah alur program menjadi dua cabang berbeda.'
+    correctOptionId: 'opt2',
+    explanation: 'Prinsip 70/30 menekankan bahwa fase hulu (membedah masalah, analisis variabel, formula matematis, dan penyusunan blueprint algoritma) menyita porsi terbesar (70%) agar ketika masuk ke fase koding di hilir (30%), programmer tinggal menerjemahkan secara mulus tanpa risiko merombak ulang logika dari awal.'
   },
   {
     id: 'm3-q3',
     meetingId: 3,
-    text: 'Mengapa teknik penyajian menggunakan Pseudocode dianggap sangat ideal bagi seorang Programmer dibandingkan dengan teknik Deskriptif Naratif?',
+    text: 'Ketika merancang algoritma untuk menghitung Luas Segitiga dengan formula matematis Luas = 0.5 * alas * tinggi, manakah kaidah penerapan pola IPO (Input - Proses - Output) yang benar?',
     options: [
-      { id: 'opt1', text: 'Karena Pseudocode bisa langsung dieksekusi oleh mesin CPU tanpa perlu di-*compile*' },
-      { id: 'opt2', text: 'Karena Pseudocode menggunakan sintaks dan kata kunci yang terstruktur mirip bahasa pemrograman sungguhan' },
-      { id: 'opt3', text: 'Karena Pseudocode hanya berisi gambar-gambar yang mudah dipahami' },
-      { id: 'opt4', text: 'Karena Pseudocode tidak memerlukan logika pemecahan masalah' }
+      { id: 'opt1', text: 'Nilai konstanta 0.5, alas, dan tinggi wajib diminta semuanya melalui input keyboard pengguna' },
+      { id: 'opt2', text: 'Hanya variabel bebas (alas dan tinggi) yang diminta melalui input, sedangkan nilai tetapan pecahan 0.5 langsung disertakan pada ruang proses CPU' },
+      { id: 'opt3', text: 'Variabel luas dihitung di ruang proses sebelum nilai alas dan tinggi dimasukkan ke dalam memori RAM' },
+      { id: 'opt4', text: 'Variabel alas dan tinggi disajikan kembali sebagai satu-satunya saluran output utama program' }
     ],
     correctOptionId: 'opt2',
-    explanation: 'Pseudocode menyerap struktur logika dan kata kunci (seperti IF, FOR, WHILE) dari bahasa pemrograman, sehingga menerjemahkannya menjadi kode asli jauh lebih cepat dan mudah dibandingkan membaca paragraf naratif.'
+    explanation: 'Pada pola IPO, corong input hanya membaca variabel bebas yang nilainya dinamis dari pengguna (alas dan tinggi). Nilai konstanta seperti 0.5 (atau tetapan gravitasi g = 9.8) bernilai paten dan mutlak, sehingga dilarang diminta lewat input, melainkan langsung dieksekusi di ruang proses perhitungan CPU.'
   },
   {
     id: 'm3-q4',
     meetingId: 3,
-    text: 'Sebuah program kasir dirancang dengan aturan: "Jika total belanja lebih dari Rp 100.000, maka berikan diskon 10%. Jika tidak, jangan berikan diskon." Struktur dasar algoritma apa yang sedang digunakan pada kasus ini?',
+    text: 'Dalam diagram alir (Flowchart ANSI/ISO), simbol geometri Jajar Genjang (Parallelogram) memiliki padanan fungsi universal yang setara dengan instruksi apa dalam teks Pseudocode standar?',
     options: [
-      { id: 'opt1', text: 'Sequential (Runtunan)' },
-      { id: 'opt2', text: 'Selection (Percabangan)' },
-      { id: 'opt3', text: 'Looping (Perulangan)' },
-      { id: 'opt4', text: 'Declaration (Pendeklarasian)' }
+      { id: 'opt1', text: 'PROGRAM dan END (Penanda awal dan akhir program)' },
+      { id: 'opt2', text: 'input(...) dan output(...) (Operasi membaca masukan data dan menampilkan hasil keluaran)' },
+      { id: 'opt3', text: 'Operasi penugasan aritmatika dan kalkulasi rumus (Process)' },
+      { id: 'opt4', text: 'Pernyataan percabangan bersyarat if ... then (Decision)' }
     ],
     correctOptionId: 'opt2',
-    explanation: 'Selection (Percabangan) digunakan ketika alur program harus memilih eksekusi aksi berdasarkan suatu kondisi/syarat tertentu (dalam hal ini, syarat total belanja).'
+    explanation: 'Simbol Jajar Genjang (Parallelogram) adalah simbol I/O standar internasional yang berfungsi untuk memasukkan data ke komputer atau menampilkan hasil olahan data ke pengguna, setara dengan instruksi universal input(variabel) dan output(pesan/variabel) pada Pseudocode.'
   },
   {
     id: 'm3-q5',
     meetingId: 3,
-    text: 'Ketika Anda bermain game balap mobil dan Anda terus menekan tombol "Gas", mobil akan terus bergerak maju sampai Anda melepas tombol tersebut. Program game ini sangat kental mengimplementasikan struktur dasar algoritma, yaitu...',
+    text: 'Sebuah program kasir minimarket mencetak struk belanja dengan mengeksekusi instruksi: (1) Membaca harga belanja, (2) Menghitung nilai pajak PPN 11%, dan (3) Mencetak total bayar ke kertas struk. Struktur dasar algoritma yang mengeksekusi langkah-langkah secara runtut baris demi baris dari awal hingga akhir tanpa lompatan kondisi disebut...',
     options: [
       { id: 'opt1', text: 'Sequential (Runtunan)' },
       { id: 'opt2', text: 'Selection (Percabangan)' },
-      { id: 'opt3', text: 'Looping (Perulangan / Repetition)' },
-      { id: 'opt4', text: 'Compilation (Kompilasi)' }
+      { id: 'opt3', text: 'Looping (Perulangan)' },
+      { id: 'opt4', text: 'Recursion (Rekursi)' }
     ],
-    correctOptionId: 'opt3',
-    explanation: 'Looping (Perulangan) digunakan untuk mengeksekusi sebuah aksi secara berulang-ulang selama kondisi tertentu terpenuhi (selama tombol ditekan, jalankan fungsi bergerak maju).'
+    correctOptionId: 'opt1',
+    explanation: 'Struktur Sequential (Runtunan) adalah struktur dasar algoritma di mana setiap instruksi dieksekusi secara berurutan satu per satu sesuai urutan penulisannya, tanpa ada percabangan syarat (Selection) maupun pengulangan (Looping).'
   },
 
   // --- MINGGU 4: Tipe Data, Variabel & I/O Dasar ---

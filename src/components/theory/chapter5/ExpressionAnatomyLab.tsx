@@ -174,7 +174,7 @@ export default function ExpressionAnatomyLab() {
                 <button
                   key={preset.id}
                   onClick={() => setSelectedId(preset.id)}
-                  className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.05] duration-300 ease-out origin-center hover:shadow-[0_15px_30px_rgba(0,0,0,0.8)] ${
+                  className={`p-3 rounded-2xl border-2 transition-transform text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
                     isSelected 
                       ? 'border-cyan-400 bg-slate-900 shadow-md ring-1 ring-cyan-400' 
                       : 'border-slate-800 bg-slate-950 hover:bg-slate-900/60'
@@ -222,7 +222,7 @@ export default function ExpressionAnatomyLab() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center overflow-visible">
             
             {/* Box 1: Operand (Bahan Baku Nilai) */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+            <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
               <div className="flex items-center justify-between border-b border-blue-500/20 pb-1.5">
                 <span className="text-xs font-bold text-blue-400 flex items-center gap-1.5">
                   <Tag className="w-4 h-4" />
@@ -244,7 +244,7 @@ export default function ExpressionAnatomyLab() {
             </div>
 
             {/* Box 2: Operator (Simbol Instruksi) */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-amber-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
+            <div className="p-4 rounded-2xl bg-slate-950 border border-amber-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
               <div className="flex items-center justify-between border-b border-amber-500/20 pb-1.5">
                 <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
                   <Zap className="w-4 h-4" />
@@ -266,7 +266,7 @@ export default function ExpressionAnatomyLab() {
             </div>
 
             {/* Box 3: Hasil Evaluasi Akhir */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
+            <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-emerald-400">
               <div className="flex items-center justify-between border-b border-emerald-500/20 pb-1.5">
                 <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
@@ -291,17 +291,17 @@ export default function ExpressionAnatomyLab() {
 
           {/* Syntax Representation Tri-Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs overflow-visible py-1">
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center md:origin-left hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-purple-400">
+            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-purple-400">
               <span className="text-[10px] text-slate-400 font-sans block font-bold">📄 Pseudocode:</span>
               <div className="text-purple-300 font-bold">{selectedPreset.pseudoCode}</div>
             </div>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-blue-400">
+            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
               <span className="text-[10px] text-slate-400 font-sans block font-bold">🐍 Python 3:</span>
               <div className="text-blue-300 font-bold">{selectedPreset.pyCode}</div>
             </div>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] sm:hover:scale-[1.3] transition-all duration-300 ease-out origin-center md:origin-right hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
+            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
               <span className="text-[10px] text-slate-400 font-sans block font-bold">🌐 JavaScript:</span>
               <div className="text-amber-300 font-bold">{selectedPreset.jsCode}</div>
             </div>

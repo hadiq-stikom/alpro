@@ -109,3 +109,26 @@ code, pre, kbd, samp, .font-mono, [class*="font-mono"] {
   word-wrap: normal !important;
 }
 
+/* Anti-blur rendering: pastikan teks dan elemen vector tetap tajam (crisp vector font hinting) saat di-zoom 1.2x */
+[class*="hover:scale-"],
+[class*="group-hover:scale-"] {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  transform-origin: center center;
+}
+
+[class*="hover:scale-"] *,
+[class*="group-hover:scale-"] * {
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+}
+
+/* Text rendering presisi pada SVG agar kurva font dan garis tetap solid dan tajam */
+svg text {
+  text-rendering: geometricPrecision !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+

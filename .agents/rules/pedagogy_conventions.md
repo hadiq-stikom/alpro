@@ -185,10 +185,123 @@ Untuk memastikan diagram alir tidak sekadar statis, tetapi hidup dan merefleksik
 
 ---
 
-## 8. Prinsip Desain UI/UX & Kontras
+## 8. Prinsip Desain UI/UX, Ketajaman Visual, Zoom & Flip Interaktif
+
+### A. Cara Penyajian Definisi & Visualisasi Konsep Interaktif
+1. **Konsep Berdimensi Ganda (*Two-Sided Pedagogical Concept Cards*)**:
+   - **Sisi Muka (*Front Face*)**: Menampilkan intisari konsep esensial, ikon visual tematik, nomor urut/pilar, dan uraian padat yang langsung menjawab *"apa itu konsep ini?"*.
+   - **Sisi Balik (*Back/Flip Face*)**: Menampilkan contoh penerapan konkret (*real-world implementation*), pembedahan kode/sintaks, atau elaborasi akademis mendalam yang menjawab *"bagaimana cara menggunakannya?"*.
+2. **Visualisasi Konsep yang Hidup (*Active Visual Metaphors*)**:
+   - Definisi konsep tidak boleh disajikan secara tekstual semata (*text-only dry explanation*).
+   - Wajib disertai visualisasi konkret yang dapat diinteraksikan:
+     - **Bab 4 (Variabel & Tipe Data)**: Simulator loker/wadah memori RAM, verifikator nama identifier real-time, dan taksonomi tipe data interaktif.
+     - **Bab 5 (Operator & Ekspresi)**: Pembedahan anatomi ekspresi, kalkulator modulo jam dinding (*clock arithmetic*), gerbang logika relasional hidup, dan pembanding string *f-string vs template literal*.
+     - **Bab 6 & 7 (Percabangan)**: Simulator evaluasi logika kondisi real-time, visualisasi alir branching dengan cabang aktif vs dilewati (*true/false pathing*).
+
+---
+
+### B. Standar Mutlak Zoom / Fokus Pembahasan (Strict 1.2x Scale)
+1. **Faktor Skala Terstandar**:
+   - Seluruh kartu konsep, simbol unsur flowchart, pilar pseudocode, kaidah naratif, dan modul lab interaktif WAJIB menggunakan skala zoom seragam tepat **1.2x**:
+     ```css
+     hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center
+     ```
+   - Skala ini dipilih secara ergonomis agar seluruh teks dan detail diagram membesar secara proporsional dan nyaman dibaca tanpa terdistorsi.
+2. **Prioritas Lapisan Visual (*Z-Index Stacking*)**:
+   - Wajib menyertakan kelas `relative z-0 hover:z-50` agar elemen yang diperbesar selalu melayang bebas di atas kartu-kartu tetangga tanpa terpotong (*no clipping / overflow-visible*).
+3. **Elevasi Kedalaman Fokus**:
+   - Wajib didukung bayangan fokus yang kuat (`hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]`) untuk memberikan efek elevasi 3 dimensi yang memusatkan perhatian mahasiswa ke kartu yang sedang dipelajari.
+
+---
+
+### C. Arsitektur Balik Kartu Bebas Buram (*Zero 3D Texture Blur Pattern*)
+1. **Penyebab Utama Keburaman pada CSS Transform Scale**:
+   - Ketika elemen HTML menggunakan CSS 3D (`perspective: 1000`, `transformStyle: "preserve-3d"`, atau `backfaceVisibility: "hidden"`), browser WebKit/Blink (Chromium di Linux/Windows/Mac) mengisolasi elemen tersebut ke dalam tekstur GPU *off-screen* beresolusi tetap 1.0x.
+   - Jika kontainer tersebut kemudian di-zoom 1.2x saat di-hover, browser sekadar meregangkan (*bilinear stretch*) tekstur 1x yang sudah di-rasterisasi tersebut. Hasilnya: seluruh teks, border, dan kurva SVG menjadi **buram dan kabur**.
+2. **Pola Wajib: `AnimatePresence` 2D Bersih**:
+   - **DILARANG MENGGUNAKAN** `preserve-3d` permanen pada kartu yang memiliki hover zoom.
+   - **Wajib menggunakan `<AnimatePresence mode="wait" initial={false}>`**:
+     ```tsx
+     <AnimatePresence mode="wait" initial={false}>
+       {!isFlipped ? (
+         <motion.div
+           key="front"
+           initial={{ rotateY: -90, opacity: 0 }}
+           animate={{ rotateY: 0, opacity: 1 }}
+           exit={{ rotateY: 90, opacity: 0 }}
+           transition={{ duration: 0.18, ease: "easeInOut" }}
+           className="w-full h-full p-5 rounded-2xl border-2 bg-card dark:bg-slate-950 ..."
+         >
+           {/* Konten Sisi Depan */}
+         </motion.div>
+       ) : (
+         <motion.div
+           key="back"
+           initial={{ rotateY: 90, opacity: 0 }}
+           animate={{ rotateY: 0, opacity: 1 }}
+           exit={{ rotateY: -90, opacity: 0 }}
+           transition={{ duration: 0.18, ease: "easeInOut" }}
+           className="w-full h-full p-5 rounded-2xl border-2 bg-card dark:bg-slate-950 ..."
+         >
+           {/* Konten Sisi Belakang */}
+         </motion.div>
+       )}
+     </AnimatePresence>
+     ```
+   - **Keunggulan Teknis**:
+     - Saat kartu dalam keadaan diam (*idle/resting state*), kartu adalah elemen 2D DOM murni (`rotateY: 0`).
+     - Ketika pengguna mengarahkan kursor (*hover*) dan skala 1.2x aktif, browser me-rasterisasi teks dan grafik vektor langsung pada resolusi layar penuh secara murni tanpa kompresi tekstur 3D. Teks dan diagram tetap **kristal tajam (*razor-sharp*)**.
+
+---
+
+### D. Standar Ketajaman Tipografi & Anti-Blur Rendering Global
+1. **Konfigurasi CSS Anti-Blur Baku (`globals.css`)**:
+   ```css
+   [class*="hover:scale-"],
+   [class*="group-hover:scale-"] {
+     -webkit-font-smoothing: antialiased !important;
+     -moz-osx-font-smoothing: grayscale !important;
+     text-rendering: optimizeLegibility !important;
+     transform-origin: center center;
+   }
+
+   svg text {
+     text-rendering: geometricPrecision !important;
+     -webkit-font-smoothing: antialiased !important;
+     -moz-osx-font-smoothing: grayscale !important;
+   }
+   ```
+2. **Larangan Penggunaan `subpixel-antialiased` pada Elemen Ber-Scale**:
+   - `subpixel-antialiased` mengandalkan kisi garis RGB sub-piksel fisik layar LCD 1:1. Ketika diperbesar 1.2x, strip RGB bergeser dari kisi fisik monitor, memunculkan efek pelangi kabur (*rainbow color fringing*) dan teks menjadi tebal buram.
+   - Grayscale antialiasing (`antialiased`) menjamin kurva font menggunakan interpolasi alfa murni yang tetap tajam tanpa distorsi warna saat di-scale.
+3. **Larangan `filter: blur(0)` dan `backface-visibility: hidden` Global**:
+   - Properti tersebut memaksa browser mengunci rasterisasi layer bitmap pada skala 1x, yang menyebabkan efek blur saat kartu membesar.
+4. **Ketebalan Tipografi (Font Weight) Padat**:
+   - Hindari teks tipis (`font-normal`/`font-medium`) pada kartu ber-zoom karena garis 1px akan jatuh pada pecahan piksel (0.3px abu-abu buram) saat di-scale 1.2x pada monitor 1080p.
+   - Wajib gunakan minimal **`font-semibold`**, **`font-bold`**, atau **`font-black`** agar batang karakter terisi piksel solid.
+
+---
+
+### E. Standar Kontras Tinggi & Pewarnaan Diagram SVG
+1. **Belah Ketupat Decision Flowchart**:
+   - Latar belakang cokelat pekat: `#451a03`
+   - Border tegas: amber `#f59e0b` (`strokeWidth="2.5"`)
+   - Teks kondisi: kuning keemasan `#fde68a` (amber-200), `fontWeight="900"`, `fontFamily="monospace"`, bebas dari keburaman.
+2. **Kotak Proses & SVG di Mode Terang (Light Mode)**:
+   - Wajib menggunakan atribut `fill="..."` dan `stroke="..."` eksplisit ber-kontras tinggi:
+     - Kotak proses benar: border hijau pekat `#059669`, background lembut `#ecfdf5`, teks hijau gelap pekat `#064e3b`.
+     - Kotak proses salah: border merah mawar `#e11d48`, background lembut `#fff1f2`, teks merah gelap pekat `#881337`.
+   - **DILARANG KERAS** menampilkan teks berwarna kuning/terang di atas latar belakang terang!
+3. **Kotak Proses & SVG di Mode Gelap (Dark Mode)**:
+   - Background gelap pekat (`dark:fill-slate-950` / `dark:fill-emerald-950/80`) dengan teks cerah kontras tinggi (`dark:fill-emerald-200`, `dark:fill-rose-200`).
+4. **Lingkaran Connector**:
+   - Warna biru solid `#0284c7` dengan teks putih murni `#ffffff` `font-black`.
+
+---
+
+### F. Tata Letak Responsif & Ergonomi Antarmuka
 1. **Elegan, Modern, dan Tidak Menor**: Menghindari lencana (*badge*) berlebihan atau kotak mencolok di tengah-tengah baris kode yang dapat merusak pemahaman mahasiswa.
-2. **Kontras Tinggi & Ramah Pemula**: Seluruh elemen teks harus memiliki rasio kontras tinggi yang nyaman dibaca baik pada mode gelap (*Dark Mode*) maupun terang (*Light Mode*).
-3. **Layout Penuh & Tidak Tertekan**: Navigasi tab modul menggunakan grid responsif (`grid-cols-2 lg:grid-cols-4`) agar judul modul dan tombol navigasi tidak tertekan (*squished*) atau memunculkan *scroll-bar* horizontal.
+2. **Layout Penuh & Tidak Tertekan**: Navigasi tab modul menggunakan grid responsif (`grid-cols-2 lg:grid-cols-4`) agar judul modul dan tombol navigasi tidak tertekan (*squished*) atau memunculkan *scroll-bar* horizontal.
 
 ---
 

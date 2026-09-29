@@ -151,14 +151,14 @@ export default function TypeCastingLab() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-mono">
-            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] sm:hover:scale-[1.4] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-rose-400">
+            <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-rose-400">
               <span className="text-rose-400 font-bold block font-sans">❌ Tanpa Type Casting (Teks Digabung):</span>
               <div className="text-slate-300">a = &quot;10&quot;</div>
               <div className="text-slate-300">b = &quot;20&quot;</div>
               <div className="text-rose-300 font-bold">a + b &rarr; &quot;1020&quot; (Bukan 30!)</div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.3] sm:hover:scale-[1.4] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
+            <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-emerald-400">
               <span className="text-emerald-400 font-bold font-sans">✅ Dengan Type Casting (Penjumlahan Angka):</span>
               <div className="text-slate-300">a = int(&quot;10&quot;)</div>
               <div className="text-slate-300">b = int(&quot;20&quot;)</div>
@@ -269,13 +269,13 @@ export default function TypeCastingLab() {
               </span>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-[11px]">
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-400">
+                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-cyan-400">
                   <span className="text-slate-500 block">🐍 Sintaks Python:</span>
                   <div className="text-cyan-400 font-bold">{castResult.pyCode}</div>
                   <div className="text-emerald-400 text-[10px]">type(hasil) &rarr; {castResult.pyClass}</div>
                 </div>
 
-                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.25] sm:hover:scale-[1.35] transition-all duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
+                <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_20px_40px_rgba(0,0,0,0.8)] hover:border-amber-400">
                   <span className="text-slate-500 block">🌐 Sintaks JavaScript:</span>
                   <div className="text-amber-400 font-bold">{castResult.jsCode}</div>
                   <div className="text-emerald-400 text-[10px]">typeof hasil &rarr; &quot;{castResult.jsType}&quot;</div>

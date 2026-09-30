@@ -132,9 +132,45 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
       - Gunakan `line-clamp-2` (bukan `truncate`) pada catatan ringkasan atau takeaway di bagian bawah kartu agar teks yang panjang dapat mengalir secara alami menjadi 2 baris dan tidak terpotong kasar dengan `...` di tengah kata atau menabrak border.
       - Sediakan ruang bawah yang cukup (`p-4` atau `p-4.5` dengan `space-y-2`) agar layout fleksibel dan estetik.
 
-16. **Standar Database & Migrasi SQL Supabase**:
-    - Setiap penulisan skrip SQL (`supabase/*.sql`) wajib idempotent menggunakan klausa `ON CONFLICT (id) DO UPDATE ...` atau verifikasi eksistensi.
-    - Password mahasiswa/dosen harus di-hash menggunakan format bcrypt auth Supabase yang valid.
-    - Role akun wajib tersinkronisasi konsisten antara `auth.users` (metadata) dan `public.profiles` (`mahasiswa` atau `dosen`).
+17. **Fitur Reset Password Mahasiswa oleh Dosen (Ke Default NIM)**:
+    - Lokasi: `/lecturer/dashboard`.
+    - Kolom aksi tabel: "Reset ke NIM" dengan dialog modal konfirmasi eksplisit sebelum tindakan dieksekusi.
+    - Status Akun: Pill badge `Default NIM` (mahasiswa belum mengubah password) vs `Kustom` (mahasiswa telah mengubah password mandiri).
+    - Endpoint Backend: `POST /api/lecturer/reset-password` menggunakan Supabase Service Role Admin Client untuk mengupdate password akun di `auth.users` ke nilai NIM yang bersangkutan, serta menyinkronkan metadata `password_is_default = true`.
+    - Hak Akses: Wajib dilindungi otentikasi peran `dosen` pada level server API.
 
+18. **Dashboard Mahasiswa: Desain Kartu Compact 16 Pertemuan & Kebebasan Akses Bab**:
+    - Lokasi: `/student/dashboard`.
+    - Menggunakan tata letak grid responsif 4 kolom kartu compact berdimensi minimal `min-h-[148px]` yang memuat seluruh 16 minggu perkuliahan semester.
+    - 3 Status Visual Kartu:
+      1. `Selesai`: Menampilkan nilai, lencana capaian visual, status capaian (*Sempurna*, *Bagus*, atau *Remedial*), serta tombol cepat menuju rapor/ulas nilai (`/student/meeting/[id]`).
+      2. `Tersedia`: Pertemuan aktif siap dikerjakan dengan border putus-putus (*dashed*), badge `Tersedia`, dan tombol langsung `Mulai Tes`. Mahasiswa bebas mengerjakan bab manapun yang tersedia tanpa penguncian sekuensial yang kaku (misal: jika sudah bab 3 dan 5, tetap bebas mengambil tes bab 1).
+      3. `Segera / Terkunci`: Pekan semester lanjutan dengan indikator gembok redup.
+    - Banner Hero Motivasional: Menekankan nilai konsistensi belajar, tombol akses cepat ke materi yang belum selesai, dan motivasi melakukan perbaikan/remedial bagi capaian di bawah A.
 
+19. **Standar Penyajian Halaman Teori (Sub-Materi Tertutup / Collapsed by Default)**:
+    - Lokasi: Seluruh komponen materi bab perkuliahan (`src/components/theory/Pertemuan[1..N].tsx`).
+    - **WAJIB Tertutup Secara Default (`useState(false)`)**: Seluruh akordion sub-materi wajib berada dalam status tertutup saat halaman pertama kali dibuka mahasiswa.
+    - Struktur Kartu Sub-Materi Wajib:
+      - Ikon semantik dan judul sub-bab yang tegas.
+      - Indikator Capaian Pembelajaran baku:
+        `<div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold"><CheckCircle2 className="w-4 h-4 text-emerald-500" /><span>Capaian: [ringkasan kompetensi]</span></div>`
+      - Tombol toggle chevron (`ChevronDown`).
+    - Rasional Pedagogis & Teknis:
+      - Menghindari kelelahan menggulir (*infinite scroll fatigue*) dan *cognitive overload*.
+      - Mencegah *massive layout shift* akibat render komputasi berat (animasi SVG flowchart, interactive code playground, timeline, lab).
+      - Menjadikan tinggi awal halaman sangat ringkas (~800px) sehingga sesi asesmen/kuis di bagian bawah halaman langsung terlihat dan mudah dijangkau mahasiswa.
+
+20. **Larangan Mutlak CSS Global `scroll-behavior: smooth` & Standar Navigasi Ujian**:
+    - **DILARANG KERAS** menambahkan `html { scroll-behavior: smooth; }` secara global pada stylesheet aplikasi (`globals.css`).
+    - *Alasan Teknis*: Aturan smooth scroll global pada `html` merusak mekanisme *scroll restoration* dan transisi rute Next.js App Router, menyebabkan navigasi dari halaman beranda atau halaman lain tersendat/berhenti di tengah halaman.
+    - *Smooth scrolling* hanya boleh dijalankan secara lokal/programmatic melalui JavaScript (misal: tombol "Uji Pemahaman" di sticky sub-header dengan `window.scrollTo({ behavior: 'smooth' })`).
+    - Tautan langsung ke asesmen menggunakan format `href="/theory/[id]?startTest=true#assessment"` dengan properti `scroll={false}` pada Next.js `<Link>`.
+    - Sticky sub-header pada `/theory/[id]` wajib menyediakan tombol pintas cepat **🏆 Uji Pemahaman** (`Trophy` icon) agar mahasiswa yang sedang membaca materi dapat meluncur ke sesi kuis kapan saja dengan 1 kali klik.
+
+21. **Standar Adaptabilitas Tema Penuh (Dual-Mode: Strict Light vs Dark Theme Harmony)**:
+    - **Larangan Keras Hardcoding Latar Belakang Gelap**: DILARANG KERAS menggunakan kelas latar belakang gelap (`bg-slate-950`, `bg-slate-900`, `bg-slate-900/90`, `text-slate-100`, `border-slate-800`) secara statis tanpa prefix `dark:` pada elemen pembungkus modul, kontainer lab, toolbar header, kartu materi, dan field input.
+    - **Harmoni Tema 100% Konsisten**:
+      - **Light Mode (Mode Terang)**: Seluruh kontainer, kartu lab, toolbar, dan area kerja WAJIB berlatar terang bersih (`bg-card`, `bg-white`, `bg-slate-50`, `bg-slate-100/80`), border halus (`border-slate-200/80` / `border-border`), teks utama gelap tegas (`text-slate-900`, `text-slate-800`), serta token warna jenuh berkontras tinggi (*deep jewel tones*).
+      - **Dark Mode (Mode Gelap)**: Seluruh kontainer dan kartu beralih ke warna gelap pekat (`dark:bg-slate-950`, `dark:bg-slate-900`), border gelap (`dark:border-slate-800`), teks cerah (`dark:text-slate-100`), serta token warna neon bercahaya (*luminous*).
+    - **Pemberantasan Anomali "Black Slab"**: Menghilangkan tampilan kotak hitam pekat yang "bocor" atau terisolasi di tengah halaman saat pengguna memilih Mode Terang.

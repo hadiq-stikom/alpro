@@ -104,8 +104,8 @@ const presets: PresetExpr[] = [
     resultType: 'String',
     pyCode: 'status = "Lulus" if nilai >= 75 else "Remidi"',
     jsCode: 'let status = nilai >= 75 ? "Lulus" : "Remidi";',
-    pseudoCode: 'status = IF nilai >= 75 THEN "Lulus" ELSE "Remidi"',
-    explanation: 'Operator Ternary melibatkan TIGA bagian: (1) Kondisi Uji, (2) Nilai jika True, dan (3) Nilai jika False.'
+    pseudoCode: 'if nilai >= 75 then status = "Lulus" else status = "Remidi" endif',
+    explanation: 'Operator Ternary memilih 1 dari 2 nilai berdasarkan kondisi logika (ekuivalen dengan blok IF-THEN-ELSE).'
   }
 ];
 
@@ -140,17 +140,17 @@ export default function ExpressionAnatomyLab() {
   const customResult = calcCustom();
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-visible bg-slate-950 shadow-2xl space-y-0">
+    <div className="border border-border/80 rounded-3xl overflow-visible bg-card dark:bg-slate-950 shadow-2xl space-y-0">
       
       {/* 1. Header Toolbar */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
-          <Split className="w-5 h-5 text-cyan-400" />
-          <h3 className="font-bold text-sm md:text-base text-slate-100">
+          <Split className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
+          <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
             Laboratorium Anatomi &amp; Taksonomi Arity Ekspresi
           </h3>
         </div>
-        <span className="text-xs font-mono font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 px-3 py-0.5 rounded-full">
+        <span className="text-xs font-mono font-bold bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 px-3 py-0.5 rounded-full">
           Unary • Binary • Ternary
         </span>
       </div>
@@ -161,10 +161,10 @@ export default function ExpressionAnatomyLab() {
         {/* Preset Selection Buttons */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-300 font-sans">
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 font-sans">
               Pilih Contoh Anatomi Berdasarkan Jumlah Operand (Arity):
             </span>
-            <span className="text-[10px] text-slate-500 font-mono">Klik untuk bedah</span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Klik untuk bedah</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
@@ -174,25 +174,25 @@ export default function ExpressionAnatomyLab() {
                 <button
                   key={preset.id}
                   onClick={() => setSelectedId(preset.id)}
-                  className={`p-3 rounded-2xl border-2 transition-transform text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
+                  className={`p-3 rounded-2xl border-2 transition-transform text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
                     isSelected 
-                      ? 'border-cyan-400 bg-slate-900 shadow-md ring-1 ring-cyan-400' 
-                      : 'border-slate-800 bg-slate-950 hover:bg-slate-900/60'
+                      ? 'border-cyan-500 bg-cyan-500/10 dark:bg-slate-900 shadow-md ring-1 ring-cyan-400' 
+                      : 'border-border/70 dark:border-slate-800 bg-background dark:bg-slate-950 hover:bg-slate-100/70 dark:hover:bg-slate-900/60'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1.5">
                     <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded uppercase ${
                       preset.category === 'unary' 
-                        ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' 
+                        ? 'bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-500/30' 
                         : preset.category === 'binary'
-                        ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
-                        : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                        ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/30'
+                        : 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30'
                     }`}>
                       {preset.category}
                     </span>
-                    <span className="text-xs font-mono font-bold text-cyan-400">{preset.expr}</span>
+                    <span className="text-xs font-mono font-bold text-cyan-600 dark:text-cyan-400">{preset.expr}</span>
                   </div>
-                  <span className="text-xs font-bold text-slate-200 block truncate">
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block truncate">
                     {preset.name.split(':')[0]}
                   </span>
                 </button>
@@ -202,18 +202,18 @@ export default function ExpressionAnatomyLab() {
         </div>
 
         {/* Visualizer Decomposition Card */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-inner space-y-6 overflow-visible">
+        <div className="bg-slate-50/80 dark:bg-slate-900/90 border border-border/80 dark:border-slate-800 rounded-2xl p-5 md:p-6 shadow-inner space-y-6 overflow-visible">
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-border/60 dark:border-slate-800 pb-3">
             <div>
-              <span className="text-[10px] font-mono text-cyan-400 uppercase tracking-wider font-bold">
+              <span className="text-[10px] font-mono text-cyan-600 dark:text-cyan-400 uppercase tracking-wider font-bold">
                 Dekonstruksi Struktur Komputasi:
               </span>
-              <h4 className="text-base md:text-lg font-extrabold text-slate-100 mt-0.5">
+              <h4 className="text-base md:text-lg font-extrabold text-slate-900 dark:text-slate-100 mt-0.5">
                 {selectedPreset.name}
               </h4>
             </div>
-            <span className="text-xs text-slate-300 max-w-md text-left md:text-right">
+            <span className="text-xs text-slate-600 dark:text-slate-300 max-w-md text-left md:text-right">
               {selectedPreset.explanation}
             </span>
           </div>
@@ -222,66 +222,66 @@ export default function ExpressionAnatomyLab() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center overflow-visible">
             
             {/* Box 1: Operand (Bahan Baku Nilai) */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-blue-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
+            <div className="p-4 rounded-2xl bg-card dark:bg-slate-950 border border-blue-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-blue-400">
               <div className="flex items-center justify-between border-b border-blue-500/20 pb-1.5">
-                <span className="text-xs font-bold text-blue-400 flex items-center gap-1.5">
+                <span className="text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center gap-1.5">
                   <Tag className="w-4 h-4" />
                   1. Operand (Nilai/Variabel)
                 </span>
-                <span className="text-[10px] font-mono bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono bg-blue-500/15 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded font-bold">
                   Data
                 </span>
               </div>
               <div className="space-y-1.5 font-mono text-xs">
                 {selectedPreset.operands.map((op, idx) => (
-                  <div key={idx} className="p-2 bg-slate-900 rounded-xl border border-slate-800 flex justify-between items-center">
-                    <span className="text-slate-300 font-bold">{op.label}:</span>
-                    <span className="text-blue-300 font-extrabold">{op.value}</span>
-                    <span className="text-[9px] text-slate-500 font-sans">({op.type})</span>
+                  <div key={idx} className="p-2 bg-slate-100/90 dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 flex justify-between items-center">
+                    <span className="text-slate-700 dark:text-slate-300 font-bold">{op.label}:</span>
+                    <span className="text-blue-700 dark:text-blue-300 font-extrabold">{op.value}</span>
+                    <span className="text-[9px] text-slate-500 dark:text-slate-400 font-sans">({op.type})</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Box 2: Operator (Simbol Instruksi) */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-amber-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
+            <div className="p-4 rounded-2xl bg-card dark:bg-slate-950 border border-amber-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
               <div className="flex items-center justify-between border-b border-amber-500/20 pb-1.5">
-                <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
+                <span className="text-xs font-bold text-amber-700 dark:text-amber-400 flex items-center gap-1.5">
                   <Zap className="w-4 h-4" />
                   2. Operator (Instruksi)
                 </span>
-                <span className="text-[10px] font-mono bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono bg-amber-500/15 text-amber-700 dark:text-amber-300 px-1.5 py-0.5 rounded font-bold">
                   Aksi
                 </span>
               </div>
               <div className="space-y-1.5 font-mono text-xs text-center">
                 {selectedPreset.operators.map((op, idx) => (
-                  <div key={idx} className="p-2.5 bg-slate-900 rounded-xl border border-slate-800 space-y-1">
-                    <div className="text-2xl font-black text-amber-300">{op.symbol}</div>
-                    <div className="text-[10px] text-slate-300 font-sans">{op.role}</div>
-                    <span className="text-[9px] font-mono text-amber-400 font-bold block">{op.arity}</span>
+                  <div key={idx} className="p-2.5 bg-slate-100/90 dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 space-y-1">
+                    <div className="text-2xl font-black text-amber-700 dark:text-amber-300">{op.symbol}</div>
+                    <div className="text-[10px] text-slate-700 dark:text-slate-300 font-sans font-medium">{op.role}</div>
+                    <span className="text-[9px] font-mono text-amber-700 dark:text-amber-400 font-bold block">{op.arity}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Box 3: Hasil Evaluasi Akhir */}
-            <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-emerald-400">
+            <div className="p-4 rounded-2xl bg-card dark:bg-slate-950 border border-emerald-500/40 space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-400">
               <div className="flex items-center justify-between border-b border-emerald-500/20 pb-1.5">
-                <span className="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
                   3. Nilai Hasil Evaluasi
                 </span>
-                <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded font-bold">
                   Nilai Tunggal
                 </span>
               </div>
-              <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 text-center space-y-1">
-                <span className="text-[10px] text-slate-500 font-mono block">Hasil Komputasi di RAM:</span>
-                <div className="text-2xl font-mono font-black text-emerald-400 py-1">
+              <div className="p-3 bg-slate-100/90 dark:bg-slate-900 rounded-xl border border-slate-200/80 dark:border-slate-800 text-center space-y-1">
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block">Hasil Komputasi di RAM:</span>
+                <div className="text-2xl font-mono font-black text-emerald-700 dark:text-emerald-400 py-1">
                   {selectedPreset.result}
                 </div>
-                <span className="text-[10px] font-mono text-cyan-300 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800 inline-block">
+                <span className="text-[10px] font-mono text-cyan-700 dark:text-cyan-300 bg-cyan-500/10 dark:bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/30 dark:border-cyan-800 inline-block font-semibold">
                   Tipe: {selectedPreset.resultType}
                 </span>
               </div>
@@ -291,53 +291,53 @@ export default function ExpressionAnatomyLab() {
 
           {/* Syntax Representation Tri-Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs overflow-visible py-1">
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-purple-400">
-              <span className="text-[10px] text-slate-400 font-sans block font-bold">📄 Pseudocode:</span>
-              <div className="text-purple-300 font-bold">{selectedPreset.pseudoCode}</div>
+            <div className="p-3 bg-card dark:bg-slate-950 rounded-xl border border-border/80 dark:border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-400">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-sans block font-bold">📄 Pseudocode:</span>
+              <div className="text-purple-700 dark:text-purple-300 font-bold">{selectedPreset.pseudoCode}</div>
             </div>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-blue-400">
-              <span className="text-[10px] text-slate-400 font-sans block font-bold">🐍 Python 3:</span>
-              <div className="text-blue-300 font-bold">{selectedPreset.pyCode}</div>
+            <div className="p-3 bg-card dark:bg-slate-950 rounded-xl border border-border/80 dark:border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-blue-400">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-sans block font-bold">🐍 Python 3:</span>
+              <div className="text-blue-700 dark:text-blue-300 font-bold">{selectedPreset.pyCode}</div>
             </div>
 
-            <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
-              <span className="text-[10px] text-slate-400 font-sans block font-bold">🌐 JavaScript:</span>
-              <div className="text-amber-300 font-bold">{selectedPreset.jsCode}</div>
+            <div className="p-3 bg-card dark:bg-slate-950 rounded-xl border border-border/80 dark:border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-sans block font-bold">🌐 JavaScript:</span>
+              <div className="text-amber-700 dark:text-amber-300 font-bold">{selectedPreset.jsCode}</div>
             </div>
           </div>
 
         </div>
 
         {/* 3. Live Custom Binary Expression Sandbox */}
-        <div className="p-4 md:p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
+        <div className="p-4 md:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-900/80 border border-border/80 dark:border-slate-800 space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs md:text-sm font-bold text-slate-200 flex items-center gap-2">
-              <Code2 className="w-4 h-4 text-cyan-400" />
+            <h4 className="text-xs md:text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+              <Code2 className="w-4 h-4 text-cyan-600 dark:text-cyan-400" />
               Live Interactive Expression Playground (Ubah Nilai &amp; Operator):
             </h4>
-            <span className="text-[10px] font-mono text-slate-400">Interactive Calculator</span>
+            <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">Interactive Calculator</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center font-mono">
             {/* Left Operand Input */}
             <div className="md:col-span-3 space-y-1">
-              <label className="text-[11px] font-bold text-slate-400">Operand Kiri (a):</label>
+              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400">Operand Kiri (a):</label>
               <input
                 type="number"
                 value={customLeft}
                 onChange={(e) => setCustomLeft(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-cyan-300 focus:outline-none focus:border-cyan-400"
+                className="w-full bg-background dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-cyan-300 font-bold focus:outline-none focus:border-cyan-500"
               />
             </div>
 
             {/* Operator Selector */}
             <div className="md:col-span-3 space-y-1">
-              <label className="text-[11px] font-bold text-slate-400">Operator Biner:</label>
+              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400">Operator Biner:</label>
               <select
                 value={customOp}
                 onChange={(e) => setCustomOp(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-amber-300 font-bold focus:outline-none focus:border-amber-400 cursor-pointer"
+                className="w-full bg-background dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-amber-700 dark:text-amber-300 font-bold focus:outline-none focus:border-amber-500 cursor-pointer"
               >
                 <option value="+">+ (Tambah)</option>
                 <option value="-">- (Kurang)</option>
@@ -350,21 +350,21 @@ export default function ExpressionAnatomyLab() {
 
             {/* Right Operand Input */}
             <div className="md:col-span-3 space-y-1">
-              <label className="text-[11px] font-bold text-slate-400">Operand Kanan (b):</label>
+              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400">Operand Kanan (b):</label>
               <input
                 type="number"
                 value={customRight}
                 onChange={(e) => setCustomRight(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-cyan-300 focus:outline-none focus:border-cyan-400"
+                className="w-full bg-background dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-900 dark:text-cyan-300 font-bold focus:outline-none focus:border-cyan-500"
               />
             </div>
 
             {/* Result Box */}
             <div className="md:col-span-3 space-y-1">
-              <label className="text-[11px] font-bold text-slate-400">Hasil Evaluasi:</label>
-              <div className="w-full bg-slate-950 border border-emerald-500/50 rounded-xl px-3 py-2 text-xs text-emerald-400 font-bold flex justify-between items-center">
+              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400">Hasil Evaluasi:</label>
+              <div className="w-full bg-background dark:bg-slate-950 border border-emerald-500/50 rounded-xl px-3 py-2 text-xs text-emerald-700 dark:text-emerald-400 font-bold flex justify-between items-center shadow-xs">
                 <span>{customResult.val}</span>
-                <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-sans">
+                <span className="text-[9px] bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded font-sans font-bold">
                   {customResult.type}
                 </span>
               </div>
@@ -373,8 +373,8 @@ export default function ExpressionAnatomyLab() {
         </div>
 
         {/* 4. Tabel Resmi Taksonomi Arity Operator */}
-        <div className="p-4 md:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-cyan-400 font-bold text-sm">
+        <div className="p-4 md:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-900/90 border border-border/80 dark:border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-bold text-sm">
             <Layers className="w-4 h-4" />
             <span>Tabel Resmi Taksonomi Operator Berdasarkan Jumlah Operand (Arity):</span>
           </div>
@@ -382,7 +382,7 @@ export default function ExpressionAnatomyLab() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 bg-slate-950 text-slate-400 font-sans">
+                <tr className="border-b border-border/80 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-400 font-sans">
                   <th className="p-3">Kategori Arity</th>
                   <th className="p-3">Jml Operand</th>
                   <th className="p-3">Contoh Simbol</th>
@@ -391,30 +391,30 @@ export default function ExpressionAnatomyLab() {
                   <th className="p-3">Makna &amp; Hasil</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-purple-400">Unary (Uner)</td>
+              <tbody className="divide-y divide-border/60 dark:divide-slate-800/60 text-slate-800 dark:text-slate-300">
+                <tr className="hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-purple-700 dark:text-purple-400">Unary (Uner)</td>
                   <td className="p-3 font-bold text-center">1</td>
-                  <td className="p-3 text-amber-300 font-bold">- , + , not , !</td>
-                  <td className="p-3 text-cyan-300">-x , not isActive</td>
-                  <td className="p-3 text-cyan-300">-x , !isActive</td>
-                  <td className="p-3 font-sans text-slate-400">Menegasi nilai numerik atau membalik nilai kebenaran.</td>
+                  <td className="p-3 text-amber-700 dark:text-amber-300 font-bold">- , + , not , !</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-semibold">-x , not isActive</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-semibold">-x , !isActive</td>
+                  <td className="p-3 font-sans text-slate-600 dark:text-slate-400 font-medium">Menegasi nilai numerik atau membalik nilai kebenaran.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-blue-400">Binary (Biner)</td>
+                <tr className="hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-blue-700 dark:text-blue-400">Binary (Biner)</td>
                   <td className="p-3 font-bold text-center">2</td>
-                  <td className="p-3 text-amber-300 font-bold">+ , - , * , / , == , and</td>
-                  <td className="p-3 text-cyan-300">a + b , x &gt; y</td>
-                  <td className="p-3 text-cyan-300">a + b , x &gt; y</td>
-                  <td className="p-3 font-sans text-slate-400">Menghubungkan 2 nilai operand (kiri dan kanan).</td>
+                  <td className="p-3 text-amber-700 dark:text-amber-300 font-bold">+ , - , * , / , == , and</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-semibold">a + b , x &gt; y</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-semibold">a + b , x &gt; y</td>
+                  <td className="p-3 font-sans text-slate-600 dark:text-slate-400 font-medium">Menghubungkan 2 nilai operand (kiri dan kanan).</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-emerald-400">Ternary (Ternari)</td>
+                <tr className="hover:bg-slate-100/80 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-emerald-700 dark:text-emerald-400">Ternary (Ternari)</td>
                   <td className="p-3 font-bold text-center">3</td>
-                  <td className="p-3 text-amber-300 font-bold">if...else / ? :</td>
-                  <td className="p-3 text-cyan-300">val_a if cond else val_b</td>
-                  <td className="p-3 text-cyan-300">cond ? val_a : val_b</td>
-                  <td className="p-3 font-sans text-slate-400">Kondisional sebaris untuk memilih 1 dari 2 nilai.</td>
+                  <td className="p-3 text-amber-700 dark:text-amber-300 font-bold">if...else / ? :</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-semibold">val_a if cond else val_b</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-semibold">cond ? val_a : val_b</td>
+                  <td className="p-3 font-sans text-slate-600 dark:text-slate-400 font-medium">Kondisional sebaris untuk memilih 1 dari 2 nilai.</td>
                 </tr>
               </tbody>
             </table>

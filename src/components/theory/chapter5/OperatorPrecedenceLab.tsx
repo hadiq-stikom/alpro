@@ -98,17 +98,17 @@ export default function OperatorPrecedenceLab() {
   };
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-visible bg-slate-950 shadow-2xl space-y-0">
+    <div className="border border-border/70 dark:border-slate-800 rounded-3xl overflow-visible bg-card dark:bg-slate-950 shadow-xl space-y-0">
       
       {/* 1. Header Toolbar */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
+      <div className="p-4 md:px-6 bg-slate-50/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
-          <Layers className="w-5 h-5 text-purple-400" />
-          <h3 className="font-bold text-sm md:text-base text-slate-100">
+          <Layers className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+          <h3 className="font-bold text-sm md:text-base text-slate-800 dark:text-slate-100">
             Laboratorium Presedensi Operator &amp; Hirarki PEMDAS
           </h3>
         </div>
-        <span className="text-xs font-mono font-bold bg-purple-500/15 text-purple-300 border border-purple-500/30 px-3 py-0.5 rounded-full">
+        <span className="text-xs font-mono font-bold bg-purple-500/10 dark:bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/20 dark:border-purple-500/30 px-3 py-0.5 rounded-full">
           Step-by-Step Expression Tree
         </span>
       </div>
@@ -119,10 +119,10 @@ export default function OperatorPrecedenceLab() {
         {/* Presets Grid */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-300 font-sans">
+            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 font-sans">
               Pilih Contoh Hirarki Evaluasi Kompiler:
             </span>
-            <span className="text-[10px] text-slate-500 font-mono">Pilih Kasus</span>
+            <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">Pilih Kasus</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
@@ -132,16 +132,16 @@ export default function OperatorPrecedenceLab() {
                 <button
                   key={c.id}
                   onClick={() => handleSelectCase(c.id)}
-                  className={`p-3 rounded-2xl border-2 transition-transform text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
+                  className={`p-3 rounded-2xl border-2 transition-transform text-left flex flex-col justify-between cursor-pointer relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] ${
                     isSelected 
-                      ? 'border-purple-400 bg-slate-900 shadow-md ring-1 ring-purple-400' 
-                      : 'border-slate-800 bg-slate-950 hover:bg-slate-900/60'
+                      ? 'border-purple-500 bg-purple-50/70 dark:bg-slate-900 shadow-md ring-1 ring-purple-500' 
+                      : 'border-border/70 dark:border-slate-800 bg-card dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900/60'
                   }`}
                 >
-                  <span className="text-xs font-mono font-black text-purple-300 block mb-1">
+                  <span className="text-xs font-mono font-black text-purple-700 dark:text-purple-300 block mb-1">
                     {c.expression}
                   </span>
-                  <span className="text-[11px] font-bold text-slate-300 block truncate">
+                  <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 block truncate">
                     {c.name.split(':')[0]}
                   </span>
                 </button>
@@ -151,17 +151,17 @@ export default function OperatorPrecedenceLab() {
         </div>
 
         {/* Step-by-Step Expression Tree Workspace */}
-        <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-inner space-y-6 overflow-visible">
+        <div className="bg-slate-50/80 dark:bg-slate-900/90 border border-border/70 dark:border-slate-800 rounded-2xl p-5 md:p-6 shadow-inner space-y-6 overflow-visible">
           
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-border/70 dark:border-slate-800 pb-3">
             <div>
-              <span className="text-[10px] font-mono text-purple-400 uppercase tracking-wider font-bold">
+              <span className="text-[10px] font-mono text-purple-700 dark:text-purple-400 uppercase tracking-wider font-bold">
                 Ekspresi Asal:
               </span>
-              <div className="text-2xl font-mono font-black text-white mt-0.5 flex items-center gap-3">
+              <div className="text-2xl font-mono font-black text-slate-900 dark:text-white mt-0.5 flex items-center gap-3">
                 <span>{activeCase.expression}</span>
-                <span className="text-sm font-sans font-normal text-slate-400">
-                  &rarr; Hasil Akhir: <strong className="text-emerald-400 font-mono">{activeCase.finalResult}</strong>
+                <span className="text-sm font-sans font-normal text-slate-600 dark:text-slate-400">
+                  &rarr; Hasil Akhir: <strong className="text-emerald-700 dark:text-emerald-400 font-mono">{activeCase.finalResult}</strong>
                 </span>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function OperatorPrecedenceLab() {
             <div className="flex items-center gap-2">
               <button
                 onClick={resetSteps}
-                className="px-3 py-1.5 rounded-xl bg-slate-950 border border-slate-800 hover:bg-slate-800 text-slate-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-card dark:bg-slate-950 border border-border/70 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -180,8 +180,8 @@ export default function OperatorPrecedenceLab() {
                 disabled={currentStep >= activeCase.steps.length}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-md ${
                   currentStep >= activeCase.steps.length 
-                    ? 'bg-slate-800 text-slate-500 cursor-not-allowed' 
-                    : 'bg-purple-600 hover:bg-purple-500 text-white'
+                    ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed' 
+                    : 'bg-purple-600 hover:bg-purple-700 text-white shadow-purple-600/20'
                 }`}
               >
                 <Play className="w-3.5 h-3.5" />
@@ -202,30 +202,30 @@ export default function OperatorPrecedenceLab() {
                   className={`p-4 rounded-2xl border transition-all duration-300 ${
                     isVisible 
                       ? isCurrent 
-                        ? 'bg-purple-500/15 border-purple-500 shadow-[0_0_20px_rgba(168,85,247,0.2)]' 
-                        : 'bg-slate-950/80 border-slate-800 opacity-80'
-                      : 'bg-slate-950/40 border-slate-900 opacity-30'
+                        ? 'bg-purple-50 dark:bg-purple-500/15 border-purple-500 shadow-sm dark:shadow-[0_0_20px_rgba(168,85,247,0.2)]' 
+                        : 'bg-card dark:bg-slate-950/80 border-border/70 dark:border-slate-800 opacity-90'
+                      : 'bg-slate-100/50 dark:bg-slate-950/40 border-slate-200/50 dark:border-slate-900 opacity-40'
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
                       <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-mono font-bold ${
-                        isVisible ? 'bg-purple-500 text-white' : 'bg-slate-800 text-slate-500'
+                        isVisible ? 'bg-purple-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'
                       }`}>
                         {step.stepNum}
                       </span>
-                      <span className="text-xs font-bold text-slate-200">
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
                         {step.desc}
                       </span>
                     </div>
 
                     {isVisible && (
                       <div className="flex items-center gap-2 font-mono text-xs self-end sm:self-center">
-                        <span className="text-amber-400 bg-amber-950/50 px-2 py-0.5 rounded border border-amber-800">
+                        <span className="text-amber-800 dark:text-amber-400 bg-amber-100/80 dark:bg-amber-950/50 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-800">
                           {step.subExpr}
                         </span>
-                        <ArrowRight className="w-3.5 h-3.5 text-slate-500" />
-                        <span className="text-emerald-400 font-bold bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
+                        <ArrowRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" />
+                        <span className="text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-slate-900 px-2 py-0.5 rounded border border-emerald-300 dark:border-slate-800">
                           {step.reducedExpr}
                         </span>
                       </div>
@@ -237,13 +237,13 @@ export default function OperatorPrecedenceLab() {
           </div>
 
           {/* AHA Box */}
-          <div className="p-4 rounded-2xl bg-purple-500/10 border-2 border-purple-500/30 text-xs text-slate-100 space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]">
-            <strong className="text-purple-300 font-bold block font-mono text-sm">
+          <div className="p-4 rounded-2xl bg-purple-50/80 dark:bg-purple-500/10 border-2 border-purple-400/40 dark:border-purple-500/30 text-xs text-slate-800 dark:text-slate-100 space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)]">
+            <strong className="text-purple-700 dark:text-purple-300 font-bold block font-mono text-sm">
               💡 Insight Evaluasi Kompiler:
             </strong>
             <p className="leading-relaxed">{activeCase.ahaInsight}</p>
             {activeCase.withoutParensNote && (
-              <p className="text-[11px] text-amber-300 italic font-mono pt-1">
+              <p className="text-[11px] text-amber-700 dark:text-amber-300 italic font-mono pt-1">
                 ⚠️ {activeCase.withoutParensNote}
               </p>
             )}
@@ -252,8 +252,8 @@ export default function OperatorPrecedenceLab() {
         </div>
 
         {/* 4. Tabel Kamus Resmi Tingkat Presedensi & Asosiativitas */}
-        <div className="p-4 md:p-5 rounded-2xl bg-slate-900/90 border border-slate-800 space-y-3">
-          <div className="flex items-center gap-2 text-purple-400 font-bold text-sm">
+        <div className="p-4 md:p-5 rounded-2xl bg-slate-50/80 dark:bg-slate-900/90 border border-border/70 dark:border-slate-800 space-y-3">
+          <div className="flex items-center gap-2 text-purple-700 dark:text-purple-400 font-bold text-sm">
             <Layers className="w-4 h-4" />
             <span>Tabel Kamus Resmi Hirarki Presedensi &amp; Asosiativitas Kompiler (Urutan Tertinggi ke Terendah):</span>
           </div>
@@ -261,7 +261,7 @@ export default function OperatorPrecedenceLab() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-mono border-collapse">
               <thead>
-                <tr className="border-b border-slate-800 bg-slate-950 text-slate-400 font-sans">
+                <tr className="border-b border-border/70 dark:border-slate-800 bg-slate-100 dark:bg-slate-950 text-slate-700 dark:text-slate-400 font-sans">
                   <th className="p-3">Prioritas</th>
                   <th className="p-3">Simbol Operator</th>
                   <th className="p-3">Kategori Operasi</th>
@@ -269,62 +269,62 @@ export default function OperatorPrecedenceLab() {
                   <th className="p-3">Contoh &amp; Catatan Penting</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                <tr className="hover:bg-slate-800/40 transition-colors bg-purple-500/5">
-                  <td className="p-3 font-bold text-purple-400">1 (Tertinggi)</td>
-                  <td className="p-3 font-bold text-purple-300 text-sm">( )</td>
-                  <td className="p-3 font-sans text-white font-bold">Tanda Kurung (Parentheses)</td>
-                  <td className="p-3 text-cyan-300">Dalam ke Luar</td>
-                  <td className="p-3 text-slate-300 font-sans">Memaksa operasi di dalamnya dikerjakan lebih dahulu.</td>
+              <tbody className="divide-y divide-border/60 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300">
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors bg-purple-50/40 dark:bg-purple-500/5">
+                  <td className="p-3 font-bold text-purple-700 dark:text-purple-400">1 (Tertinggi)</td>
+                  <td className="p-3 font-bold text-purple-700 dark:text-purple-300 text-sm">( )</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white font-bold">Tanda Kurung (Parentheses)</td>
+                  <td className="p-3 text-cyan-700 dark:text-cyan-300 font-bold">Dalam ke Luar</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Memaksa operasi di dalamnya dikerjakan lebih dahulu.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-blue-400">2</td>
-                  <td className="p-3 font-bold text-blue-300 text-sm">**</td>
-                  <td className="p-3 font-sans text-white">Pemangkatan (Exponentiation)</td>
-                  <td className="p-3 text-amber-400 font-bold">Kanan ke Kiri (Right-to-Left)</td>
-                  <td className="p-3 text-slate-300 font-sans"><code>2 ** 3 ** 2</code> dihitung sebagai <code>2 ** (3 ** 2) = 512</code>.</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-blue-700 dark:text-blue-400">2</td>
+                  <td className="p-3 font-bold text-blue-700 dark:text-blue-300 text-sm">**</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white">Pemangkatan (Exponentiation)</td>
+                  <td className="p-3 text-amber-700 dark:text-amber-400 font-bold">Kanan ke Kiri (Right-to-Left)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans"><code className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200">2 ** 3 ** 2</code> dihitung sebagai <code className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200">2 ** (3 ** 2) = 512</code>.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-cyan-400">3</td>
-                  <td className="p-3 font-bold text-cyan-300 text-sm">+x , -x , ~</td>
-                  <td className="p-3 font-sans text-white">Unary Positive / Negative</td>
-                  <td className="p-3 text-amber-400 font-bold">Kanan ke Kiri (Right-to-Left)</td>
-                  <td className="p-3 text-slate-300 font-sans">Menempel langsung pada operand di kanannya (<code>-5</code>).</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-cyan-700 dark:text-cyan-400">3</td>
+                  <td className="p-3 font-bold text-cyan-700 dark:text-cyan-300 text-sm">+x , -x , ~</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white">Unary Positive / Negative</td>
+                  <td className="p-3 text-amber-700 dark:text-amber-400 font-bold">Kanan ke Kiri (Right-to-Left)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Menempel langsung pada operand di kanannya (<code className="px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-slate-200">-5</code>).</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-amber-400">4</td>
-                  <td className="p-3 font-bold text-amber-300 text-sm">* , / , // , %</td>
-                  <td className="p-3 font-sans text-white">Perkalian, Pembagian, Modulo</td>
-                  <td className="p-3 text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
-                  <td className="p-3 text-slate-300 font-sans">Setara satu sama lain, dihitung urut dari sisi paling kiri.</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-amber-700 dark:text-amber-400">4</td>
+                  <td className="p-3 font-bold text-amber-700 dark:text-amber-300 text-sm">* , / , // , %</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white">Perkalian, Pembagian, Modulo</td>
+                  <td className="p-3 text-emerald-700 dark:text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Setara satu sama lain, dihitung urut dari sisi paling kiri.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-emerald-400">5</td>
-                  <td className="p-3 font-bold text-emerald-300 text-sm">+ , -</td>
-                  <td className="p-3 font-sans text-white">Penjumlahan &amp; Pengurangan</td>
-                  <td className="p-3 text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
-                  <td className="p-3 text-slate-300 font-sans">Dihitung setelah perkalian/pembagian selesai.</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-emerald-700 dark:text-emerald-400">5</td>
+                  <td className="p-3 font-bold text-emerald-700 dark:text-emerald-300 text-sm">+ , -</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white">Penjumlahan &amp; Pengurangan</td>
+                  <td className="p-3 text-emerald-700 dark:text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Dihitung setelah perkalian/pembagian selesai.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-rose-400">6</td>
-                  <td className="p-3 font-bold text-rose-300 text-sm">== , != , &lt; , &gt; , &lt;= , &gt;=</td>
-                  <td className="p-3 font-sans text-white">Operator Relasional</td>
-                  <td className="p-3 text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
-                  <td className="p-3 text-slate-300 font-sans">Menguji perbandingan setelah nilai aritmatika selesai dihitung.</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-rose-700 dark:text-rose-400">6</td>
+                  <td className="p-3 font-bold text-rose-700 dark:text-rose-300 text-sm">== , != , &lt; , &gt; , &lt;= , &gt;=</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white">Operator Relasional</td>
+                  <td className="p-3 text-emerald-700 dark:text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Menguji perbandingan setelah nilai aritmatika selesai dihitung.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors">
-                  <td className="p-3 font-bold text-indigo-400">7</td>
-                  <td className="p-3 font-bold text-indigo-300 text-sm">not &rarr; and &rarr; or</td>
-                  <td className="p-3 font-sans text-white">Operator Logika Boolean</td>
-                  <td className="p-3 text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
-                  <td className="p-3 text-slate-300 font-sans">Urutan: NOT dievaluasi sebelum AND, dan AND sebelum OR.</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="p-3 font-bold text-indigo-700 dark:text-indigo-400">7</td>
+                  <td className="p-3 font-bold text-indigo-700 dark:text-indigo-300 text-sm">not &rarr; and &rarr; or</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white">Operator Logika Boolean</td>
+                  <td className="p-3 text-emerald-700 dark:text-emerald-400 font-bold">Kiri ke Kanan (Left-to-Right)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Urutan: NOT dievaluasi sebelum AND, dan AND sebelum OR.</td>
                 </tr>
-                <tr className="hover:bg-slate-800/40 transition-colors bg-slate-950">
-                  <td className="p-3 font-bold text-slate-400">8 (Terendah)</td>
-                  <td className="p-3 font-bold text-slate-200 text-sm">= , += , -= , *= , /=</td>
-                  <td className="p-3 font-sans text-white font-bold">Penugasan (Assignment)</td>
-                  <td className="p-3 text-amber-400 font-bold">Kanan ke Kiri (Right-to-Left)</td>
-                  <td className="p-3 text-slate-300 font-sans">Seluruh sisi kanan dievaluasi tuntas baru disimpan ke variabel kiri.</td>
+                <tr className="hover:bg-slate-100/60 dark:hover:bg-slate-800/40 transition-colors bg-slate-50 dark:bg-slate-950">
+                  <td className="p-3 font-bold text-slate-600 dark:text-slate-400">8 (Terendah)</td>
+                  <td className="p-3 font-bold text-slate-800 dark:text-slate-200 text-sm">= , += , -= , *= , /=</td>
+                  <td className="p-3 font-sans text-slate-900 dark:text-white font-bold">Penugasan (Assignment)</td>
+                  <td className="p-3 text-amber-700 dark:text-amber-400 font-bold">Kanan ke Kiri (Right-to-Left)</td>
+                  <td className="p-3 text-slate-700 dark:text-slate-300 font-sans">Seluruh sisi kanan dievaluasi tuntas baru disimpan ke variabel kiri.</td>
                 </tr>
               </tbody>
             </table>

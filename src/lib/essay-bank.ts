@@ -253,12 +253,14 @@ export const ESSAY_BANK: EssayQuestion[] = [
   {
     id: 'm4-essay-5',
     meetingId: 4,
-    text: 'Sebutkan minimal 4 aturan penamaan variabel (Identifier Naming Convention) yang baik dan standar dalam dunia pemrograman, serta jelaskan mengapa penamaan variabel yang deskriptif sangat penting bagi keterbacaan kode (Clean Code)!',
+    text: 'Rancanglah sebuah algoritma menggunakan format baku Pseudocode 3 Blok (PROGRAM, KAMUS, ALGORITMA) untuk menghitung total pembayaran belanja di kasir. Program meminta pengguna menginputkan harga satuan barang (bilangan desimal/real) dan jumlah barang yang dibeli (bilangan bulat/integer), lalu menghitung total harga (harga * jumlah), dan menampilkan pesan hasil: "Total Bayar: Rp" beserta nilai totalnya. Gunakan konvensi penamaan variabel yang baik, instruksi input/output universal berkurung, dan operator penugasan baku!',
     timeLimit: 300,
     rubric: `
       Kriteria Penilaian (0-100):
-      1. Aturan Penamaan (60 poin): Tidak boleh diawali angka, tidak boleh ada spasi, tidak boleh memakai reserved keyword, case-sensitive, konsisten menggunakan camelCase/snake_case.
-      2. Manfaat Keterbacaan (40 poin): Mempermudah debugging, kolaborasi tim, dan pemeliharaan kode (maintainability) jangka panjang tanpa perlu membaca seluruh logika.
+      1. Format Baku 3 Blok (30 poin): Mencakup PROGRAM NamaProgram, blok KAMUS: deklarasi variabel beserta tipe datanya (misal hargaBarang: real, jumlahBarang: integer, totalBayar: real), dan blok ALGORITMA:.
+      2. Penamaan & Tipe Data Tepat (25 poin): Penamaan variabel deskriptif (clean code) dan penetapan tipe data yang sesuai (real untuk harga/total, integer untuk jumlah).
+      3. Instruksi I/O Universal (25 poin): Menggunakan notasi universal berkurung input(hargaBarang), input(jumlahBarang), dan output("Total Bayar: Rp", totalBayar). Dilarang memakai print, format string f"...", atau kurung kurawal.
+      4. Operasi Perhitungan Baku (20 poin): Menggunakan operator penugasan baku totalBayar = hargaBarang * jumlahBarang.
     `
   },
 

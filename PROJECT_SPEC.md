@@ -340,9 +340,75 @@ Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu da
 2. **Hashing Password**: Menggunakan format hashing bcrypt auth Supabase yang valid.
 3. **Sinkronisasi Role**: Sinkron antara `auth.users` dan `public.profiles` (`mahasiswa` atau `dosen`).
 
+### 6.10 Fitur Reset Password Mahasiswa oleh Dosen (Ke Default NIM)
+1. **Pusat Kontrol Akun Dosen (`/lecturer/dashboard`)**:
+   - Kolom aksi tabel: "Reset ke NIM" dengan dialog modal konfirmasi eksplisit sebelum eksekusi.
+   - Status Akun: Pill badge `Default NIM` (mahasiswa belum mengubah password) vs `Kustom` (mahasiswa telah mengubah password mandiri).
+2. **Endpoint Backend (`POST /api/lecturer/reset-password`)**:
+   - Memanfaatkan Supabase Service Role Admin Client untuk mengupdate password pengguna di `auth.users` ke nilai NIM yang bersangkutan.
+   - Metadata `password_is_default = true` di-update secara simultan agar status badge di dashboard dosen langsung tersinkronisasi.
+   - Dilindungi proteksi otentikasi peran `dosen` pada level server.
+
 ---
 
-*Dokumen ini terakhir diperbarui: 29 September 2026*  
+### 6.11 Standar Desain Dashboard Mahasiswa (Compact 16 Pertemuan & Kebebasan Akses Bab)
+1. **Grid Responsif Kartu Kompak (16 Pekan Silabus)**:
+   - Menampilkan seluruh 16 minggu perkuliahan semester dalam tata letak kartu kompak (`min-h-[148px]`, grid 4 kolom responsif).
+   - Menjamin seluruh kurikulum semester terlihat komprehensif tanpa memerlukan scrolling vertikal yang melelahkan.
+2. **3 Status Visual Kartu**:
+   - **Selesai**: Menampilkan skor rata-rata, lencana capaian berwarna spesifik, status kelulusan (*Sempurna*, *Bagus*, atau *Remedial*), serta tombol cepat menuju ulasan rapor pertemuan (`/student/meeting/[id]`).
+   - **Tersedia**: Pertemuan aktif yang materi dan bank soalnya sudah siap. Menampilkan border putus-putus (*dashed*), badge `Tersedia`, dan tombol aksi langsung `Mulai Tes`.
+   - **Segera / Terkunci**: Pertemuan semester lanjutan yang belum dibuka materi/asesmennya dengan ikon gembok dan tampilan redup (*opacity 0.6*).
+3. **Prinsip Akses Belajar Non-Linear**:
+   - Mahasiswa bebas memilih dan mengerjakan materi bab manapun yang berstatus *Tersedia* tanpa harus dipaksa berurutan secara kaku. Jika mahasiswa telah menyelesaikan bab 3 dan 5, mahasiswa tetap memiliki kebebasan penuh untuk mengambil tes bab 1 dari dashboard.
+4. **Hero Banner Motivasional**:
+   - Menampilkan salam personal, metrik capaian total, dan pesan persuasif mengenai pentingnya konsistensi belajar.
+   - Tombol CTA otomatis mendeteksi pertemuan pertama yang belum tuntas untuk memandu mahasiswa melanjutkan progres belajarnya.
+
+---
+
+### 6.12 Standar Penyajian Halaman Teori (Sub-Materi Tertutup / Collapsed by Default)
+1. **Aturan Mutlak Tertutup Default (`useState(false)`)**:
+   - Seluruh komponen materi bab perkuliahan (`src/components/theory/Pertemuan[1..N].tsx`) **WAJIB menyetel seluruh akordion sub-materi dalam keadaan tertutup secara default**.
+2. **Anatomi Kartu Akordion Sub-Materi**:
+   - **Header Kartu**:
+     - Ikon semantik dan judul sub-bab yang tegas (contoh: `<Cpu className="w-8 h-8" /> 1. Mengupas Definisi Komputer`).
+     - Indikator Capaian Pembelajaran baku dengan ikon ceklis hijau:
+       `<div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold"><CheckCircle2 className="w-4 h-4 text-emerald-500" /><span>Capaian: [deskripsi kompetensi]</span></div>`
+     - Tombol chevron toggle (`ChevronDown`) dengan rotasi 180° saat terbuka.
+   - **Badan Kartu**:
+     - Dibungkus dengan `<AnimatePresence>` dan `<motion.div>` ber-animasi `height: 'auto'` dan `opacity: 1`.
+3. **Keuntungan Pedagogis & Performa Web**:
+   - **Bebas Infinite Scroll**: Halaman saat pertama kali dimuat hanya memiliki tinggi total ~800px, sehingga mahasiswa mendapatkan gambaran besar (*overview*) materi secara instan.
+   - **Akses Cepat Asesmen**: Sesi kuis/tes di bagian bawah halaman langsung terlihat dan mudah dijangkau tanpa harus melewati ribuan piksel konten yang terbuka.
+   - **Bebas Layout Shift**: Komponen visual berat (Prism code playground, SVG flowchart animasi, timeline) baru di-mount/di-render saat mahasiswa sengaja membuka sub-materi yang bersangkutan.
+
+---
+
+### 6.13 Larangan Mutlak CSS Global `scroll-behavior: smooth` & Standar Navigasi Ujian
+1. **Larangan Keras `scroll-behavior: smooth` pada Tag `html` Global**:
+   - **DILARANG KERAS** menambahkan `html { scroll-behavior: smooth; }` secara global di `src/app/globals.css`.
+   - **Alasan Teknis**: Mengaktifkan smooth scroll secara global memaksa peramban (browser) melakukan interpolasi animasi lambat pada seluruh perpindahan rute Next.js. Hal ini mematahkan mekanisme *scroll restoration* Next.js, menyebabkan pengguna yang berpindah dari halaman beranda mendarat di tengah halaman.
+   - Transisi scroll antarhalaman wajib instan agar pengguna selalu tiba di titik koordinat paling atas (`0, 0`).
+2. **Smooth Scrolling Hanya Programmatic / Lokal**:
+   - Animasi smooth scrolling hanya diizinkan untuk aksi interaksi pengguna lokal di dalam halaman yang sama, seperti tombol **🏆 Uji Pemahaman** pada sticky sub-header.
+3. **Protokol Navigasi Tombol "Mulai Tes"**:
+   - Tautan langsung ke tes dari dashboard menggunakan format:
+     `href={`/theory/${meeting.id}?startTest=true#assessment`}`
+   - Wajib menyertakan atribut `scroll={false}` pada Next.js `<Link>` agar router tidak bentrok dengan koordinat target asesmen.
+
+### 6.14 Standar Adaptabilitas Tema Penuh (Dual-Mode: Strict Light vs Dark Theme Harmony)
+1. **Larangan Keras Hardcoding Latar Belakang Gelap**:
+   - **DILARANG KERAS** menggunakan kelas latar belakang gelap (`bg-slate-950`, `bg-slate-900`, `bg-slate-900/90`, `text-slate-100`, `border-slate-800`) secara statis tanpa prefix `dark:` pada elemen pembungkus modul, kontainer lab, toolbar header, kartu materi, dan field input.
+2. **Harmoni Tema 100% Konsisten**:
+   - **Light Mode (Mode Terang)**: Seluruh kontainer, kartu lab, toolbar, dan area kerja WAJIB berlatar terang bersih (`bg-card`, `bg-white`, `bg-slate-50`, `bg-slate-100/80`), border halus (`border-slate-200/80` / `border-border`), teks utama gelap tegas (`text-slate-900`, `text-slate-800`), serta token warna jenuh berkontras tinggi (*deep jewel tones*).
+   - **Dark Mode (Mode Gelap)**: Seluruh kontainer dan kartu beralih ke warna gelap pekat (`dark:bg-slate-950`, `dark:bg-slate-900`), border gelap (`dark:border-slate-800`), teks cerah (`dark:text-slate-100`), serta token warna neon bercahaya (*luminous*).
+3. **Pemberantasan Anomali "Black Slab"**:
+   - Menghilangkan tampilan kotak hitam pekat yang "bocor" atau terisolasi di tengah halaman saat pengguna memilih Mode Terang.
+
+---
+
+*Dokumen ini terakhir diperbarui: 30 September 2026 (Versi 2.4)*  
 *Disusun dan disepakati oleh: Hadiq, ST, M.Kom bersama Antigravity AI*
 
 

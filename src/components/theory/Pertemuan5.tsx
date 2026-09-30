@@ -51,7 +51,7 @@ export default function Pertemuan5() {
         {/* CTA Direct to Workspace Studio */}
         <div className="pt-2">
           <Link
-            href="/workspace"
+            href="/workspace?chapter=5"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-500 to-purple-600 hover:from-amber-600 hover:to-purple-700 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105"
           >
             <Terminal className="w-4 h-4" />

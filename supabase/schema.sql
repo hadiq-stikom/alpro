@@ -110,7 +110,6 @@ SELECT
     ELSE 'Kurang'
   END AS grade_category
 FROM public.quiz_submissions qs
-WHERE qs.quiz_type != 'quiz'
 GROUP BY qs.user_id, qs.class_id, qs.meeting_id;
 
 -- ----------------------------------------------------------------

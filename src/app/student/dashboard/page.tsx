@@ -79,51 +79,75 @@ export default function StudentDashboardPage() {
       
       try {
         setLoading(true);
-        // 1. Ambil overall grades
-        const { data: overallData } = await supabase
-          .from('overall_grades')
-          .select('*')
+
+        // 1. Ambil semua submissions langsung dari tabel quiz_submissions (sumber kebenaran mutlak)
+        const { data: submissionsData } = await supabase
+          .from('quiz_submissions')
+          .select('time_spent_seconds, meeting_id, score, quiz_type')
           .eq('user_id', profile.id)
-          .single();
-          
-        if (overallData) setOverallGrade(overallData as OverallGrade);
-        
-        // 2. Ambil nilai pertemuan
-        const { data: meetingGradesData, error: mgError } = await supabase
+          .order('meeting_id', { ascending: true });
+
+        const submissions = (submissionsData || []) as { time_spent_seconds?: number; meeting_id?: number; score?: number; quiz_type?: string }[];
+
+        // 2. Ambil nilai pertemuan dari view meeting_grades
+        const { data: meetingGradesData } = await supabase
           .from('meeting_grades')
           .select('*')
           .eq('user_id', profile.id)
           .order('meeting_id', { ascending: true });
-          
-        if (mgError) throw mgError;
-        
-        // Deduplikasi meetingGrades berdasarkan meeting_id
-        const uniqueMeetingGrades: MeetingGradeItem[] = [];
-        const seenMeetings = new Set<number>();
+
+        // Gabungkan dan deduplikasi: Jika di view meeting_grades ada pertemuan yang belum masuk (misal kuis MCQ),
+        // gunakan data empiris dari quiz_submissions agar lencana PASTI MUNCUL 100%!
+        const gradeMap = new Map<number, number>();
         if (meetingGradesData) {
           for (const item of (meetingGradesData as MeetingGradeItem[])) {
-            if (!seenMeetings.has(item.meeting_id)) {
-              seenMeetings.add(item.meeting_id);
-              uniqueMeetingGrades.push(item);
-            }
+            gradeMap.set(item.meeting_id, item.avg_score);
           }
         }
         
+        // Fallback cerdas: periksa apakah ada submission yang skornya belum tercermin di gradeMap
+        for (const sub of submissions) {
+          if (sub.meeting_id !== undefined && sub.score !== undefined) {
+            const currentScore = gradeMap.get(sub.meeting_id);
+            if (currentScore === undefined || sub.score > currentScore) {
+              gradeMap.set(sub.meeting_id, sub.score);
+            }
+          }
+        }
+
+        const uniqueMeetingGrades: MeetingGradeItem[] = Array.from(gradeMap.entries()).map(([meeting_id, avg_score]) => ({
+          meeting_id,
+          avg_score
+        })).sort((a, b) => a.meeting_id - b.meeting_id);
+
         setMeetingGrades(uniqueMeetingGrades);
-        
-        // 3. Ambil statistik submission
-        const { data: submissionsData } = await supabase
-          .from('quiz_submissions')
-          .select('time_spent_seconds, meeting_id')
-          .eq('user_id', profile.id);
-          
-        const submissions = (submissionsData || []) as { time_spent_seconds?: number; meeting_id?: number }[];
-        if (submissions.length > 0) {
+
+        // 3. Ambil overall grades dari view atau hitung otomatis jika view belum mengagregasi
+        const { data: overallData } = await supabase
+          .from('overall_grades')
+          .select('*')
+          .eq('user_id', profile.id)
+          .maybeSingle();
+
+        if (overallData) {
+          setOverallGrade(overallData as OverallGrade);
+        } else if (uniqueMeetingGrades.length > 0) {
+          const totalAvg = uniqueMeetingGrades.reduce((acc, curr) => acc + curr.avg_score, 0) / uniqueMeetingGrades.length;
+          const badgeCfg = getBadgeFromScore(totalAvg);
+          setOverallGrade({
+            total_avg_score: Number(totalAvg.toFixed(2)),
+            overall_grade_letter: badgeCfg.level,
+            overall_grade_category: badgeCfg.category
+          });
+        }
+
+        // 4. Update statistik akumulatif
+        if (submissions.length > 0 || uniqueMeetingGrades.length > 0) {
           const uniqueMeetings = new Set(submissions.map(s => s.meeting_id)).size;
           const totalSeconds = submissions.reduce((acc, curr) => acc + (curr.time_spent_seconds || 0), 0);
           
           setStats({
-            totalCompleted: uniqueMeetings,
+            totalCompleted: Math.max(uniqueMeetings, uniqueMeetingGrades.length),
             totalBadges: uniqueMeetingGrades.length,
             totalHours: Number((totalSeconds / 3600).toFixed(1))
           });

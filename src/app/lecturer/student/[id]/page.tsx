@@ -44,7 +44,7 @@ export default function LecturerStudentDetailPage() {
           .from('overall_grades')
           .select('*')
           .eq('user_id', studentId)
-          .single();
+          .maybeSingle();
           
         if (overallData) setOverallGrade(overallData);
         
@@ -64,7 +64,50 @@ export default function LecturerStudentDetailPage() {
           .eq('user_id', studentId)
           .order('submitted_at', { ascending: false });
           
-        if (subData) setSubmissions(subData);
+        if (subData) {
+          setSubmissions(subData);
+          
+          // Resilient Fallback: jika view meeting_grades belum mencakup beberapa kuis
+          const gradeMap = new Map<number, number>();
+          if (meetingData) {
+            for (const item of (meetingData as any[])) {
+              gradeMap.set(item.meeting_id, item.avg_score);
+            }
+          }
+          for (const sub of (subData as any[])) {
+            if (sub.meeting_id !== undefined && sub.score !== undefined) {
+              const cur = gradeMap.get(sub.meeting_id);
+              if (cur === undefined || sub.score > cur) {
+                gradeMap.set(sub.meeting_id, sub.score);
+              }
+            }
+          }
+          
+          if (!meetingData || meetingData.length < gradeMap.size) {
+            const synthesized: any[] = Array.from(gradeMap.entries()).map(([mid, score]) => {
+              const b = getBadgeFromScore(score);
+              return {
+                meeting_id: mid,
+                avg_score: score,
+                grade_letter: b.level,
+                grade_category: b.category,
+                user_id: studentId
+              };
+            }).sort((a, b) => a.meeting_id - b.meeting_id);
+            setMeetingGrades(synthesized);
+            
+            if (!overallData && synthesized.length > 0) {
+              const avg = synthesized.reduce((acc, curr) => acc + curr.avg_score, 0) / synthesized.length;
+              const b = getBadgeFromScore(avg);
+              setOverallGrade({
+                user_id: studentId,
+                total_avg_score: Number(avg.toFixed(2)),
+                overall_grade_letter: b.level,
+                overall_grade_category: b.category
+              });
+            }
+          }
+        }
         
       } catch (error) {
         console.error("Gagal mengambil detail mahasiswa", error);
@@ -227,31 +270,26 @@ export default function LecturerStudentDetailPage() {
                     )}
                   </div>
                   
-                  {sub.quiz_type === 'essay' && (
+                  {(sub.quiz_type === 'essay' || sub.quiz_type === 'exam') && (
                     <div className="mt-4 border-t border-border/50 pt-4">
                       {/* Tampilkan Jawaban Mahasiswa */}
                       <div className="mb-4 bg-background/50 p-4 rounded-xl border border-border/50">
                         <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Jawaban Mahasiswa:</div>
-                        {/* 
-                          Catatan: Di schema.sql saat ini kita menyimpan jawaban JSONB.
-                          Jika menyimpan plain string di answers_json, kita render langsung. 
-                          Atau jika berbentuk stringify, kita parse.
-                        */}
                         <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
                           {typeof sub.answers_json === 'string' 
                             ? sub.answers_json.replace(/^"|"$/g, '') 
-                            : JSON.stringify(sub.answers_json)}
+                            : (sub.answers_json?.student_answer || JSON.stringify(sub.answers_json, null, 2))}
                         </p>
                       </div>
 
                       {/* Tampilkan Ulasan AI */}
-                      {sub.ai_feedback && (
+                      {(sub.ai_feedback || sub.answers_json?.ai_feedback) && (
                         <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
                           <h4 className="text-sm font-bold text-primary mb-2 flex items-center gap-2">
                             <Bot className="w-4 h-4" /> Analisis Otomatis AI (Rubrik):
                           </h4>
-                          <p className="text-sm leading-relaxed text-slate-300 italic">
-                            "{sub.ai_feedback}"
+                          <p className="text-sm leading-relaxed text-slate-800 dark:text-slate-300 italic">
+                            "{sub.ai_feedback || sub.answers_json?.ai_feedback}"
                           </p>
                         </div>
                       )}

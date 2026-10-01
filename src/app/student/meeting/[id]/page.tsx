@@ -29,13 +29,13 @@ export default function MeetingDetailDashboard() {
       try {
         setLoading(true);
         
-        // Ambil rata-rata pertemuan
+        // Ambil rata-rata pertemuan dari view
         const { data: gradeData } = await supabase
           .from('meeting_grades')
           .select('*')
           .eq('user_id', profile.id)
           .eq('meeting_id', meetingId)
-          .single();
+          .maybeSingle();
           
         if (gradeData) setMeetingGrade(gradeData);
         
@@ -47,7 +47,19 @@ export default function MeetingDetailDashboard() {
           .eq('meeting_id', meetingId)
           .order('submitted_at', { ascending: false });
           
-        if (subData) setSubmissions(subData);
+        if (subData && subData.length > 0) {
+          setSubmissions(subData);
+          // Resilient Fallback: jika view meeting_grades kosong atau belum mencakup kuis,
+          // hitung nilai terbaik/rata-rata secara langsung dari subData
+          if (!gradeData) {
+            const highestScore = Math.max(...(subData as any[]).map(s => Number(s.score) || 0));
+            setMeetingGrade({
+              meeting_id: meetingId,
+              avg_score: highestScore,
+              user_id: profile.id
+            });
+          }
+        }
         
       } catch (error) {
         console.error("Gagal mengambil detail pertemuan", error);
@@ -160,11 +172,11 @@ export default function MeetingDetailDashboard() {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
                 <div className="bg-background rounded-xl p-3 border border-border/50 text-center">
-                  <div className="text-xl font-bold text-slate-300">{sub.max_score}</div>
+                  <div className="text-xl font-bold text-slate-800 dark:text-slate-200">{sub.max_score}</div>
                   <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Max Skor</div>
                 </div>
                 <div className="bg-background rounded-xl p-3 border border-border/50 text-center">
-                  <div className="text-xl font-bold text-sky-400">{sub.time_spent_seconds}s</div>
+                  <div className="text-xl font-bold text-sky-600 dark:text-sky-400">{sub.time_spent_seconds}s</div>
                   <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Waktu</div>
                 </div>
                 <div className="bg-background rounded-xl p-3 border border-border/50 text-center col-span-2 sm:col-span-2 flex items-center justify-center gap-2">
@@ -178,7 +190,7 @@ export default function MeetingDetailDashboard() {
                 </div>
               </div>
 
-              {sub.ai_feedback && (
+              {(sub.ai_feedback || sub.answers_json?.ai_feedback) && (
                 <div className="mt-4 bg-primary/5 border border-primary/20 rounded-xl p-5 relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-3 opacity-10">
                     <Bot className="w-24 h-24" />
@@ -186,8 +198,8 @@ export default function MeetingDetailDashboard() {
                   <h4 className="text-sm font-bold text-primary mb-2 flex items-center gap-2 relative z-10">
                     <Bot className="w-4 h-4" /> Ulasan Dosen AI:
                   </h4>
-                  <p className="text-sm leading-relaxed text-slate-300 relative z-10 italic">
-                    "{sub.ai_feedback}"
+                  <p className="text-sm leading-relaxed text-slate-800 dark:text-slate-200 relative z-10 italic">
+                    "{sub.ai_feedback || sub.answers_json?.ai_feedback}"
                   </p>
                 </div>
               )}

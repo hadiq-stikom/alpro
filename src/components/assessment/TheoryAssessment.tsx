@@ -98,21 +98,30 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
   ) => {
     if (!profile?.id || profile.role !== 'mahasiswa') return;
 
+    const payload = {
+      user_id: profile.id,
+      class_id: profile.class_id || null,
+      meeting_id: meetingId,
+      quiz_type: quizType,
+      quiz_key: quizId,
+      score: score,
+      time_spent_seconds: timeSpent,
+      tab_switches: tabSwitches,
+      ai_feedback: aiFeedback || null,
+      answers_json: {
+        ...answers,
+        ai_feedback: aiFeedback || null
+      }
+    };
+
     try {
-      await (supabase.from('quiz_submissions' as any) as any).insert({
-        user_id: profile.id,
-        class_id: profile.class_id || null,
-        meeting_id: meetingId,
-        quiz_type: quizType,
-        quiz_id: quizId,
-        score: score,
-        time_spent_seconds: timeSpent,
-        tab_switches: tabSwitches,
-        answers: {
-          ...answers,
-          ai_feedback: aiFeedback || null
-        }
-      });
+      const { error } = await (supabase.from('quiz_submissions' as any) as any).insert(payload);
+      
+      if (error) {
+        console.error('Gagal menyimpan hasil submission ke Supabase:', error);
+      } else {
+        console.log(`[Assessment] Submission ${payload.quiz_key} berhasil disimpan (Skor: ${payload.score})`);
+      }
       
       // Update state prevGrade secara lokal agar UI sinkron
       setPrevGrade({
@@ -121,7 +130,7 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
       });
 
     } catch (e) {
-      console.error('Gagal menyimpan hasil submission:', e);
+      console.error('Exception saat menyimpan hasil submission:', e);
     }
   };
 

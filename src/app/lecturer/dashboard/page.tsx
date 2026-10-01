@@ -71,11 +71,29 @@ export default function LecturerDashboardPage() {
         if (userErr) throw userErr;
         
         // 2. Ambil nilai rata-rata keseluruhan semua mahasiswa
-        const { data: overallData, error: overallErr } = await supabase
+        const { data: overallData } = await supabase
           .from('overall_grades')
           .select('*');
-          
-        if (overallErr) throw overallErr;
+
+        // 2b. Fallback langsung: ambil semua submissions untuk melengkapi data yang belum teragregasi view
+        const { data: allSubmissionsData } = await supabase
+          .from('quiz_submissions')
+          .select('user_id, meeting_id, score');
+
+        const allSubmissions = (allSubmissionsData || []) as { user_id?: string; meeting_id?: number; score?: number }[];
+
+        const userMeetingScores = new Map<string, Map<number, number>>();
+        for (const sub of allSubmissions) {
+          if (!sub.user_id || sub.meeting_id === undefined || sub.score === undefined) continue;
+          if (!userMeetingScores.has(sub.user_id)) {
+            userMeetingScores.set(sub.user_id, new Map<number, number>());
+          }
+          const m = userMeetingScores.get(sub.user_id)!;
+          const cur = m.get(sub.meeting_id) || 0;
+          if (sub.score > cur) {
+            m.set(sub.meeting_id, sub.score);
+          }
+        }
         
         // 3. Ambil jumlah submission hari ini (sejak tengah malam)
         const today = new Date();
@@ -92,7 +110,16 @@ export default function LecturerDashboardPage() {
         
         const mergedStudents: StudentItem[] = studentsList.map(student => {
           const grade = gradesList.find(g => g.user_id === student.id);
-          const score = grade?.total_avg_score || 0;
+          let score = grade?.total_avg_score || 0;
+          
+          if (score === 0 && userMeetingScores.has(student.id)) {
+            const m = userMeetingScores.get(student.id)!;
+            const scores = Array.from(m.values());
+            if (scores.length > 0) {
+              score = Number((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2));
+            }
+          }
+
           return {
             ...student,
             avg_score: score,

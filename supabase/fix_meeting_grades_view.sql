@@ -1,27 +1,9 @@
 -- ==============================================================================
--- MIGRASI PERBAIKAN: QUIZ SUBMISSIONS, VIEWS, DAN LENCANA MAHASISWA
--- ==============================================================================
--- Masalah yang diselesaikan:
--- 1. Penambahan tipe 'essay' pada check constraint quiz_submissions.
--- 2. Memastikan kolom 'ai_feedback' tersedia di tabel quiz_submissions.
--- 3. Memperbaiki view meeting_grades agar TIDAK memfilter 'quiz' (sebelumnya
---    terdapat WHERE qs.quiz_type != 'quiz' yang membuat nilai pilihan ganda
---    dibuang dan lencana tidak muncul).
+-- PERBAIKAN VIEW meeting_grades: 
+-- Hanya esai/exam/lab/challenge yang dihitung sebagai nilai.
+-- MCQ pilihan ganda (quiz_type='quiz') adalah SYARAT MASUK esai, TIDAK masuk nilai.
 -- ==============================================================================
 
--- 1. Perbarui Constraint quiz_type agar mendukung 'essay'
-ALTER TABLE public.quiz_submissions 
-  DROP CONSTRAINT IF EXISTS quiz_submissions_quiz_type_check;
-
-ALTER TABLE public.quiz_submissions 
-  ADD CONSTRAINT quiz_submissions_quiz_type_check 
-  CHECK (quiz_type IN ('quiz', 'lab', 'challenge', 'exam', 'essay'));
-
--- 2. Tambahkan kolom ai_feedback jika belum ada (opsional / pelengkap)
-ALTER TABLE public.quiz_submissions 
-  ADD COLUMN IF NOT EXISTS ai_feedback TEXT;
-
--- 3. Perbarui View: meeting_grades (Hapus filter quiz_type != 'quiz')
 CREATE OR REPLACE VIEW public.meeting_grades AS
 SELECT
   qs.user_id,
@@ -47,9 +29,10 @@ SELECT
   END AS grade_category
 FROM public.quiz_submissions qs
 WHERE qs.quiz_type IN ('essay', 'exam', 'lab', 'challenge')
+  AND qs.score > 0
 GROUP BY qs.user_id, qs.class_id, qs.meeting_id;
 
--- 4. Perbarui View: overall_grades
+-- Perbarui overall_grades (otomatis mengikuti perubahan meeting_grades)
 CREATE OR REPLACE VIEW public.overall_grades AS
 SELECT
   user_id,
@@ -75,7 +58,7 @@ SELECT
 FROM public.meeting_grades
 GROUP BY user_id, class_id;
 
--- 5. Perbarui View: class_grades
+-- Perbarui class_grades (untuk dashboard dosen)
 CREATE OR REPLACE VIEW public.class_grades AS
 SELECT
   mg.class_id,
@@ -98,7 +81,7 @@ FROM public.meeting_grades mg
 LEFT JOIN public.classes c ON c.id = mg.class_id
 GROUP BY mg.class_id, c.name, mg.meeting_id;
 
--- 6. Hak Akses (Permissions)
+-- Pastikan hak akses
 GRANT SELECT ON public.meeting_grades TO authenticated, anon;
 GRANT SELECT ON public.overall_grades TO authenticated, anon;
 GRANT SELECT ON public.class_grades TO authenticated, anon;

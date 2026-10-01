@@ -67,15 +67,23 @@ export default function LecturerStudentDetailPage() {
         if (subData) {
           setSubmissions(subData);
           
-          // Resilient Fallback: jika view meeting_grades belum mencakup beberapa kuis
+          // Aturan pedagogi: hanya essay/exam/lab yang jadi sumber nilai. MCQ quiz hanya syarat masuk.
+          const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
+          
           const gradeMap = new Map<number, number>();
           if (meetingData) {
             for (const item of (meetingData as any[])) {
               gradeMap.set(item.meeting_id, item.avg_score);
             }
           }
+          // Fallback: hanya esai/exam/lab yang dihitung (score > 0)
           for (const sub of (subData as any[])) {
-            if (sub.meeting_id !== undefined && sub.score !== undefined) {
+            if (
+              sub.meeting_id !== undefined &&
+              sub.score !== undefined &&
+              sub.score > 0 &&
+              GRADABLE_TYPES.includes(sub.quiz_type)
+            ) {
               const cur = gradeMap.get(sub.meeting_id);
               if (cur === undefined || sub.score > cur) {
                 gradeMap.set(sub.meeting_id, sub.score);

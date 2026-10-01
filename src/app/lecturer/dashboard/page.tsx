@@ -78,13 +78,22 @@ export default function LecturerDashboardPage() {
         // 2b. Fallback langsung: ambil semua submissions untuk melengkapi data yang belum teragregasi view
         const { data: allSubmissionsData } = await supabase
           .from('quiz_submissions')
-          .select('user_id, meeting_id, score');
+          .select('user_id, meeting_id, score, quiz_type');
 
-        const allSubmissions = (allSubmissionsData || []) as { user_id?: string; meeting_id?: number; score?: number }[];
+        const allSubmissions = (allSubmissionsData || []) as { user_id?: string; meeting_id?: number; score?: number; quiz_type?: string }[];
+
+        // Aturan pedagogi: hanya essay/exam/lab yang jadi sumber nilai. MCQ (quiz) hanya syarat masuk.
+        const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
 
         const userMeetingScores = new Map<string, Map<number, number>>();
         for (const sub of allSubmissions) {
-          if (!sub.user_id || sub.meeting_id === undefined || sub.score === undefined) continue;
+          if (
+            !sub.user_id ||
+            sub.meeting_id === undefined ||
+            sub.score === undefined ||
+            sub.score <= 0 ||                              // abaikan skor 0 (tidak selesai)
+            !GRADABLE_TYPES.includes(sub.quiz_type || '') // hanya esai/exam/lab
+          ) continue;
           if (!userMeetingScores.has(sub.user_id)) {
             userMeetingScores.set(sub.user_id, new Map<number, number>());
           }

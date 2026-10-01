@@ -96,18 +96,27 @@ export default function StudentDashboardPage() {
           .eq('user_id', profile.id)
           .order('meeting_id', { ascending: true });
 
-        // Gabungkan dan deduplikasi: Jika di view meeting_grades ada pertemuan yang belum masuk (misal kuis MCQ),
-        // gunakan data empiris dari quiz_submissions agar lencana PASTI MUNCUL 100%!
+        // Aturan Pedagogi:
+        // MCQ (quiz_type='quiz') = HANYA SYARAT MASUK esai, TIDAK dihitung ke nilai akhir
+        // Esai (quiz_type='essay'/'exam') = sumber nilai pertemuan (MAX antar percobaan)
+        const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
+        
         const gradeMap = new Map<number, number>();
+        // Prioritas 1: ambil dari view meeting_grades (sudah terfilter di database)
         if (meetingGradesData) {
           for (const item of (meetingGradesData as MeetingGradeItem[])) {
             gradeMap.set(item.meeting_id, item.avg_score);
           }
         }
         
-        // Fallback cerdas: periksa apakah ada submission yang skornya belum tercermin di gradeMap
+        // Fallback: hanya gunakan submission esai/lab/challenge untuk grade (BUKAN MCQ)
         for (const sub of submissions) {
-          if (sub.meeting_id !== undefined && sub.score !== undefined) {
+          if (
+            sub.meeting_id !== undefined &&
+            sub.score !== undefined &&
+            sub.score > 0 &&                          // abaikan skor 0 (tidak selesai)
+            GRADABLE_TYPES.includes(sub.quiz_type || '') // HANYA esai/exam/lab
+          ) {
             const currentScore = gradeMap.get(sub.meeting_id);
             if (currentScore === undefined || sub.score > currentScore) {
               gradeMap.set(sub.meeting_id, sub.score);
@@ -141,17 +150,14 @@ export default function StudentDashboardPage() {
           });
         }
 
-        // 4. Update statistik akumulatif
-        if (submissions.length > 0 || uniqueMeetingGrades.length > 0) {
-          const uniqueMeetings = new Set(submissions.map(s => s.meeting_id)).size;
-          const totalSeconds = submissions.reduce((acc, curr) => acc + (curr.time_spent_seconds || 0), 0);
-          
-          setStats({
-            totalCompleted: Math.max(uniqueMeetings, uniqueMeetingGrades.length),
-            totalBadges: uniqueMeetingGrades.length,
-            totalHours: Number((totalSeconds / 3600).toFixed(1))
-          });
-        }
+        // 4. Update statistik akumulatif — hanya pertemuan yang esainya selesai dihitung
+        const essaySubmissions = submissions.filter(s => GRADABLE_TYPES.includes(s.quiz_type || '') && (s.score || 0) > 0);
+        const totalSeconds = submissions.reduce((acc, curr) => acc + (curr.time_spent_seconds || 0), 0);
+        setStats({
+          totalCompleted: uniqueMeetingGrades.length,
+          totalBadges: uniqueMeetingGrades.length,
+          totalHours: Number((totalSeconds / 3600).toFixed(1))
+        });
       } catch (error) {
         console.error("Gagal mengambil data dashboard mahasiswa", error);
       } finally {

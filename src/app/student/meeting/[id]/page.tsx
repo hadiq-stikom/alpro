@@ -49,15 +49,21 @@ export default function MeetingDetailDashboard() {
           
         if (subData && subData.length > 0) {
           setSubmissions(subData);
-          // Resilient Fallback: jika view meeting_grades kosong atau belum mencakup kuis,
-          // hitung nilai terbaik/rata-rata secara langsung dari subData
+          // Fallback: hanya esai/exam/lab yang jadi sumber nilai (MCQ quiz hanya syarat masuk)
           if (!gradeData) {
-            const highestScore = Math.max(...(subData as any[]).map(s => Number(s.score) || 0));
-            setMeetingGrade({
-              meeting_id: meetingId,
-              avg_score: highestScore,
-              user_id: profile.id
-            });
+            const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
+            const essaySubs = (subData as any[]).filter(s =>
+              GRADABLE_TYPES.includes(s.quiz_type) && Number(s.score) > 0
+            );
+            if (essaySubs.length > 0) {
+              const highestEssayScore = Math.max(...essaySubs.map(s => Number(s.score)));
+              setMeetingGrade({
+                meeting_id: meetingId,
+                avg_score: highestEssayScore,
+                user_id: profile.id
+              });
+            }
+            // Jika belum ada esai = belum selesai, meetingGrade tetap null
           }
         }
         
@@ -79,11 +85,38 @@ export default function MeetingDetailDashboard() {
     );
   }
 
-  if (!meetingGrade && submissions.length === 0) {
+  // Jika tidak ada submisi sama sekali
+  if (submissions.length === 0) {
     return (
       <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4">
-        <h2 className="text-2xl font-bold mb-2">Data Tidak Ditemukan</h2>
+        <h2 className="text-2xl font-bold mb-2">Belum Ada Pengerjaan</h2>
         <p className="text-muted-foreground mb-6">Anda belum mengerjakan kuis atau tugas apapun untuk Minggu {meetingId}.</p>
+        <button onClick={() => router.back()} className="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90">
+          Kembali ke Dashboard
+        </button>
+      </div>
+    );
+  }
+
+  // MCQ sudah dikerjakan tapi esai belum diselesaikan
+  if (!meetingGrade) {
+    const hasMcq = submissions.some((s: any) => s.quiz_type === 'quiz');
+    return (
+      <div className="min-h-screen bg-background flex flex-col justify-center items-center p-4 text-center">
+        <div className="w-20 h-20 rounded-full bg-amber-500/10 border-2 border-amber-500/30 flex items-center justify-center mb-6">
+          <span className="text-3xl">📝</span>
+        </div>
+        <h2 className="text-2xl font-bold mb-2">
+          {hasMcq ? 'Esai Belum Diselesaikan' : 'Belum Ada Nilai Esai'}
+        </h2>
+        <p className="text-muted-foreground mb-2 max-w-md">
+          {hasMcq
+            ? 'Anda sudah mengerjakan Kuis Pilihan Ganda sebagai syarat. Selesaikan semua soal Esai untuk mendapatkan nilai dan lencana.'
+            : 'Nilai pertemuan dihitung dari penyelesaian soal Esai.'}
+        </p>
+        <p className="text-xs text-muted-foreground mb-8 max-w-md italic">
+          Nilai Pilihan Ganda (MCQ) hanya digunakan sebagai syarat akses ke sesi Esai dan tidak dihitung sebagai nilai akhir.
+        </p>
         <button onClick={() => router.back()} className="px-6 py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary/90">
           Kembali ke Dashboard
         </button>

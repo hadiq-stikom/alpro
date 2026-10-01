@@ -164,8 +164,15 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     setStage('result');
     
     try {
-      const totalScore = completedResults.reduce((acc, curr) => acc + curr.score, 0);
-      const rawScore = Math.round(totalScore / (completedResults.length || 1));
+      // EssayContainer.handleFinalSubmit sudah memfilter hanya soal yang dijawab.
+      // completedResults berisi HANYA soal yang sudah dinilai AI.
+      // Rata-rata dihitung dari jumlah soal yang dijawab (bukan dari total soal).
+      const answeredResults = completedResults.filter(r => r.score !== undefined && r.score !== null);
+      
+      if (answeredResults.length === 0) return;
+      
+      const totalScore = answeredResults.reduce((acc, curr) => acc + curr.score, 0);
+      const rawScore = Math.round(totalScore / answeredResults.length);
       const penalty = tabSwitches * 5;
       const finalCalculated = Math.max(0, rawScore - penalty);
       

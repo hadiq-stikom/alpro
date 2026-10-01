@@ -207,11 +207,20 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
     setQuestionMode('answering');
   };
 
-  // Kumpulkan seluruh ujian esai (hanya jika semua 5 soal lolos >= 80)
+  // Kumpulkan seluruh ujian esai
+  // Hanya soal yang SUDAH DIJAWAB DAN DINILAI yang masuk ke hasil akhir
   const handleFinalSubmit = () => {
     const timeSpent = Math.floor((Date.now() - startTime) / 1000);
     
-    const formattedResults: EssayItemResult[] = questions.map(q => {
+    // Filter: hanya soal yang benar-benar sudah dinilai AI (ada result-nya)
+    const answeredQuestions = questions.filter(q => results[q.id]?.score !== undefined);
+    
+    if (answeredQuestions.length === 0) {
+      // Tidak ada soal yang selesai sama sekali — tidak perlu submit
+      return;
+    }
+
+    const formattedResults: EssayItemResult[] = answeredQuestions.map(q => {
       const res = results[q.id];
       return {
         id: q.id,

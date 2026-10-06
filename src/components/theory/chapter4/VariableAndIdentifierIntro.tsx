@@ -81,7 +81,7 @@ export default function VariableAndIdentifierIntro() {
     {
       step: 4,
       title: '4. Membaca & Menampilkan Isi Wadah',
-      codePy: 'print("Skor akhir:", skor)',
+      codePy: 'output("Skor akhir:", skor)',
       codeJs: 'console.log("Skor akhir:", skor);',
       varName: 'skor',
       varValue: '175',
@@ -196,11 +196,11 @@ export default function VariableAndIdentifierIntro() {
 
                   <div className="p-4 bg-white dark:bg-slate-950 rounded-xl border-2 border-slate-200 dark:border-slate-800 font-mono space-y-2.5 shadow-xs">
                     <div>
-                      <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">🐍 Bahasa Python:</span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">📋 Notasi Universal (Pseudocode):</span>
                       <strong className="text-cyan-800 dark:text-cyan-300 text-sm sm:text-base font-black">{currentStory.codePy}</strong>
                     </div>
                     <div className="pt-2.5 border-t border-slate-100 dark:border-slate-900">
-                      <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">🌐 Bahasa JavaScript:</span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">🌐 Implementasi JavaScript:</span>
                       <strong className="text-amber-800 dark:text-amber-300 text-xs sm:text-sm font-black">{currentStory.codeJs}</strong>
                     </div>
                   </div>

@@ -264,18 +264,18 @@ export default function IOBridgeVisualizer() {
             {/* Code Comparison Card with Strict 1.2x Zoom */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm font-mono">
               <div className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border-2 border-slate-200 dark:border-slate-800 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center md:origin-left hover:shadow-2xl hover:border-cyan-500 shadow-xs">
-                <span className="text-slate-800 dark:text-slate-200 font-bold block font-sans text-xs sm:text-sm">🐍 Sintaks Python yang Digunakan:</span>
+                <span className="text-slate-800 dark:text-slate-200 font-bold block font-sans text-xs sm:text-sm">📋 Pseudocode (Notasi Universal):</span>
                 {useTypeCasting ? (
                   <div className="space-y-1 text-emerald-700 dark:text-emerald-300 font-semibold leading-relaxed">
-                    <div>a = <strong className="text-amber-800 dark:text-amber-300 font-black">int(input(&quot;Angka 1: &quot;))</strong></div>
-                    <div>b = <strong className="text-amber-800 dark:text-amber-300 font-black">int(input(&quot;Angka 2: &quot;))</strong></div>
-                    <div className="text-blue-800 dark:text-cyan-300 font-bold">print(a + b)  # Output: {result.display}</div>
+                    <div>a = <strong className="text-amber-800 dark:text-amber-300 font-black">input(angka1)</strong></div>
+                    <div>b = <strong className="text-amber-800 dark:text-amber-300 font-black">input(angka2)</strong></div>
+                    <div className="text-blue-800 dark:text-cyan-300 font-bold">output(a + b)  &larr; Hasil: {result.display}</div>
                   </div>
                 ) : (
                   <div className="space-y-1 text-rose-700 dark:text-rose-300 font-semibold leading-relaxed">
-                    <div>a = <strong className="text-rose-600 dark:text-rose-400 font-bold">input(&quot;Angka 1: &quot;)</strong>  # Masih &quot;{numA}&quot;</div>
-                    <div>b = <strong className="text-rose-600 dark:text-rose-400 font-bold">input(&quot;Angka 2: &quot;)</strong>  # Masih &quot;{numB}&quot;</div>
-                    <div className="text-blue-800 dark:text-cyan-300 font-bold">print(a + b)  # Output: {result.display} (Bug!)</div>
+                    <div>a = <strong className="text-rose-600 dark:text-rose-400 font-bold">input(angka1)</strong>  &larr; Masih &quot;{numA}&quot;</div>
+                    <div>b = <strong className="text-rose-600 dark:text-rose-400 font-bold">input(angka2)</strong>  &larr; Masih &quot;{numB}&quot;</div>
+                    <div className="text-blue-800 dark:text-cyan-300 font-bold">output(a + b)  &larr; Output: {result.display} (Bug!)</div>
                   </div>
                 )}
               </div>
@@ -510,12 +510,12 @@ export default function IOBridgeVisualizer() {
 
                 {codeLang === 'python' && (
                   <div className="space-y-1 leading-relaxed font-semibold">
-                    <div className="text-slate-500 text-xs font-sans"># Python 3 Universal I/O</div>
+                    <div className="text-slate-500 text-xs font-sans"># Python 3 — Notasi Universal I/O</div>
                     <div className={currentStep === 1 ? 'text-cyan-800 dark:text-cyan-300 font-bold bg-cyan-500/20 px-2 py-0.5 rounded' : 'text-slate-700 dark:text-slate-400'}>
                       nama = input(&quot;Masukkan nama: &quot;)
                     </div>
                     <div className={currentStep === 3 ? 'text-emerald-800 dark:text-emerald-300 font-bold bg-emerald-500/20 px-2 py-0.5 rounded' : 'text-slate-700 dark:text-slate-400'}>
-                      print(f&quot;Halo, &#123;nama&#125;!&quot;)
+                      output(&quot;Halo, &quot;, nama)
                     </div>
                   </div>
                 )}

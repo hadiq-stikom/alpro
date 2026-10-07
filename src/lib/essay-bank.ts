@@ -325,7 +325,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
   },
 
   // ==========================================
-  // MINGGU 6: Struktur Percabangan Tunggal & Ganda (IF - ELSE)
+  // MINGGU 6: Struktur Percabangan Statemen Tunggal & Ganda (IF - ELSE)
   // ==========================================
   {
     id: 'm6-essay-1',
@@ -344,7 +344,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
   {
     id: 'm6-essay-2',
     meetingId: 6,
-    text: 'Buatlah algoritma lengkap untuk program "Cek Bilangan Positif atau Negatif" menggunakan TIGA representasi berikut:\n\n(A) ALGORITMA NARATIF: Tuliskan langkah-langkah dalam bahasa Indonesia alami.\n(B) PSEUDOCODE STANDAR: Tuliskan dalam format PROGRAM/KAMUS/ALGORITMA yang sesuai standar mata kuliah (variabel deskriptif, operator "=", input(), output(), diakhiri endif).\n(C) KODE PYTHON: Implementasikan dalam bahasa Python dengan sintaks yang benar.\n\nCatatan: Program menerima sebuah bilangan dari pengguna. Jika bilangan > 0, tampilkan "Bilangan Positif"; jika bilangan < 0, tampilkan "Bilangan Negatif"; jika bilangan == 0, tampilkan "Nol". (Gunakan IF tunggal terpisah atau IF-ELSE sederhana untuk dua kondisi utama.)',
+    text: 'Buatlah algoritma lengkap untuk program "Cek Bilangan Positif atau Negatif" menggunakan TIGA representasi berikut:\n\n(A) ALGORITMA NARATIF: Tuliskan langkah-langkah dalam bahasa Indonesia alami.\n(B) PSEUDOCODE STANDAR: Tuliskan dalam format PROGRAM/KAMUS/ALGORITMA yang sesuai standar mata kuliah (variabel deskriptif, operator "=", input(), output(), diakhiri endif).\n(C) KODE PYTHON: Implementasikan dalam bahasa Python dengan sintaks yang benar.\n\nCatatan: Program menerima sebuah bilangan dari pengguna. Jika bilangan > 0, tampilkan "Bilangan Positif"; jika bilangan < 0, tampilkan "Bilangan Negatif"; jika bilangan == 0, tampilkan "Nol". (Gunakan IF statemen tunggal terpisah atau IF-ELSE sederhana untuk dua kondisi utama.)',
     timeLimit: 300,
     rubric: `
       Kriteria Penilaian (0-100):
@@ -366,13 +366,13 @@ export const ESSAY_BANK: EssayQuestion[] = [
   {
     id: 'm6-essay-3',
     meetingId: 6,
-    text: 'Jelaskan perbedaan mendasar antara struktur IF tunggal dan struktur IF-ELSE (ganda) dalam algoritma! Kemudian, buatlah PSEUDOCODE STANDAR lengkap untuk program "Penentu Status Kelulusan" dengan kriteria berikut:\n- Input: nilai ujian mahasiswa (0–100)\n- Jika nilai >= 75: tampilkan "LULUS" dan "Selamat, pertahankan prestasi Anda!"\n- Jika nilai < 75: tampilkan "TIDAK LULUS" dan "Anda wajib mengikuti ujian remedial."\n\nJelaskan juga mengapa kasus ini lebih tepat menggunakan IF-ELSE dibandingkan IF tunggal!',
+    text: 'Jelaskan perbedaan mendasar antara struktur IF statemen tunggal dan struktur IF-ELSE (statemen ganda) dalam algoritma! Kemudian, buatlah PSEUDOCODE STANDAR lengkap untuk program "Penentu Status Kelulusan" dengan kriteria berikut:\n- Input: nilai ujian mahasiswa (0–100)\n- Jika nilai >= 75: tampilkan "LULUS" dan "Selamat, pertahankan prestasi Anda!"\n- Jika nilai < 75: tampilkan "TIDAK LULUS" dan "Anda wajib mengikuti ujian remedial."\n\nJelaskan juga mengapa kasus ini lebih tepat menggunakan IF-ELSE dibandingkan IF statemen tunggal!',
     timeLimit: 300,
     rubric: `
       Kriteria Penilaian (0-100):
       1. Penjelasan Perbedaan IF vs IF-ELSE (25 poin):
-         - IF tunggal: hanya satu jalur aksi (saat True); jika False tidak ada aksi (10 poin).
-         - IF-ELSE: dua jalur aksi yang saling eksklusif; selalu ada aksi untuk setiap kondisi (10 poin).
+         - IF statemen tunggal: hanya satu jalur aksi (saat True); jika False tidak ada aksi (10 poin).
+         - IF-ELSE (statemen ganda): dua jalur aksi yang saling eksklusif; selalu ada aksi untuk setiap kondisi (10 poin).
          - Analogi atau contoh pendukung yang tepat (5 poin).
       2. Pseudocode Standar (50 poin):
          - Blok PROGRAM dengan nama deskriptif (5 poin).
@@ -384,7 +384,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
          - Dua output di setiap cabang (True dan False) tercantum (5 poin).
       3. Alasan Penggunaan IF-ELSE (25 poin):
          - Menjelaskan bahwa SETIAP mahasiswa harus mendapat salah satu dari dua status (tidak boleh ada yang "tidak berstatus") (15 poin).
-         - Menyebutkan bahwa IF tunggal tidak tepat karena akan membiarkan kondisi False tanpa penanganan eksplisit (10 poin).
+         - Menyebutkan bahwa IF statemen tunggal tidak tepat karena akan membiarkan kondisi False tanpa penanganan eksplisit (10 poin).
     `
   },
   {

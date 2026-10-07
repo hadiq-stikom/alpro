@@ -79,20 +79,20 @@ function CaseStudyVerticalFlowchart({
 
       {/* ─── 1. START TERMINAL ─── */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="145" y="16" width="140" height="42" rx="21" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="215" y="42" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
-          START
+        <rect x="145" y="16" width="140" height="42" rx="21" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="215" y="42" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
+          MULAI
         </text>
       </g>
       <line x1="215" y1="58" x2="215" y2="86" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#css-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
       {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="135,86 315,86 295,130 115,130" fill="rgba(168,85,247,0.22)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="215" y="102" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="135,86 315,86 295,130 115,130" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="102" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(member, belanja, libur)
         </text>
-        <text x="215" y="118" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="215" y="118" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{memberType}, Rp{Math.round(totalBelanja / 1000)}rb, {isWeekend ? 'Weekend' : 'Weekday'}]
         </text>
       </g>
@@ -473,9 +473,9 @@ function CaseStudyVerticalFlowchart({
           width="140"
           height="34"
           rx="17"
-          fill="rgba(239,68,68,0.3)"
-          stroke="#f87171"
-          strokeWidth="3"
+          fill="#be123c"
+          stroke="#9f1239"
+          strokeWidth="2.5"
         />
         <text
           x="215"
@@ -484,7 +484,8 @@ function CaseStudyVerticalFlowchart({
           textAnchor="middle"
           fontSize="13"
           fontWeight="900"
-          fill="#fecdd3"
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           SELESAI
@@ -551,20 +552,20 @@ function CaseStudyHorizontalFlowchart({
 
       {/* 1. START */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="15" y="68" width="115" height="46" rx="23" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="72" y="91" dominantBaseline="central" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
-          START
+        <rect x="15" y="68" width="115" height="46" rx="23" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="72" y="91" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
+          MULAI
         </text>
       </g>
       <line x1="130" y1="91" x2="165" y2="91" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#csh-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
       {/* 2. INPUT */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="185,66 335,66 315,116 165,116" fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="250" y="83" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="185,66 335,66 315,116 165,116" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="250" y="83" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(member, belanja, libur)
         </text>
-        <text x="250" y="100" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="250" y="100" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{memberType}, Rp{Math.round(totalBelanja / 1000)}rb, {isWeekend ? 'Weekend' : 'Weekday'}]
         </text>
       </g>
@@ -768,8 +769,8 @@ function CaseStudyHorizontalFlowchart({
         {/* Line Process -> SELESAI */}
         <line x1="1020" y1="329" x2="1088" y2="329" stroke="#10b981" strokeWidth="3" markerEnd="url(#csh-arr-green)" />
 
-        <rect x="1088" y="305" width="115" height="48" rx="24" fill="rgba(239,68,68,0.25)" stroke="#ef4444" strokeWidth="2.5" filter="url(#csh-glow-diamond)" />
-        <text x="1145" y="329" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fca5a5" fontFamily="monospace">
+        <rect x="1088" y="305" width="115" height="48" rx="24" fill="#be123c" stroke="#9f1239" strokeWidth="2.5" />
+        <text x="1145" y="329" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           SELESAI
         </text>
       </g>
@@ -877,15 +878,15 @@ export default function CaseStudyNestedLab() {
   ] as const;
 
   return (
-    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl transition-all duration-300 ${
-      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
+    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl transition-all duration-300 ${
+      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-card/98 dark:bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
     }`}>
       {/* ─── Header Lab ─────────────────────────────────────────────────────── */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">3️⃣</span>
           <div>
-            <h3 className="font-bold text-sm md:text-base text-slate-100 flex items-center gap-2">
+            <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <span>Lab Studi Kasus: Kasir Swalayan (Diskon Multi-Kondisi)</span>
               {isProjectorMode && (
                 <span className="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider animate-pulse">
@@ -898,7 +899,7 @@ export default function CaseStudyNestedLab() {
 
         {/* 4 Pilar Tabs Header */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap">
+          <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 flex-wrap">
             {tabs.map(tab => (
               <button
                 key={tab.id}
@@ -906,7 +907,7 @@ export default function CaseStudyNestedLab() {
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   activeTab === tab.id
                     ? 'bg-amber-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {tab.icon}
@@ -925,8 +926,8 @@ export default function CaseStudyNestedLab() {
               }}
               className={`p-2 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 isProjectorMode
-                  ? 'bg-orange-500 text-white border-orange-400 shadow-lg ring-2 ring-orange-400/50'
-                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-800'
+                  ? 'bg-amber-600 text-white border-amber-500 shadow-lg ring-2 ring-amber-400/50'
+                  : 'bg-card hover:bg-slate-100 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-border/80 dark:border-slate-800'
               }`}
               title={isProjectorMode ? 'Kembali ke Tampilan Normal' : 'Mode Layar Penuh Maximize (Keputusan Berjejer ke Samping)'}
             >
@@ -948,31 +949,31 @@ export default function CaseStudyNestedLab() {
 
       {/* ─── Orientation Switcher Bar ────────────────────────────────────────── */}
       {activeTab === 'flowchart' && (
-        <div className="p-3 md:px-6 bg-slate-900/50 border-b border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-            <ShoppingBag className="w-4 h-4 text-purple-400" />
+        <div className="p-3 md:px-6 bg-slate-100/70 dark:bg-slate-900/50 border-b border-border/70 dark:border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <ShoppingBag className="w-4 h-4 text-purple-600 dark:text-purple-400" />
             <span>Studi Kasus: Multi-Way Member × Nilai Belanja × Hari Weekend</span>
           </span>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Orientasi Flowchart */}
             {isProjectorMode ? (
-              <div className="flex items-center bg-orange-950/70 border border-orange-500/50 text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
-                <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
+              <div className="flex items-center bg-amber-100 dark:bg-orange-950/70 border border-amber-300 dark:border-orange-500/50 text-amber-900 dark:text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
+                <ArrowRight className="w-3.5 h-3.5 text-amber-600 dark:text-orange-400" />
                 <span>Mode Maximize: Keputusan Berjejer ke Samping</span>
-                <span className="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
+                <span className="text-[10px] bg-amber-200/60 dark:bg-orange-500/20 text-amber-900 dark:text-orange-300 px-1.5 py-0.5 rounded border border-amber-400/40 dark:border-orange-500/30 font-mono">Lanskap 16:9</span>
               </div>
             ) : (
-              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-                <span className="text-slate-500 px-2 flex items-center gap-1">
+              <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+                <span className="text-slate-500 dark:text-slate-400 px-2 flex items-center gap-1">
                   <Tv className="w-3.5 h-3.5" /> Orientasi:
                 </span>
                 <button
                   onClick={() => setFlowchartOrientation('vertical')}
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'vertical'
-                      ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-amber-600 text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Atas ke Bawah: Keputusan Mengalir Vertikal dengan Output Mencabang"
                 >
@@ -983,8 +984,8 @@ export default function CaseStudyNestedLab() {
                   onClick={() => setFlowchartOrientation('horizontal')}
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'horizontal'
-                      ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      ? 'bg-amber-600 text-white shadow-sm'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Kiri ke Kanan: Keputusan Berjejer ke Samping (Optimal untuk Layar Lebar)"
                 >
@@ -995,8 +996,8 @@ export default function CaseStudyNestedLab() {
             )}
 
             {/* Kontrol Pembesaran / Zoom */}
-            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-              <span className="text-slate-500 px-2">🔍 Skala:</span>
+            <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+              <span className="text-slate-500 dark:text-slate-400 px-2">🔍 Skala:</span>
               {[0.85, 1.0, 1.2, 1.4].map(scale => (
                 <button
                   key={scale}
@@ -1004,7 +1005,7 @@ export default function CaseStudyNestedLab() {
                   className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                     zoomLevel === scale
                       ? 'bg-amber-600 text-white font-black'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {Math.round(scale * 100)}%
@@ -1020,33 +1021,33 @@ export default function CaseStudyNestedLab() {
         {/* 1. TAB NARATIF */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📝 <strong>Algoritma Naratif Kasir Swalayan</strong> — Menggabungkan struktur percabangan majemuk untuk kategori member dan percabangan bersarang untuk nominal belanja dan promo hari libur.
               </p>
             </div>
 
-            <pre className="bg-slate-900 p-5 rounded-2xl border border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-300 whitespace-pre">
-              <span className="text-slate-400">1. Masukkan member, totalBelanja, dan hariLibur.</span>{'\n\n'}
-              <span className="font-bold text-amber-300">2. Jika member == &quot;VIP&quot; maka:</span>{'\n'}
-              <span className="text-emerald-300">      Tetapkan diskon = 20%</span>{'\n'}
-              <span className="font-bold text-sky-300">      Jika totalBelanja &gt;= 250000 maka:</span>{'\n'}
-              <span className="text-emerald-300">         Tambahkan diskon 5% (Total diskon = 25%)</span>{'\n'}
-              <span className="font-bold text-purple-300">      Jika hariLibur == True maka:</span>{'\n'}
-              <span className="text-emerald-300">         Berikan bonus voucher belanja Rp25.000</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu, jika member == &quot;REGULER&quot; maka:</span>{'\n'}
-              <span className="text-sky-300">      Tetapkan diskon = 10%</span>{'\n'}
-              <span className="font-bold text-sky-300">      Jika totalBelanja &gt;= 200000 maka:</span>{'\n'}
-              <span className="text-sky-300">         Tambahkan diskon 5% (Total diskon = 15%)</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu:</span>{'\n'}
-              <span className="font-bold text-rose-300">      Jika totalBelanja &gt;= 300000 maka:</span>{'\n'}
-              <span className="text-rose-300">         Tetapkan diskon promo = 5%</span>{'\n'}
-              <span className="font-bold text-rose-300">      Selain itu:</span>{'\n'}
-              <span className="text-rose-300">         Tetapkan diskon = 0%</span>{'\n\n'}
-              <span className="text-slate-400">3. Hitung potongan = totalBelanja * diskon / 100.</span>{'\n'}
-              <span className="text-slate-400">4. Hitung totalBayar = totalBelanja - potongan.</span>{'\n'}
-              <span className="text-slate-400">5. Tampilkan totalBayar dan voucher ke layar.</span>{'\n'}
-              <span className="text-slate-400">Selesai.</span>
+            <pre className="bg-slate-50 dark:bg-slate-950/60 p-5 rounded-2xl border border-border/80 dark:border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-800 dark:text-slate-300 whitespace-pre">
+              <span className="text-slate-600 dark:text-slate-400">1. Masukkan member, totalBelanja, dan hariLibur.</span>{'\n\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">2. Jika member == &quot;VIP&quot; maka:</span>{'\n'}
+              <span className="text-emerald-700 dark:text-emerald-300">      Tetapkan diskon = 20%</span>{'\n'}
+              <span className="font-bold text-sky-700 dark:text-sky-300">      Jika totalBelanja &gt;= 250000 maka:</span>{'\n'}
+              <span className="text-emerald-700 dark:text-emerald-300">         Tambahkan diskon 5% (Total diskon = 25%)</span>{'\n'}
+              <span className="font-bold text-purple-700 dark:text-purple-300">      Jika hariLibur == True maka:</span>{'\n'}
+              <span className="text-emerald-700 dark:text-emerald-300">         Berikan bonus voucher belanja Rp25.000</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu, jika member == &quot;REGULER&quot; maka:</span>{'\n'}
+              <span className="text-sky-700 dark:text-sky-300">      Tetapkan diskon = 10%</span>{'\n'}
+              <span className="font-bold text-sky-700 dark:text-sky-300">      Jika totalBelanja &gt;= 200000 maka:</span>{'\n'}
+              <span className="text-sky-700 dark:text-sky-300">         Tambahkan diskon 5% (Total diskon = 15%)</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu:</span>{'\n'}
+              <span className="font-bold text-rose-700 dark:text-rose-300">      Jika totalBelanja &gt;= 300000 maka:</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">         Tetapkan diskon promo = 5%</span>{'\n'}
+              <span className="font-bold text-rose-700 dark:text-rose-300">      Selain itu:</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">         Tetapkan diskon = 0%</span>{'\n\n'}
+              <span className="text-slate-600 dark:text-slate-400">3. Hitung potongan = totalBelanja * diskon / 100.</span>{'\n'}
+              <span className="text-slate-600 dark:text-slate-400">4. Hitung totalBayar = totalBelanja - potongan.</span>{'\n'}
+              <span className="text-slate-600 dark:text-slate-400">5. Tampilkan totalBayar dan voucher ke layar.</span>{'\n'}
+              <span className="text-slate-600 dark:text-slate-400">Selesai.</span>
             </pre>
           </motion.div>
         )}
@@ -1054,10 +1055,8 @@ export default function CaseStudyNestedLab() {
         {/* 2. TAB FLOWCHART (STACKED LANDSCAPE ARCHITECTURE) */}
         {activeTab === 'flowchart' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-
-
             {/* ─── ZONA ATAS: KANVAS FLOWCHART LEBAR & ZOOMABLE ─── */}
-            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-900/90 rounded-3xl border border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
+            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 dark:bg-slate-900/90 rounded-3xl border border-border/80 dark:border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
               <div
                 style={{
                   transform: `scale(${zoomLevel})`,
@@ -1086,14 +1085,14 @@ export default function CaseStudyNestedLab() {
             </div>
 
             {/* ─── ZONA BAWAH: CONTROL DOCK TERPADU & TIDAK TERPOTONG ─── */}
-            <div className="p-4 md:p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+            <div className="p-4 md:p-6 bg-card dark:bg-slate-900 rounded-3xl border border-border/70 dark:border-slate-800 shadow-xl space-y-4">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
                 {/* 1. Kontrol Masukan Kasir */}
                 <div className="lg:col-span-8 space-y-3">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {/* Tipe Member Chips */}
-                    <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5">
-                      <span className="text-xs font-mono font-bold text-slate-300">Tipe Member:</span>
+                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border/70 dark:border-slate-800 space-y-1.5">
+                      <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Tipe Member:</span>
                       <div className="flex gap-1.5">
                         {(['VIP', 'REGULER', 'NON_MEMBER'] as const).map(type => (
                           <button
@@ -1102,7 +1101,7 @@ export default function CaseStudyNestedLab() {
                             className={`flex-1 py-1 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                               memberType === type
                                 ? 'bg-amber-600 text-white shadow-md font-black'
-                                : 'bg-slate-800 text-slate-400 hover:text-white'
+                                : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                             }`}
                           >
                             {type === 'VIP' ? '👑 VIP' : type === 'REGULER' ? '⭐ Reg' : '👤 Umum'}
@@ -1112,17 +1111,17 @@ export default function CaseStudyNestedLab() {
                     </div>
 
                     {/* Switch Weekend */}
-                    <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5">
+                    <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border/70 dark:border-slate-800 space-y-1.5">
                       <div className="flex justify-between items-center text-xs">
-                        <span className="font-mono text-slate-300">Hari Transaksi:</span>
-                        <span className={`font-mono font-bold ${isWeekend ? 'text-amber-400' : 'text-slate-400'}`}>
+                        <span className="font-mono text-slate-700 dark:text-slate-300">Hari Transaksi:</span>
+                        <span className={`font-mono font-bold ${isWeekend ? 'text-amber-700 dark:text-amber-400' : 'text-slate-500 dark:text-slate-400'}`}>
                           {isWeekend ? '🎉 Akhir Pekan' : '💼 Hari Kerja'}
                         </span>
                       </div>
                       <button
                         onClick={() => { setIsWeekend(!isWeekend); reset(); }}
                         className={`w-full py-1.5 px-3 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2 ${
-                          isWeekend ? 'bg-amber-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                          isWeekend ? 'bg-amber-600 text-white shadow-md' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700'
                         }`}
                       >
                         <Ticket className="w-3.5 h-3.5" />
@@ -1132,10 +1131,10 @@ export default function CaseStudyNestedLab() {
                   </div>
 
                   {/* Slider Total Belanja */}
-                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5">
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border/70 dark:border-slate-800 space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-mono text-slate-300">Total Belanja:</span>
-                      <span className="font-mono font-black text-amber-400 text-base px-2.5 py-0.5 rounded-lg bg-slate-900 border border-amber-500/40">
+                      <span className="font-mono text-slate-700 dark:text-slate-300">Total Belanja:</span>
+                      <span className="font-mono font-black text-amber-700 dark:text-amber-400 text-base px-2.5 py-0.5 rounded-lg bg-amber-50 dark:bg-slate-900 border border-amber-500/40">
                         Rp {totalBelanja.toLocaleString('id-ID')}
                       </span>
                     </div>
@@ -1146,9 +1145,9 @@ export default function CaseStudyNestedLab() {
                       step={10000}
                       value={totalBelanja}
                       onChange={e => { setTotalBelanja(Number(e.target.value)); reset(); }}
-                      className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                      className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                     />
-                    <div className="flex justify-between text-[10px] text-slate-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400 font-mono">
                       <span>Rp 50.000</span>
                       <span>Ambang Bonus: 200rb (Reguler) / 250rb (VIP) / 300rb (Umum)</span>
                       <span>Rp 500.000</span>
@@ -1176,7 +1175,7 @@ export default function CaseStudyNestedLab() {
                     className={`flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl text-xs md:text-sm font-black transition-all cursor-pointer shadow-lg border ${
                       step > 0 && !isRunning
                         ? 'bg-sky-600 hover:bg-sky-500 text-white border-sky-400/60 shadow-sky-950/40 ring-2 ring-sky-400/30'
-                        : 'bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border-slate-700 shadow-md'
+                        : 'bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-sky-700 dark:text-sky-300 hover:text-slate-900 dark:hover:text-white border-border dark:border-slate-700 shadow-md'
                     }`}
                     title="Maju langkah demi langkah (Step-by-Step) sambil menjelaskan materi"
                   >
@@ -1188,7 +1187,7 @@ export default function CaseStudyNestedLab() {
 
                   <button
                     onClick={reset}
-                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-slate-800 hover:border-slate-700 shadow-md shrink-0"
+                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-border dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-md shrink-0"
                     title="Reset ke Tampilan Penuh (Semua Alur)"
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -1198,17 +1197,17 @@ export default function CaseStudyNestedLab() {
 
               {/* Bilah Edukasi Mode Manual / Langkah Aktif */}
               {step > 0 && (
-                <div className="p-3 rounded-2xl bg-sky-950/70 border border-sky-600/50 text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
+                <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-600/50 text-sky-900 dark:text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
                   <div className="flex items-center gap-2.5">
-                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
+                    <span className="px-2 py-0.5 rounded-lg bg-sky-100 dark:bg-sky-500/20 text-sky-800 dark:text-sky-300 font-black border border-sky-300 dark:border-sky-500/30 text-[11px] shrink-0">
                       {isRunning ? '🤖 OTOMATIS' : '👤 MANUAL'} • Langkah {step}/{maxSteps}
                     </span>
-                    <span className="font-sans font-semibold text-slate-100">
+                    <span className="font-sans font-semibold text-slate-900 dark:text-slate-100">
                       {getStepDescription(step)}
                     </span>
                   </div>
                   {!isRunning && (
-                    <span className="text-[11px] text-sky-300/80 font-bold shrink-0">
+                    <span className="text-[11px] text-sky-700 dark:text-sky-300/80 font-bold shrink-0">
                       {step === maxSteps ? '✓ Selesai' : 'Klik "Mode Manual" untuk lanjut →'}
                     </span>
                   )}
@@ -1216,35 +1215,35 @@ export default function CaseStudyNestedLab() {
               )}
 
               {/* 3. Struk Kasir Live — Widescreen, Jelas & Bebas Terpotong */}
-              <div className="p-4 rounded-2xl border-2 border-emerald-500/80 bg-emerald-950/70 text-xs font-mono space-y-2 shadow-md">
+              <div className="p-4 rounded-2xl border-2 border-emerald-500/80 bg-emerald-50 dark:bg-emerald-950/70 text-xs font-mono space-y-2 shadow-md">
                 <div className="flex flex-wrap items-center justify-between border-b border-emerald-500/40 pb-2 gap-2">
                   <div className="flex items-center gap-2">
-                    <Receipt className="w-4 h-4 text-emerald-400" />
-                    <span className="font-bold text-white text-sm">STRUK TRANSAKSI KASIR (LIVE RUNTIME)</span>
+                    <Receipt className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                    <span className="font-bold text-slate-900 dark:text-white text-sm">STRUK TRANSAKSI KASIR (LIVE RUNTIME)</span>
                   </div>
                   <span className="px-3 py-1 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-sm">
                     TOTAL DISKON: {diskonPersen}%
                   </span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-slate-300 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-slate-700 dark:text-slate-300 text-xs">
                   <div>
-                    <span className="text-slate-400 text-[10px] block font-bold uppercase">Subtotal Belanja:</span>
-                    <span className="text-sm font-bold text-white">Rp {totalBelanja.toLocaleString('id-ID')}</span>
+                    <span className="text-slate-500 dark:text-slate-400 text-[10px] block font-bold uppercase">Subtotal Belanja:</span>
+                    <span className="text-sm font-bold text-slate-900 dark:text-white">Rp {totalBelanja.toLocaleString('id-ID')}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 text-[10px] block font-bold uppercase">Potongan Diskon ({diskonPersen}%):</span>
-                    <span className="text-sm font-bold text-emerald-400">- Rp {potonganRupiah.toLocaleString('id-ID')}</span>
+                    <span className="text-slate-500 dark:text-slate-400 text-[10px] block font-bold uppercase">Potongan Diskon ({diskonPersen}%):</span>
+                    <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400">- Rp {potonganRupiah.toLocaleString('id-ID')}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 text-[10px] block font-bold uppercase">Bonus Akhir Pekan:</span>
-                    <span className={`text-sm font-bold ${bonusVoucher > 0 ? 'text-amber-400' : 'text-slate-500'}`}>
+                    <span className="text-slate-500 dark:text-slate-400 text-[10px] block font-bold uppercase">Bonus Akhir Pekan:</span>
+                    <span className={`text-sm font-bold ${bonusVoucher > 0 ? 'text-amber-700 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500'}`}>
                       {bonusVoucher > 0 ? `🎁 Voucher Rp ${bonusVoucher.toLocaleString('id-ID')}` : 'Tidak Ada'}
                     </span>
                   </div>
                 </div>
-                <div className="flex justify-between items-center border-t border-emerald-500/40 pt-2 text-base md:text-lg font-black text-white">
+                <div className="flex justify-between items-center border-t border-emerald-500/40 pt-2 text-base md:text-lg font-black text-slate-900 dark:text-white">
                   <span>TOTAL WAJIB BAYAR:</span>
-                  <span className="text-emerald-300 font-mono">Rp {totalBayar.toLocaleString('id-ID')}</span>
+                  <span className="text-emerald-700 dark:text-emerald-300 font-mono">Rp {totalBayar.toLocaleString('id-ID')}</span>
                 </div>
               </div>
             </div>
@@ -1254,55 +1253,55 @@ export default function CaseStudyNestedLab() {
         {/* 3. TAB PSEUDOCODE */}
         {activeTab === 'pseudocode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📋 <strong>Pseudocode Standar Bisnis Swalayan</strong> — Menggambarkan aturan diskon bersarang untuk kasir.
               </p>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/70 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">pseudocode — KASIR SWALAYAN</span>
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">pseudocode — KASIR SWALAYAN</span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed whitespace-pre overflow-x-auto">
-                <span className="text-purple-400 font-bold">PROGRAM</span> <span className="text-white font-semibold">KasirSwalayanDiskon</span>{'\n'}
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
+                <span className="text-purple-700 dark:text-purple-400 font-bold">PROGRAM</span> <span className="text-slate-900 dark:text-white font-semibold">KasirSwalayanDiskon</span>{'\n'}
                 <span className="text-slate-500 italic text-xs">// Menghitung potongan harga berdasarkan keanggotaan dan hari</span>{'\n\n'}
-                <span className="text-sky-400 font-bold">KAMUS:</span>{'\n'}
-                <span className="text-slate-300">  member : string</span>{'\n'}
-                <span className="text-slate-300">  totalBelanja, diskon, potongan, totalBayar, voucher : integer</span>{'\n'}
-                <span className="text-slate-300">  hariLibur : boolean</span>{'\n\n'}
-                <span className="text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
-                <span className="text-slate-300">  input(member, totalBelanja, hariLibur)</span>{'\n'}
-                <span className="text-amber-300 font-bold">  if</span> <span className="text-amber-100 font-bold">member == &quot;VIP&quot;</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-emerald-300">    diskon = 20</span>{'\n'}
-                <span className="text-sky-300 font-bold">    if</span> <span className="text-sky-100 font-bold">totalBelanja &gt;= 250000</span> <span className="text-sky-300 font-bold">then</span>{'\n'}
-                <span className="text-emerald-300">      diskon = diskon + 5</span>{'\n'}
-                <span className="text-sky-300 font-bold">    endif</span>{'\n'}
-                <span className="text-purple-300 font-bold">    if</span> <span className="text-purple-100 font-bold">hariLibur == true</span> <span className="text-purple-300 font-bold">then</span>{'\n'}
-                <span className="text-emerald-300">      voucher = 25000</span>{'\n'}
-                <span className="text-purple-300 font-bold">    endif</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else if</span> <span className="text-amber-100 font-bold">member == &quot;REGULER&quot;</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-sky-300">    diskon = 10</span>{'\n'}
-                <span className="text-sky-300 font-bold">    if</span> <span className="text-sky-100 font-bold">totalBelanja &gt;= 200000</span> <span className="text-sky-300 font-bold">then</span>{'\n'}
-                <span className="text-sky-300">      diskon = diskon + 5</span>{'\n'}
-                <span className="text-sky-300 font-bold">    endif</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else</span>{'\n'}
-                <span className="text-rose-300 font-bold">    if</span> <span className="text-rose-100 font-bold">totalBelanja &gt;= 300000</span> <span className="text-rose-300 font-bold">then</span>{'\n'}
-                <span className="text-rose-300">      diskon = 5</span>{'\n'}
-                <span className="text-rose-300 font-bold">    else</span>{'\n'}
-                <span className="text-rose-300">      diskon = 0</span>{'\n'}
-                <span className="text-rose-300 font-bold">    endif</span>{'\n'}
-                <span className="text-amber-300 font-bold">  endif</span>{'\n'}
-                <span className="text-slate-300">  potongan = totalBelanja * diskon / 100</span>{'\n'}
-                <span className="text-slate-300">  totalBayar = totalBelanja - potongan</span>{'\n'}
-                <span className="text-slate-300">  output(&quot;Total Bayar: Rp&quot;, totalBayar)</span>
+                <span className="text-sky-700 dark:text-sky-400 font-bold">KAMUS:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  member : string</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  totalBelanja, diskon, potongan, totalBayar, voucher : integer</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  hariLibur : boolean</span>{'\n\n'}
+                <span className="text-amber-700 dark:text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  input(member, totalBelanja, hariLibur)</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">member == &quot;VIP&quot;</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-emerald-700 dark:text-emerald-300">    diskon = 20</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    if</span> <span className="text-sky-900 dark:text-sky-100 font-bold">totalBelanja &gt;= 250000</span> <span className="text-sky-700 dark:text-sky-300 font-bold">then</span>{'\n'}
+                <span className="text-emerald-700 dark:text-emerald-300">      diskon = diskon + 5</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    endif</span>{'\n'}
+                <span className="text-purple-700 dark:text-purple-300 font-bold">    if</span> <span className="text-purple-900 dark:text-purple-100 font-bold">hariLibur == true</span> <span className="text-purple-700 dark:text-purple-300 font-bold">then</span>{'\n'}
+                <span className="text-emerald-700 dark:text-emerald-300">      voucher = 25000</span>{'\n'}
+                <span className="text-purple-700 dark:text-purple-300 font-bold">    endif</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">member == &quot;REGULER&quot;</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300">    diskon = 10</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    if</span> <span className="text-sky-900 dark:text-sky-100 font-bold">totalBelanja &gt;= 200000</span> <span className="text-sky-700 dark:text-sky-300 font-bold">then</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300">      diskon = diskon + 5</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    endif</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-bold">    if</span> <span className="text-rose-900 dark:text-rose-100 font-bold">totalBelanja &gt;= 300000</span> <span className="text-rose-700 dark:text-rose-300 font-bold">then</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300">      diskon = 5</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-bold">    else</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300">      diskon = 0</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-bold">    endif</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  endif</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  potongan = totalBelanja * diskon / 100</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  totalBayar = totalBelanja - potongan</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  output(&quot;Total Bayar: Rp&quot;, totalBayar)</span>
               </pre>
             </div>
           </motion.div>
@@ -1311,14 +1310,14 @@ export default function CaseStudyNestedLab() {
         {/* 4. TAB KODE PROGRAM */}
         {activeTab === 'kode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 💻 <strong>Kode Program Eksekusi Langsung</strong> — Implementasi kalkulasi diskon bertingkat dalam Python &amp; JavaScript.
               </p>
             </div>
 
             {/* Language Selector */}
-            <div className="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 w-fit">
+            <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-border/70 dark:border-slate-700 w-fit">
               {(['python', 'js'] as const).map(lang => (
                 <button
                   key={lang}
@@ -1327,8 +1326,8 @@ export default function CaseStudyNestedLab() {
                     activeLang === lang
                       ? lang === 'python'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-yellow-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                        : 'bg-amber-600 text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   {lang === 'python' ? '🐍 Python' : '⚡ JavaScript'}
@@ -1337,98 +1336,98 @@ export default function CaseStudyNestedLab() {
             </div>
 
             {/* Code Block Container */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/70 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                     {activeLang === 'python' ? 'kasir_swalayan.py' : 'kasirSwalayan.js'}
                   </span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto">
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
                 {activeLang === 'python' ? (
                   <>
-                    <span className="text-slate-400">member = &quot;{memberType}&quot;</span>{'\n'}
-                    <span className="text-slate-400">total_belanja = {totalBelanja}</span>{'\n'}
-                    <span className="text-slate-400">hari_libur = {isWeekend ? 'True' : 'False'}</span>{'\n'}
-                    <span className="text-slate-400">voucher = 0</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">if member == &quot;VIP&quot;:</span>{'\n'}
-                    <span className="text-emerald-300">    diskon = 20</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    if total_belanja &gt;= 250000:</span>{'\n'}
-                    <span className="text-emerald-300">        diskon += 5</span>{'\n'}
-                    <span className="text-purple-300 font-bold">    if hari_libur:</span>{'\n'}
-                    <span className="text-emerald-300">        voucher = 25000</span>{'\n'}
-                    <span className="text-amber-300 font-bold">elif member == &quot;REGULER&quot;:</span>{'\n'}
-                    <span className="text-sky-300">    diskon = 10</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    if total_belanja &gt;= 200000:</span>{'\n'}
-                    <span className="text-sky-300">        diskon += 5</span>{'\n'}
-                    <span className="text-amber-300 font-bold">else:</span>{'\n'}
-                    <span className="text-rose-300 font-bold">    if total_belanja &gt;= 300000:</span>{'\n'}
-                    <span className="text-rose-300">        diskon = 5</span>{'\n'}
-                    <span className="text-rose-300 font-bold">    else:</span>{'\n'}
-                    <span className="text-rose-300">        diskon = 0</span>{'\n\n'}
-                    <span className="text-slate-400">potongan = int(total_belanja * diskon / 100)</span>{'\n'}
-                    <span className="text-slate-400">total_bayar = total_belanja - potongan</span>{'\n'}
-                    <span className="text-slate-400">print(f&quot;Diskon: &#123;diskon&#125;% | Bayar: Rp&#123;total_bayar:,&#125;&quot;)</span>
+                    <span className="text-slate-600 dark:text-slate-400">member = &quot;{memberType}&quot;</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">total_belanja = {totalBelanja}</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">hari_libur = {isWeekend ? 'True' : 'False'}</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">voucher = 0</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">if member == &quot;VIP&quot;:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">    diskon = 20</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    if total_belanja &gt;= 250000:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">        diskon += 5</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">    if hari_libur:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">        voucher = 25000</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">elif member == &quot;REGULER&quot;:</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300">    diskon = 10</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    if total_belanja &gt;= 200000:</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300">        diskon += 5</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">else:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-bold">    if total_belanja &gt;= 300000:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300">        diskon = 5</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-bold">    else:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300">        diskon = 0</span>{'\n\n'}
+                    <span className="text-slate-600 dark:text-slate-400">potongan = int(total_belanja * diskon / 100)</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">total_bayar = total_belanja - potongan</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">print(f&quot;Diskon: &#123;diskon&#125;% | Bayar: Rp&#123;total_bayar:,&#125;&quot;)</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-slate-400">const member = &quot;{memberType}&quot;;</span>{'\n'}
-                    <span className="text-slate-400">const totalBelanja = {totalBelanja};</span>{'\n'}
-                    <span className="text-slate-400">const hariLibur = {isWeekend ? 'true' : 'false'};</span>{'\n'}
-                    <span className="text-slate-400">let diskon = 0;</span>{'\n'}
-                    <span className="text-slate-400">let voucher = 0;</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">if (member === &quot;VIP&quot;) {'{'}</span>{'\n'}
-                    <span className="text-emerald-300">    diskon = 20;</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    if (totalBelanja &gt;= 250000) {'{'}</span>{'\n'}
-                    <span className="text-emerald-300">        diskon += 5;</span>{'\n'}
-                    <span className="text-purple-300 font-bold">    {'}'}</span>{'\n'}
-                    <span className="text-purple-300 font-bold">    if (hariLibur) {'{'}</span>{'\n'}
-                    <span className="text-emerald-300">        voucher = 25000;</span>{'\n'}
-                    <span className="text-purple-300 font-bold">    {'}'}</span>{'\n'}
-                    <span className="text-amber-300 font-bold">{'}'} else if (member === &quot;REGULER&quot;) {'{'}</span>{'\n'}
-                    <span className="text-sky-300">    diskon = 10;</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    if (totalBelanja &gt;= 200000) {'{'}</span>{'\n'}
-                    <span className="text-sky-300">        diskon += 5;</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    {'}'}</span>{'\n'}
-                    <span className="text-amber-300 font-bold">{'}'} else {'{'}</span>{'\n'}
-                    <span className="text-rose-300 font-bold">    if (totalBelanja &gt;= 300000) {'{'}</span>{'\n'}
-                    <span className="text-rose-300">        diskon = 5;</span>{'\n'}
-                    <span className="text-rose-300 font-bold">    {'}'} else {'{'}</span>{'\n'}
-                    <span className="text-rose-300">        diskon = 0;</span>{'\n'}
-                    <span className="text-rose-300 font-bold">    {'}'}</span>{'\n'}
-                    <span className="text-amber-300 font-bold">{'}'}</span>{'\n\n'}
-                    <span className="text-slate-400">const potongan = Math.round(totalBelanja * diskon / 100);</span>{'\n'}
-                    <span className="text-slate-400">const totalBayar = totalBelanja - potongan;</span>{'\n'}
-                    <span className="text-slate-400">console.log(`Diskon: $&#123;diskon&#125;% | Bayar: Rp$&#123;totalBayar&#125;`);</span>
+                    <span className="text-slate-600 dark:text-slate-400">const member = &quot;{memberType}&quot;;</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">const totalBelanja = {totalBelanja};</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">const hariLibur = {isWeekend ? 'true' : 'false'};</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">let diskon = 0;</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">let voucher = 0;</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">if (member === &quot;VIP&quot;) {'{'}</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">    diskon = 20;</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    if (totalBelanja &gt;= 250000) {'{'}</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">        diskon += 5;</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">    {'}'}</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">    if (hariLibur) {'{'}</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">        voucher = 25000;</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">    {'}'}</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else if (member === &quot;REGULER&quot;) {'{'}</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300">    diskon = 10;</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    if (totalBelanja &gt;= 200000) {'{'}</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300">        diskon += 5;</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    {'}'}</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-bold">    if (totalBelanja &gt;= 300000) {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300">        diskon = 5;</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-bold">    {'}'} else {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300">        diskon = 0;</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-bold">    {'}'}</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'}</span>{'\n\n'}
+                    <span className="text-slate-600 dark:text-slate-400">const potongan = Math.round(totalBelanja * diskon / 100);</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">const totalBayar = totalBelanja - potongan;</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">console.log(`Diskon: $&#123;diskon&#125;% | Bayar: Rp$&#123;totalBayar&#125;`);</span>
                   </>
                 )}
               </pre>
             </div>
 
             {/* Live Terminal Output Simulator */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
-                <span className="text-xs text-amber-400 font-bold font-mono">Hasil Output Program</span>
-                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-950 border border-emerald-500/40 text-emerald-300">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/70 dark:border-slate-700 flex items-center justify-between">
+                <span className="text-xs text-amber-700 dark:text-amber-400 font-bold font-mono">Hasil Output Program</span>
+                <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-500/40 text-emerald-800 dark:text-emerald-300">
                   ✔ DISKON: {diskonPersen}%
                 </span>
               </div>
-              <div className="p-4 space-y-1">
-                <p className="text-sm font-mono font-bold text-emerald-300">
+              <div className="p-4 space-y-1 bg-slate-50 dark:bg-slate-950/60">
+                <p className="text-sm font-mono font-bold text-emerald-700 dark:text-emerald-300">
                   &gt; Total Bayar: Rp {totalBayar.toLocaleString('id-ID')} (Potongan: Rp {potonganRupiah.toLocaleString('id-ID')})
                 </p>
                 {bonusVoucher > 0 && (
-                  <p className="text-amber-300 text-xs font-mono font-bold">
+                  <p className="text-amber-700 dark:text-amber-300 text-xs font-mono font-bold">
                     &gt; Voucher Belanja: Rp {bonusVoucher.toLocaleString('id-ID')}
                   </p>
                 )}
-                <p className="text-slate-500 text-xs font-mono">&gt; Transaksi selesai dicatat.</p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-mono">&gt; Transaksi selesai dicatat.</p>
               </div>
             </div>
           </motion.div>

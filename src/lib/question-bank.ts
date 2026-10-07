@@ -350,7 +350,7 @@ export const QUESTION_BANK: Question[] = [
     explanation: 'Karena operand paling pertama berjenis String ("5"), maka operator + tidak berfungsi sebagai penjumlahan aritmatika, melainkan menyambung teks berikutnya secara berurutan, sehingga menghasilkan "555".'
   },
 
-  // --- MINGGU 6: Struktur Percabangan Tunggal & Ganda (IF - ELSE) ---
+  // --- MINGGU 6: Struktur Percabangan Statemen Tunggal & Ganda (IF - ELSE) ---
   {
     id: 'm6-q1',
     meetingId: 6,
@@ -380,15 +380,15 @@ export const QUESTION_BANK: Question[] = [
   {
     id: 'm6-q3',
     meetingId: 6,
-    text: 'Apa perbedaan paling mendasar antara struktur IF tunggal dan struktur IF-ELSE saat kondisi yang dievaluasi bernilai FALSE?',
+    text: 'Apa perbedaan paling mendasar antara struktur IF statemen tunggal dan struktur IF-ELSE (statemen ganda) saat kondisi yang dievaluasi bernilai FALSE?',
     options: [
-      { id: 'opt1', text: 'Pada IF tunggal, program langsung berhenti. Pada IF-ELSE, program mengulangi kondisi dari awal.' },
-      { id: 'opt2', text: 'Pada IF tunggal, tidak ada aksi yang dilakukan dan eksekusi berlanjut setelah blok. Pada IF-ELSE, blok ELSE dieksekusi sebagai jalur alternatif.' },
+      { id: 'opt1', text: 'Pada IF statemen tunggal, program langsung berhenti. Pada IF-ELSE, program mengulangi kondisi dari awal.' },
+      { id: 'opt2', text: 'Pada IF statemen tunggal, tidak ada aksi yang dilakukan dan eksekusi berlanjut setelah blok. Pada IF-ELSE, blok ELSE dieksekusi sebagai jalur alternatif.' },
       { id: 'opt3', text: 'Keduanya berperilaku sama persis — tidak ada perbedaan saat kondisi False.' },
-      { id: 'opt4', text: 'Pada IF tunggal, blok ELSE tersembunyi dieksekusi. Pada IF-ELSE, program menampilkan pesan error.' }
+      { id: 'opt4', text: 'Pada IF statemen tunggal, blok ELSE tersembunyi dieksekusi. Pada IF-ELSE, program menampilkan pesan error.' }
     ],
     correctOptionId: 'opt2',
-    explanation: 'Ini adalah perbedaan kunci: IF tunggal hanya punya SATU jalur aksi (saat True). Jika False, tidak ada aksi dan program lanjut. Sedangkan IF-ELSE menjamin SELALU ada aksi — jika True maka blok IF dieksekusi, jika False maka blok ELSE dieksekusi. Tidak ada kondisi yang "tidak ditangani".'
+    explanation: 'Ini adalah perbedaan kunci: IF statemen tunggal hanya punya SATU jalur aksi (saat True). Jika False, tidak ada aksi dan program lanjut. Sedangkan IF-ELSE menjamin SELALU ada aksi — jika True maka blok IF dieksekusi, jika False maka blok ELSE dieksekusi. Tidak ada kondisi yang "tidak ditangani".'
   },
   {
     id: 'm6-q4',
@@ -414,7 +414,7 @@ export const QUESTION_BANK: Question[] = [
       { id: 'opt4', text: 'PROGRAM CekSuhu\nALGORITMA\n   input(suhuhAir)\n   if suhuhAir > 100 then\n      output("Mendidih!")\n   endif' }
     ],
     correctOptionId: 'opt2',
-    explanation: 'Pilihan B adalah yang paling tepat: (1) ada blok PROGRAM dengan nama deskriptif, (2) ada blok KAMUS dengan variabel deskriptif "suhuhAir" bukan "s", (3) sintaks IF menggunakan "then" setelah kondisi, (4) ada blok ELSE untuk kondisi False, dan (5) blok ditutup dengan "endif". Pilihan A: pakai variabel "s" (tidak deskriptif), tidak ada "then", salah penutup "end". Pilihan C: ini kode Python, bukan pseudocode. Pilihan D: tidak ada blok KAMUS dan menggunakan IF tunggal padahal butuh IF-ELSE.'
+    explanation: 'Pilihan B adalah yang paling tepat: (1) ada blok PROGRAM dengan nama deskriptif, (2) ada blok KAMUS dengan variabel deskriptif "suhuhAir" bukan "s", (3) sintaks IF menggunakan "then" setelah kondisi, (4) ada blok ELSE untuk kondisi False, dan (5) blok ditutup dengan "endif". Pilihan A: pakai variabel "s" (tidak deskriptif), tidak ada "then", salah penutup "end". Pilihan C: ini kode Python, bukan pseudocode. Pilihan D: tidak ada blok KAMUS dan menggunakan IF statemen tunggal padahal butuh IF-ELSE.'
   },
 
   // --- MINGGU 7: Percabangan Majemuk & Bersarang (Nested IF / ELIF) ---
@@ -449,13 +449,13 @@ export const QUESTION_BANK: Question[] = [
     meetingId: 7,
     text: 'Dalam standar baku pseudocode CLRS mata kuliah ini, konstruksi kata kunci yang benar untuk menyajikan percabangan majemuk lebih dari dua cabang adalah...',
     options: [
-      { id: 'opt1', text: 'if <kondisi1> then ... elseif <kondisi2> then ... else ... endif' },
+      { id: 'opt1', text: 'if <kondisi1> then ... else if <kondisi2> then ... else ... endif' },
       { id: 'opt2', text: 'if <kondisi1> : ... elif <kondisi2> : ... else : ...' },
       { id: 'opt3', text: 'switch <kondisi1> then ... case <kondisi2> then ... end' },
       { id: 'opt4', text: 'if <kondisi1> do ... else if <kondisi2> do ... fi' }
     ],
     correctOptionId: 'opt1',
-    explanation: 'Standar baku pseudocode menggunakan "if <kondisi> then", diikuti oleh "elseif <kondisi> then" untuk cabang alternatif berikutnya, "else" untuk fallback terakhir, dan ditutup dengan tepat satu "endif". Opsi B adalah sintaks Python, bukan pseudocode.'
+    explanation: 'Standar baku pseudocode menggunakan "if <kondisi> then", diikuti oleh "else if <kondisi> then" (dua kata terpisah) untuk cabang alternatif berikutnya, "else" untuk fallback terakhir, dan ditutup dengan tepat satu "endif". Opsi B adalah sintaks Python, bukan pseudocode.'
   },
   {
     id: 'm7-q4',

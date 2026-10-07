@@ -147,8 +147,8 @@ function LogicVerticalFlowchart({
 
       {/* 1. START TERMINAL (MULAI) */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x={cx - 70} y="16" width="140" height="42" rx="21" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x={cx} y="42" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
+        <rect x={cx - 70} y="16" width="140" height="42" rx="21" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x={cx} y="42" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           MULAI
         </text>
       </g>
@@ -156,11 +156,11 @@ function LogicVerticalFlowchart({
 
       {/* 2. INPUT JAJARAN GENJANG */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points={`${cx - 110},88 ${cx + 110},88 ${cx + 80},134 ${cx - 140},134`} fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x={cx - 15} y="104" dominantBaseline="central" textAnchor="middle" fontSize="11.5" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points={`${cx - 110},88 ${cx + 110},88 ${cx + 80},134 ${cx - 140},134`} fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x={cx - 15} y="104" dominantBaseline="central" textAnchor="middle" fontSize="11.5" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           {inputLabel.split('[')[0]}
         </text>
-        <text x={cx - 15} y="120" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x={cx - 15} y="120" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{inputLabel.split('[')[1] || ''}
         </text>
       </g>
@@ -238,7 +238,7 @@ function LogicVerticalFlowchart({
           x="403"
           y={cyDiamond - 6}
           textAnchor="middle"
-          fill={isPass ? '#6ee7b7' : '#94a3b8'}
+          fill={isPass ? '#ffffff' : '#94a3b8'}
           fontSize="11"
           fontWeight="bold"
           fontFamily="monospace"
@@ -249,9 +249,10 @@ function LogicVerticalFlowchart({
         {/* Jajaran Genjang Aksi TRUE */}
         <polygon
           points={`455,${cyDiamond - 25} 700,${cyDiamond - 25} 670,${cyDiamond + 25} 425,${cyDiamond + 25}`}
-          fill={isPass ? '#064e3b' : '#0f172a'}
-          stroke={isPass ? '#10b981' : '#1e293b'}
+          fill={isPass ? '#047857' : 'rgba(148,163,184,0.35)'}
+          stroke={isPass ? '#10b981' : '#94a3b8'}
           strokeWidth={isPass ? 3 : 1.5}
+          strokeDasharray={isPass ? undefined : '4 3'}
           filter={isPass ? 'url(#lv-glow-active)' : undefined}
         />
         <text
@@ -259,9 +260,9 @@ function LogicVerticalFlowchart({
           y={cyDiamond}
           dominantBaseline="central"
           textAnchor="middle"
-          fill={isPass ? '#a7f3d0' : '#475569'}
+          fill={isPass ? '#ffffff' : '#64748b'}
           fontSize="12"
-          fontWeight="bold"
+          fontWeight="900"
           fontFamily="monospace"
         >
           output({trueOutput})
@@ -325,7 +326,7 @@ function LogicVerticalFlowchart({
           x={cx + 31}
           y={cyDiamond + 62}
           textAnchor="middle"
-          fill={!isPass ? '#fecdd3' : '#64748b'}
+          fill={!isPass ? '#ffffff' : '#64748b'}
           fontSize="10"
           fontWeight="bold"
           fontFamily="monospace"
@@ -336,18 +337,19 @@ function LogicVerticalFlowchart({
         {/* Jajaran Genjang Aksi FALSE (Cabang Else) */}
         <polygon
           points={`${cx - 130},325 ${cx + 130},325 ${cx + 105},375 ${cx - 155},375`}
-          fill={!isPass ? '#881337' : '#0f172a'}
-          stroke={!isPass ? '#f43f5e' : '#1e293b'}
+          fill={!isPass ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={!isPass ? '#f43f5e' : '#94a3b8'}
           strokeWidth={!isPass ? 3 : 1.5}
+          strokeDasharray={!isPass ? undefined : '4 3'}
         />
         <text
           x={cx - 12}
           y="350"
           dominantBaseline="central"
           textAnchor="middle"
-          fill={!isPass ? '#fecdd3' : '#475569'}
+          fill={!isPass ? '#ffffff' : '#64748b'}
           fontSize="11"
-          fontWeight="bold"
+          fontWeight="900"
           fontFamily="monospace"
         >
           output({falseOutput})
@@ -390,8 +392,8 @@ function LogicVerticalFlowchart({
           width="140"
           height="42"
           rx="21"
-          fill="rgba(239,68,68,0.18)"
-          stroke="#f87171"
+          fill="#be123c"
+          stroke="#9f1239"
           strokeWidth="2.5"
         />
         <text
@@ -401,7 +403,8 @@ function LogicVerticalFlowchart({
           textAnchor="middle"
           fontSize="14"
           fontWeight="900"
-          fill="#fecdd3"
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           SELESAI
@@ -718,25 +721,25 @@ if (nilai >= 0 && nilai <= 100) {
   ] as const;
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl space-y-0 text-slate-100 subpixel-antialiased">
+    <div className="border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl space-y-0 text-slate-900 dark:text-slate-100 antialiased">
       {/* ─── Header Lab ─────────────────────────────────────────────────────── */}
-      <div className="p-4 md:px-6 bg-slate-900/95 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/95 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-white shadow-md shadow-orange-500/30 font-black text-sm">
             &amp;|
           </div>
           <div>
-            <h3 className="font-bold text-sm md:text-base text-slate-100 flex items-center gap-2">
+            <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <span>Laboratorium Operator Logika &amp; Komparasi Kritis Use Case</span>
             </h3>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-400">
               Mengevaluasi kapan operator logika tepat digunakan vs kapan harus beralih ke Nested IF.
             </p>
           </div>
         </div>
 
         {/* 5 Tab Pilihan Representasi */}
-        <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap">
+        <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 flex-wrap">
           {tabs.map(tab => (
             <button
               key={tab.id}
@@ -744,7 +747,7 @@ if (nilai >= 0 && nilai <= 100) {
               className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === tab.id
                   ? 'bg-amber-600 text-white shadow-md shadow-amber-600/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-300/60 dark:hover:bg-slate-900'
               }`}
             >
               {tab.icon}
@@ -755,9 +758,9 @@ if (nilai >= 0 && nilai <= 100) {
       </div>
 
       {/* ─── Bar Pemilihan Skenario ─────────────────────────────────────────── */}
-      <div className="px-4 md:px-6 py-3 bg-slate-900/50 border-b border-slate-800/80 flex flex-wrap items-center justify-between gap-2.5">
+      <div className="px-4 md:px-6 py-3 bg-slate-50/80 dark:bg-slate-900/50 border-b border-border/60 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2.5">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-bold text-slate-400">Pilih Studi Kasus:</span>
+          <span className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">Pilih Studi Kasus:</span>
           <div className="flex flex-wrap gap-1.5">
             {SCENARIOS.map(sc => (
               <button
@@ -769,7 +772,7 @@ if (nilai >= 0 && nilai <= 100) {
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   selectedScenario === sc.id
                     ? 'bg-gradient-to-r from-orange-600 to-amber-600 text-white shadow-md ring-2 ring-orange-400/50'
-                    : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'
+                    : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border border-border dark:border-slate-700'
                 }`}
               >
                 {sc.badge}
@@ -779,7 +782,7 @@ if (nilai >= 0 && nilai <= 100) {
         </div>
 
         {/* Tombol Kontrol Animasi */}
-        <div className="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <div className="flex items-center gap-1.5 bg-slate-200/80 dark:bg-slate-900 p-1 rounded-xl border border-border/70 dark:border-slate-800">
           <button
             onClick={runAnimation}
             className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
@@ -791,14 +794,14 @@ if (nilai >= 0 && nilai <= 100) {
           </button>
           <button
             onClick={nextStep}
-            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all cursor-pointer flex items-center gap-1 border border-slate-700"
+            className="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all cursor-pointer flex items-center gap-1 border border-border dark:border-slate-700"
           >
-            <StepForward className="w-3.5 h-3.5 text-orange-400" />
+            <StepForward className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400" />
             <span>Langkah ({step}/{maxSteps})</span>
           </button>
           <button
             onClick={reset}
-            className="p-1 rounded-lg text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-all cursor-pointer border border-slate-700"
+            className="p-1 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-all cursor-pointer border border-border dark:border-slate-700"
             title="Reset"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -816,12 +819,12 @@ if (nilai >= 0 && nilai <= 100) {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
             
             {/* Dock Kontrol Input Real-Time */}
-            <div className="p-4 md:p-5 bg-slate-900/90 rounded-2xl border border-slate-800 shadow-md space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
-                <span className="text-xs font-mono font-bold text-orange-400 uppercase tracking-wider flex items-center gap-1.5">
+            <div className="p-4 md:p-5 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/70 dark:border-slate-800 shadow-md space-y-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border/60 dark:border-slate-800 pb-2">
+                <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400 uppercase tracking-wider flex items-center gap-1.5">
                   <Zap className="w-4 h-4" /> Variabel Input Real-Time
                 </span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-600 dark:text-slate-400">
                   Geser input di bawah untuk mengamati perbedaan respons sistem:
                 </span>
               </div>
@@ -830,10 +833,10 @@ if (nilai >= 0 && nilai <= 100) {
                 <div className="space-y-3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Slider Usia */}
-                    <div className="space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-border/80 dark:border-slate-800">
                       <div className="flex justify-between items-center text-xs">
-                        <span className="font-bold text-slate-300">1. Usia Calon Pendonor:</span>
-                        <span className={`font-mono font-black px-2 py-0.5 rounded ${isUsiaPass ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-rose-950 text-rose-300 border border-rose-600'}`}>
+                        <span className="font-bold text-slate-700 dark:text-slate-300">1. Usia Calon Pendonor:</span>
+                        <span className={`font-mono font-black px-2 py-0.5 rounded ${isUsiaPass ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-600'}`}>
                           {usia} tahun ({isUsiaPass ? '✓ Lolos ≥17' : '✗ Belum 17'})
                         </span>
                       </div>
@@ -847,16 +850,16 @@ if (nilai >= 0 && nilai <= 100) {
                       />
                       <div className="flex justify-between text-[10px] text-slate-500 font-mono">
                         <span>12 thn</span>
-                        <span className="text-amber-400 font-bold">Syarat: ≥ 17 thn</span>
+                        <span className="text-amber-600 dark:text-amber-400 font-bold">Syarat: ≥ 17 thn</span>
                         <span>45 thn</span>
                       </div>
                     </div>
 
                     {/* Slider Berat Badan */}
-                    <div className="space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-border/80 dark:border-slate-800">
                       <div className="flex justify-between items-center text-xs">
-                        <span className="font-bold text-slate-300">2. Berat Badan:</span>
-                        <span className={`font-mono font-black px-2 py-0.5 rounded ${isBeratPass ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-rose-950 text-rose-300 border border-rose-600'}`}>
+                        <span className="font-bold text-slate-700 dark:text-slate-300">2. Berat Badan:</span>
+                        <span className={`font-mono font-black px-2 py-0.5 rounded ${isBeratPass ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-600'}`}>
                           {berat} kg ({isBeratPass ? '✓ Lolos ≥45' : '✗ Kurang <45'})
                         </span>
                       </div>
@@ -870,30 +873,30 @@ if (nilai >= 0 && nilai <= 100) {
                       />
                       <div className="flex justify-between text-[10px] text-slate-500 font-mono">
                         <span>35 kg</span>
-                        <span className="text-amber-400 font-bold">Syarat: ≥ 45 kg</span>
+                        <span className="text-amber-600 dark:text-amber-400 font-bold">Syarat: ≥ 45 kg</span>
                         <span>85 kg</span>
                       </div>
                     </div>
                   </div>
 
                   {/* Preset Uji Cepat Donor */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-800/80">
-                    <span className="text-[11px] font-mono text-slate-400 font-bold">Preset Uji:</span>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-border/60 dark:border-slate-800/80">
+                    <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 font-bold">Preset Uji:</span>
                     <button
                       onClick={() => { setUsia(15); setBerat(50); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-rose-300 border border-rose-500/30 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-rose-50 hover:bg-rose-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-500/30 cursor-pointer"
                     >
                       🛑 Umur 15 (Gagal Usia)
                     </button>
                     <button
                       onClick={() => { setUsia(22); setBerat(40); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 cursor-pointer"
                     >
                       ⚠️ BB 40 kg (Gagal Berat)
                     </button>
                     <button
                       onClick={() => { setUsia(24); setBerat(55); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 cursor-pointer"
                     >
                       ✓ Lolos Kualifikasi (Umur 24, BB 55)
                     </button>
@@ -904,10 +907,10 @@ if (nilai >= 0 && nilai <= 100) {
               {selectedScenario === 'tiket_or' && (
                 <div className="space-y-3">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                    <div className="space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-border/80 dark:border-slate-800">
                       <div className="flex justify-between items-center text-xs">
-                        <span className="font-bold text-slate-300">Usia Pengunjung:</span>
-                        <span className="font-mono font-black px-2 py-0.5 rounded bg-sky-950 text-sky-300 border border-sky-600">
+                        <span className="font-bold text-slate-700 dark:text-slate-300">Usia Pengunjung:</span>
+                        <span className="font-mono font-black px-2 py-0.5 rounded bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 border border-sky-300 dark:border-sky-600">
                           {usia} tahun
                         </span>
                       </div>
@@ -921,20 +924,20 @@ if (nilai >= 0 && nilai <= 100) {
                       />
                       <div className="flex justify-between text-[10px] text-slate-500 font-mono">
                         <span>1 thn (Balita &lt;5)</span>
-                        <span className="text-amber-400">Reguler: 5-59 thn</span>
+                        <span className="text-amber-600 dark:text-amber-400">Reguler: 5-59 thn</span>
                         <span>75 thn (Lansia ≥60)</span>
                       </div>
                     </div>
 
-                    <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 flex items-center justify-between">
+                    <div className="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-border/80 dark:border-slate-800 flex items-center justify-between">
                       <div>
-                        <span className="block text-xs font-bold text-slate-200">Kartu Member VIP:</span>
-                        <span className="text-[11px] text-slate-400">Akses bebas tanpa memandang usia</span>
+                        <span className="block text-xs font-bold text-slate-800 dark:text-slate-200">Kartu Member VIP:</span>
+                        <span className="text-[11px] text-slate-600 dark:text-slate-400">Akses bebas tanpa memandang usia</span>
                       </div>
                       <button
                         onClick={() => setIsVIP(!isVIP)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                          isVIP ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-400 font-black' : 'bg-slate-800 text-slate-400'
+                          isVIP ? 'bg-amber-500 text-slate-950 ring-2 ring-amber-400 font-black' : 'bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
                         }`}
                       >
                         {isVIP ? '✓ STATUS: VIP AKTIF' : '✗ BUKAN VIP'}
@@ -943,29 +946,29 @@ if (nilai >= 0 && nilai <= 100) {
                   </div>
 
                   {/* Preset Uji Cepat Tiket OR */}
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-slate-800/80">
-                    <span className="text-[11px] font-mono text-slate-400 font-bold">Preset Uji:</span>
+                  <div className="flex flex-wrap items-center gap-1.5 pt-1 border-t border-border/60 dark:border-slate-800/80">
+                    <span className="text-[11px] font-mono text-slate-600 dark:text-slate-400 font-bold">Preset Uji:</span>
                     <button
                       onClick={() => { setUsia(3); setIsVIP(false); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-sky-300 border border-sky-500/30 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-sky-50 hover:bg-sky-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-sky-700 dark:text-sky-300 border border-sky-300 dark:border-sky-500/30 cursor-pointer"
                     >
                       👶 Balita (3 thn)
                     </button>
                     <button
                       onClick={() => { setUsia(65); setIsVIP(false); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 cursor-pointer"
                     >
                       👴 Lansia (65 thn)
                     </button>
                     <button
                       onClick={() => { setUsia(28); setIsVIP(true); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-500/30 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-50 hover:bg-amber-100 dark:bg-slate-800 dark:hover:bg-slate-700 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30 cursor-pointer"
                     >
                       ⭐ Member VIP (28 thn)
                     </button>
                     <button
                       onClick={() => { setUsia(28); setIsVIP(false); }}
-                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer"
+                      className="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-border dark:border-slate-700 cursor-pointer"
                     >
                       🎟️ Reguler (28 thn)
                     </button>
@@ -974,10 +977,10 @@ if (nilai >= 0 && nilai <= 100) {
               )}
 
               {selectedScenario === 'rentang_and' && (
-                <div className="space-y-1.5 bg-slate-950 p-3 rounded-xl border border-slate-800 max-w-xl mx-auto">
+                <div className="space-y-1.5 bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-border/80 dark:border-slate-800 max-w-xl mx-auto">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-bold text-slate-300">Input Nilai Ujian:</span>
-                    <span className={`font-mono font-black px-2.5 py-0.5 rounded ${isNilaiValid ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-rose-950 text-rose-300 border border-rose-600'}`}>
+                    <span className="font-bold text-slate-700 dark:text-slate-300">Input Nilai Ujian:</span>
+                    <span className={`font-mono font-black px-2.5 py-0.5 rounded ${isNilaiValid ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-600'}`}>
                       {nilai} ({isNilaiValid ? '✓ Dalam Rentang 0-100' : '✗ DI LUAR DOMAIN!'})
                     </span>
                   </div>
@@ -990,9 +993,9 @@ if (nilai >= 0 && nilai <= 100) {
                     className="w-full accent-emerald-500 cursor-pointer"
                   />
                   <div className="flex justify-between text-[10px] text-slate-500 font-mono">
-                    <span className="text-rose-400">-20 (Invalid)</span>
-                    <span className="text-emerald-400 font-bold">Domain Valid: 0 s.d 100</span>
-                    <span className="text-rose-400">+125 (Invalid)</span>
+                    <span className="text-rose-500 dark:text-rose-400">-20 (Invalid)</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-bold">Domain Valid: 0 s.d 100</span>
+                    <span className="text-rose-500 dark:text-rose-400">+125 (Invalid)</span>
                   </div>
                 </div>
               )}
@@ -1003,44 +1006,44 @@ if (nilai >= 0 && nilai <= 100) {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
                 
                 {/* PANEL KIRI: PENDEKATAN OPERATOR AND (KURANG TEPAT) */}
-                <div className="p-4 md:p-5 rounded-2xl border-2 border-rose-500/40 bg-rose-950/20 space-y-3 flex flex-col justify-between">
+                <div className="p-4 md:p-5 rounded-2xl border-2 border-rose-300 dark:border-rose-500/40 bg-rose-50/60 dark:bg-rose-950/20 space-y-3 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/50">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-500/20 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/50">
                         Pendekatan A: Operator Logika AND
                       </span>
-                      <span className="text-xs font-bold text-rose-400 flex items-center gap-1">
+                      <span className="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span>Kurang Tepat (Anti-Pattern)</span>
                       </span>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs space-y-1">
-                      <span className="text-slate-400">// Pengecekan satu baris:</span>
-                      <div className="text-slate-100">
-                        <span className="text-purple-400">if</span>{' '}
-                        <span className={isUsiaPass ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                    <div className="p-3 rounded-xl bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-800 font-mono text-xs space-y-1">
+                      <span className="text-slate-500 dark:text-slate-400">// Pengecekan satu baris:</span>
+                      <div className="text-slate-800 dark:text-slate-100">
+                        <span className="text-purple-600 dark:text-purple-400">if</span>{' '}
+                        <span className={isUsiaPass ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-rose-600 dark:text-rose-400 font-bold'}>
                           usia &gt;= 17 ({isUsiaPass ? 'True' : 'False'})
                         </span>{' '}
-                        <span className="text-amber-400 font-black">and</span>{' '}
-                        <span className={isBeratPass ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                        <span className="text-amber-600 dark:text-amber-400 font-black">and</span>{' '}
+                        <span className={isBeratPass ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-rose-600 dark:text-rose-400 font-bold'}>
                           berat &gt;= 45 ({isBeratPass ? 'True' : 'False'})
                         </span>:
                       </div>
-                      <div className="pl-4 text-emerald-400">
+                      <div className="pl-4 text-emerald-600 dark:text-emerald-400">
                         output(&quot;Kualifikasi Donor Terpenuhi&quot;)
                       </div>
-                      <div className="text-purple-400">else:</div>
-                      <div className="pl-4 text-rose-400">
+                      <div className="text-purple-600 dark:text-purple-400">else:</div>
+                      <div className="pl-4 text-rose-600 dark:text-rose-400">
                         output(&quot;Pendaftaran Donor Ditolak&quot;)
                       </div>
                     </div>
 
                     {/* Output Layar User */}
-                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-                      <span className="text-[11px] font-mono text-slate-400 block">Pesan yang Dilihat Pengguna:</span>
+                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1">
+                      <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 block">Pesan yang Dilihat Pengguna:</span>
                       <div className={`p-2 rounded-lg font-mono text-xs font-bold ${
-                        isDonorPass ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-rose-950 text-rose-300 border border-rose-600'
+                        isDonorPass ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-600'
                       }`}>
                         {isDonorPass ? '✓ Kualifikasi Donor Terpenuhi' : '✗ Pendaftaran Donor Ditolak'}
                       </div>
@@ -1048,56 +1051,56 @@ if (nilai >= 0 && nilai <= 100) {
                   </div>
 
                   {/* Ulasan Kelemahan Kritis */}
-                  <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/30 text-xs text-rose-200 space-y-1">
-                    <strong className="block text-rose-300 font-black flex items-center gap-1.5">
-                      <XCircle className="w-4 h-4 text-rose-400" />
+                  <div className="p-3 rounded-xl bg-rose-100/70 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-500/30 text-xs text-rose-900 dark:text-rose-200 space-y-1">
+                    <strong className="block text-rose-800 dark:text-rose-300 font-black flex items-center gap-1.5">
+                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                       Kelemahan: Kebutaan Diagnostik (Diagnostic Blindspot)
                     </strong>
-                    <p className="leading-relaxed text-[11.5px] text-rose-200/90">
+                    <p className="leading-relaxed text-[11.5px] text-rose-800 dark:text-rose-200/90">
                       Jika kondisi bernilai <strong>False</strong>, sistem mengeluarkan vonis penolakan umum. Pengguna <strong>tidak diberitahu secara pasti</strong> apakah kegagalannya akibat umur yang kurang atau berat badan yang belum cukup.
                     </p>
                   </div>
                 </div>
 
                 {/* PANEL KANAN: PENDEKATAN NESTED IF (TEPAT & INFORMATIF) */}
-                <div className="p-4 md:p-5 rounded-2xl border-2 border-emerald-500/40 bg-emerald-950/20 space-y-3 flex flex-col justify-between">
+                <div className="p-4 md:p-5 rounded-2xl border-2 border-emerald-300 dark:border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/20 space-y-3 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/50">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50">
                         Pendekatan B: Percabangan Bersarang (Nested IF)
                       </span>
-                      <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Sangat Tepat (Best Practice)</span>
                       </span>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs space-y-1">
-                      <span className="text-slate-400">// Pengecekan bertingkat terisolasi:</span>
-                      <div className="text-slate-100">
-                        <span className="text-purple-400">if</span>{' '}
-                        <span className={isUsiaPass ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                    <div className="p-3 rounded-xl bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-800 font-mono text-xs space-y-1">
+                      <span className="text-slate-500 dark:text-slate-400">// Pengecekan bertingkat terisolasi:</span>
+                      <div className="text-slate-800 dark:text-slate-100">
+                        <span className="text-purple-600 dark:text-purple-400">if</span>{' '}
+                        <span className={isUsiaPass ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-rose-600 dark:text-rose-400 font-bold'}>
                           usia &gt;= 17
                         </span>:
                       </div>
-                      <div className="pl-4 text-slate-100">
-                        <span className="text-purple-400">if</span>{' '}
-                        <span className={isBeratPass ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold'}>
+                      <div className="pl-4 text-slate-800 dark:text-slate-100">
+                        <span className="text-purple-600 dark:text-purple-400">if</span>{' '}
+                        <span className={isBeratPass ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-rose-600 dark:text-rose-400 font-bold'}>
                           berat &gt;= 45
                         </span>:
                       </div>
-                      <div className="pl-8 text-emerald-400">output(&quot;Kualifikasi Donor Terpenuhi&quot;)</div>
-                      <div className="pl-4 text-purple-400">else:</div>
-                      <div className="pl-8 text-rose-300">output(&quot;Gagal: Berat badan minimal 45 kg!&quot;)</div>
-                      <div className="text-purple-400">else:</div>
-                      <div className="pl-4 text-rose-300">output(&quot;Gagal: Usia minimal 17 tahun!&quot;)</div>
+                      <div className="pl-8 text-emerald-600 dark:text-emerald-400">output(&quot;Kualifikasi Donor Terpenuhi&quot;)</div>
+                      <div className="pl-4 text-purple-600 dark:text-purple-400">else:</div>
+                      <div className="pl-8 text-rose-600 dark:text-rose-300">output(&quot;Gagal: Berat badan minimal 45 kg!&quot;)</div>
+                      <div className="text-purple-600 dark:text-purple-400">else:</div>
+                      <div className="pl-4 text-rose-600 dark:text-rose-300">output(&quot;Gagal: Usia minimal 17 tahun!&quot;)</div>
                     </div>
 
                     {/* Output Layar User */}
-                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-                      <span className="text-[11px] font-mono text-slate-400 block">Pesan Diagnostik Presisi:</span>
+                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1">
+                      <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 block">Pesan Diagnostik Presisi:</span>
                       <div className={`p-2 rounded-lg font-mono text-xs font-bold ${
-                        isDonorPass ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-amber-950 text-amber-300 border border-amber-600'
+                        isDonorPass ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-600'
                       }`}>
                         {isDonorPass
                           ? '✓ Kualifikasi Donor Terpenuhi (Lolos Semua Gerbang)'
@@ -1109,12 +1112,12 @@ if (nilai >= 0 && nilai <= 100) {
                   </div>
 
                   {/* Keunggulan Pedogis */}
-                  <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-200 space-y-1">
-                    <strong className="block text-emerald-300 font-black flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <div className="p-3 rounded-xl bg-emerald-100/70 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-500/30 text-xs text-emerald-900 dark:text-emerald-200 space-y-1">
+                    <strong className="block text-emerald-800 dark:text-emerald-300 font-black flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       Keunggulan: Umpan Balik Diagnostik Granular
                     </strong>
-                    <p className="leading-relaxed text-[11.5px] text-emerald-200/90">
+                    <p className="leading-relaxed text-[11.5px] text-emerald-800 dark:text-emerald-200/90">
                       Sistem mampu mengidentifikasi <strong>secara presisi titik kegagalan</strong>. Mahasiswa atau calon pendonor langsung tahu syarat mana yang belum terpenuhi dan langkah perbaikan yang harus diambil.
                     </p>
                   </div>
@@ -1128,67 +1131,67 @@ if (nilai >= 0 && nilai <= 100) {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-stretch">
                 
                 {/* PANEL KIRI: PENDEKATAN IF MAJEMUK (KURANG TEPAT / REDUNDANT) */}
-                <div className="p-4 md:p-5 rounded-2xl border-2 border-rose-500/40 bg-rose-950/20 space-y-3 flex flex-col justify-between">
+                <div className="p-4 md:p-5 rounded-2xl border-2 border-rose-300 dark:border-rose-500/40 bg-rose-50/60 dark:bg-rose-950/20 space-y-3 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-500/20 text-rose-300 border border-rose-500/50">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-rose-100 dark:bg-rose-500/20 text-rose-800 dark:text-rose-300 border border-rose-300 dark:border-rose-500/50">
                         Pendekatan A: Percabangan Majemuk (IF - ELIF)
                       </span>
-                      <span className="text-xs font-bold text-rose-400 flex items-center gap-1">
+                      <span className="text-xs font-bold text-rose-600 dark:text-rose-400 flex items-center gap-1">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span>Kurang Tepat (Anti-Pattern)</span>
                       </span>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs space-y-1">
-                      <span className="text-slate-400">// Duplikasi baris aksi identik (Melanggar Prinsip DRY):</span>
+                    <div className="p-3 rounded-xl bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-800 font-mono text-xs space-y-1">
+                      <span className="text-slate-500 dark:text-slate-400">// Duplikasi baris aksi identik (Melanggar Prinsip DRY):</span>
                       
                       <div className={`p-1 rounded transition-colors ${isTiketBalita ? 'bg-rose-500/20 border-l-2 border-rose-400' : ''}`}>
-                        <span className="text-purple-400">if</span>{' '}
-                        <span className={isTiketBalita ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+                        <span className="text-purple-600 dark:text-purple-400">if</span>{' '}
+                        <span className={isTiketBalita ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-slate-400'}>
                           usia &lt; 5 ({isTiketBalita ? 'True' : 'False'})
                         </span>:
-                        <div className={`pl-4 ${isTiketBalita ? 'text-emerald-300 font-black' : 'text-slate-500'}`}>
+                        <div className={`pl-4 ${isTiketBalita ? 'text-emerald-600 dark:text-emerald-300 font-black' : 'text-slate-400 dark:text-slate-500'}`}>
                           output(&quot;Tiket Bebas Biaya (Rp 0)&quot;)
                         </div>
                       </div>
 
                       <div className={`p-1 rounded transition-colors ${!isTiketBalita && isTiketLansia ? 'bg-rose-500/20 border-l-2 border-rose-400' : ''}`}>
-                        <span className="text-purple-400">elif</span>{' '}
-                        <span className={!isTiketBalita && isTiketLansia ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+                        <span className="text-purple-600 dark:text-purple-400">elif</span>{' '}
+                        <span className={!isTiketBalita && isTiketLansia ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-slate-400'}>
                           usia &gt;= 60 ({isTiketLansia ? 'True' : 'False'})
                         </span>:
-                        <div className={`pl-4 ${!isTiketBalita && isTiketLansia ? 'text-emerald-300 font-black' : 'text-slate-500'}`}>
+                        <div className={`pl-4 ${!isTiketBalita && isTiketLansia ? 'text-emerald-600 dark:text-emerald-300 font-black' : 'text-slate-400 dark:text-slate-500'}`}>
                           output(&quot;Tiket Bebas Biaya (Rp 0)&quot;)
                         </div>
                       </div>
 
                       <div className={`p-1 rounded transition-colors ${!isTiketBalita && !isTiketLansia && isVIP ? 'bg-rose-500/20 border-l-2 border-rose-400' : ''}`}>
-                        <span className="text-purple-400">elif</span>{' '}
-                        <span className={!isTiketBalita && !isTiketLansia && isVIP ? 'text-emerald-400 font-bold' : 'text-slate-400'}>
+                        <span className="text-purple-600 dark:text-purple-400">elif</span>{' '}
+                        <span className={!isTiketBalita && !isTiketLansia && isVIP ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-500 dark:text-slate-400'}>
                           isVIP ({isVIP ? 'True' : 'False'})
                         </span>:
-                        <div className={`pl-4 ${!isTiketBalita && !isTiketLansia && isVIP ? 'text-emerald-300 font-black' : 'text-slate-500'}`}>
+                        <div className={`pl-4 ${!isTiketBalita && !isTiketLansia && isVIP ? 'text-emerald-600 dark:text-emerald-300 font-black' : 'text-slate-400 dark:text-slate-500'}`}>
                           output(&quot;Tiket Bebas Biaya (Rp 0)&quot;)
                         </div>
                       </div>
 
-                      <div className={`p-1 rounded transition-colors ${!isTiketGratis ? 'bg-slate-800/80 border-l-2 border-amber-400' : ''}`}>
-                        <span className="text-purple-400">else:</span>
-                        <div className={`pl-4 ${!isTiketGratis ? 'text-amber-300 font-black' : 'text-slate-500'}`}>
+                      <div className={`p-1 rounded transition-colors ${!isTiketGratis ? 'bg-slate-100 dark:bg-slate-800/80 border-l-2 border-amber-400' : ''}`}>
+                        <span className="text-purple-600 dark:text-purple-400">else:</span>
+                        <div className={`pl-4 ${!isTiketGratis ? 'text-amber-600 dark:text-amber-300 font-black' : 'text-slate-400 dark:text-slate-500'}`}>
                           output(&quot;Tarif Reguler: Rp 50.000&quot;)
                         </div>
                       </div>
                     </div>
 
                     {/* Output Layar User */}
-                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-                      <span className="text-[11px] font-mono text-slate-400 block">Pesan yang Dilihat Pengguna:</span>
+                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1">
+                      <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 block">Pesan yang Dilihat Pengguna:</span>
                       <div className={`p-2 rounded-lg font-mono text-xs font-bold ${
-                        isTiketGratis ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-slate-900 text-slate-200 border border-slate-700'
+                        isTiketGratis ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-border dark:border-slate-700'
                       }`}>
                         {isTiketGratis ? '✓ Tiket Bebas Biaya (Rp 0)' : 'Tarif Reguler: Rp 50.000'}
-                        <span className="text-[10.5px] text-slate-400 font-normal block mt-0.5">
+                        <span className="text-[10.5px] text-slate-500 dark:text-slate-400 font-normal block mt-0.5">
                           {isTiketBalita
                             ? '↳ Dieksekusi melalui cabang 1: if usia < 5'
                             : isTiketLansia
@@ -1202,51 +1205,51 @@ if (nilai >= 0 && nilai <= 100) {
                   </div>
 
                   {/* Ulasan Kelemahan Kritis */}
-                  <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/30 text-xs text-rose-200 space-y-1">
-                    <strong className="block text-rose-300 font-black flex items-center gap-1.5">
-                      <XCircle className="w-4 h-4 text-rose-400" />
+                  <div className="p-3 rounded-xl bg-rose-100/70 dark:bg-rose-950/40 border border-rose-300 dark:border-rose-500/30 text-xs text-rose-900 dark:text-rose-200 space-y-1">
+                    <strong className="block text-rose-800 dark:text-rose-300 font-black flex items-center gap-1.5">
+                      <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                       Kelemahan: Pelanggaran Prinsip DRY &amp; Kerentanan Pemeliharaan
                     </strong>
-                    <p className="leading-relaxed text-[11.5px] text-rose-200/90">
-                      Baris output <code className="font-mono text-rose-300 font-bold">&quot;Tiket Bebas Biaya (Rp 0)&quot;</code> ditulis <strong>berulang 3 kali secara redundan</strong>. Jika nominal subsidi tiket atau hak fasilitas berubah, programmer wajib mengubah kode di 3 tempat terpisah. Jika salah satu cabang terlewat, akan timbul inkonsistensi sistem dan potensi bug fatal (maintenance nightmare).
+                    <p className="leading-relaxed text-[11.5px] text-rose-800 dark:text-rose-200/90">
+                      Baris output <code className="font-mono text-rose-700 dark:text-rose-300 font-bold">&quot;Tiket Bebas Biaya (Rp 0)&quot;</code> ditulis <strong>berulang 3 kali secara redundan</strong>. Jika nominal subsidi tiket atau hak fasilitas berubah, programmer wajib mengubah kode di 3 tempat terpisah. Jika salah satu cabang terlewat, akan timbul inkonsistensi sistem dan potensi bug fatal (maintenance nightmare).
                     </p>
                   </div>
                 </div>
 
                 {/* PANEL KANAN: PENDEKATAN OPERATOR LOGIKA OR (SANGAT TEPAT & BERSIH) */}
-                <div className="p-4 md:p-5 rounded-2xl border-2 border-emerald-500/40 bg-emerald-950/20 space-y-3 flex flex-col justify-between">
+                <div className="p-4 md:p-5 rounded-2xl border-2 border-emerald-300 dark:border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/20 space-y-3 flex flex-col justify-between">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/50">
+                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/50">
                         Pendekatan B: Operator Logika OR (Disjungsi)
                       </span>
-                      <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                      <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Sangat Tepat (Best Practice)</span>
                       </span>
                     </div>
 
-                    <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 font-mono text-xs space-y-1.5">
-                      <span className="text-slate-400">// Satu ekspresi terpadu &amp; Single Source of Truth:</span>
-                      <div className="text-slate-100 leading-relaxed">
-                        <span className="text-purple-400 font-bold">if</span>{' '}
-                        <span className={isTiketBalita ? 'text-emerald-400 font-bold underline' : 'text-slate-300'}>
+                    <div className="p-3 rounded-xl bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-800 font-mono text-xs space-y-1.5">
+                      <span className="text-slate-500 dark:text-slate-400">// Satu ekspresi terpadu &amp; Single Source of Truth:</span>
+                      <div className="text-slate-800 dark:text-slate-100 leading-relaxed">
+                        <span className="text-purple-600 dark:text-purple-400 font-bold">if</span>{' '}
+                        <span className={isTiketBalita ? 'text-emerald-600 dark:text-emerald-400 font-bold underline' : 'text-slate-700 dark:text-slate-300'}>
                           usia &lt; 5 ({isTiketBalita ? 'True' : 'False'})
                         </span>{' '}
-                        <span className="text-sky-400 font-black">or</span>{' '}
-                        <span className={isTiketBalita ? 'text-slate-500 line-through' : isTiketLansia ? 'text-emerald-400 font-bold underline' : 'text-slate-300'}>
+                        <span className="text-sky-600 dark:text-sky-400 font-black">or</span>{' '}
+                        <span className={isTiketBalita ? 'text-slate-400 dark:text-slate-500 line-through' : isTiketLansia ? 'text-emerald-600 dark:text-emerald-400 font-bold underline' : 'text-slate-700 dark:text-slate-300'}>
                           usia &gt;= 60 {isTiketBalita ? '(⚡Bypass)' : isTiketLansia ? '(True)' : '(False)'}
                         </span>{' '}
-                        <span className="text-sky-400 font-black">or</span>{' '}
-                        <span className={(isTiketBalita || isTiketLansia) ? 'text-slate-500 line-through' : isVIP ? 'text-emerald-400 font-bold underline' : 'text-slate-300'}>
+                        <span className="text-sky-600 dark:text-sky-400 font-black">or</span>{' '}
+                        <span className={(isTiketBalita || isTiketLansia) ? 'text-slate-400 dark:text-slate-500 line-through' : isVIP ? 'text-emerald-600 dark:text-emerald-400 font-bold underline' : 'text-slate-700 dark:text-slate-300'}>
                           isVIP {(isTiketBalita || isTiketLansia) ? '(⚡Bypass)' : isVIP ? '(True)' : '(False)'}
                         </span>:
                       </div>
-                      <div className={`pl-4 ${isTiketGratis ? 'text-emerald-300 font-black' : 'text-slate-500'}`}>
+                      <div className={`pl-4 ${isTiketGratis ? 'text-emerald-600 dark:text-emerald-300 font-black' : 'text-slate-400 dark:text-slate-500'}`}>
                         output(&quot;Tiket Bebas Biaya (Rp 0)&quot;)
                       </div>
-                      <div className="text-purple-400">else:</div>
-                      <div className={`pl-4 ${!isTiketGratis ? 'text-amber-300 font-black' : 'text-slate-500'}`}>
+                      <div className="text-purple-600 dark:text-purple-400">else:</div>
+                      <div className={`pl-4 ${!isTiketGratis ? 'text-amber-600 dark:text-amber-300 font-black' : 'text-slate-400 dark:text-slate-500'}`}>
                         output(&quot;Tarif Reguler: Rp 50.000&quot;)
                       </div>
                     </div>
@@ -1254,7 +1257,7 @@ if (nilai >= 0 && nilai <= 100) {
                     {/* Tracking Evaluasi Short-Circuit 3 Syarat */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2 font-mono text-[11px]">
                       <div className={`p-2 rounded-lg border flex flex-col justify-between ${
-                        isTiketBalita ? 'bg-emerald-950/80 border-emerald-500 text-emerald-200' : 'bg-slate-900 border-slate-800 text-slate-400'
+                        isTiketBalita ? 'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-400 dark:border-emerald-500 text-emerald-800 dark:text-emerald-200' : 'bg-slate-100 dark:bg-slate-900 border-border dark:border-slate-800 text-slate-600 dark:text-slate-400'
                       }`}>
                         <span className="font-bold">1. Balita (&lt;5 thn)</span>
                         <span className="font-black text-[10.5px] mt-0.5">
@@ -1264,10 +1267,10 @@ if (nilai >= 0 && nilai <= 100) {
 
                       <div className={`p-2 rounded-lg border flex flex-col justify-between ${
                         isTiketBalita
-                          ? 'bg-slate-950/60 border-dashed border-slate-800 text-slate-600'
+                          ? 'bg-slate-100/80 dark:bg-slate-950/60 border-dashed border-slate-300 dark:border-slate-800 text-slate-500 dark:text-slate-600'
                           : isTiketLansia
-                          ? 'bg-emerald-950/80 border-emerald-500 text-emerald-200'
-                          : 'bg-slate-900 border-slate-800 text-slate-400'
+                          ? 'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-400 dark:border-emerald-500 text-emerald-800 dark:text-emerald-200'
+                          : 'bg-slate-100 dark:bg-slate-900 border-border dark:border-slate-800 text-slate-600 dark:text-slate-400'
                       }`}>
                         <span className="font-bold">2. Lansia (≥60 thn)</span>
                         <span className="font-black text-[10.5px] mt-0.5">
@@ -1277,10 +1280,10 @@ if (nilai >= 0 && nilai <= 100) {
 
                       <div className={`p-2 rounded-lg border flex flex-col justify-between ${
                         (isTiketBalita || isTiketLansia)
-                          ? 'bg-slate-950/60 border-dashed border-slate-800 text-slate-600'
+                          ? 'bg-slate-100/80 dark:bg-slate-950/60 border-dashed border-slate-300 dark:border-slate-800 text-slate-500 dark:text-slate-600'
                           : isVIP
-                          ? 'bg-emerald-950/80 border-emerald-500 text-emerald-200'
-                          : 'bg-slate-900 border-slate-800 text-slate-400'
+                          ? 'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-400 dark:border-emerald-500 text-emerald-800 dark:text-emerald-200'
+                          : 'bg-slate-100 dark:bg-slate-900 border-border dark:border-slate-800 text-slate-600 dark:text-slate-400'
                       }`}>
                         <span className="font-bold">3. Member VIP</span>
                         <span className="font-black text-[10.5px] mt-0.5">
@@ -1290,13 +1293,13 @@ if (nilai >= 0 && nilai <= 100) {
                     </div>
 
                     {/* Output Layar User */}
-                    <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
-                      <span className="text-[11px] font-mono text-slate-400 block">Pesan Hasil Eksekusi Terpadu:</span>
+                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1">
+                      <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 block">Pesan Hasil Eksekusi Terpadu:</span>
                       <div className={`p-2 rounded-lg font-mono text-xs font-bold ${
-                        isTiketGratis ? 'bg-emerald-950 text-emerald-300 border border-emerald-600' : 'bg-slate-900 text-slate-200 border border-slate-700'
+                        isTiketGratis ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-600' : 'bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 border border-border dark:border-slate-700'
                       }`}>
                         {isTiketGratis ? '✓ Tiket Bebas Biaya (Rp 0)' : 'Tarif Reguler: Rp 50.000'}
-                        <span className="text-[10.5px] text-emerald-400/90 font-normal block mt-0.5">
+                        <span className="text-[10.5px] text-emerald-700 dark:text-emerald-400/90 font-normal block mt-0.5">
                           {isTiketGratis
                             ? '↳ Hak akses diberikan langsung melalui 1 instruksi aksi terpadu'
                             : '↳ Seluruh operan bernilai False, dialihkan ke cabang fallback else'}
@@ -1306,12 +1309,12 @@ if (nilai >= 0 && nilai <= 100) {
                   </div>
 
                   {/* Keunggulan Pedagogis */}
-                  <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-xs text-emerald-200 space-y-1">
-                    <strong className="block text-emerald-300 font-black flex items-center gap-1.5">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <div className="p-3 rounded-xl bg-emerald-100/70 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-500/30 text-xs text-emerald-900 dark:text-emerald-200 space-y-1">
+                    <strong className="block text-emerald-800 dark:text-emerald-300 font-black flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       Keunggulan: Single Point of Truth &amp; Optimalisasi Short-Circuit
                     </strong>
-                    <p className="leading-relaxed text-[11.5px] text-emerald-200/90">
+                    <p className="leading-relaxed text-[11.5px] text-emerald-800 dark:text-emerald-200/90">
                       Aksi hanya didefinisikan <strong>satu kali (Single Source of Truth)</strong> sehingga aman dari inkonsistensi saat pemeliharaan. Selain itu, berkat <strong>Short-Circuit Evaluation</strong>, jika salah satu syarat di awal sudah bernilai True, CPU langsung melompat mengeksekusi aksi tanpa membuang siklus untuk memeriksa sisa kondisi lainnya.
                     </p>
                   </div>
@@ -1322,34 +1325,34 @@ if (nilai >= 0 && nilai <= 100) {
 
             {/* SKENARIO 3: AND OPERATOR (RENTANG ATOMIK) */}
             {selectedScenario === 'rentang_and' && (
-              <div className="p-4 md:p-5 rounded-2xl border border-emerald-500/40 bg-emerald-950/20 space-y-4">
-                <div className="flex items-center justify-between gap-2 border-b border-emerald-500/30 pb-2">
-                  <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <div className="p-4 md:p-5 rounded-2xl border border-emerald-300 dark:border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/20 space-y-4">
+                <div className="flex items-center justify-between gap-2 border-b border-emerald-300 dark:border-emerald-500/30 pb-2">
+                  <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300 font-bold text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     <span>Validasi Rentang Domain Matematika Tertutup (Domain Constraint)</span>
                   </div>
-                  <span className="text-xs font-mono bg-emerald-900/60 px-2 py-0.5 rounded text-emerald-200 border border-emerald-600">
+                  <span className="text-xs font-mono bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-600">
                     Kombinasi Batas Bawah &amp; Atas
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1.5">
-                    <strong className="text-emerald-300 block">Sintaks Universal yang Dianjurkan:</strong>
-                    <code className="block bg-slate-950 p-2 rounded text-amber-300 font-mono">
+                  <div className="p-3 rounded-xl bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-800 text-xs space-y-1.5">
+                    <strong className="text-emerald-800 dark:text-emerald-300 block">Sintaks Universal yang Dianjurkan:</strong>
+                    <code className="block bg-slate-100 dark:bg-slate-950 p-2 rounded text-amber-700 dark:text-amber-300 font-mono">
                       if nilai &gt;= 0 and nilai &lt;= 100:
                     </code>
-                    <p className="text-[11.5px] text-slate-300 leading-relaxed">
+                    <p className="text-[11.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
                       Kedua batas menguji variabel numerik yang sama. Tidak diperlukan Nested IF karena nilai di bawah 0 maupun nilai di atas 100 sama-sama merupakan pelanggaran integritas domain nilai ujian.
                     </p>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs space-y-1.5">
-                    <strong className="text-sky-300 block">Guarded Evaluation (Pengaman Pembagian / Null):</strong>
-                    <code className="block bg-slate-950 p-2 rounded text-sky-300 font-mono">
+                  <div className="p-3 rounded-xl bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-800 text-xs space-y-1.5">
+                    <strong className="text-sky-800 dark:text-sky-300 block">Guarded Evaluation (Pengaman Pembagian / Null):</strong>
+                    <code className="block bg-slate-100 dark:bg-slate-950 p-2 rounded text-sky-700 dark:text-sky-300 font-mono">
                       if pembagi != 0 and total / pembagi &gt; 50:
                     </code>
-                    <p className="text-[11.5px] text-slate-300 leading-relaxed">
+                    <p className="text-[11.5px] text-slate-700 dark:text-slate-300 leading-relaxed">
                       Berkat hukum Short-Circuit, jika <code className="font-mono">pembagi == 0</code>, komputer langsung berhenti dan tidak akan mengeksekusi operasi pembagian di sebelah kanan, sehingga program terhindar dari <em>ZeroDivisionError</em>!
                     </p>
                   </div>
@@ -1360,46 +1363,46 @@ if (nilai >= 0 && nilai <= 100) {
             {/* ═════════════════════════════════════════════════════════════════ */}
             {/* TABEL PANDUAN PENGAMBILAN KEPUTUSAN ARSITEKTURAL                    */}
             {/* ═════════════════════════════════════════════════════════════════ */}
-            <div className="p-4 md:p-5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3">
-              <h4 className="text-xs md:text-sm font-bold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-2">
-                <Info className="w-4 h-4 text-orange-400" />
+            <div className="p-4 md:p-5 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/80 dark:border-slate-800 space-y-3">
+              <h4 className="text-xs md:text-sm font-bold text-slate-900 dark:text-slate-200 uppercase tracking-wider font-mono flex items-center gap-2">
+                <Info className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                 <span>Ringkasan Kaidah Arsitektural: Operator Logika vs Nested IF</span>
               </h4>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-800 text-slate-400 font-mono">
+                    <tr className="border-b border-border/80 dark:border-slate-800 text-slate-600 dark:text-slate-400 font-mono">
                       <th className="py-2 px-3">Karakteristik Kasus</th>
                       <th className="py-2 px-3">Gunakan Operator Logika (AND/OR)</th>
                       <th className="py-2 px-3">Gunakan Nested IF (Bersarang)</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60 text-slate-300">
-                    <tr className="hover:bg-slate-800/40">
-                      <td className="py-2.5 px-3 font-semibold text-slate-200">Kebutuhan Pesan Kesalahan</td>
-                      <td className="py-2.5 px-3 text-rose-300">Cukup pesan penolakan umum (blanket error)</td>
-                      <td className="py-2.5 px-3 text-emerald-300 font-bold">Wajib pesan diagnostik spesifik tiap syarat gagal</td>
+                  <tbody className="divide-y divide-border/60 dark:divide-slate-800/60 text-slate-700 dark:text-slate-300">
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-slate-200">Kebutuhan Pesan Kesalahan</td>
+                      <td className="py-2.5 px-3 text-rose-700 dark:text-rose-300">Cukup pesan penolakan umum (blanket error)</td>
+                      <td className="py-2.5 px-3 text-emerald-700 dark:text-emerald-300 font-bold">Wajib pesan diagnostik spesifik tiap syarat gagal</td>
                     </tr>
-                    <tr className="hover:bg-slate-800/40">
-                      <td className="py-2.5 px-3 font-semibold text-slate-200">Domain Variabel</td>
-                      <td className="py-2.5 px-3 text-emerald-300 font-bold">Validasi rentang batas variabel atomik tunggal</td>
-                      <td className="py-2.5 px-3 text-slate-400">Kurang efisien (membuat kode terlalu menjorok)</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-slate-200">Domain Variabel</td>
+                      <td className="py-2.5 px-3 text-emerald-700 dark:text-emerald-300 font-bold">Validasi rentang batas variabel atomik tunggal</td>
+                      <td className="py-2.5 px-3 text-slate-500 dark:text-slate-400">Kurang efisien (membuat kode terlalu menjorok)</td>
                     </tr>
-                    <tr className="hover:bg-slate-800/40">
-                      <td className="py-2.5 px-3 font-semibold text-slate-200">Hierarki Pengujian</td>
-                      <td className="py-2.5 px-3 text-slate-400">Syarat setara tanpa ketergantungan urutan logis</td>
-                      <td className="py-2.5 px-3 text-emerald-300 font-bold">Kondisi ke-2 hanya masuk akal jika kondisi ke-1 terpenuhi</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-slate-200">Hierarki Pengujian</td>
+                      <td className="py-2.5 px-3 text-slate-500 dark:text-slate-400">Syarat setara tanpa ketergantungan urutan logis</td>
+                      <td className="py-2.5 px-3 text-emerald-700 dark:text-emerald-300 font-bold">Kondisi ke-2 hanya masuk akal jika kondisi ke-1 terpenuhi</td>
                     </tr>
-                    <tr className="hover:bg-slate-800/40">
-                      <td className="py-2.5 px-3 font-semibold text-slate-200">Kriteria Alternatif Ekuivalen</td>
-                      <td className="py-2.5 px-3 text-emerald-300 font-bold">Sangat Tepat (OR): Menghindari duplikasi aksi (DRY) &amp; otomatis Short-Circuit</td>
-                      <td className="py-2.5 px-3 text-rose-300">Kurang Tepat: Terjadi duplikasi blok instruksi identik di setiap cabang (Code Smell)</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-slate-200">Kriteria Alternatif Ekuivalen</td>
+                      <td className="py-2.5 px-3 text-emerald-700 dark:text-emerald-300 font-bold">Sangat Tepat (OR): Menghindari duplikasi aksi (DRY) &amp; otomatis Short-Circuit</td>
+                      <td className="py-2.5 px-3 text-rose-700 dark:text-rose-300">Kurang Tepat: Terjadi duplikasi blok instruksi identik di setiap cabang (Code Smell)</td>
                     </tr>
-                    <tr className="hover:bg-slate-800/40">
-                      <td className="py-2.5 px-3 font-semibold text-slate-200">Keamanan &amp; Integritas</td>
-                      <td className="py-2.5 px-3 text-sky-300">Guarded evaluation (pengaman null/zero)</td>
-                      <td className="py-2.5 px-3 text-sky-300">Otorisasi bertingkat multi-tahap (Multi-Factor)</td>
+                    <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
+                      <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-slate-200">Keamanan &amp; Integritas</td>
+                      <td className="py-2.5 px-3 text-sky-700 dark:text-sky-300">Guarded evaluation (pengaman null/zero)</td>
+                      <td className="py-2.5 px-3 text-sky-700 dark:text-sky-300">Otorisasi bertingkat multi-tahap (Multi-Factor)</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1414,7 +1417,7 @@ if (nilai >= 0 && nilai <= 100) {
         {/* ═════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'flowchart' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-900/90 rounded-3xl border border-slate-800 shadow-inner overflow-x-auto min-h-[480px]">
+            <div className="w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 dark:bg-slate-900/90 rounded-3xl border border-border/70 dark:border-slate-800 shadow-inner overflow-x-auto min-h-[480px]">
               <LogicVerticalFlowchart
                 scenarioId={selectedScenario}
                 v1={selectedScenario === 'rentang_and' ? nilai : usia}
@@ -1423,9 +1426,9 @@ if (nilai >= 0 && nilai <= 100) {
                 step={step}
               />
             </div>
-            <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+            <div className="p-3 bg-card dark:bg-slate-900 rounded-xl border border-border/80 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 flex items-center justify-between">
               <span>Simbol Belah Ketupat merepresentasikan ekspresi majemuk yang langsung mengevaluasi operator logika.</span>
-              <span className="font-mono text-[11px] text-amber-400">ANSI/ISO 5807 Compliant</span>
+              <span className="font-mono text-[11px] text-amber-600 dark:text-amber-400">ANSI/ISO 5807 Compliant</span>
             </div>
           </motion.div>
         )}
@@ -1435,7 +1438,7 @@ if (nilai >= 0 && nilai <= 100) {
         {/* ═════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3 font-mono text-xs md:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap">
+            <div className="p-5 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/80 dark:border-slate-800 space-y-3 font-mono text-xs md:text-sm text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre-wrap">
               {getNarrative()}
             </div>
           </motion.div>
@@ -1446,7 +1449,7 @@ if (nilai >= 0 && nilai <= 100) {
         {/* ═════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'pseudocode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-5 bg-slate-900/90 rounded-2xl border border-slate-800 space-y-3 font-mono text-xs md:text-sm text-amber-200 leading-relaxed whitespace-pre-wrap">
+            <div className="p-5 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/80 dark:border-slate-800 space-y-3 font-mono text-xs md:text-sm text-amber-800 dark:text-amber-200 leading-relaxed whitespace-pre-wrap">
               {getPseudocode()}
             </div>
           </motion.div>
@@ -1457,13 +1460,13 @@ if (nilai >= 0 && nilai <= 100) {
         {/* ═════════════════════════════════════════════════════════════════════ */}
         {activeTab === 'kode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="flex items-center justify-between gap-2 border-b border-slate-800 pb-2">
-              <span className="text-xs font-mono text-slate-400">Pilih Bahasa Pemrograman:</span>
+            <div className="flex items-center justify-between gap-2 border-b border-border/80 dark:border-slate-800 pb-2">
+              <span className="text-xs font-mono text-slate-600 dark:text-slate-400">Pilih Bahasa Pemrograman:</span>
               <div className="flex gap-1.5">
                 <button
                   onClick={() => setActiveLang('python')}
                   className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    activeLang === 'python' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'
+                    activeLang === 'python' ? 'bg-amber-600 text-white' : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   Python
@@ -1471,7 +1474,7 @@ if (nilai >= 0 && nilai <= 100) {
                 <button
                   onClick={() => setActiveLang('js')}
                   className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    activeLang === 'js' ? 'bg-amber-600 text-white' : 'bg-slate-900 text-slate-400'
+                    activeLang === 'js' ? 'bg-amber-600 text-white' : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   JavaScript
@@ -1479,7 +1482,7 @@ if (nilai >= 0 && nilai <= 100) {
               </div>
             </div>
 
-            <div className="p-5 bg-slate-950 rounded-2xl border border-slate-800 font-mono text-xs md:text-sm text-emerald-300 leading-relaxed whitespace-pre-wrap">
+            <div className="p-5 bg-card dark:bg-slate-950 rounded-2xl border border-border/80 dark:border-slate-800 font-mono text-xs md:text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed whitespace-pre-wrap">
               {getCode()}
             </div>
           </motion.div>

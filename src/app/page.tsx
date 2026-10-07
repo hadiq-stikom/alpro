@@ -137,10 +137,10 @@ const chaptersData: {
       {
         id: 6,
         chapterNum: 6,
-        title: "Struktur Percabangan Tunggal & Ganda (IF - ELSE)",
+        title: "Struktur Percabangan Statemen Tunggal & Ganda (IF - ELSE)",
         subtitle: "Naratif, Flowchart, Pseudocode & Kode — 4 representasi algoritma percabangan IF & IF-ELSE.",
         type: "code",
-        labs: ["Lab Simbol Flowchart", "Lab IF Tunggal & IF-ELSE", "Lab Studi Kasus Terpadu"],
+        labs: ["Lab Simbol Flowchart", "Lab Percabangan Statemen Tunggal & Ganda", "Lab Studi Kasus Terpadu"],
         status: "ready",
         description: "Membangun alur logika bercabang untuk merespons kondisi input yang berbeda secara dinamis.",
         badgeColor: "bg-amber-50 dark:bg-amber-950/70 text-amber-950 dark:text-amber-100 border-amber-300 dark:border-amber-700/80"

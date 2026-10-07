@@ -99,7 +99,7 @@ function AnimatedTraveler({ walking, direction }: { walking: boolean; direction:
   );
 }
 
-// ── Skenario Kasus Percabangan Tunggal (Single IF) ──────────────────────────────
+// ── Skenario Kasus Percabangan Statemen Tunggal (Single IF) ──────────────────────
 interface SingleScenario {
   id: string;
   label: string;
@@ -387,7 +387,7 @@ function SingleIfScene({ scenario, value }: { scenario: SingleScenario; value: n
   );
 }
 
-// ── Komponen Utama: Definisi Percabangan Tunggal (Single IF) ──────────────────
+// ── Komponen Utama: Definisi Percabangan Statemen Tunggal (Single IF) ─────────
 export default function AnimatedSingleIfDefinition() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [is3DActive, setIs3DActive] = useState(false);
@@ -422,24 +422,25 @@ export default function AnimatedSingleIfDefinition() {
 
   return (
     <div
-      className={`w-full transition-all duration-300 origin-center relative z-0 hover:z-50 subpixel-antialiased ${
+      className={`w-full transition-transform duration-300 ease-out origin-center relative z-0 hover:z-50 antialiased ${
         !isFlipped
-          ? 'cursor-pointer hover:scale-[1.015] sm:hover:scale-[1.02] hover:-translate-y-1.5 hover:shadow-[0_25px_60px_rgba(5,150,105,0.25)] hover:border-emerald-500 hover:ring-2 hover:ring-emerald-400/30'
+          ? 'cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-500 hover:ring-2 hover:ring-emerald-400/40'
           : ''
       }`}
       style={{
         perspective: is3DActive ? 1400 : undefined,
         textRendering: 'optimizeLegibility',
-        WebkitFontSmoothing: 'subpixel-antialiased',
-        MozOsxFontSmoothing: 'auto',
+        WebkitFontSmoothing: 'antialiased',
+        MozOsxFontSmoothing: 'grayscale',
       }}
     >
       <motion.div
-        className="w-full relative subpixel-antialiased"
+        className="w-full relative antialiased"
         style={{
           transformStyle: is3DActive ? 'preserve-3d' : 'flat',
           textRendering: 'optimizeLegibility',
-          WebkitFontSmoothing: 'subpixel-antialiased',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
         }}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
         transition={{ duration: 0.65, type: 'spring', stiffness: 200, damping: 24 }}
@@ -447,11 +448,11 @@ export default function AnimatedSingleIfDefinition() {
       >
         
         {/* ═══════════════════════════════════════════════════════════════════════ */}
-        {/* 1. SISI DEPAN KARTU (GAMBAR 1: DEFINISI AKADEMIK PERCABANGAN TUNGGAL) */}
+        {/* 1. SISI DEPAN KARTU: DEFINISI AKADEMIK PERCABANGAN STATEMEN TUNGGAL   */}
         {/* ═══════════════════════════════════════════════════════════════════════ */}
         <div
           onClick={handleFlipToBack}
-          className={`w-full p-5 md:p-6 bg-emerald-50 dark:bg-slate-950 border-2 border-emerald-500 dark:border-emerald-600 rounded-3xl shadow-md space-y-4 transition-all subpixel-antialiased ${
+          className={`w-full p-5 md:p-6 bg-emerald-50 dark:bg-slate-950 border-2 border-emerald-500 dark:border-emerald-600 rounded-3xl shadow-md space-y-4 transition-all antialiased ${
             isFlipped ? 'pointer-events-none absolute inset-0 opacity-0' : 'relative opacity-100'
           }`}
           style={{
@@ -459,7 +460,8 @@ export default function AnimatedSingleIfDefinition() {
             WebkitBackfaceVisibility: is3DActive ? 'hidden' : 'visible',
             transform: is3DActive ? 'translate3d(0, 0, 1px)' : 'none',
             textRendering: 'optimizeLegibility',
-            WebkitFontSmoothing: 'subpixel-antialiased',
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale',
           }}
         >
           {/* Header Definisi */}
@@ -477,7 +479,7 @@ export default function AnimatedSingleIfDefinition() {
 
           {/* Blockquote Teks Definisi */}
           <blockquote className="text-sm md:text-base text-slate-900 dark:text-slate-100 font-semibold leading-relaxed select-none bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-emerald-200 dark:border-emerald-900 hover:border-emerald-400 transition-colors shadow-xs">
-            &ldquo;<strong className="text-emerald-700 dark:text-emerald-300 font-black text-base md:text-lg underline decoration-emerald-500/40">Percabangan Tunggal (Single Selection)</strong>{' '}
+            &ldquo;<strong className="text-emerald-700 dark:text-emerald-300 font-black text-base md:text-lg underline decoration-emerald-500/40">Percabangan Statemen Tunggal (Single Selection)</strong>{' '}
             adalah struktur kontrol yang hanya memiliki{' '}
             <strong className="text-amber-900 dark:text-amber-300 font-extrabold bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-md border border-amber-400 dark:border-amber-600 inline-block my-0.5 shadow-2xs">
               satu jalur aksi opsional
@@ -499,7 +501,7 @@ export default function AnimatedSingleIfDefinition() {
         {/* 2. SISI BELAKANG KARTU (GAMBAR 2: SIMULASI 2-KOLOM SINGLE IF)        */}
         {/* ═══════════════════════════════════════════════════════════════════════ */}
         <div
-          className={`w-full p-4 md:p-6 bg-emerald-50 dark:bg-slate-950 border-2 border-emerald-400 dark:border-emerald-600 rounded-3xl shadow-2xl space-y-4 transition-all subpixel-antialiased ${
+          className={`w-full p-4 md:p-6 bg-emerald-50 dark:bg-slate-950 border-2 border-emerald-400 dark:border-emerald-600 rounded-3xl shadow-2xl space-y-4 transition-all antialiased ${
             !isFlipped ? 'pointer-events-none absolute inset-0 opacity-0' : 'relative opacity-100'
           }`}
           style={{
@@ -507,7 +509,8 @@ export default function AnimatedSingleIfDefinition() {
             WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg) translate3d(0, 0, 1px)',
             textRendering: 'optimizeLegibility',
-            WebkitFontSmoothing: 'subpixel-antialiased',
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale',
           }}
         >
           
@@ -554,14 +557,14 @@ export default function AnimatedSingleIfDefinition() {
             <div className="lg:col-span-5 flex flex-col justify-between gap-2.5">
               
               {/* 1. Slider Input Interaktif */}
-              <div className="p-3.5 bg-slate-900 rounded-2xl border border-slate-700 shadow-md space-y-2 text-white">
+              <div className="p-3.5 bg-card dark:bg-slate-900 rounded-2xl border-2 border-border/80 dark:border-slate-700 shadow-md space-y-2 text-slate-900 dark:text-white">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-slate-300">Nilai Input:</span>
+                    <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Nilai Input:</span>
                     <span className={`text-sm font-black font-mono px-2.5 py-0.5 rounded-lg border ${
                       isTrue
-                        ? 'bg-emerald-950 border-emerald-400 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.3)]'
-                        : 'bg-slate-800 border-slate-600 text-slate-300'
+                        ? 'bg-emerald-100 dark:bg-emerald-950 border-emerald-500 text-emerald-950 dark:text-emerald-200 shadow-xs'
+                        : 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-300'
                     }`}>
                       {value}{scenario.sliderUnit}
                     </span>
@@ -569,16 +572,16 @@ export default function AnimatedSingleIfDefinition() {
 
                   <button
                     onClick={() => setReplayKey(k => k + 1)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-slate-600 transition-all cursor-pointer shadow-xs"
+                    className="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-600 transition-all cursor-pointer shadow-xs"
                   >
-                    <RefreshCcw className="w-3 h-3 text-emerald-400" />
+                    <RefreshCcw className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                     <span>Ulangi</span>
                   </button>
                 </div>
 
                 {/* Slider track */}
                 <div className="flex items-center gap-2.5 pt-0.5">
-                  <span className="text-[10px] font-mono font-bold text-slate-400">{scenario.sliderMin}{scenario.sliderUnit}</span>
+                  <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400">{scenario.sliderMin}{scenario.sliderUnit}</span>
                   <input
                     type="range"
                     min={scenario.sliderMin}
@@ -588,9 +591,9 @@ export default function AnimatedSingleIfDefinition() {
                       setValue(Number(e.target.value));
                       setReplayKey(k => k + 1);
                     }}
-                    className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-400"
+                    className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                   />
-                  <span className="text-[10px] font-mono font-bold text-slate-400">{scenario.sliderMax}{scenario.sliderUnit}</span>
+                  <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400">{scenario.sliderMax}{scenario.sliderUnit}</span>
                 </div>
               </div>
 
@@ -613,7 +616,7 @@ export default function AnimatedSingleIfDefinition() {
                 </span>
               </div>
 
-              {/* 3. Tiga Pilar Pemetaan Konsep Percabangan Tunggal */}
+              {/* 3. Tiga Pilar Pemetaan Konsep Percabangan Statemen Tunggal */}
               <div className="flex flex-col gap-2 flex-1 justify-between">
                 {/* Pilar 1 */}
                 <div className="p-2.5 rounded-xl border-2 border-amber-300 dark:border-amber-700/80 bg-amber-50/90 dark:bg-amber-950/50 space-y-0.5 shadow-2xs">

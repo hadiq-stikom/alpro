@@ -51,7 +51,7 @@ const ALL_MEETINGS: MeetingInfo[] = [
   { id: 3, title: "Notasi & Penyajian Algoritma", subtitle: "Algoritma Naratif, Flowchart ANSI/ISO & Pseudocode 3 Blok", status: 'ready' },
   { id: 4, title: "Tipe Data, Variabel & I/O Dasar", subtitle: "Prinsip Type Safety, aturan identifier & simulator RAM", status: 'ready' },
   { id: 5, title: "Operator, Ekspresi & Manipulasi Data", subtitle: "Aritmatika, relasional, logika Boolean & manipulasi string", status: 'ready' },
-  { id: 6, title: "Struktur Percabangan Tunggal & Ganda", subtitle: "Kondisi IF & IF-ELSE, evaluasi True/False beranimasi", status: 'ready' },
+  { id: 6, title: "Struktur Percabangan Statemen Tunggal & Ganda", subtitle: "Kondisi IF & IF-ELSE, evaluasi True/False beranimasi", status: 'ready' },
   { id: 7, title: "Percabangan Majemuk & Bersarang", subtitle: "Cascading IF-ELSE IF, Nested IF & Multi-branch selector", status: 'ready' },
   { id: 8, title: "Evaluasi Tengah Semester (UTS)", subtitle: "Ujian komprehensif pilar logika dan kontrol alur", status: 'upcoming' },
   { id: 9, title: "Struktur Perulangan (Looping FOR & WHILE)", subtitle: "Iterasi komputasi dan akumulator data", status: 'upcoming' },

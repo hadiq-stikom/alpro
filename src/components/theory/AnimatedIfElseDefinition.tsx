@@ -2,13 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCcw, Sparkles, Check, X, ArrowRight, ArrowLeft, RotateCw } from 'lucide-react';
+import { RefreshCcw, Sparkles, Check, X, RotateCw, GitMerge, ArrowLeft, ArrowRight } from 'lucide-react';
 
-// ── Karakter Siswa / Pelari Animatif yang Halus ─────────────────────────────────
+// ── Karakter Traveler Animatif yang Halus ───────────────────────────────────────
 function AnimatedTraveler({ walking, direction }: { walking: boolean; direction: 'up' | 'left' | 'right' | 'idle' }) {
   return (
     <div className="relative flex flex-col items-center justify-center select-none pointer-events-none">
-      {/* Bayangan halus di bawah kaki */}
       <motion.div
         animate={walking ? { scale: [1, 0.75, 1], opacity: [0.6, 0.35, 0.6] } : { scale: 1, opacity: 0.5 }}
         transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
@@ -22,12 +21,11 @@ function AnimatedTraveler({ walking, direction }: { walking: boolean; direction:
       >
         <svg width="34" height="48" viewBox="0 0 34 48" fill="none" className="drop-shadow-md">
           {/* Topi Mahasiswa / Rambut */}
-          <ellipse cx="17" cy="10" rx="7.5" ry="4" fill="#0284c7" />
-          <rect x="11.5" y="7" width="11" height="4" rx="2" fill="#0369a1" />
+          <ellipse cx="17" cy="10" rx="7.5" ry="4" fill="#d97706" />
+          <rect x="11.5" y="7" width="11" height="4" rx="2" fill="#b45309" />
 
           {/* Kepala & Wajah */}
           <circle cx="17" cy="13" r="6" fill="#fcd34d" />
-          {/* Mata */}
           {direction !== 'up' && (
             <>
               <circle cx={direction === 'left' ? 14 : direction === 'right' ? 19 : 15.5} cy="12.5" r="1" fill="#1e293b" />
@@ -35,12 +33,12 @@ function AnimatedTraveler({ walking, direction }: { walking: boolean; direction:
             </>
           )}
 
-          {/* Badan / Baju */}
-          <path d="M12 19 C12 18, 22 18, 22 19 L23 30 C23 31, 11 31, 11 30 Z" fill="#3b82f6" />
+          {/* Badan / Baju Kuning Keemasan Amber */}
+          <path d="M12 19 C12 18, 22 18, 22 19 L23 30 C23 31, 11 31, 11 30 Z" fill="#f59e0b" />
           
-          {/* Ransel / Tas Sekolah */}
+          {/* Ransel */}
           {direction === 'up' && (
-            <rect x="13" y="20" width="8" height="9" rx="2" fill="#f97316" stroke="#ea580c" strokeWidth="1" />
+            <rect x="13" y="20" width="8" height="9" rx="2" fill="#0284c7" stroke="#0369a1" strokeWidth="1" />
           )}
 
           {/* Tangan Kiri */}
@@ -72,13 +70,12 @@ function AnimatedTraveler({ walking, direction }: { walking: boolean; direction:
             transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
             stroke="#1e293b" strokeWidth={3.5} strokeLinecap="round"
           />
-          {/* Sepatu Kiri */}
           <motion.circle
             cx={10.5} cy={44} r={2}
             initial={{ cx: 10.5, cy: 44 }}
             animate={walking ? { cx: [10.5, 17, 10.5], cy: [44, 40, 44] } : { cx: 10.5, cy: 44 }}
             transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut' }}
-            fill="#ef4444"
+            fill="#d97706"
           />
 
           {/* Kaki Kanan */}
@@ -89,13 +86,12 @@ function AnimatedTraveler({ walking, direction }: { walking: boolean; direction:
             transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
             stroke="#1e293b" strokeWidth={3.5} strokeLinecap="round"
           />
-          {/* Sepatu Kanan */}
           <motion.circle
             cx={23.5} cy={44} r={2}
             initial={{ cx: 23.5, cy: 44 }}
             animate={walking ? { cx: [23.5, 17, 23.5], cy: [44, 40, 44] } : { cx: 23.5, cy: 44 }}
             transition={{ duration: 0.4, repeat: Infinity, ease: 'easeInOut', delay: 0.2 }}
-            fill="#ef4444"
+            fill="#d97706"
           />
         </svg>
       </motion.div>
@@ -103,8 +99,8 @@ function AnimatedTraveler({ walking, direction }: { walking: boolean; direction:
   );
 }
 
-// ── Tipe Skenario ─────────────────────────────────────────────────────────────
-interface Scenario {
+// ── Definisi Tipe & Data Skenario Percabangan Statemen Ganda (IF-ELSE) ──────────
+interface IfElseScenario {
   id: string;
   label: string;
   condition: string;
@@ -113,68 +109,85 @@ interface Scenario {
   sliderMax: number;
   sliderDefault: number;
   sliderUnit: string;
-  leftLabel: string;  // True path
-  rightLabel: string; // False path
-  leftSub: string;
-  rightSub: string;
-  leftDesc: string;
-  rightDesc: string;
-  leftEmoji: string;
-  rightEmoji: string;
+  
+  // Cabang IF (Saat True)
+  ifActionTitle: string;
+  ifActionDesc: string;
+  ifActionEmoji: string;
+  
+  // Cabang ELSE (Saat False)
+  elseActionTitle: string;
+  elseActionDesc: string;
+  elseActionEmoji: string;
+
+  // Titik Penyatuan (Merge Destination)
+  mergeDestTitle: string;
+  mergeDestDesc: string;
 }
 
-const SCENARIOS: Scenario[] = [
+const IF_ELSE_SCENARIOS: IfElseScenario[] = [
   {
-    id: 'ujian',
-    label: '🎓 Kelulusan Ujian',
+    id: 'kelulusan',
+    label: '🎓 Nilai KKM Kelulusan',
     condition: 'nilai ≥ 75',
     conditionFn: v => v >= 75,
-    sliderMin: 0, sliderMax: 100, sliderDefault: 85, sliderUnit: '',
-    leftLabel: 'LULUS', rightLabel: 'REMEDIAL',
-    leftSub: 'Syarat Terpenuhi', rightSub: 'Perlu Ujian Ulang',
-    leftDesc: 'Nilai memenuhi KKM (≥75) → Berhasil Lulus!',
-    rightDesc: 'Nilai di bawah KKM (<75) → Ikut Remedial.',
-    leftEmoji: '🎉', rightEmoji: '📚',
+    sliderMin: 40, sliderMax: 100, sliderDefault: 82, sliderUnit: '',
+    ifActionTitle: 'POS LULUS',
+    ifActionDesc: 'Nilai ≥ 75 → output("Selamat, Anda LULUS!")',
+    ifActionEmoji: '🎉',
+    elseActionTitle: 'POS REMEDIAL',
+    elseActionDesc: 'Nilai < 75 → output("Ikuti Ujian Remedial")',
+    elseActionEmoji: '📚',
+    mergeDestTitle: 'Cetak Lembar Nilai',
+    mergeDestDesc: 'Kedua cabang menyatu kembali untuk mencetak rapor',
   },
   {
-    id: 'atm',
-    label: '🏧 Tarik Tunai ATM',
-    condition: 'saldo ≥ Rp50rb',
-    conditionFn: v => v >= 50,
-    sliderMin: 0, sliderMax: 100, sliderDefault: 70, sliderUnit: ' rb',
-    leftLabel: 'CAIRKAN', rightLabel: 'DITOLAK',
-    leftSub: 'Saldo Mencukupi', rightSub: 'Saldo Kurang',
-    leftDesc: 'Saldo mencukupi → Uang tunai keluar.',
-    rightDesc: 'Saldo tidak cukup → Transaksi dibatalkan.',
-    leftEmoji: '💵', rightEmoji: '🚫',
+    id: 'tiket',
+    label: '🎟️ Loket Tiket Bioskop',
+    condition: 'usia ≥ 12',
+    conditionFn: v => v >= 12,
+    sliderMin: 3, sliderMax: 65, sliderDefault: 16, sliderUnit: ' thn',
+    ifActionTitle: 'TIKET DEWASA',
+    ifActionDesc: 'Usia ≥ 12 → harga = Rp50.000 ("Dewasa")',
+    ifActionEmoji: '🧑',
+    elseActionTitle: 'TIKET ANAK',
+    elseActionDesc: 'Usia < 12 → harga = Rp25.000 ("Anak-anak")',
+    elseActionEmoji: '🧒',
+    mergeDestTitle: 'Pintu Masuk Teater',
+    mergeDestDesc: 'Kedua jalur membawa tiket menuju pintu teater',
   },
   {
-    id: 'parkir',
-    label: '🚗 Tarif Parkir Kilat',
-    condition: 'durasi ≤ 30 mnt',
-    conditionFn: v => v <= 30,
-    sliderMin: 5, sliderMax: 90, sliderDefault: 20, sliderUnit: ' mnt',
-    leftLabel: 'GRATIS', rightLabel: 'BAYAR',
-    leftSub: 'Grace Period', rightSub: 'Tarif Normal',
-    leftDesc: 'Durasi ≤ 30 menit → Bebas biaya parkir.',
-    rightDesc: 'Durasi > 30 menit → Wajib bayar tarif parkir.',
-    leftEmoji: '🆓', rightEmoji: '💳',
+    id: 'saldo',
+    label: '🏧 Penarikan Tunai ATM',
+    condition: 'saldo ≥ 200',
+    conditionFn: v => v >= 200,
+    sliderMin: 50, sliderMax: 500, sliderDefault: 350, sliderUnit: ' rb',
+    ifActionTitle: 'DISPENSER UANG',
+    ifActionDesc: 'Saldo cukup → Uang tunai Rp200.000 keluar',
+    ifActionEmoji: '💵',
+    elseActionTitle: 'TOLAK TRANSAKSI',
+    elseActionDesc: 'Saldo kurang → output("Saldo Tidak Mencukupi")',
+    elseActionEmoji: '🚫',
+    mergeDestTitle: 'Keluarkan Kartu ATM',
+    mergeDestDesc: 'Baik berhasil atau gagal, kartu ATM selalu dikembalikan',
   },
 ];
 
-type Phase = 0 | 1 | 2 | 3 | 4;
+type IfElsePhase = 0 | 1 | 2 | 3 | 4 | 5;
 
-function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number }) {
-  const [phase, setPhase] = useState<Phase>(0);
+// ── Canvas Simulasi Percabangan Statemen Ganda (Dual Branch + Merge Node) ───────
+function IfElseScene({ scenario, value }: { scenario: IfElseScenario; value: number }) {
+  const [phase, setPhase] = useState<IfElsePhase>(0);
   const isTrue = scenario.conditionFn(value);
 
   const play = () => {
     setPhase(0);
-    const t1 = setTimeout(() => setPhase(1), 150);
-    const t2 = setTimeout(() => setPhase(2), 1200);
-    const t3 = setTimeout(() => setPhase(3), 2200);
-    const t4 = setTimeout(() => setPhase(4), 3000);
-    return () => [t1, t2, t3, t4].forEach(clearTimeout);
+    const t1 = setTimeout(() => setPhase(1), 150); // jalan ke diamond keputusan
+    const t2 = setTimeout(() => setPhase(2), 1100); // evaluasi kondisi diamond
+    const t3 = setTimeout(() => setPhase(3), 2100); // hasil boolean ditentukan
+    const t4 = setTimeout(() => setPhase(4), 2800); // traveler masuk ke Pos IF atau Pos ELSE
+    const t5 = setTimeout(() => setPhase(5), 3700); // kedua jalur menyatu ke Merge Node
+    return () => [t1, t2, t3, t4, t5].forEach(clearTimeout);
   };
 
   useEffect(() => {
@@ -183,125 +196,165 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, scenario.id]);
 
-  const charX = phase <= 3 ? '50%' : isTrue ? '19%' : '81%';
-  const charY = phase === 0 ? '88%' : phase === 1 ? '54%' : '54%';
-  const charDirection = phase === 1 ? 'up' : phase === 4 ? (isTrue ? 'left' : 'right') : 'idle';
+  // Posisi Koordinat Karakter:
+  // Phase 0: bawah (50%, 88%)
+  // Phase 1..3: di depan diamond keputusan (50%, 56%)
+  // Phase 4:
+  //   - Jika True: di pos cabang kiri (22%, 52%)
+  //   - Jika False: di pos cabang kanan (78%, 52%)
+  // Phase 5:
+  //   - Baik True maupun False berkumpul di titik penyatuan (Merge Node) di atas (50%, 18%)
+  const charX = phase <= 3 ? '50%'
+    : phase === 4 ? (isTrue ? '22%' : '78%')
+    : '50%';
+
+  const charY = phase === 0 ? '88%'
+    : phase <= 3 ? '56%'
+    : phase === 4 ? '52%'
+    : '18%';
+
+  const charDirection = phase === 1 ? 'up'
+    : phase === 4 ? (isTrue ? 'left' : 'right')
+    : phase === 5 ? (isTrue ? 'right' : 'left')
+    : 'idle';
 
   return (
     <div className="relative w-full h-full min-h-[380px] rounded-3xl overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border border-slate-700/80 shadow-2xl flex flex-col justify-between">
       
-      {/* ── Background Grid & Efek Suasana ───────────────────────────────── */}
+      {/* Background Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:16px_16px] opacity-20 pointer-events-none" />
       
-      {/* ── Rancang Jalan (Asphalt Crossroad) ─────────────────────────────── */}
-      {/* Jalan Vertikal (Dari bawah menuju tengah) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 md:w-24 bg-slate-800 border-x-2 border-slate-600/80 shadow-inner rounded-t-xl" style={{ height: '48%' }}>
-        {/* Garis marka putus-putus vertikal */}
-        <div className="absolute inset-y-0 left-1/2 -translate-x-0.5 flex flex-col justify-around py-3">
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className="w-1 h-5 bg-amber-400/70 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.5)]" />
+      {/* ── Jalan Masuk dari Bawah ke Diamond ──────────────────────────────── */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 md:w-20 bg-slate-800 border-x-2 border-slate-600/80 shadow-inner rounded-t-xl" style={{ height: '42%' }}>
+        <div className="absolute inset-y-0 left-1/2 -translate-x-0.5 flex flex-col justify-around py-2">
+          {[0, 1, 2].map(i => (
+            <div key={i} className="w-1 h-4 bg-amber-400/60 rounded-full" />
           ))}
         </div>
       </div>
 
-      {/* Jalan Horizontal (Melintang dari kiri ke kanan di persimpangan) */}
-      <div className="absolute left-0 right-0 top-[54%] -translate-y-1/2 h-20 md:h-24 bg-slate-800 border-y-2 border-slate-600/80 shadow-inner">
-        {/* Garis marka kiri (True path) */}
-        <div className={`absolute top-1/2 -translate-y-1/2 left-3 md:left-4 flex items-center gap-2 md:gap-3 transition-opacity duration-500 ${phase >= 3 && isTrue ? 'opacity-100' : 'opacity-30'}`} style={{ width: 'calc(50% - 2.5rem)' }}>
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className="h-1 flex-1 bg-emerald-400 rounded-full shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-          ))}
+      {/* ── Jalur Cabang IF (Kiri - Emerald) ─────────────────────────────────── */}
+      <div className={`absolute top-[28%] bottom-[38%] left-6 md:left-8 w-28 md:w-32 border-l-2 border-y-2 rounded-l-3xl transition-all duration-500 pointer-events-none ${
+        phase >= 3 && isTrue
+          ? 'border-emerald-400 bg-emerald-950/25 shadow-[0_0_20px_rgba(16,185,129,0.3)]'
+          : 'border-slate-700/40 bg-transparent'
+      }`}>
+        <div className="absolute -top-2.5 right-2 text-emerald-400 text-[10px] font-bold font-mono">
+          {isTrue && phase >= 4 ? 'Menyatu ➔' : ''}
         </div>
-
-        {/* Garis marka kanan (False path) */}
-        <div className={`absolute top-1/2 -translate-y-1/2 right-3 md:right-4 flex items-center justify-end gap-2 md:gap-3 transition-opacity duration-500 ${phase >= 3 && !isTrue ? 'opacity-100' : 'opacity-30'}`} style={{ width: 'calc(50% - 2.5rem)' }}>
-          {[0, 1, 2, 3].map(i => (
-            <div key={i} className="h-1 flex-1 bg-rose-400 rounded-full shadow-[0_0_10px_rgba(251,113,133,0.8)]" />
-          ))}
+        <div className="absolute -bottom-2.5 right-2 text-emerald-400 text-[10px] font-bold font-mono">
+          {isTrue && phase >= 3 ? '← Cabang IF' : ''}
         </div>
       </div>
 
-      {/* Titik Tengah Persimpangan (Intersection Hub) */}
-      <div className="absolute top-[54%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 md:w-28 md:h-28 bg-slate-750 rounded-2xl border-2 border-slate-600/60 shadow-lg flex items-center justify-center">
-        {/* Glow lingkaran sensor di persimpangan */}
+      {/* ── Jalur Cabang ELSE (Kanan - Rose) ─────────────────────────────────── */}
+      <div className={`absolute top-[28%] bottom-[38%] right-6 md:right-8 w-28 md:w-32 border-r-2 border-y-2 rounded-r-3xl transition-all duration-500 pointer-events-none ${
+        phase >= 3 && !isTrue
+          ? 'border-rose-400 bg-rose-950/25 shadow-[0_0_20px_rgba(244,63,94,0.3)]'
+          : 'border-slate-700/40 bg-transparent'
+      }`}>
+        <div className="absolute -top-2.5 left-2 text-rose-400 text-[10px] font-bold font-mono">
+          {(!isTrue) && phase >= 4 ? '⬅ Menyatu' : ''}
+        </div>
+        <div className="absolute -bottom-2.5 left-2 text-rose-400 text-[10px] font-bold font-mono">
+          {(!isTrue) && phase >= 3 ? 'Cabang ELSE →' : ''}
+        </div>
+      </div>
+
+      {/* ── Titik Penyatuan Kembali (Merge Node / Lingkaran Konektor) ──────── */}
+      <div className="absolute top-[16%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
         <motion.div
           animate={{
-            scale: phase === 2 ? [1, 1.25, 1] : 1,
-            opacity: phase === 2 ? [0.4, 0.9, 0.4] : 0.2,
+            scale: phase === 5 ? [1, 1.15, 1] : 1,
+            boxShadow: phase === 5 ? '0 0 25px rgba(2,132,199,0.7)' : '0 0 0px transparent',
           }}
-          transition={{ duration: 1, repeat: phase === 2 ? Infinity : 0 }}
-          className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-amber-400/20 border border-amber-400/50"
-        />
+          transition={{ duration: 0.5 }}
+          className={`px-3 py-1.5 rounded-2xl border-2 flex items-center gap-1.5 backdrop-blur-md transition-all duration-300 ${
+            phase === 5
+              ? 'bg-sky-950/95 border-sky-400 text-sky-100 ring-2 ring-sky-500/50'
+              : 'bg-slate-900/80 border-slate-700 text-slate-400'
+          }`}
+        >
+          <GitMerge className="w-3.5 h-3.5 text-sky-400 rotate-180" />
+          <div className="text-left font-mono">
+            <span className="text-[10px] font-black uppercase block tracking-wider text-sky-300">Merge Node</span>
+            <span className="text-[9px] font-medium block truncate max-w-[120px]">{scenario.mergeDestTitle}</span>
+          </div>
+        </motion.div>
       </div>
 
-      {/* ── Gerbang / Tujuan Kiri (JALUR YA / TRUE) ────────────────────────── */}
-      <div className="absolute left-2 md:left-4 top-[54%] -translate-y-1/2 z-20">
+      {/* ── Pos Aksi IF (KIRI - Dijalankan Saat True) ───────────────────────── */}
+      <div className="absolute left-2 md:left-4 top-[52%] -translate-y-1/2 z-20">
         <motion.div
           animate={{
-            scale: phase === 4 && isTrue ? [1, 1.08, 1] : 1,
-            boxShadow: phase >= 3 && isTrue ? '0 0 25px rgba(16,185,129,0.5)' : '0 0 0px transparent',
+            scale: phase === 4 && isTrue ? [1, 1.1, 1] : 1,
+            boxShadow: phase >= 3 && isTrue ? '0 0 30px rgba(16,185,129,0.6)' : '0 0 0px transparent',
           }}
           transition={{ duration: 0.5 }}
           className={`flex flex-col items-center p-2.5 md:p-3 rounded-2xl border-2 transition-all duration-300 backdrop-blur-md ${
             phase >= 3 && isTrue
-              ? 'bg-emerald-950/90 border-emerald-400 ring-2 ring-emerald-500/50'
-              : 'bg-slate-900/85 border-slate-700 opacity-60'
+              ? 'bg-emerald-950/95 border-emerald-400 ring-2 ring-emerald-500/50'
+              : 'bg-slate-900/85 border-slate-700 opacity-40'
           }`}
         >
           <div className="flex items-center gap-1 mb-0.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className={`w-1.5 h-1.5 rounded-full ${isTrue ? 'bg-emerald-400 animate-pulse' : 'bg-slate-500'}`} />
             <span className="text-[9px] font-mono font-extrabold uppercase tracking-wider text-emerald-300">
-              Ya (True)
+              Jalur IF (True)
             </span>
           </div>
-          <span className="text-2xl md:text-3xl my-0.5 filter drop-shadow">{scenario.leftEmoji}</span>
-          <span className="text-xs md:text-sm font-black text-white tracking-wide">{scenario.leftLabel}</span>
-          <span className="text-[8px] md:text-[9px] font-semibold text-emerald-200/80">{scenario.leftSub}</span>
+          <span className="text-2xl md:text-3xl my-0.5 filter drop-shadow">{scenario.ifActionEmoji}</span>
+          <span className="text-xs md:text-sm font-black text-white tracking-wide">{scenario.ifActionTitle}</span>
+          <span className="text-[8px] md:text-[9px] font-semibold text-emerald-200/80 max-w-[110px] text-center truncate">
+            Aksi A Dieksekusi
+          </span>
         </motion.div>
       </div>
 
-      {/* ── Gerbang / Tujuan Kanan (JALUR TIDAK / FALSE) ───────────────────── */}
-      <div className="absolute right-2 md:right-4 top-[54%] -translate-y-1/2 z-20">
+      {/* ── Pos Aksi ELSE (KANAN - Dijalankan Saat False) ────────────────────── */}
+      <div className="absolute right-2 md:right-4 top-[52%] -translate-y-1/2 z-20">
         <motion.div
           animate={{
-            scale: phase === 4 && !isTrue ? [1, 1.08, 1] : 1,
-            boxShadow: phase >= 3 && !isTrue ? '0 0 25px rgba(244,63,94,0.5)' : '0 0 0px transparent',
+            scale: phase === 4 && !isTrue ? [1, 1.1, 1] : 1,
+            boxShadow: phase >= 3 && !isTrue ? '0 0 30px rgba(244,63,94,0.6)' : '0 0 0px transparent',
           }}
           transition={{ duration: 0.5 }}
           className={`flex flex-col items-center p-2.5 md:p-3 rounded-2xl border-2 transition-all duration-300 backdrop-blur-md ${
             phase >= 3 && !isTrue
-              ? 'bg-rose-950/90 border-rose-400 ring-2 ring-rose-500/50'
-              : 'bg-slate-900/85 border-slate-700 opacity-60'
+              ? 'bg-rose-950/95 border-rose-400 ring-2 ring-rose-500/50'
+              : 'bg-slate-900/85 border-slate-700 opacity-40'
           }`}
         >
           <div className="flex items-center gap-1 mb-0.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-400 animate-pulse" />
+            <span className={`w-1.5 h-1.5 rounded-full ${!isTrue ? 'bg-rose-400 animate-pulse' : 'bg-slate-500'}`} />
             <span className="text-[9px] font-mono font-extrabold uppercase tracking-wider text-rose-300">
-              Tidak (False)
+              Jalur ELSE (False)
             </span>
           </div>
-          <span className="text-2xl md:text-3xl my-0.5 filter drop-shadow">{scenario.rightEmoji}</span>
-          <span className="text-xs md:text-sm font-black text-white tracking-wide">{scenario.rightLabel}</span>
-          <span className="text-[8px] md:text-[9px] font-semibold text-rose-200/80">{scenario.rightSub}</span>
+          <span className="text-2xl md:text-3xl my-0.5 filter drop-shadow">{scenario.elseActionEmoji}</span>
+          <span className="text-xs md:text-sm font-black text-white tracking-wide">{scenario.elseActionTitle}</span>
+          <span className="text-[8px] md:text-[9px] font-semibold text-rose-200/80 max-w-[110px] text-center truncate">
+            Aksi B Dieksekusi
+          </span>
         </motion.div>
       </div>
 
-      {/* ── Papan Kondisi di Atas Persimpangan ─────────────────────────────── */}
-      <div className="absolute top-3 md:top-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center">
+      {/* ── Diamond Keputusan di Tengah (Center Diamond Decision Hub) ──────── */}
+      <div className="absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center">
         <motion.div
           animate={{
-            scale: phase === 2 ? [1, 1.06, 1] : 1,
+            scale: phase === 2 ? [1, 1.08, 1] : 1,
             borderColor: phase === 2 ? '#f59e0b' : phase >= 3 ? (isTrue ? '#10b981' : '#f43f5e') : '#64748b',
             boxShadow: phase === 2
-              ? '0 0 30px rgba(245,158,11,0.6)'
+              ? '0 0 25px rgba(245,158,11,0.6)'
               : phase >= 3
               ? isTrue
-                ? '0 0 30px rgba(16,185,129,0.7)'
-                : '0 0 30px rgba(244,63,94,0.7)'
+                ? '0 0 25px rgba(16,185,129,0.7)'
+                : '0 0 25px rgba(244,63,94,0.7)'
               : '0 4px 15px rgba(0,0,0,0.5)',
           }}
           transition={{ duration: 0.4 }}
-          className={`px-4 py-2 rounded-2xl border-2 transition-all duration-400 backdrop-blur-lg flex flex-col items-center text-center ${
+          className={`px-3.5 py-2 rounded-2xl border-2 transition-all duration-400 backdrop-blur-lg flex flex-col items-center text-center ${
             phase >= 3
               ? isTrue
                 ? 'bg-emerald-950/95 border-emerald-400 text-white'
@@ -311,9 +364,9 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
               : 'bg-slate-900/95 border-slate-600 text-slate-200'
           }`}
         >
-          <div className="flex items-center gap-1.5 text-[9px] font-mono font-bold tracking-wider opacity-80 uppercase mb-0.5">
+          <div className="flex items-center gap-1 text-[9px] font-mono font-bold tracking-wider opacity-80 uppercase mb-0.5">
             <Sparkles className="w-3 h-3 text-amber-400" />
-            <span>Papan Keputusan (Kondisi)</span>
+            <span>Kondisi Boolean:</span>
           </div>
 
           <div className="font-mono font-black text-xs md:text-sm tracking-wide text-white">
@@ -324,7 +377,7 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
           <div className="mt-1 flex items-center justify-center">
             {phase === 2 && (
               <span className="text-[10px] font-bold text-amber-400 flex items-center gap-1 animate-pulse font-mono">
-                Mengevaluasi input ({value}{scenario.sliderUnit})…
+                Evaluasi ({value}{scenario.sliderUnit})…
               </span>
             )}
             {phase >= 3 && (
@@ -338,34 +391,28 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
                 }`}
               >
                 {isTrue ? <Check className="w-3 h-3 stroke-[3]" /> : <X className="w-3 h-3 stroke-[3]" />}
-                {isTrue ? 'HASIL: TRUE (Benar)' : 'HASIL: FALSE (Salah)'}
+                <span>{isTrue ? 'HASIL: TRUE' : 'HASIL: FALSE'}</span>
               </motion.span>
-            )}
-            {phase < 2 && (
-              <span className="text-[9px] text-slate-400 font-mono">Menunggu traveler mendekat</span>
             )}
           </div>
         </motion.div>
-
-        {/* Tiang Papan */}
-        <div className="w-1.5 h-6 bg-gradient-to-b from-slate-600 to-slate-800 shadow-md rounded-b" />
       </div>
 
-      {/* ── Petunjuk Panah Jalan Aktif ────────────────────────────────────── */}
+      {/* ── Petunjuk Panah Belok Interaktif ───────────────────────────────── */}
       <AnimatePresence>
-        {phase >= 3 && (
+        {phase === 3 && (
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className={`absolute top-[54%] -translate-y-1/2 flex items-center gap-1 font-mono font-black text-[10px] md:text-xs px-2.5 py-1 rounded-full z-10 shadow-lg ${
+            className={`absolute top-[48%] flex items-center gap-1 font-mono font-black text-[10px] px-2.5 py-1 rounded-full z-30 shadow-lg ${
               isTrue
-                ? 'left-[35%] bg-emerald-500 text-slate-950 animate-bounce'
-                : 'right-[35%] bg-rose-500 text-slate-950 animate-bounce'
+                ? 'left-[32%] bg-emerald-500 text-slate-950 animate-bounce'
+                : 'right-[32%] bg-rose-500 text-slate-950 animate-bounce'
             }`}
           >
             {isTrue ? <ArrowLeft className="w-3.5 h-3.5" /> : null}
-            <span>{isTrue ? 'PILIH KIRI' : 'PILIH KANAN'}</span>
+            <span>{isTrue ? 'PILIH JALUR IF' : 'PILIH JALUR ELSE'}</span>
             {!isTrue ? <ArrowRight className="w-3.5 h-3.5" /> : null}
           </motion.div>
         )}
@@ -380,14 +427,14 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
           y: '-50%',
         }}
         transition={{
-          duration: phase === 1 ? 1.05 : phase === 4 ? 1.0 : 0.4,
+          duration: phase === 1 ? 0.95 : phase === 4 ? 0.75 : phase === 5 ? 0.9 : 0.35,
           ease: [0.25, 1, 0.5, 1],
         }}
         className="absolute z-30"
         style={{ left: '50%', top: '88%', transform: 'translate(-50%, -50%)' }}
       >
         <AnimatedTraveler
-          walking={phase === 1 || phase === 4}
+          walking={phase === 1 || phase === 4 || phase === 5}
           direction={charDirection}
         />
       </motion.div>
@@ -406,19 +453,26 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
                 ? 'bg-slate-900/90 border-slate-700 text-slate-200'
                 : phase === 2
                 ? 'bg-amber-950/90 border-amber-500/80 text-amber-200'
-                : phase >= 3 && isTrue
-                ? 'bg-emerald-950/95 border-emerald-500 text-emerald-100'
-                : 'bg-rose-950/95 border-rose-500 text-rose-100'
+                : phase === 3
+                ? isTrue
+                  ? 'bg-emerald-950/95 border-emerald-500 text-emerald-100'
+                  : 'bg-rose-950/95 border-rose-500 text-rose-100'
+                : phase === 4
+                ? isTrue
+                  ? 'bg-emerald-950/95 border-emerald-500 text-emerald-100'
+                  : 'bg-rose-950/95 border-rose-500 text-rose-100'
+                : 'bg-sky-950/95 border-sky-500 text-sky-100'
             }`}
           >
-            {phase <= 1 && '① Input masuk: Traveler berjalan menuju titik persimpangan…'}
-            {phase === 2 && `② Evaluasi: Memeriksa nilai (${value}${scenario.sliderUnit}) terhadap "${scenario.condition}"…`}
+            {phase <= 1 && `① Input masuk (${value}${scenario.sliderUnit}): Traveler berjalan menuju pos evaluasi IF-ELSE…`}
+            {phase === 2 && `② Evaluasi Kondisi: Memeriksa apakah (${value}${scenario.sliderUnit}) memenuhi "${scenario.condition}"…`}
             {phase === 3 && (isTrue
-              ? `③ TRUE! Kondisi terpenuhi → Bersiap ambil JALUR KIRI (${scenario.leftLabel}).`
-              : `③ FALSE! Kondisi tidak terpenuhi → Bersiap ambil JALUR KANAN (${scenario.rightLabel}).`)}
+              ? `③ TRUE! Kondisi terpenuhi → Mengambil Cabang IF (Jalur Kiri).`
+              : `③ FALSE! Kondisi tidak terpenuhi → Mengambil Cabang ELSE (Jalur Kanan).`)}
             {phase === 4 && (isTrue
-              ? `④ ${scenario.leftDesc}`
-              : `④ ${scenario.rightDesc}`)}
+              ? `④ Mengeksekusi Aksi IF: ${scenario.ifActionDesc}`
+              : `④ Mengeksekusi Aksi ELSE: ${scenario.elseActionDesc}`)}
+            {phase === 5 && `⑤ Penyatuan Alur (Merge): Kedua jalur selesai dan menyatu di "${scenario.mergeDestTitle}".`}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -427,19 +481,19 @@ function CrossroadScene({ scenario, value }: { scenario: Scenario; value: number
   );
 }
 
-// ── Komponen Utama dengan Desain 2-Kolom Split Widescreen ────────────────────
-export default function AnimatedBranchingDefinition() {
+// ── Komponen Utama dengan Desain Kartu Flip Berdimensi Ganda ─────────────────
+export default function AnimatedIfElseDefinition() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [is3DActive, setIs3DActive] = useState(false);
-  const [scenarioId, setScenarioId] = useState('ujian');
-  const [value, setValue] = useState(85);
+  const [scenarioId, setScenarioId] = useState('kelulusan');
+  const [value, setValue] = useState(82);
   const [replayKey, setReplayKey] = useState(0);
 
-  const scenario = SCENARIOS.find(s => s.id === scenarioId)!;
+  const scenario = IF_ELSE_SCENARIOS.find(s => s.id === scenarioId)!;
   const isTrue = scenario.conditionFn(value);
 
   const handleScenarioChange = (id: string) => {
-    const sc = SCENARIOS.find(s => s.id === id)!;
+    const sc = IF_ELSE_SCENARIOS.find(s => s.id === id)!;
     setScenarioId(id);
     setValue(sc.sliderDefault);
     setReplayKey(k => k + 1);
@@ -464,7 +518,7 @@ export default function AnimatedBranchingDefinition() {
     <div
       className={`w-full transition-transform duration-300 ease-out origin-center relative z-0 hover:z-50 antialiased ${
         !isFlipped
-          ? 'cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-500 hover:ring-2 hover:ring-sky-400/40'
+          ? 'cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500 hover:ring-2 hover:ring-amber-400/40'
           : ''
       }`}
       style={{
@@ -488,11 +542,11 @@ export default function AnimatedBranchingDefinition() {
       >
         
         {/* ═══════════════════════════════════════════════════════════════════════ */}
-        {/* 1. SISI DEPAN KARTU (GAMBAR 1: DEFINISI AKADEMIK RESMI)              */}
+        {/* 1. SISI DEPAN KARTU: DEFINISI AKADEMIK RESMI PERCABANGAN STATEMEN GANDA */}
         {/* ═══════════════════════════════════════════════════════════════════════ */}
         <div
           onClick={handleFlipToBack}
-          className={`w-full p-5 md:p-6 bg-sky-50 dark:bg-slate-950 border-2 border-sky-400 dark:border-sky-600 rounded-3xl shadow-md space-y-4 transition-all antialiased ${
+          className={`w-full p-5 md:p-6 bg-amber-50 dark:bg-slate-950 border-2 border-amber-400 dark:border-amber-600 rounded-3xl shadow-md space-y-4 transition-all antialiased ${
             isFlipped ? 'pointer-events-none absolute inset-0 opacity-0' : 'relative opacity-100'
           }`}
           style={{
@@ -506,43 +560,43 @@ export default function AnimatedBranchingDefinition() {
         >
           {/* Header Definisi */}
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-sky-800 dark:text-sky-300 font-extrabold text-xs uppercase tracking-wider font-mono">
-              <Sparkles className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+            <div className="flex items-center gap-2 text-amber-900 dark:text-amber-300 font-extrabold text-xs uppercase tracking-wider font-mono">
+              <Sparkles className="w-4 h-4 text-amber-600 dark:text-amber-400" />
               <span>Definisi Akademik Resmi:</span>
             </div>
 
-            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-sky-100 hover:bg-sky-200 dark:bg-sky-900 dark:hover:bg-sky-800 text-sky-900 dark:text-sky-100 border border-sky-300 dark:border-sky-700 shadow-sm animate-pulse">
-              <RotateCw className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-              <span>Klik untuk Buka Analogi</span>
+            <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/60 dark:hover:bg-amber-800 text-amber-950 dark:text-amber-100 border border-amber-300 dark:border-amber-700 shadow-sm animate-pulse">
+              <RotateCw className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>Klik untuk Buka Analogi &amp; Animasi</span>
             </div>
           </div>
 
           {/* Blockquote Teks Definisi */}
-          <blockquote className="text-sm md:text-base text-slate-900 dark:text-slate-100 font-semibold leading-relaxed select-none bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-sky-200 dark:border-sky-900 hover:border-sky-400 transition-colors shadow-xs">
-            &ldquo;<strong className="text-sky-700 dark:text-sky-300 font-black text-base md:text-lg underline decoration-sky-500/40">Struktur Percabangan</strong>{' '}
-            (Selection Structure) adalah konstruksi algoritma yang memungkinkan program untuk{' '}
-            <strong className="text-emerald-900 dark:text-emerald-300 font-extrabold bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-md border border-emerald-400 dark:border-emerald-600 inline-block my-0.5 shadow-2xs">
-              mengevaluasi sebuah kondisi boolean
+          <blockquote className="text-sm md:text-base text-slate-900 dark:text-slate-100 font-semibold leading-relaxed select-none bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-amber-200 dark:border-amber-900 hover:border-amber-400 transition-colors shadow-xs">
+            &ldquo;<strong className="text-amber-700 dark:text-amber-300 font-black text-base md:text-lg underline decoration-amber-500/40">Percabangan Statemen Ganda (Dual Selection / IF-ELSE)</strong>{' '}
+            adalah struktur kontrol algoritma yang menyediakan{' '}
+            <strong className="text-emerald-950 dark:text-emerald-200 font-extrabold bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-md border border-emerald-400 dark:border-emerald-600 inline-block my-0.5 shadow-2xs">
+              dua jalur aksi yang saling eksklusif
+            </strong>:{' '}
+            jalur pertama (IF/then) dieksekusi saat kondisi True, dan jalur kedua (ELSE) dieksekusi saat kondisi False, sehingga{' '}
+            <strong className="text-cyan-950 dark:text-cyan-200 font-extrabold bg-cyan-100 dark:bg-cyan-950 px-2 py-0.5 rounded-md border border-cyan-400 dark:border-cyan-600 inline-block my-0.5 shadow-2xs">
+              selalu ada tepat satu jalur yang dieksekusi
             </strong>{' '}
-            dan — berdasarkan hasil evaluasi tersebut (True atau False) —{' '}
-            <strong className="text-amber-900 dark:text-amber-300 font-extrabold bg-amber-100 dark:bg-amber-950 px-2 py-0.5 rounded-md border border-amber-400 dark:border-amber-600 inline-block my-0.5 shadow-2xs">
-              memilih salah satu dari jalur eksekusi yang telah didefinisikan
-            </strong>,{' '}
-            sehingga algoritma mampu berperilaku berbeda untuk input yang berbeda.&rdquo;
+            tanpa pengecualian.&rdquo;
           </blockquote>
 
           {/* Petunjuk Membalik */}
-          <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-sky-700 dark:text-sky-300 pt-0.5">
-            <Sparkles className="w-3.5 h-3.5 text-sky-500" />
-            <span>Klik kartu untuk membalik &amp; melihat simulasi analogi keputusan</span>
+          <div className="flex items-center justify-center gap-1.5 text-xs font-bold text-amber-800 dark:text-amber-300 pt-0.5">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>Klik kartu untuk membalik &amp; melihat simulasi analogi 2 jalur + titik temu (Merge)</span>
           </div>
         </div>
 
         {/* ═══════════════════════════════════════════════════════════════════════ */}
-        {/* 2. SISI BELAKANG KARTU (GAMBAR 2: DESAIN 2-KOLOM SPLIT WIDESCREEN)   */}
+        {/* 2. SISI BELAKANG KARTU: SIMULASI 2-KOLOM SPLIT WIDESCREEN             */}
         {/* ═══════════════════════════════════════════════════════════════════════ */}
         <div
-          className={`w-full p-4 md:p-6 bg-sky-50 dark:bg-slate-950 border-2 border-sky-400 dark:border-sky-600 rounded-3xl shadow-2xl space-y-4 transition-all antialiased ${
+          className={`w-full p-4 md:p-6 bg-amber-50 dark:bg-slate-950 border-2 border-amber-400 dark:border-amber-600 rounded-3xl shadow-2xl space-y-4 transition-all antialiased ${
             !isFlipped ? 'pointer-events-none absolute inset-0 opacity-0' : 'relative opacity-100'
           }`}
           style={{
@@ -555,19 +609,19 @@ export default function AnimatedBranchingDefinition() {
           }}
         >
           
-          {/* Header Sisi Belakang: Selector Studi Kasus + Tombol Balik */}
-          <div className="flex flex-wrap items-center justify-between gap-2.5 pb-2 border-b border-sky-200 dark:border-sky-800/80">
+          {/* Header Sisi Belakang: Selector Kasus + Tombol Balik */}
+          <div className="flex flex-wrap items-center justify-between gap-2.5 pb-2 border-b border-amber-200 dark:border-amber-800/80">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200">Pilih Studi Kasus:</span>
+              <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200">Pilih Kasus IF-ELSE:</span>
               <div className="flex flex-wrap gap-1.5 md:gap-2">
-                {SCENARIOS.map(sc => (
+                {IF_ELSE_SCENARIOS.map(sc => (
                   <button
                     key={sc.id}
                     onClick={() => handleScenarioChange(sc.id)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
                       scenarioId === sc.id
-                        ? 'bg-sky-600 text-white shadow-md shadow-sky-500/30 ring-2 ring-sky-400'
-                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-sky-50 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
+                        ? 'bg-amber-600 text-white shadow-md shadow-amber-500/30 ring-2 ring-amber-400'
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-amber-50 dark:hover:bg-slate-700 border border-slate-300 dark:border-slate-700'
                     }`}
                   >
                     {sc.label}
@@ -579,22 +633,22 @@ export default function AnimatedBranchingDefinition() {
             {/* Tombol Balik ke Definisi */}
             <button
               onClick={handleFlipToFront}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white shadow-md shadow-sky-500/20 transition-all cursor-pointer shrink-0"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white shadow-md shadow-amber-500/20 transition-all cursor-pointer shrink-0"
             >
               <RotateCw className="w-3.5 h-3.5" />
               <span>Balik ke Definisi</span>
             </button>
           </div>
 
-          {/* ── 2-Column Split Layout: Canvas di Kiri & Kontrol/Keterangan di Kanan ── */}
+          {/* ── 2-Column Split Layout: Canvas di Kiri & Kontrol di Kanan ─────── */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
             
-            {/* KOLOM KIRI: Canvas Simulasi Persimpangan Jalan */}
+            {/* KOLOM KIRI: Canvas Simulasi 2 Jalur Saling Eksklusif */}
             <div className="lg:col-span-7 flex flex-col min-h-[380px]">
-              <CrossroadScene key={replayKey} scenario={scenario} value={value} />
+              <IfElseScene key={replayKey} scenario={scenario} value={value} />
             </div>
 
-            {/* KOLOM KANAN: Panel Kontrol Input & 3 Pilar Pemetaan Definisi */}
+            {/* KOLOM KANAN: Panel Kontrol Input & 3 Pilar Konsep IF-ELSE */}
             <div className="lg:col-span-5 flex flex-col justify-between gap-2.5">
               
               {/* 1. Slider Input Interaktif */}
@@ -615,7 +669,7 @@ export default function AnimatedBranchingDefinition() {
                     onClick={() => setReplayKey(k => k + 1)}
                     className="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-600 transition-all cursor-pointer shadow-xs"
                   >
-                    <RefreshCcw className="w-3 h-3 text-sky-600 dark:text-sky-400" />
+                    <RefreshCcw className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                     <span>Ulangi</span>
                   </button>
                 </div>
@@ -632,7 +686,7 @@ export default function AnimatedBranchingDefinition() {
                       setValue(Number(e.target.value));
                       setReplayKey(k => k + 1);
                     }}
-                    className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-sky-500"
+                    className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
                   />
                   <span className="text-[10px] font-mono font-bold text-slate-600 dark:text-slate-400">{scenario.sliderMax}{scenario.sliderUnit}</span>
                 </div>
@@ -653,35 +707,24 @@ export default function AnimatedBranchingDefinition() {
                 <span className={`px-2 py-0.5 rounded-md text-[11px] font-black shrink-0 ${
                   isTrue ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
                 }`}>
-                  {isTrue ? 'TRUE (Ya)' : 'FALSE (Tidak)'}
+                  {isTrue ? 'TRUE (Cabang IF)' : 'FALSE (Cabang ELSE)'}
                 </span>
               </div>
 
-              {/* 3. Tiga Pilar Pemetaan Konsep Definisi */}
+              {/* 3. Tiga Pilar Pemetaan Konsep Percabangan Statemen Ganda */}
               <div className="flex flex-col gap-2 flex-1 justify-between">
                 {/* Pilar 1 */}
                 <div className="p-2.5 rounded-xl border-2 border-amber-300 dark:border-amber-700/80 bg-amber-50/90 dark:bg-amber-950/50 space-y-0.5 shadow-2xs">
                   <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-amber-900 dark:text-amber-300">
                     <span>①</span>
-                    <span>Kondisi Boolean</span>
+                    <span>Kondisi Boolean pada Diamond</span>
                   </div>
                   <p className="text-[11px] text-amber-950 dark:text-amber-100 font-semibold leading-tight">
-                    Diwakili oleh <strong>Papan Rambu &quot;{scenario.condition}?&quot;</strong> di persimpangan.
+                    Dievaluasi terhadap input <strong>{value}{scenario.sliderUnit}</strong>: Hasilnya <strong>{isTrue ? 'TRUE' : 'FALSE'}</strong>.
                   </p>
                 </div>
 
                 {/* Pilar 2 */}
-                <div className="p-2.5 rounded-xl border-2 border-sky-300 dark:border-sky-700/80 bg-sky-50/90 dark:bg-sky-950/50 space-y-0.5 shadow-2xs">
-                  <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-sky-900 dark:text-sky-300">
-                    <span>②</span>
-                    <span>Evaluasi (True / False)</span>
-                  </div>
-                  <p className="text-[11px] text-sky-950 dark:text-sky-100 font-semibold leading-tight">
-                    Memeriksa input <strong>{value}{scenario.sliderUnit}</strong>: Hasilnya <strong>{isTrue ? 'TRUE' : 'FALSE'}</strong>.
-                  </p>
-                </div>
-
-                {/* Pilar 3 */}
                 <div className={`p-2.5 rounded-xl border-2 space-y-0.5 shadow-2xs ${
                   isTrue
                     ? 'border-emerald-400 dark:border-emerald-700/80 bg-emerald-50/90 dark:bg-emerald-950/50'
@@ -690,13 +733,26 @@ export default function AnimatedBranchingDefinition() {
                   <div className={`flex items-center gap-1.5 text-[10px] font-mono font-black uppercase ${
                     isTrue ? 'text-emerald-900 dark:text-emerald-300' : 'text-rose-900 dark:text-rose-300'
                   }`}>
-                    <span>③</span>
-                    <span>Pilih Satu Jalur</span>
+                    <span>②</span>
+                    <span>Dua Aksi Saling Eksklusif</span>
                   </div>
                   <p className={`text-[11px] font-semibold leading-tight ${
                     isTrue ? 'text-emerald-950 dark:text-emerald-100' : 'text-rose-950 dark:text-rose-100'
                   }`}>
-                    Traveler belok ke <strong>Jalur {isTrue ? 'Kiri (' + scenario.leftLabel + ')' : 'Kanan (' + scenario.rightLabel + ')'}</strong>.
+                    {isTrue
+                      ? `Kondisi True ➔ Mengeksekusi Aksi IF ("${scenario.ifActionTitle}").`
+                      : `Kondisi False ➔ Dijamin mengeksekusi Aksi ELSE ("${scenario.elseActionTitle}").`}
+                  </p>
+                </div>
+
+                {/* Pilar 3 */}
+                <div className="p-2.5 rounded-xl border-2 border-sky-300 dark:border-sky-700/80 bg-sky-50/90 dark:bg-sky-950/50 space-y-0.5 shadow-2xs">
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-sky-900 dark:text-sky-300">
+                    <span>③</span>
+                    <span>Penyatuan Alur (Merge Point)</span>
+                  </div>
+                  <p className="text-[11px] text-sky-950 dark:text-sky-100 font-semibold leading-tight">
+                    Kedua jalur menyatu kembali di <strong>Merge Node ({scenario.mergeDestTitle})</strong> sebelum program berlanjut.
                   </p>
                 </div>
               </div>

@@ -73,7 +73,7 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
                unwrappedParams.id === '3' ? 'Pertemuan 3: Fondasi Algoritma' : 
                unwrappedParams.id === '4' ? 'Pertemuan 4: Tipe Data, Variabel & I/O Dasar' : 
                unwrappedParams.id === '5' ? 'Pertemuan 5: Operator, Ekspresi & Manipulasi Data' :
-               unwrappedParams.id === '6' ? 'Pertemuan 6: Struktur Percabangan Tunggal & Ganda' :
+               unwrappedParams.id === '6' ? 'Pertemuan 6: Struktur Percabangan Statemen Tunggal & Ganda' :
                unwrappedParams.id === '7' ? 'Pertemuan 7: Percabangan Majemuk & Bersarang' :
                `Pertemuan ${unwrappedParams.id}`}
             </h1>

@@ -123,25 +123,25 @@ const missions: Mission[] = [
     theoryDesc: 'Compound operator (-=) menyederhanakan update nilai pada variabel yang sama.'
   },
 
-  // ── BAB 6: Struktur Percabangan Tunggal & Ganda ───────────────────────────
+  // ── BAB 6: Struktur Percabangan Statemen Tunggal & Ganda ─────────────────
   {
     id: 6,
     chapter: 6,
     codeNum: '6.1',
     title: 'Misi 6.1: Deteksi Suhu Tubuh Demam (IF Tunggal)',
-    category: 'IF Tunggal',
+    category: 'Statemen Tunggal (IF)',
     description: 'Program klinik menguji suhu tubuh pasien. Jika suhu > 37.5°C, tampilkan peringatan "⚠️ Peringatan: Pasien mengalami DEMAM!". Jika suhu normal, pesan peringatan tidak muncul.',
     formula: 'if suhu_tubuh > 37.5: print("⚠️ Pasien mengalami DEMAM!")',
     pyCode: `suhu_tubuh = 38.2\n\nprint(f"Suhu pasien: {suhu_tubuh}°C")\n\nif suhu_tubuh > 37.5:\n    print("⚠️ Peringatan: Pasien mengalami DEMAM!")\n\nprint("Pemeriksaan selesai. Terima kasih.")`,
     jsCode: `let suhuTubuh = 38.2;\n\nconsole.log(\`Suhu pasien: \${suhuTubuh}°C\`);\n\nif (suhuTubuh > 37.5) {\n    console.log("⚠️ Peringatan: Pasien mengalami DEMAM!");\n}\n\nconsole.log("Pemeriksaan selesai. Terima kasih.");`,
-    theoryDesc: 'Percabangan Tunggal (IF) mengeksekusi instruksi di dalamnya HANYA jika kondisi bernilai True. Jika False, blok dilewati.'
+    theoryDesc: 'Percabangan Statemen Tunggal (IF) mengeksekusi instruksi di dalamnya HANYA jika kondisi bernilai True. Jika False, blok dilewati.'
   },
   {
     id: 7,
     chapter: 6,
     codeNum: '6.2',
     title: 'Misi 6.2: Kupon Diskon Marketplace (IF Tunggal)',
-    category: 'IF Tunggal',
+    category: 'Statemen Tunggal (IF)',
     description: 'Sebuah toko online memberikan potongan Rp10.000 jika total belanja mencapai minimal Rp100.000 (>= 100000). Kurangi total_bayar jika syarat terpenuhi.',
     formula: 'total_bayar = total_belanja | if total_belanja >= 100000: total_bayar -= 10000',
     pyCode: `total_belanja = 135000\ntotal_bayar = total_belanja\n\nif total_belanja >= 100000:\n    potongan = 10000\n    total_bayar -= potongan\n    print(f"🎉 Selamat! Anda hemat Rp{potongan:,}")\n\nprint(f"Total Bayar Akhir: Rp{total_bayar:,}")`,
@@ -153,19 +153,19 @@ const missions: Mission[] = [
     chapter: 6,
     codeNum: '6.3',
     title: 'Misi 6.3: Paritas Bilangan Ganjil/Genap (IF-ELSE)',
-    category: 'IF-ELSE Ganda',
+    category: 'Statemen Ganda (IF-ELSE)',
     description: 'Sistem tilang elektronik memeriksa plat nomor kendaraan. Uji apakah angka plat adalah bilangan GENAP atau GANJIL menggunakan operator modulo (%).',
     formula: 'if angka % 2 == 0 then "GENAP" else "GANJIL"',
     pyCode: `angka = 48\n\nif angka % 2 == 0:\n    print(f"Angka {angka} adalah: BILANGAN GENAP")\nelse:\n    print(f"Angka {angka} adalah: BILANGAN GANJIL")\n\nprint("Analisis plat nomor selesai.")`,
     jsCode: `let angka = 48;\n\nif (angka % 2 === 0) {\n    console.log(\`Angka \${angka} adalah: BILANGAN GENAP\`);\n} else {\n    console.log(\`Angka \${angka} adalah: BILANGAN GANJIL\`);\n}\n\nconsole.log("Analisis plat nomor selesai.");`,
-    theoryDesc: 'Percabangan Ganda (IF-ELSE) menyediakan tepat dua cabang tindakan saling eksklusif. Salah satu cabang pasti dieksekusi.'
+    theoryDesc: 'Percabangan Statemen Ganda (IF-ELSE) menyediakan tepat dua cabang tindakan saling eksklusif. Salah satu cabang pasti dieksekusi.'
   },
   {
     id: 9,
     chapter: 6,
     codeNum: '6.4',
     title: 'Misi 6.4: Evaluasi Kelulusan Siswa (IF-ELSE)',
-    category: 'IF-ELSE Ganda',
+    category: 'Statemen Ganda (IF-ELSE)',
     description: 'Sistem akademik menentukan kelulusan siswa berdasarkan nilai ujian. Syarat LULUS adalah nilaiAkhir >= 75. Selain itu, dinyatakan TIDAK LULUS.',
     formula: 'if nilai_akhir >= 75: "LULUS" else: "TIDAK LULUS"',
     pyCode: `nilai_akhir = 82\n\nif nilai_akhir >= 75:\n    print("🎉 Selamat! Status Anda: LULUS")\n    print("Nilai Anda memenuhi batas kelulusan.")\nelse:\n    print("❌ Status Anda: TIDAK LULUS")\n    print("Silakan mengikuti ujian remedial.")\n\nprint(f"Nilai Siswa: {nilai_akhir}/100")`,
@@ -177,7 +177,7 @@ const missions: Mission[] = [
     chapter: 6,
     codeNum: '6.5',
     title: 'Misi 6.5: Simulasi Tarik Tunai ATM (IF-ELSE)',
-    category: 'IF-ELSE Ganda',
+    category: 'Statemen Ganda (IF-ELSE)',
     description: 'Mesin ATM memeriksa saldo sebelum mengeluarkan uang. Jika saldo mencukupi (jumlah_tarik <= saldo), kurangi saldo. Jika tidak, batalkan transaksi.',
     formula: 'if jumlah_tarik <= saldo: saldo -= jumlah_tarik else: "Saldo Kurang"',
     pyCode: `saldo = 500000\njumlah_tarik = 200000\n\nprint(f"Saldo awal: Rp{saldo:,}")\nprint(f"Permintaan tarik: Rp{jumlah_tarik:,}")\n\nif jumlah_tarik <= saldo:\n    saldo -= jumlah_tarik\n    print("💵 Transaksi BERHASIL! Silakan ambil uang Anda.")\n    print(f"Sisa saldo Anda: Rp{saldo:,}")\nelse:\n    print("❌ Transaksi GAGAL: Saldo Anda tidak mencukupi!")\n\nprint("Terima kasih telah menggunakan ATM.")`,
@@ -913,7 +913,7 @@ function WorkspaceContent() {
           <span className="text-slate-700">|</span>
           <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            Pertemuan {selectedChapter}: {selectedChapter === 5 ? 'Operator & Ekspresi' : selectedChapter === 6 ? 'Percabangan Tunggal & Ganda' : 'Percabangan Majemuk & Bersarang'} Studio
+            Pertemuan {selectedChapter}: {selectedChapter === 5 ? 'Operator & Ekspresi' : selectedChapter === 6 ? 'Percabangan Statemen Tunggal & Ganda' : 'Percabangan Majemuk & Bersarang'} Studio
           </span>
         </div>
 

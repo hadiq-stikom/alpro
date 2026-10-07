@@ -79,20 +79,20 @@ function NestedVerticalFlowchart({
 
       {/* ─── 1. START TERMINAL ─── */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="145" y="16" width="140" height="42" rx="21" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="215" y="42" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
-          START
+        <rect x="145" y="16" width="140" height="42" rx="21" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="215" y="42" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
+          MULAI
         </text>
       </g>
       <line x1="215" y1="58" x2="215" y2="86" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#nss-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
       {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="125,86 335,86 305,134 95,134" fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="125,86 335,86 305,134 95,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(usia, berat, Hb)
         </text>
-        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{usia}th, {berat}kg, {hb.toFixed(1)}]
         </text>
       </g>
@@ -179,16 +179,17 @@ function NestedVerticalFlowchart({
           markerEnd={!g1 ? 'url(#nss-arr-rose)' : 'url(#nss-arr-gray)'}
         />
         <rect x="330" y="186" width="46" height="17" rx="4" fill={!g1 ? '#881337' : '#1e293b'} />
-        <text x="353" y="198" textAnchor="middle" fill={!g1 ? '#fecdd3' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
+        <text x="353" y="198" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         {/* Jajaran Genjang Penolakan Gerbang 1 */}
         <polygon
           points="405,180 615,180 590,230 380,230"
-          fill={!g1 ? '#881337' : '#0f172a'}
-          stroke={!g1 ? '#f43f5e' : '#1e293b'}
+          fill={!g1 ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={!g1 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={!g1 ? 3 : 1.5}
+          strokeDasharray={!g1 ? undefined : '4 3'}
         />
-        <text x="497" y="205" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#fecdd3' : '#475569'} fontSize="13" fontWeight="bold" fontFamily="monospace">
+        <text x="497" y="205" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="13" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Usia &lt; 17th&quot;)
         </text>
         <line x1="590" y1="205" x2="675" y2="205" stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth={!g1 ? 3.5 : 1.5} />
@@ -204,7 +205,7 @@ function NestedVerticalFlowchart({
           markerEnd={g1 ? 'url(#nss-arr-green)' : 'url(#nss-arr-gray)'}
         />
         <rect x="223" y="247" width="34" height="17" rx="4" fill={g1 ? '#065f46' : '#1e293b'} />
-        <text x="240" y="259" textAnchor="middle" fill={g1 ? '#6ee7b7' : '#94a3b8'} fontSize="11" fontWeight="bold" fontFamily="monospace">Ya</text>
+        <text x="240" y="259" textAnchor="middle" fill={g1 ? '#ffffff' : '#94a3b8'} fontSize="11" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
       {/* ─── GERBANG 2: BERAT >= 45 (cx = 215, cy = 310) ─── */}
@@ -238,16 +239,17 @@ function NestedVerticalFlowchart({
           markerEnd={g1 && !g2 ? 'url(#nss-arr-rose)' : 'url(#nss-arr-gray)'}
         />
         <rect x="330" y="291" width="46" height="17" rx="4" fill={g1 && !g2 ? '#881337' : '#1e293b'} />
-        <text x="353" y="303" textAnchor="middle" fill={g1 && !g2 ? '#fecdd3' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
+        <text x="353" y="303" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         {/* Jajaran Genjang Penolakan Gerbang 2 */}
         <polygon
           points="405,285 615,285 590,335 380,335"
-          fill={g1 && !g2 ? '#881337' : '#0f172a'}
-          stroke={g1 && !g2 ? '#f43f5e' : '#1e293b'}
+          fill={g1 && !g2 ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={g1 && !g2 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={g1 && !g2 ? 3 : 1.5}
+          strokeDasharray={g1 && !g2 ? undefined : '4 3'}
         />
-        <text x="497" y="310" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#fecdd3' : '#475569'} fontSize="13" fontWeight="bold" fontFamily="monospace">
+        <text x="497" y="310" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="13" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Berat &lt; 45kg&quot;)
         </text>
         <line x1="590" y1="310" x2="675" y2="310" stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth={g1 && !g2 ? 3.5 : 1.5} />
@@ -263,7 +265,7 @@ function NestedVerticalFlowchart({
           markerEnd={g2 ? 'url(#nss-arr-green)' : 'url(#nss-arr-gray)'}
         />
         <rect x="223" y="352" width="34" height="17" rx="4" fill={g2 ? '#065f46' : '#1e293b'} />
-        <text x="240" y="364" textAnchor="middle" fill={g2 ? '#6ee7b7' : '#94a3b8'} fontSize="11" fontWeight="bold" fontFamily="monospace">Ya</text>
+        <text x="240" y="364" textAnchor="middle" fill={g2 ? '#ffffff' : '#94a3b8'} fontSize="11" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
       {/* ─── GERBANG 3: HB >= 12.5 (cx = 215, cy = 415) ─── */}
@@ -297,16 +299,17 @@ function NestedVerticalFlowchart({
           markerEnd={g2 && !g3 ? 'url(#nss-arr-rose)' : 'url(#nss-arr-gray)'}
         />
         <rect x="330" y="396" width="46" height="17" rx="4" fill={g2 && !g3 ? '#881337' : '#1e293b'} />
-        <text x="353" y="408" textAnchor="middle" fill={g2 && !g3 ? '#fecdd3' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
+        <text x="353" y="408" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         {/* Jajaran Genjang Penolakan Gerbang 3 */}
         <polygon
           points="405,390 615,390 590,440 380,440"
-          fill={g2 && !g3 ? '#881337' : '#0f172a'}
-          stroke={g2 && !g3 ? '#f43f5e' : '#1e293b'}
+          fill={g2 && !g3 ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={g2 && !g3 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={g2 && !g3 ? 3 : 1.5}
+          strokeDasharray={g2 && !g3 ? undefined : '4 3'}
         />
-        <text x="497" y="415" dominantBaseline="central" textAnchor="middle" fill={g1 && g2 && !g3 ? '#fecdd3' : '#475569'} fontSize="13" fontWeight="bold" fontFamily="monospace">
+        <text x="497" y="415" dominantBaseline="central" textAnchor="middle" fill={g1 && g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="13" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Hb &lt; 12.5&quot;)
         </text>
         <line x1="590" y1="415" x2="675" y2="415" stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={g2 && !g3 ? 3.5 : 1.5} />
@@ -322,19 +325,20 @@ function NestedVerticalFlowchart({
           markerEnd={g3 ? 'url(#nss-arr-green)' : 'url(#nss-arr-gray)'}
         />
         <rect x="223" y="457" width="34" height="17" rx="4" fill={g3 ? '#065f46' : '#1e293b'} />
-        <text x="240" y="469" textAnchor="middle" fill={g3 ? '#6ee7b7' : '#94a3b8'} fontSize="11" fontWeight="bold" fontFamily="monospace">Ya</text>
+        <text x="240" y="469" textAnchor="middle" fill={g3 ? '#ffffff' : '#94a3b8'} fontSize="11" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
       {/* ─── 4. JAJARAN GENJANG SUKSES (LOLOS SEMUA GERBANG) ─── */}
       <g opacity={isStepActive(6) ? (g3 ? 1 : 0.2) : 0.2}>
         <polygon
           points="105,490 325,490 300,542 80,542"
-          fill={g3 ? '#064e3b' : '#0f172a'}
-          stroke={g3 ? '#10b981' : '#1e293b'}
+          fill={g3 ? '#047857' : 'rgba(148,163,184,0.35)'}
+          stroke={g3 ? '#10b981' : '#94a3b8'}
           strokeWidth={g3 ? 3 : 1.5}
+          strokeDasharray={g3 ? undefined : '4 3'}
           filter={g3 ? 'url(#nss-glow-active)' : undefined}
         />
-        <text x="200" y="516" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#a7f3d0' : '#475569'} fontSize="13.5" fontWeight="900" fontFamily="monospace">
+        <text x="200" y="516" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#64748b'} fontSize="13.5" fontWeight="900" fontFamily="monospace">
           output(&quot;LOLOS: Donor Darah!&quot;)
         </text>
         <line x1="215" y1="542" x2="215" y2="575" stroke={g3 ? '#10b981' : '#334155'} strokeWidth={g3 ? 3.5 : 1.5} />
@@ -364,8 +368,8 @@ function NestedVerticalFlowchart({
           width="140"
           height="42"
           rx="21"
-          fill="rgba(239,68,68,0.3)"
-          stroke="#f87171"
+          fill="#be123c"
+          stroke="#9f1239"
           strokeWidth="3"
         />
         <text
@@ -375,7 +379,8 @@ function NestedVerticalFlowchart({
           textAnchor="middle"
           fontSize="14"
           fontWeight="900"
-          fill="#fecdd3"
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           SELESAI
@@ -451,20 +456,20 @@ function NestedHorizontalFlowchart({
 
       {/* 1. START */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="15" y="42" width="76" height="36" rx="18" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="53" y="60" dominantBaseline="central" textAnchor="middle" fontSize="12.5" fontWeight="bold" fill="#6ee7b7" fontFamily="monospace">
-          START
+        <rect x="15" y="42" width="76" height="36" rx="18" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="53" y="60" dominantBaseline="central" textAnchor="middle" fontSize="12.5" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
+          MULAI
         </text>
       </g>
       <line x1="91" y1="60" x2="117" y2="60" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#nsth-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
       {/* 2. INPUT */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="127,34 245,34 227,86 109,86" fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="178" y="51" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="127,34 245,34 227,86 109,86" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="178" y="51" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(usia, berat, Hb)
         </text>
-        <text x="178" y="68" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="178" y="68" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{usia}th, {berat}kg, {hb.toFixed(1)}]
         </text>
       </g>
@@ -538,15 +543,16 @@ function NestedHorizontalFlowchart({
           markerEnd={!g1 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'}
         />
         <rect x="348" y="118" width="40" height="17" rx="4" fill={!g1 ? '#881337' : '#1e293b'} stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth="1" />
-        <text x="368" y="126.5" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#fecdd3' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
+        <text x="368" y="126.5" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         <polygon
           points="262,186 418,186 394,244 238,244"
-          fill={!g1 ? '#881337' : '#0f172a'}
-          stroke={!g1 ? '#f43f5e' : '#1e293b'}
-          strokeWidth={3}
+          fill={!g1 ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={!g1 ? '#f43f5e' : '#94a3b8'}
+          strokeWidth={!g1 ? 3 : 1.5}
+          strokeDasharray={!g1 ? undefined : '4 3'}
         />
-        <text x="328" y="215" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#fecdd3' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="328" y="215" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Usia &lt; 17th&quot;)
         </text>
         <line x1="328" y1="244" x2="328" y2={busY} stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth={!g1 ? 3.5 : 1.5} markerEnd={!g1 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
@@ -563,7 +569,7 @@ function NestedHorizontalFlowchart({
         />
         {/* Floating Badge Ya */}
         <rect x="428" y="38" width="30" height="17" rx="4" fill={g1 ? '#065f46' : '#1e293b'} stroke={g1 ? '#10b981' : '#334155'} strokeWidth="1" />
-        <text x="443" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g1 ? '#6ee7b7' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
+        <text x="443" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g1 ? '#ffffff' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
       {/* ─── GERBANG 2: BERAT >= 45 (cx = 550, cy = 60) ─── */}
@@ -597,15 +603,16 @@ function NestedHorizontalFlowchart({
           markerEnd={g1 && !g2 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'}
         />
         <rect x="558" y="118" width="40" height="17" rx="4" fill={g1 && !g2 ? '#881337' : '#1e293b'} stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth="1" />
-        <text x="578" y="126.5" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#fecdd3' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
+        <text x="578" y="126.5" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         <polygon
           points="472,186 628,186 604,244 448,244"
-          fill={g1 && !g2 ? '#881337' : '#0f172a'}
-          stroke={g1 && !g2 ? '#f43f5e' : '#1e293b'}
+          fill={g1 && !g2 ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={g1 && !g2 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={3}
+          strokeDasharray={g1 && !g2 ? undefined : '4 3'}
         />
-        <text x="538" y="215" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#fecdd3' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="538" y="215" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Berat &lt; 45kg&quot;)
         </text>
         <line x1="538" y1="244" x2="538" y2={busY} stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth={g1 && !g2 ? 3.5 : 1.5} markerEnd={g1 && !g2 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
@@ -622,7 +629,7 @@ function NestedHorizontalFlowchart({
         />
         {/* Floating Badge Ya */}
         <rect x="638" y="38" width="30" height="17" rx="4" fill={g2 ? '#065f46' : '#1e293b'} stroke={g2 ? '#10b981' : '#334155'} strokeWidth="1" />
-        <text x="653" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g2 ? '#6ee7b7' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
+        <text x="653" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g2 ? '#ffffff' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
       {/* ─── GERBANG 3: HB >= 12.5 (cx = 760, cy = 60) ─── */}
@@ -656,18 +663,19 @@ function NestedHorizontalFlowchart({
           markerEnd={g2 && !g3 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'}
         />
         <rect x="768" y="118" width="40" height="17" rx="4" fill={g2 && !g3 ? '#881337' : '#1e293b'} stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth="1" />
-        <text x="788" y="126.5" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#fecdd3' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
+        <text x="788" y="126.5" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         <polygon
           points="682,186 838,186 814,244 658,244"
-          fill={g2 && !g3 ? '#881337' : '#0f172a'}
-          stroke={g2 && !g3 ? '#f43f5e' : '#1e293b'}
+          fill={g2 && !g3 ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={g2 && !g3 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={3}
+          strokeDasharray={g2 && !g3 ? undefined : '4 3'}
         />
-        <text x="748" y="215" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#fecdd3' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="748" y="215" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Hb &lt; 12.5&quot;)
         </text>
-        <line x1="748" y1="244" x2="748" y2={busY} stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={g2 && !g3 ? 3.5 : 1.5} markerEnd={g2 && !g3 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
+        <line x1="748" y1="244" x2="748" y2={busY} stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={3.5} markerEnd={g2 && !g3 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
 
         {/* Cabang LOLOS (SUKSES) */}
         <line
@@ -681,22 +689,23 @@ function NestedHorizontalFlowchart({
         />
         {/* Floating Badge Ya */}
         <rect x="848" y="38" width="30" height="17" rx="4" fill={g3 ? '#065f46' : '#1e293b'} stroke={g3 ? '#10b981' : '#334155'} strokeWidth="1" />
-        <text x="863" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#6ee7b7' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
+        <text x="863" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
       {/* ─── 4. JAJARAN GENJANG SUKSES ─── */}
       <g opacity={isStepActive(6) ? (g3 ? 1 : 0.2) : 0.2}>
         <polygon
           points="905,34 1070,34 1048,86 883,86"
-          fill={g3 ? '#064e3b' : '#0f172a'}
-          stroke={g3 ? '#10b981' : '#1e293b'}
+          fill={g3 ? '#047857' : 'rgba(148,163,184,0.35)'}
+          stroke={g3 ? '#10b981' : '#94a3b8'}
           strokeWidth={3}
+          strokeDasharray={g3 ? undefined : '4 3'}
           filter={g3 ? 'url(#nsth-glow-active)' : undefined}
         />
-        <text x="976" y="60" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#a7f3d0' : '#475569'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="976" y="60" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           output(&quot;LOLOS: Donor Darah!&quot;)
         </text>
-        <line x1="976" y1="86" x2="976" y2={busY} stroke={g3 ? '#10b981' : '#334155'} strokeWidth={g3 ? 3.5 : 1.5} markerEnd={g3 ? 'url(#nsth-arr-green)' : 'url(#nsth-arr-gray)'} />
+        <line x1="976" y1="86" x2="976" y2={busY} stroke={g3 ? '#10b981' : '#334155'} strokeWidth={3.5} markerEnd={g3 ? 'url(#nsth-arr-green)' : 'url(#nsth-arr-gray)'} />
       </g>
 
       {/* ─── 5. MERGE NODE & SELESAI ─── */}
@@ -704,8 +713,8 @@ function NestedHorizontalFlowchart({
         <circle cx="1060" cy={busY} r="6" fill={isFlowActive ? activeColor : '#64748b'} stroke={isFlowActive ? '#ffffff' : '#334155'} strokeWidth="1.5" />
         <line x1="1066" y1={busY} x2="1092" y2={busY} stroke={isFlowActive ? activeColor : '#64748b'} strokeWidth={isFlowActive ? 3.5 : 2} markerEnd={isFlowActive ? activeMarker : 'url(#nsth-arr-gray)'} />
 
-        <rect x="1092" y={busY - 20} width="96" height="40" rx="20" fill={isFlowActive ? 'rgba(239,68,68,0.25)' : 'rgba(239,68,68,0.1)'} stroke={isFlowActive ? '#ef4444' : '#7f1d1d'} strokeWidth={isFlowActive ? 3 : 2} filter={isFlowActive ? 'url(#nsth-glow-diamond)' : undefined} />
-        <text x="1140" y={busY} dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill={isFlowActive ? '#fca5a5' : '#991b1b'} fontFamily="monospace">
+        <rect x="1092" y={busY - 20} width="96" height="40" rx="20" fill={isFlowActive ? '#be123c' : 'rgba(190,18,60,0.2)'} stroke={isFlowActive ? '#9f1239' : '#881337'} strokeWidth={3.5} />
+        <text x="1140" y={busY} dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           SELESAI
         </text>
       </g>
@@ -802,15 +811,15 @@ export default function NestedDonorLab() {
   ] as const;
 
   return (
-    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl transition-all duration-300 ${
-      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
+    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl transition-all duration-300 ${
+      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-card/98 dark:bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
     }`}>
       {/* ─── Header Lab ─────────────────────────────────────────────────────── */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">2️⃣</span>
           <div>
-            <h3 className="font-bold text-sm md:text-base text-slate-100 flex items-center gap-2">
+            <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <span>Lab Percabangan Bersarang (Nested IF)</span>
               {isProjectorMode && (
                 <span className="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider animate-pulse">
@@ -823,7 +832,7 @@ export default function NestedDonorLab() {
 
         {/* 4 Pilar Tabs Header */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap">
+          <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 flex-wrap">
             {tabs.map(tab => (
               <button
                 key={tab.id}
@@ -831,7 +840,7 @@ export default function NestedDonorLab() {
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   activeTab === tab.id
                     ? 'bg-amber-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {tab.icon}
@@ -851,7 +860,7 @@ export default function NestedDonorLab() {
               className={`p-2 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 isProjectorMode
                   ? 'bg-orange-500 text-white border-orange-400 shadow-lg ring-2 ring-orange-400/50'
-                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-800'
+                  : 'bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-border/80 dark:border-slate-800'
               }`}
               title={isProjectorMode ? 'Kembali ke Tampilan Normal' : 'Mode Layar Penuh Maximize (Keputusan Berjejer ke Samping)'}
             >
@@ -873,23 +882,23 @@ export default function NestedDonorLab() {
 
       {/* ─── Orientation Switcher Bar ────────────────────────────────────────── */}
       {activeTab === 'flowchart' && (
-        <div className="p-3 md:px-6 bg-slate-900/50 border-b border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-            <HeartHandshake className="w-4 h-4 text-rose-400" />
+        <div className="p-3 md:px-6 bg-slate-50/80 dark:bg-slate-900/50 border-b border-border/60 dark:border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <HeartHandshake className="w-4 h-4 text-rose-500 dark:text-rose-400" />
             <span>Studi Kasus: Skrining 3 Gerbang Medis Donor Darah</span>
           </span>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Orientasi Flowchart */}
             {isProjectorMode ? (
-              <div className="flex items-center bg-orange-950/70 border border-orange-500/50 text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
-                <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
+              <div className="flex items-center bg-orange-100 dark:bg-orange-950/70 border border-orange-300 dark:border-orange-500/50 text-orange-900 dark:text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
+                <ArrowRight className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400" />
                 <span>Mode Maximize: Keputusan Berjejer ke Samping</span>
-                <span className="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
+                <span className="text-[10px] bg-orange-500/20 text-orange-700 dark:text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
               </div>
             ) : (
-              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-                <span className="text-slate-500 px-2 flex items-center gap-1">
+              <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+                <span className="text-slate-600 dark:text-slate-500 px-2 flex items-center gap-1">
                   <Tv className="w-3.5 h-3.5" /> Orientasi:
                 </span>
                 <button
@@ -897,7 +906,7 @@ export default function NestedDonorLab() {
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'vertical'
                       ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Atas ke Bawah: Keputusan Mengalir Vertikal dengan Output Mencabang"
                 >
@@ -909,7 +918,7 @@ export default function NestedDonorLab() {
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'horizontal'
                       ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Kiri ke Kanan: Keputusan Berjejer ke Samping (Optimal untuk Layar Lebar)"
                 >
@@ -920,8 +929,8 @@ export default function NestedDonorLab() {
             )}
 
             {/* Kontrol Pembesaran / Zoom */}
-            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-              <span className="text-slate-500 px-2">🔍 Skala:</span>
+            <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+              <span className="text-slate-600 dark:text-slate-500 px-2">🔍 Skala:</span>
               {[0.85, 1.0, 1.2, 1.4].map(scale => (
                 <button
                   key={scale}
@@ -929,7 +938,7 @@ export default function NestedDonorLab() {
                   className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                     zoomLevel === scale
                       ? 'bg-amber-600 text-white font-black'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {Math.round(scale * 100)}%
@@ -945,38 +954,38 @@ export default function NestedDonorLab() {
         {/* 1. TAB NARATIF */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📝 <strong>Algoritma Naratif Bersarang (Nested)</strong> — Keputusan di dalam keputusan. Blok IF anak ditulis menjorok ke dalam dengan hierarki indentasi yang rapi.
               </p>
             </div>
 
-            <pre className="bg-slate-900 p-5 rounded-2xl border border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-300 whitespace-pre">
-              <span className="text-slate-400">1. Masukkan nilai usia, beratBadan, dan hemoglobin.</span>{'\n\n'}
-              <span className="font-bold text-amber-300">2. Jika usia &gt;= 17 maka:</span>{'\n'}
-              <span className="font-bold text-sky-300">      Jika beratBadan &gt;= 45 maka:</span>{'\n'}
-              <span className="font-bold text-purple-300">         Jika hemoglobin &gt;= 12.5 maka:</span>{'\n'}
-              <span className="text-emerald-300 font-medium">            Tampilkan &quot;Selamat! Anda Lolos Skrining Donor Darah.&quot; ke layar.</span>{'\n'}
-              <span className="font-bold text-purple-300">         Selain itu:</span>{'\n'}
-              <span className="text-rose-300">            Tampilkan &quot;Gagal: Kadar Hemoglobin kurang dari 12.5 g/dL.&quot; ke layar.</span>{'\n'}
-              <span className="font-bold text-sky-300">      Selain itu:</span>{'\n'}
-              <span className="text-rose-300">         Tampilkan &quot;Gagal: Berat badan kurang dari 45 kg.&quot; ke layar.</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu:</span>{'\n'}
-              <span className="text-rose-300">      Tampilkan &quot;Gagal: Usia belum mencapai 17 tahun.&quot; ke layar.</span>{'\n\n'}
-              <span className="text-slate-400">Selesai.</span>
+            <pre className="bg-card dark:bg-slate-900 p-5 rounded-2xl border border-border/70 dark:border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-800 dark:text-slate-300 whitespace-pre">
+              <span className="text-slate-600 dark:text-slate-400">1. Masukkan nilai usia, beratBadan, dan hemoglobin.</span>{'\n\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">2. Jika usia &gt;= 17 maka:</span>{'\n'}
+              <span className="font-bold text-sky-700 dark:text-sky-300">      Jika beratBadan &gt;= 45 maka:</span>{'\n'}
+              <span className="font-bold text-purple-700 dark:text-purple-300">         Jika hemoglobin &gt;= 12.5 maka:</span>{'\n'}
+              <span className="text-emerald-700 dark:text-emerald-300 font-medium">            Tampilkan &quot;Selamat! Anda Lolos Skrining Donor Darah.&quot; ke layar.</span>{'\n'}
+              <span className="font-bold text-purple-700 dark:text-purple-300">         Selain itu:</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">            Tampilkan &quot;Gagal: Kadar Hemoglobin kurang dari 12.5 g/dL.&quot; ke layar.</span>{'\n'}
+              <span className="font-bold text-sky-700 dark:text-sky-300">      Selain itu:</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">         Tampilkan &quot;Gagal: Berat badan kurang dari 45 kg.&quot; ke layar.</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu:</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">      Tampilkan &quot;Gagal: Usia belum mencapai 17 tahun.&quot; ke layar.</span>{'\n\n'}
+              <span className="text-slate-600 dark:text-slate-400">Selesai.</span>
             </pre>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="p-3 bg-slate-900 border border-emerald-600/30 rounded-xl">
-                <p className="text-xs font-bold text-emerald-400 mb-1.5">🎯 Keunggulan Nested IF</p>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-3 bg-card dark:bg-slate-900 border border-emerald-500/30 rounded-xl">
+                <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1.5">🎯 Keunggulan Nested IF</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Dapat memberikan <strong>pesan kegagalan spesifik</strong> pada setiap tahapan syarat tanpa memeriksa syarat berikutnya jika syarat awal sudah gagal.
                 </p>
               </div>
-              <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-                <p className="text-xs font-bold text-slate-300 mb-1.5">⚖️ Dibandingkan Operator AND Tunggal</p>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  Jika menggunakan <code className="text-amber-300 font-mono">if usia &gt;= 17 and berat &gt;= 45 and hb &gt;= 12.5:</code>, pengguna hanya tahu &quot;Ditolak&quot; tanpa mengetahui syarat mana yang sebenarnya gagal.
+              <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl">
+                <p className="text-xs font-bold text-slate-800 dark:text-slate-300 mb-1.5">⚖️ Dibandingkan Operator AND Tunggal</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                  Jika menggunakan <code className="text-amber-700 dark:text-amber-300 font-mono">if usia &gt;= 17 and berat &gt;= 45 and hb &gt;= 12.5:</code>, pengguna hanya tahu &quot;Ditolak&quot; tanpa mengetahui syarat mana yang sebenarnya gagal.
                 </p>
               </div>
             </div>
@@ -989,7 +998,7 @@ export default function NestedDonorLab() {
 
 
             {/* ─── ZONA ATAS: KANVAS FLOWCHART LEBAR & ZOOMABLE ─── */}
-            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-900/90 rounded-3xl border border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
+            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 dark:bg-slate-900/90 rounded-3xl border border-border/70 dark:border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
               <div
                 style={{
                   transform: `scale(${zoomLevel})`,
@@ -1018,16 +1027,16 @@ export default function NestedDonorLab() {
             </div>
 
             {/* ─── ZONA BAWAH: CONTROL DOCK TERPADU & TIDAK TERPOTONG ─── */}
-            <div className="p-4 md:p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+            <div className="p-4 md:p-6 bg-card dark:bg-slate-900 rounded-3xl border border-border/70 dark:border-slate-800 shadow-xl space-y-4">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
                 {/* 1. Kontrol 3 Slider Input */}
                 <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {/* Usia */}
-                  <div className="p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5">
+                  <div className="p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold text-slate-300">1. Usia:</span>
-                      <span className={`font-mono font-black text-sm px-2 py-0.5 rounded-lg bg-slate-900 border ${
-                        isGate1Passed ? 'text-emerald-400 border-emerald-500/40' : 'text-rose-400 border-rose-500/40'
+                      <span className="font-bold text-slate-700 dark:text-slate-300">1. Usia:</span>
+                      <span className={`font-mono font-black text-sm px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 border ${
+                        isGate1Passed ? 'text-emerald-700 dark:text-emerald-400 border-emerald-500/40' : 'text-rose-700 dark:text-rose-400 border-rose-500/40'
                       }`}>
                         {usia} thn
                       </span>
@@ -1038,17 +1047,17 @@ export default function NestedDonorLab() {
                       max={65}
                       value={usia}
                       onChange={e => { setUsia(Number(e.target.value)); reset(); }}
-                      className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                      className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                     />
                     <div className="text-[10px] text-slate-500 text-center font-mono font-bold">Syarat Min: 17 Tahun</div>
                   </div>
 
                   {/* Berat */}
-                  <div className={`p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5 transition-opacity ${!isGate1Passed ? 'opacity-40' : ''}`}>
+                  <div className={`p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1.5 transition-opacity ${!isGate1Passed ? 'opacity-40' : ''}`}>
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold text-slate-300">2. Berat:</span>
-                      <span className={`font-mono font-black text-sm px-2 py-0.5 rounded-lg bg-slate-900 border ${
-                        !isGate1Passed ? 'text-slate-500 border-slate-800' : isGate2Passed ? 'text-emerald-400 border-emerald-500/40' : 'text-rose-400 border-rose-500/40'
+                      <span className="font-bold text-slate-700 dark:text-slate-300">2. Berat:</span>
+                      <span className={`font-mono font-black text-sm px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 border ${
+                        !isGate1Passed ? 'text-slate-400 dark:text-slate-500 border-border dark:border-slate-800' : isGate2Passed ? 'text-emerald-700 dark:text-emerald-400 border-emerald-500/40' : 'text-rose-700 dark:text-rose-400 border-rose-500/40'
                       }`}>
                         {berat} kg
                       </span>
@@ -1060,17 +1069,17 @@ export default function NestedDonorLab() {
                       value={berat}
                       onChange={e => { setBerat(Number(e.target.value)); reset(); }}
                       disabled={!isGate1Passed}
-                      className="w-full accent-sky-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                      className="w-full accent-sky-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                     />
                     <div className="text-[10px] text-slate-500 text-center font-mono font-bold">Syarat Min: 45 kg</div>
                   </div>
 
                   {/* Hb */}
-                  <div className={`p-3 rounded-2xl bg-slate-950 border border-slate-800 space-y-1.5 transition-opacity ${!isGate2Passed ? 'opacity-40' : ''}`}>
+                  <div className={`p-3 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border/80 dark:border-slate-800 space-y-1.5 transition-opacity ${!isGate2Passed ? 'opacity-40' : ''}`}>
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold text-slate-300">3. Hb:</span>
-                      <span className={`font-mono font-black text-sm px-2 py-0.5 rounded-lg bg-slate-900 border ${
-                        !isGate2Passed ? 'text-slate-500 border-slate-800' : isGate3Passed ? 'text-emerald-400 border-emerald-500/40' : 'text-rose-400 border-rose-500/40'
+                      <span className="font-bold text-slate-700 dark:text-slate-300">3. Hb:</span>
+                      <span className={`font-mono font-black text-sm px-2 py-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 border ${
+                        !isGate2Passed ? 'text-slate-400 dark:text-slate-500 border-border dark:border-slate-800' : isGate3Passed ? 'text-emerald-700 dark:text-emerald-400 border-emerald-500/40' : 'text-rose-700 dark:text-rose-400 border-rose-500/40'
                       }`}>
                         {hb.toFixed(1)}
                       </span>
@@ -1082,7 +1091,7 @@ export default function NestedDonorLab() {
                       value={Math.round(hb * 10)}
                       onChange={e => { setHb(Number(e.target.value) / 10); reset(); }}
                       disabled={!isGate2Passed}
-                      className="w-full accent-purple-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                      className="w-full accent-purple-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                     />
                     <div className="text-[10px] text-slate-500 text-center font-mono font-bold">Syarat Min: 12.5 g/dL</div>
                   </div>
@@ -1108,7 +1117,7 @@ export default function NestedDonorLab() {
                     className={`flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl text-xs md:text-sm font-black transition-all cursor-pointer shadow-lg border ${
                       step > 0 && !isRunning
                         ? 'bg-sky-600 hover:bg-sky-500 text-white border-sky-400/60 shadow-sky-950/40 ring-2 ring-sky-400/30'
-                        : 'bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border-slate-700 shadow-md'
+                        : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-sky-700 dark:text-sky-300 border-border dark:border-slate-700 shadow-sm'
                     }`}
                     title="Maju langkah demi langkah (Step-by-Step) sambil menjelaskan materi"
                   >
@@ -1120,7 +1129,7 @@ export default function NestedDonorLab() {
 
                   <button
                     onClick={reset}
-                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-slate-800 hover:border-slate-700 shadow-md shrink-0"
+                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-border dark:border-slate-800 shadow-sm shrink-0"
                     title="Reset ke Tampilan Penuh (Semua Alur)"
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -1130,17 +1139,17 @@ export default function NestedDonorLab() {
 
               {/* Bilah Edukasi Mode Manual / Langkah Aktif */}
               {step > 0 && (
-                <div className="p-3 rounded-2xl bg-sky-950/70 border border-sky-600/50 text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
+                <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-600/50 text-sky-900 dark:text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
                   <div className="flex items-center gap-2.5">
-                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
+                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-700 dark:text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
                       {isRunning ? '🤖 OTOMATIS' : '👤 MANUAL'} • Langkah {step}/{maxSteps}
                     </span>
-                    <span className="font-sans font-semibold text-slate-100">
+                    <span className="font-sans font-semibold text-slate-900 dark:text-slate-100">
                       {getStepDescription(step)}
                     </span>
                   </div>
                   {!isRunning && (
-                    <span className="text-[11px] text-sky-300/80 font-bold shrink-0">
+                    <span className="text-[11px] text-sky-700 dark:text-sky-300/80 font-bold shrink-0">
                       {step === maxSteps ? '✓ Selesai' : 'Klik "Mode Manual" untuk lanjut →'}
                     </span>
                   )}
@@ -1150,20 +1159,20 @@ export default function NestedDonorLab() {
               {/* 3. Pita Evaluasi Status Live — Widescreen, Jelas & Bebas Terpotong */}
               <div className={`p-4 rounded-2xl border-2 text-xs font-bold flex flex-wrap items-center justify-between gap-3 shadow-md ${
                 isGate3Passed
-                  ? 'border-emerald-500/80 bg-emerald-950/70 text-emerald-200'
-                  : 'border-rose-500/80 bg-rose-950/70 text-rose-200'
+                  ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-200'
+                  : 'border-rose-500 bg-rose-50 dark:bg-rose-950/70 text-rose-900 dark:text-rose-200'
               }`}>
                 <div className="flex items-center gap-3">
                   <div className={`p-2.5 rounded-xl text-base font-black ${
-                    isGate3Passed ? 'bg-emerald-900/80 text-emerald-300' : 'bg-rose-900/80 text-rose-300'
+                    isGate3Passed ? 'bg-emerald-100 dark:bg-emerald-900/80 text-emerald-700 dark:text-emerald-300' : 'bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300'
                   }`}>
                     {isGate3Passed ? '✓' : '✗'}
                   </div>
                   <div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono">
+                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider font-mono">
                       Status Evaluasi Kelayakan Donor (Runtime Live):
                     </div>
-                    <div className="text-sm md:text-base font-black font-mono text-white pt-0.5">
+                    <div className="text-sm md:text-base font-black font-mono text-slate-900 dark:text-white pt-0.5">
                       {statusMessage}
                     </div>
                   </div>
@@ -1181,45 +1190,45 @@ export default function NestedDonorLab() {
         {/* 3. TAB PSEUDOCODE */}
         {activeTab === 'pseudocode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📋 <strong>Pseudocode Standar 3 Blok</strong> — Struktur percabangan bersarang dengan pasangan <code>if ... endif</code> pada setiap tingkatan blok.
               </p>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">pseudocode — NESTED IF</span>
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">pseudocode — NESTED IF</span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed whitespace-pre overflow-x-auto">
-                <span className="text-purple-400 font-bold">PROGRAM</span> <span className="text-white font-semibold">SkriningDonorDarah</span>{'\n'}
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
+                <span className="text-purple-600 dark:text-purple-400 font-bold">PROGRAM</span> <span className="text-slate-900 dark:text-white font-semibold">SkriningDonorDarah</span>{'\n'}
                 <span className="text-slate-500 italic text-xs">// Skrining bertingkat kelayakan medis donor darah</span>{'\n\n'}
-                <span className="text-sky-400 font-bold">KAMUS:</span>{'\n'}
-                <span className="text-slate-300">  usia, beratBadan : integer</span>{'\n'}
-                <span className="text-slate-300">  hemoglobin : real</span>{'\n\n'}
-                <span className="text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
-                <span className="text-slate-300">  input(usia, beratBadan, hemoglobin)</span>{'\n'}
-                <span className="text-amber-300 font-bold">  if</span> <span className="text-amber-100 font-bold">usia &gt;= 17</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-sky-300 font-bold">    if</span> <span className="text-sky-100 font-bold">beratBadan &gt;= 45</span> <span className="text-sky-300 font-bold">then</span>{'\n'}
-                <span className="text-purple-300 font-bold">      if</span> <span className="text-purple-100 font-bold">hemoglobin &gt;= 12.5</span> <span className="text-purple-300 font-bold">then</span>{'\n'}
-                <span className="text-emerald-300 font-medium">        output(&quot;Selamat! Anda LOLOS donor darah.&quot;)</span>{'\n'}
-                <span className="text-purple-300 font-bold">      else</span>{'\n'}
-                <span className="text-rose-300 font-medium">        output(&quot;Gagal: Kadar Hemoglobin kurang.&quot;)</span>{'\n'}
-                <span className="text-purple-300 font-bold">      endif</span>{'\n'}
-                <span className="text-sky-300 font-bold">    else</span>{'\n'}
-                <span className="text-rose-300 font-medium">      output(&quot;Gagal: Berat badan kurang dari 45 kg.&quot;)</span>{'\n'}
-                <span className="text-sky-300 font-bold">    endif</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else</span>{'\n'}
-                <span className="text-rose-300 font-medium">    output(&quot;Gagal: Usia belum mencapai 17 tahun.&quot;)</span>{'\n'}
-                <span className="text-amber-300 font-bold">  endif</span>{'\n'}
-                <span className="text-slate-400">  output(&quot;Skrining selesai.&quot;)</span>
+                <span className="text-sky-600 dark:text-sky-400 font-bold">KAMUS:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  usia, beratBadan : integer</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  hemoglobin : real</span>{'\n\n'}
+                <span className="text-amber-600 dark:text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  input(usia, beratBadan, hemoglobin)</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">usia &gt;= 17</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    if</span> <span className="text-sky-900 dark:text-sky-100 font-bold">beratBadan &gt;= 45</span> <span className="text-sky-700 dark:text-sky-300 font-bold">then</span>{'\n'}
+                <span className="text-purple-700 dark:text-purple-300 font-bold">      if</span> <span className="text-purple-900 dark:text-purple-100 font-bold">hemoglobin &gt;= 12.5</span> <span className="text-purple-700 dark:text-purple-300 font-bold">then</span>{'\n'}
+                <span className="text-emerald-700 dark:text-emerald-300 font-medium">        output(&quot;Selamat! Anda LOLOS donor darah.&quot;)</span>{'\n'}
+                <span className="text-purple-700 dark:text-purple-300 font-bold">      else</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-medium">        output(&quot;Gagal: Kadar Hemoglobin kurang.&quot;)</span>{'\n'}
+                <span className="text-purple-700 dark:text-purple-300 font-bold">      endif</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    else</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-medium">      output(&quot;Gagal: Berat badan kurang dari 45 kg.&quot;)</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-bold">    endif</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-medium">    output(&quot;Gagal: Usia belum mencapai 17 tahun.&quot;)</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  endif</span>{'\n'}
+                <span className="text-slate-600 dark:text-slate-400">  output(&quot;Skrining selesai.&quot;)</span>
               </pre>
             </div>
           </motion.div>
@@ -1228,14 +1237,14 @@ export default function NestedDonorLab() {
         {/* 4. TAB KODE PROGRAM */}
         {activeTab === 'kode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 💻 <strong>Kode Program Eksekusi Langsung</strong> — Perhatikan indentasi bersarang pada Python dan kurung kurawal berlapis pada JavaScript.
               </p>
             </div>
 
             {/* Language Selector */}
-            <div className="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 w-fit">
+            <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-border/80 dark:border-slate-700 w-fit">
               {(['python', 'js'] as const).map(lang => (
                 <button
                   key={lang}
@@ -1245,7 +1254,7 @@ export default function NestedDonorLab() {
                       ? lang === 'python'
                         ? 'bg-blue-600 text-white'
                         : 'bg-yellow-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   {lang === 'python' ? '🐍 Python' : '⚡ JavaScript'}
@@ -1254,73 +1263,73 @@ export default function NestedDonorLab() {
             </div>
 
             {/* Code Block Container */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                     {activeLang === 'python' ? 'donor_skrining.py' : 'donorSkrining.js'}
                   </span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto">
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
                 {activeLang === 'python' ? (
                   <>
-                    <span className="text-slate-400">usia = {usia}</span>{'\n'}
-                    <span className="text-slate-400">berat_badan = {berat}</span>{'\n'}
-                    <span className="text-slate-400">hemoglobin = {hb.toFixed(1)}</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">if usia &gt;= 17:</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    if berat_badan &gt;= 45:</span>{'\n'}
-                    <span className="text-purple-300 font-bold">        if hemoglobin &gt;= 12.5:</span>{'\n'}
-                    <span className="text-emerald-300 font-medium">            print(&quot;🎉 Selamat! Anda LOLOS donor darah.&quot;)</span>{'\n'}
-                    <span className="text-purple-300 font-bold">        else:</span>{'\n'}
-                    <span className="text-rose-300 font-medium">            print(&quot;❌ Gagal: Hemoglobin kurang dari 12.5 g/dL&quot;)</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    else:</span>{'\n'}
-                    <span className="text-rose-300 font-medium">        print(&quot;❌ Gagal: Berat badan kurang dari 45 kg&quot;)</span>{'\n'}
-                    <span className="text-amber-300 font-bold">else:</span>{'\n'}
-                    <span className="text-rose-300 font-medium">    print(&quot;❌ Gagal: Usia belum mencapai 17 tahun&quot;)</span>
+                    <span className="text-slate-600 dark:text-slate-400">usia = {usia}</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">berat_badan = {berat}</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">hemoglobin = {hb.toFixed(1)}</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">if usia &gt;= 17:</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    if berat_badan &gt;= 45:</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">        if hemoglobin &gt;= 12.5:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">            print(&quot;🎉 Selamat! Anda LOLOS donor darah.&quot;)</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">        else:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">            print(&quot;❌ Gagal: Hemoglobin kurang dari 12.5 g/dL&quot;)</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    else:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">        print(&quot;❌ Gagal: Berat badan kurang dari 45 kg&quot;)</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">else:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">    print(&quot;❌ Gagal: Usia belum mencapai 17 tahun&quot;)</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-slate-400">const usia = {usia};</span>{'\n'}
-                    <span className="text-slate-400">const beratBadan = {berat};</span>{'\n'}
-                    <span className="text-slate-400">const hemoglobin = {hb.toFixed(1)};</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">if (usia &gt;= 17) {'{'}</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    if (beratBadan &gt;= 45) {'{'}</span>{'\n'}
-                    <span className="text-purple-300 font-bold">        if (hemoglobin &gt;= 12.5) {'{'}</span>{'\n'}
-                    <span className="text-emerald-300 font-medium">            console.log(&quot;🎉 Selamat! Anda LOLOS donor darah.&quot;);</span>{'\n'}
-                    <span className="text-purple-300 font-bold">        {'}'} else {'{'}</span>{'\n'}
-                    <span className="text-rose-300 font-medium">            console.log(&quot;❌ Gagal: Hemoglobin kurang dari 12.5 g/dL&quot;);</span>{'\n'}
-                    <span className="text-purple-300 font-bold">        {'}'}</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    {'}'} else {'{'}</span>{'\n'}
-                    <span className="text-rose-300 font-medium">        console.log(&quot;❌ Gagal: Berat badan kurang dari 45 kg&quot;);</span>{'\n'}
-                    <span className="text-sky-300 font-bold">    {'}'}</span>{'\n'}
-                    <span className="text-amber-300 font-bold">{'}'} else {'{'}</span>{'\n'}
-                    <span className="text-rose-300 font-medium">    console.log(&quot;❌ Gagal: Usia belum mencapai 17 tahun&quot;);</span>{'\n'}
-                    <span className="text-amber-300 font-bold">{'}'}</span>
+                    <span className="text-slate-600 dark:text-slate-400">const usia = {usia};</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">const beratBadan = {berat};</span>{'\n'}
+                    <span className="text-slate-600 dark:text-slate-400">const hemoglobin = {hb.toFixed(1)};</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">if (usia &gt;= 17) {'{'}</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    if (beratBadan &gt;= 45) {'{'}</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">        if (hemoglobin &gt;= 12.5) {'{'}</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">            console.log(&quot;🎉 Selamat! Anda LOLOS donor darah.&quot;);</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">        {'}'} else {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">            console.log(&quot;❌ Gagal: Hemoglobin kurang dari 12.5 g/dL&quot;);</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">        {'}'}</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    {'}'} else {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">        console.log(&quot;❌ Gagal: Berat badan kurang dari 45 kg&quot;);</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-bold">    {'}'}</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">    console.log(&quot;❌ Gagal: Usia belum mencapai 17 tahun&quot;);</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'}</span>
                   </>
                 )}
               </pre>
             </div>
 
             {/* Live Terminal Output Simulator */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
-                <span className="text-xs text-amber-400 font-bold font-mono">Hasil Output Program</span>
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
+                <span className="text-xs text-amber-600 dark:text-amber-400 font-bold font-mono">Hasil Output Program</span>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                   isGate3Passed
-                    ? 'bg-emerald-950 border border-emerald-500/40 text-emerald-300' 
-                    : 'bg-rose-950 border border-rose-500/40 text-rose-300'
+                    ? 'bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-500/40 text-emerald-700 dark:text-emerald-300' 
+                    : 'bg-rose-100 dark:bg-rose-950 border border-rose-300 dark:border-rose-500/40 text-rose-700 dark:text-rose-300'
                 }`}>
                   {isGate3Passed ? '✔ STATUS LOLOS' : `✖ GAGAL GERBANG ${failGate}`}
                 </span>
               </div>
-              <div className="p-4 space-y-1">
-                <p className={`text-sm font-mono font-bold ${isGate3Passed ? 'text-emerald-300' : 'text-rose-300'}`}>
+              <div className="p-4 space-y-1 bg-slate-50 dark:bg-slate-950/60">
+                <p className={`text-sm font-mono font-bold ${isGate3Passed ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}`}>
                   &gt; {isGate3Passed ? '🎉 Selamat! Anda LOLOS donor darah.' : `❌ Gagal: ${failGate === 1 ? 'Usia belum mencapai 17 tahun' : failGate === 2 ? 'Berat badan kurang dari 45 kg' : 'Kadar Hemoglobin kurang dari 12.5 g/dL'}`}
                 </p>
                 <p className="text-slate-500 text-xs font-mono">&gt; Skrining selesai.</p>

@@ -651,10 +651,11 @@ export default function AnimatedMultiBranchDefinition() {
             exit={{ rotateY: 75, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
             onClick={() => setIsFlipped(true)}
-            className="w-full cursor-pointer transition-all duration-300 origin-center p-5 md:p-6 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-slate-900/10 dark:from-slate-950 dark:via-orange-950/20 dark:to-slate-950 border-2 border-orange-400 dark:border-orange-500/70 rounded-3xl shadow-md space-y-4 hover:scale-[1.015] sm:hover:scale-[1.02] hover:-translate-y-1.5 hover:shadow-[0_25px_60px_rgba(249,115,22,0.25)] hover:border-orange-500 hover:ring-2 hover:ring-orange-400/30 subpixel-antialiased select-none"
+            className="w-full cursor-pointer transition-transform duration-300 ease-out origin-center p-5 md:p-6 bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-slate-900/10 dark:from-slate-950 dark:via-orange-950/20 dark:to-slate-950 border-2 border-orange-400 dark:border-orange-500/70 rounded-3xl shadow-md space-y-4 hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-orange-500 hover:ring-2 hover:ring-orange-400/40 relative z-0 hover:z-50 select-none antialiased"
             style={{
               textRendering: 'optimizeLegibility',
-              WebkitFontSmoothing: 'subpixel-antialiased',
+              WebkitFontSmoothing: 'antialiased',
+              MozOsxFontSmoothing: 'grayscale',
             }}
           >
             {/* Header Definisi */}
@@ -774,27 +775,27 @@ export default function AnimatedMultiBranchDefinition() {
             <div className="lg:col-span-5 flex flex-col justify-between gap-3">
               
               {/* 1. Slider Input Interaktif & Tombol Presets */}
-              <div className="p-3.5 bg-slate-900 rounded-2xl border border-slate-700 shadow-md space-y-2.5 text-white">
+              <div className="p-3.5 bg-card dark:bg-slate-900 rounded-2xl border border-border/70 dark:border-slate-700 shadow-md space-y-2.5 text-slate-900 dark:text-white">
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono font-bold text-slate-300">Variabel Input:</span>
-                    <span className="text-sm font-black font-mono px-2.5 py-0.5 rounded-lg border bg-orange-950 border-orange-400 text-orange-300 shadow-[0_0_10px_rgba(249,115,22,0.3)]">
+                    <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Variabel Input:</span>
+                    <span className="text-sm font-black font-mono px-2.5 py-0.5 rounded-lg border bg-amber-500/10 dark:bg-orange-950 border-amber-500/40 dark:border-orange-400 text-amber-700 dark:text-orange-300 shadow-xs">
                       {scenario.varName} = {value}{scenario.unit}
                     </span>
                   </div>
 
                   <button
                     onClick={() => setReplayKey(k => k + 1)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-slate-600 transition-all cursor-pointer shadow-xs"
+                    className="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-border/70 dark:border-slate-600 transition-all cursor-pointer shadow-xs"
                   >
-                    <RefreshCcw className="w-3 h-3 text-orange-400" />
+                    <RefreshCcw className="w-3 h-3 text-amber-600 dark:text-orange-400" />
                     <span>Ulangi Alur</span>
                   </button>
                 </div>
 
                 {/* Slider range input */}
                 <div className="flex items-center gap-2.5 pt-0.5">
-                  <span className="text-[10px] font-mono font-bold text-slate-400">
+                  <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400">
                     {scenario.min}{scenario.unit}
                   </span>
                   <input
@@ -806,16 +807,16 @@ export default function AnimatedMultiBranchDefinition() {
                       setValue(Number(e.target.value));
                       setReplayKey(k => k + 1);
                     }}
-                    className="flex-1 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                    className="flex-1 h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-orange-500"
                   />
-                  <span className="text-[10px] font-mono font-bold text-slate-400">
+                  <span className="text-[10px] font-mono font-bold text-slate-500 dark:text-slate-400">
                     {scenario.max}{scenario.unit}
                   </span>
                 </div>
 
                 {/* Presets Chips */}
                 <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                  <span className="text-[10px] font-mono text-slate-400">Uji Cepat:</span>
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400">Uji Cepat:</span>
                   {scenario.presets.map(p => (
                     <button
                       key={p.value}
@@ -826,7 +827,7 @@ export default function AnimatedMultiBranchDefinition() {
                       className={`px-2 py-0.5 rounded-md text-[10px] font-mono font-bold transition-all cursor-pointer ${
                         value === p.value
                           ? 'bg-orange-600 text-white shadow-xs'
-                          : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
+                          : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-border/70 dark:border-slate-700'
                       }`}
                     >
                       {p.label}

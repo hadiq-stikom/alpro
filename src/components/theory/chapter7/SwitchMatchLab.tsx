@@ -89,8 +89,8 @@ function SwitchMatchVerticalFlowchart({
 
       {/* ─── 1. START TERMINAL (MULAI) ─── */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="145" y="16" width="140" height="42" rx="21" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="215" y="42" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
+        <rect x="145" y="16" width="140" height="42" rx="21" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="215" y="42" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           MULAI
         </text>
       </g>
@@ -98,11 +98,11 @@ function SwitchMatchVerticalFlowchart({
 
       {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="135,88 325,88 295,134 105,134" fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="135,88 325,88 295,134 105,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(pilihan)
         </text>
-        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [pilihan = {selectedOption}]
         </text>
       </g>
@@ -244,7 +244,7 @@ function SwitchMatchVerticalFlowchart({
               x="346"
               y={cy - 6}
               textAnchor="middle"
-              fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#fde68a' : '#6ee7b7') : '#94a3b8'}
+              fill={activeOrFall ? '#ffffff' : '#94a3b8'}
               fontSize="11"
               fontWeight="bold"
               fontFamily="monospace"
@@ -268,9 +268,10 @@ function SwitchMatchVerticalFlowchart({
             {/* JAJARAN GENJANG OUTPUT (MENCABANG DI SISI KANAN) */}
             <polygon
               points={`405,${cy - 25} 615,${cy - 25} 590,${cy + 25} 380,${cy + 25}`}
-              fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#78350f' : '#064e3b') : '#0f172a'}
-              stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#1e293b'}
+              fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#b45309' : '#047857') : 'rgba(148,163,184,0.35)'}
+              stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#94a3b8'}
               strokeWidth={activeOrFall ? 3 : 1.5}
+              strokeDasharray={activeOrFall ? undefined : '4 3'}
               filter={activeOrFall ? 'url(#sms-glow-active)' : undefined}
             />
             <text
@@ -278,9 +279,9 @@ function SwitchMatchVerticalFlowchart({
               y={cy}
               dominantBaseline="central"
               textAnchor="middle"
-              fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#fde68a' : '#a7f3d0') : '#475569'}
+              fill={activeOrFall ? '#ffffff' : '#64748b'}
               fontSize="12.5"
-              fontWeight="bold"
+              fontWeight="900"
               fontFamily="monospace"
             >
               output(&quot;{c.action}&quot;)
@@ -350,18 +351,19 @@ function SwitchMatchVerticalFlowchart({
         {/* Jajaran Genjang Blok DEFAULT */}
         <polygon
           points="135,565 325,565 300,615 110,615"
-          fill={isDefault || simulateFallthrough ? '#881337' : '#0f172a'}
-          stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#1e293b'}
+          fill={isDefault || simulateFallthrough ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#94a3b8'}
           strokeWidth={isDefault || simulateFallthrough ? 3 : 1.5}
+          strokeDasharray={isDefault || simulateFallthrough ? undefined : '4 3'}
         />
         <text
           x="217"
           y="590"
           dominantBaseline="central"
           textAnchor="middle"
-          fill={isDefault || simulateFallthrough ? '#fecdd3' : '#475569'}
+          fill={isDefault || simulateFallthrough ? '#ffffff' : '#64748b'}
           fontSize="12.5"
-          fontWeight="bold"
+          fontWeight="900"
           fontFamily="monospace"
         >
           output(&quot;Menu Tidak Valid!&quot;)
@@ -428,8 +430,8 @@ function SwitchMatchVerticalFlowchart({
           width="140"
           height="42"
           rx="21"
-          fill="rgba(239,68,68,0.18)"
-          stroke="#f87171"
+          fill="#be123c"
+          stroke="#9f1239"
           strokeWidth="2.5"
         />
         <text
@@ -439,7 +441,8 @@ function SwitchMatchVerticalFlowchart({
           textAnchor="middle"
           fontSize="14"
           fontWeight="900"
-          fill="#fecdd3"
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           SELESAI
@@ -517,8 +520,8 @@ function SwitchMatchHorizontalFlowchart({
 
       {/* 1. MULAI */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="15" y="68" width="115" height="46" rx="23" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="72" y="91" dominantBaseline="central" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
+        <rect x="15" y="68" width="115" height="46" rx="23" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="72" y="91" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           MULAI
         </text>
       </g>
@@ -526,11 +529,11 @@ function SwitchMatchHorizontalFlowchart({
 
       {/* 2. INPUT */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="185,66 335,66 315,116 165,116" fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="250" y="83" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="185,66 335,66 315,116 165,116" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="250" y="83" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(pilihan)
         </text>
-        <text x="250" y="100" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="250" y="100" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [pilihan = {selectedOption}]
         </text>
       </g>
@@ -632,13 +635,14 @@ function SwitchMatchHorizontalFlowchart({
             {/* Jajaran Genjang Aksi (ANSI/ISO Output) */}
             <polygon
               points={`${c.cx - 55},186 ${c.cx + 70},186 ${c.cx + 55},238 ${c.cx - 70},238`}
-              fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#78350f' : '#064e3b') : '#0f172a'}
-              stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#1e293b'}
+              fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#b45309' : '#047857') : 'rgba(148,163,184,0.35)'}
+              stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#94a3b8'}
               strokeWidth={activeOrFall ? 2.5 : 1.5}
+              strokeDasharray={activeOrFall ? undefined : '4 3'}
               opacity={activeOrFall ? 1 : 0.35}
               filter={activeOrFall ? 'url(#smh-glow-active)' : undefined}
             />
-            <text x={c.cx} y="212" dominantBaseline="central" textAnchor="middle" fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#fde68a' : '#a7f3d0') : '#475569'} fontSize="11.5" fontWeight="bold" fontFamily="monospace">
+            <text x={c.cx} y="212" dominantBaseline="central" textAnchor="middle" fill={activeOrFall ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
               output(&quot;{c.action}&quot;)
             </text>
 
@@ -698,11 +702,12 @@ function SwitchMatchHorizontalFlowchart({
         </text>
         <polygon
           points="1025,68 1160,68 1140,118 1005,118"
-          fill={isDefault || simulateFallthrough ? '#881337' : '#0f172a'}
-          stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#1e293b'}
+          fill={isDefault || simulateFallthrough ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#94a3b8'}
           strokeWidth={2.5}
+          strokeDasharray={isDefault || simulateFallthrough ? undefined : '4 3'}
         />
-        <text x="1082" y="93" dominantBaseline="central" textAnchor="middle" fill={isDefault || simulateFallthrough ? '#fecdd3' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="1082" y="93" dominantBaseline="central" textAnchor="middle" fill={isDefault || simulateFallthrough ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
           output(&quot;Menu Tidak Valid!&quot;)
         </text>
 
@@ -714,8 +719,8 @@ function SwitchMatchHorizontalFlowchart({
         <circle cx="1165" cy="290" r="6" fill={isFlowActive ? activeColor : '#64748b'} stroke={isFlowActive ? '#ffffff' : '#334155'} strokeWidth="1.5" />
         <line x1="1171" y1="290" x2="1208" y2="290" stroke={isFlowActive ? activeColor : '#64748b'} strokeWidth={isFlowActive ? 3.5 : 2} markerEnd={isFlowActive ? activeMarker : 'url(#smh-arr-gray)'} />
 
-        <rect x="1208" y="267" width="105" height="46" rx="23" fill={isFlowActive ? 'rgba(239,68,68,0.25)' : 'rgba(239,68,68,0.1)'} stroke={isFlowActive ? '#ef4444' : '#7f1d1d'} strokeWidth={3} filter={isFlowActive ? 'url(#smh-glow-diamond)' : undefined} />
-        <text x="1260" y="290" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill={isFlowActive ? '#fca5a5' : '#991b1b'} fontFamily="monospace">
+        <rect x="1208" y="267" width="105" height="46" rx="23" fill={isFlowActive ? '#be123c' : 'rgba(190,18,60,0.2)'} stroke={isFlowActive ? '#9f1239' : '#881337'} strokeWidth={3} />
+        <text x="1260" y="290" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           SELESAI
         </text>
       </g>
@@ -822,15 +827,15 @@ export default function SwitchMatchLab() {
   ] as const;
 
   return (
-    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl transition-all duration-300 ${
-      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
+    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl transition-all duration-300 ${
+      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-card/98 dark:bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
     }`}>
       {/* ─── Header Lab ─────────────────────────────────────────────────────── */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">4️⃣</span>
           <div>
-            <h3 className="font-bold text-sm md:text-base text-slate-100 flex items-center gap-2">
+            <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <span>Lab Struktur Pemilihan Kasus Diskrit (Switch / Match)</span>
               {isProjectorMode && (
                 <span className="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider animate-pulse">
@@ -843,7 +848,7 @@ export default function SwitchMatchLab() {
 
         {/* 4 Pilar Tabs Header */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap">
+          <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 flex-wrap">
             {tabs.map(tab => (
               <button
                 key={tab.id}
@@ -851,7 +856,7 @@ export default function SwitchMatchLab() {
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   activeTab === tab.id
                     ? 'bg-amber-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {tab.icon}
@@ -870,7 +875,7 @@ export default function SwitchMatchLab() {
               className={`p-2 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 isProjectorMode
                   ? 'bg-orange-500 text-white border-orange-400 shadow-lg ring-2 ring-orange-400/50'
-                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-800'
+                  : 'bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-border/80 dark:border-slate-800'
               }`}
               title={isProjectorMode ? 'Kembali ke Tampilan Normal' : 'Mode Layar Penuh Maximize (Keputusan Berjejer ke Samping)'}
             >
@@ -892,23 +897,23 @@ export default function SwitchMatchLab() {
 
       {/* ─── Orientation Switcher Bar ────────────────────────────────────────── */}
       {activeTab === 'flowchart' && (
-        <div className="p-3 md:px-6 bg-slate-900/50 border-b border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
-          <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-            <Menu className="w-4 h-4 text-amber-400" />
+        <div className="p-3 md:px-6 bg-slate-50/80 dark:bg-slate-900/50 border-b border-border/60 dark:border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+            <Menu className="w-4 h-4 text-amber-500 dark:text-amber-400" />
             <span>Pilihan Nilai Diskrit Pasti (Simulasi Tombol Layanan ATM)</span>
           </span>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Orientasi Flowchart */}
             {isProjectorMode ? (
-              <div className="flex items-center bg-orange-950/70 border border-orange-500/50 text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
-                <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
+              <div className="flex items-center bg-orange-100 dark:bg-orange-950/70 border border-orange-300 dark:border-orange-500/50 text-orange-900 dark:text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
+                <ArrowRight className="w-3.5 h-3.5 text-orange-600 dark:text-orange-400" />
                 <span>Mode Maximize: Keputusan Berjejer ke Samping</span>
-                <span className="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
+                <span className="text-[10px] bg-orange-500/20 text-orange-700 dark:text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
               </div>
             ) : (
-              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-                <span className="text-slate-500 px-2 flex items-center gap-1">
+              <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+                <span className="text-slate-600 dark:text-slate-500 px-2 flex items-center gap-1">
                   <Tv className="w-3.5 h-3.5" /> Orientasi:
                 </span>
                 <button
@@ -916,7 +921,7 @@ export default function SwitchMatchLab() {
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'vertical'
                       ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Atas ke Bawah: Keputusan Mengalir Vertikal dengan Output Mencabang"
                 >
@@ -928,7 +933,7 @@ export default function SwitchMatchLab() {
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'horizontal'
                       ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Kiri ke Kanan: Keputusan Berjejer ke Samping (Optimal untuk Layar Lebar)"
                 >
@@ -939,8 +944,8 @@ export default function SwitchMatchLab() {
             )}
 
             {/* Kontrol Pembesaran / Zoom */}
-            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-              <span className="text-slate-500 px-2">🔍 Skala:</span>
+            <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+              <span className="text-slate-600 dark:text-slate-500 px-2">🔍 Skala:</span>
               {[0.85, 1.0, 1.2, 1.4].map(scale => (
                 <button
                   key={scale}
@@ -948,7 +953,7 @@ export default function SwitchMatchLab() {
                   className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                     zoomLevel === scale
                       ? 'bg-amber-600 text-white font-black'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {Math.round(scale * 100)}%
@@ -964,21 +969,21 @@ export default function SwitchMatchLab() {
         {/* 1. TAB NARATIF */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📝 <strong>Algoritma Naratif Pemilihan Nilai Diskrit</strong> — Pola pencocokan nilai pasti diskrit (pilihan 1, 2, 3, 4, atau lainnya) dengan klausul pilihan alternatif.
               </p>
             </div>
 
-            <pre className="bg-slate-900 p-5 rounded-2xl border border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-300 whitespace-pre">
-              <span className="text-slate-400">1. Masukkan nomor pilihan menu ATM (pilihan).</span>{'\n\n'}
-              <span className="font-bold text-amber-300">2. Pilih tindakan berdasarkan nilai pilihan:</span>{'\n'}
-              <span className="text-emerald-300">      Kasus 1: Tampilkan &quot;Saldo Anda saat ini: Rp2.500.000&quot; ke layar.</span>{'\n'}
-              <span className="text-sky-300">      Kasus 2: Tampilkan instruksi tarik tunai ke layar.</span>{'\n'}
-              <span className="text-amber-300">      Kasus 3: Tampilkan instruksi transfer dana ke layar.</span>{'\n'}
-              <span className="text-purple-300">      Kasus 4: Tampilkan &quot;Kartu ATM dikeluarkan. Terima kasih!&quot; ke layar.</span>{'\n'}
-              <span className="text-rose-300">      Selain itu: Tampilkan &quot;Pilihan menu tidak valid!&quot; ke layar.</span>{'\n\n'}
-              <span className="text-slate-400">Selesai.</span>
+            <pre className="bg-card dark:bg-slate-900 p-5 rounded-2xl border border-border/70 dark:border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-800 dark:text-slate-300 whitespace-pre">
+              <span className="text-slate-600 dark:text-slate-400">1. Masukkan nomor pilihan menu ATM (pilihan).</span>{'\n\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">2. Pilih tindakan berdasarkan nilai pilihan:</span>{'\n'}
+              <span className="text-emerald-700 dark:text-emerald-300">      Kasus 1: Tampilkan &quot;Saldo Anda saat ini: Rp2.500.000&quot; ke layar.</span>{'\n'}
+              <span className="text-sky-700 dark:text-sky-300">      Kasus 2: Tampilkan instruksi tarik tunai ke layar.</span>{'\n'}
+              <span className="text-amber-700 dark:text-amber-300">      Kasus 3: Tampilkan instruksi transfer dana ke layar.</span>{'\n'}
+              <span className="text-purple-700 dark:text-purple-300">      Kasus 4: Tampilkan &quot;Kartu ATM dikeluarkan. Terima kasih!&quot; ke layar.</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">      Selain itu: Tampilkan &quot;Pilihan menu tidak valid!&quot; ke layar.</span>{'\n\n'}
+              <span className="text-slate-600 dark:text-slate-400">Selesai.</span>
             </pre>
           </motion.div>
         )}
@@ -989,7 +994,7 @@ export default function SwitchMatchLab() {
 
 
             {/* ─── ZONA ATAS: KANVAS FLOWCHART LEBAR & ZOOMABLE ─── */}
-            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-900/90 rounded-3xl border border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
+            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 dark:bg-slate-900/90 rounded-3xl border border-border/70 dark:border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
               <div
                 style={{
                   transform: `scale(${zoomLevel})`,
@@ -1016,11 +1021,11 @@ export default function SwitchMatchLab() {
             </div>
 
             {/* ─── ZONA BAWAH: CONTROL DOCK TERPADU & TIDAK TERPOTONG ─── */}
-            <div className="p-4 md:p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+            <div className="p-4 md:p-6 bg-card dark:bg-slate-900 rounded-3xl border border-border/70 dark:border-slate-800 shadow-xl space-y-4">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
                 {/* 1. Tombol Layanan ATM */}
                 <div className="lg:col-span-8 space-y-3">
-                  <span className="text-xs font-mono text-slate-300 block font-bold">
+                  <span className="text-xs font-mono text-slate-700 dark:text-slate-300 block font-bold">
                     Pilih Tombol Mesin ATM:
                   </span>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -1031,7 +1036,7 @@ export default function SwitchMatchLab() {
                         className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                           selectedOption === item.id
                             ? 'bg-amber-600 text-white border-amber-500 shadow-md font-black'
-                            : 'bg-slate-800 text-slate-300 hover:text-white border-slate-700'
+                            : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white border-border dark:border-slate-700'
                         }`}
                       >
                         <span className="text-base">{item.icon}</span>
@@ -1045,7 +1050,7 @@ export default function SwitchMatchLab() {
                     className={`w-full py-1.5 px-3 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                       selectedOption === 99
                         ? 'bg-rose-600 text-white border-rose-500 shadow-md font-black'
-                        : 'bg-slate-800/80 text-slate-400 hover:text-rose-300 border-slate-700'
+                        : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-300 border-border dark:border-slate-700'
                     }`}
                   >
                     ❓ Opsi Tidak Valid (Nilai 99 - Trigger Default / Otherwise)
@@ -1072,7 +1077,7 @@ export default function SwitchMatchLab() {
                     className={`flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl text-xs md:text-sm font-black transition-all cursor-pointer shadow-lg border ${
                       step > 0 && !isRunning
                         ? 'bg-sky-600 hover:bg-sky-500 text-white border-sky-400/60 shadow-sky-950/40 ring-2 ring-sky-400/30'
-                        : 'bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border-slate-700 shadow-md'
+                        : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-sky-700 dark:text-sky-300 border-border dark:border-slate-700 shadow-sm'
                     }`}
                     title="Maju langkah demi langkah (Step-by-Step) sambil menjelaskan materi"
                   >
@@ -1084,7 +1089,7 @@ export default function SwitchMatchLab() {
 
                   <button
                     onClick={reset}
-                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-slate-800 hover:border-slate-700 shadow-md shrink-0"
+                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-border dark:border-slate-800 shadow-sm shrink-0"
                     title="Reset ke Tampilan Penuh (Semua Alur)"
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -1094,17 +1099,17 @@ export default function SwitchMatchLab() {
 
               {/* Bilah Edukasi Mode Manual / Langkah Aktif */}
               {step > 0 && (
-                <div className="p-3 rounded-2xl bg-sky-950/70 border border-sky-600/50 text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
+                <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-600/50 text-sky-900 dark:text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
                   <div className="flex items-center gap-2.5">
-                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
+                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-700 dark:text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
                       {isRunning ? '🤖 OTOMATIS' : '👤 MANUAL'} • Langkah {step}/{maxSteps}
                     </span>
-                    <span className="font-sans font-semibold text-slate-100">
+                    <span className="font-sans font-semibold text-slate-900 dark:text-slate-100">
                       {getStepDescription(step)}
                     </span>
                   </div>
                   {!isRunning && (
-                    <span className="text-[11px] text-sky-300/80 font-bold shrink-0">
+                    <span className="text-[11px] text-sky-700 dark:text-sky-300/80 font-bold shrink-0">
                       {step === maxSteps ? '✓ Selesai' : 'Klik "Mode Manual" untuk lanjut →'}
                     </span>
                   )}
@@ -1112,22 +1117,22 @@ export default function SwitchMatchLab() {
               )}
 
               {/* 3. Output Layar Terminal Mesin ATM — Widescreen, Jelas & Bebas Terpotong */}
-              <div className="p-4 rounded-2xl border-2 border-slate-800 bg-slate-950 text-xs font-mono space-y-2 shadow-md">
-                <div className="flex flex-wrap items-center justify-between border-b border-slate-800 pb-2 gap-2">
+              <div className="p-4 rounded-2xl border-2 border-border/80 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-xs font-mono space-y-2 shadow-md">
+                <div className="flex flex-wrap items-center justify-between border-b border-border/80 dark:border-slate-800 pb-2 gap-2">
                   <div className="flex items-center gap-2">
-                    <Terminal className="w-4 h-4 text-emerald-400" />
-                    <span className="font-bold text-white text-sm">LAYAR MONITOR MESIN ATM (RUNTIME LIVE)</span>
+                    <Terminal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                    <span className="font-bold text-slate-900 dark:text-white text-sm">LAYAR MONITOR MESIN ATM (RUNTIME LIVE)</span>
                   </div>
-                  <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-amber-300 text-xs font-bold">
-                    Opsi Terpilih: <strong className="text-white text-sm">{selectedOption}</strong>
+                  <span className="px-3 py-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-border/80 dark:border-slate-700 text-amber-700 dark:text-amber-300 text-xs font-bold">
+                    Opsi Terpilih: <strong className="text-slate-900 dark:text-white text-sm">{selectedOption}</strong>
                   </span>
                 </div>
                 <div className="space-y-1.5 pt-1">
                   {executionLog.map((log, i) => (
                     <div key={i} className={`p-2 rounded-xl text-xs md:text-sm font-bold flex items-center gap-2 ${
                       log.includes('Default')
-                        ? 'bg-rose-950/50 border border-rose-800 text-rose-300'
-                        : 'bg-emerald-950/50 border border-emerald-800 text-emerald-200'
+                        ? 'bg-rose-100 dark:bg-rose-950/50 border border-rose-300 dark:border-rose-800 text-rose-800 dark:text-rose-300'
+                        : 'bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200'
                     }`}>
                       <span>&gt;</span>
                       <span>{log}</span>
@@ -1142,38 +1147,38 @@ export default function SwitchMatchLab() {
         {/* 3. TAB PSEUDOCODE */}
         {activeTab === 'pseudocode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📋 <strong>Pseudocode Standar (Struktur CASE OF)</strong> — Struktur baku pemilihan kasus diskrit pada algoritma.
               </p>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">pseudocode — CASE OF</span>
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">pseudocode — CASE OF</span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed whitespace-pre overflow-x-auto">
-                <span className="text-purple-400 font-bold">PROGRAM</span> <span className="text-white font-semibold">MenuLayananATM</span>{'\n'}
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
+                <span className="text-purple-600 dark:text-purple-400 font-bold">PROGRAM</span> <span className="text-slate-900 dark:text-white font-semibold">MenuLayananATM</span>{'\n'}
                 <span className="text-slate-500 italic text-xs">// Pemilihan menu diskrit pasti menggunakan CASE OF</span>{'\n\n'}
-                <span className="text-sky-400 font-bold">KAMUS:</span>{'\n'}
-                <span className="text-slate-300">  pilihan : integer</span>{'\n\n'}
-                <span className="text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
-                <span className="text-slate-300">  input(pilihan)</span>{'\n'}
-                <span className="text-amber-300 font-bold">  case</span> <span className="text-amber-100 font-bold">pilihan</span> <span className="text-amber-300 font-bold">of</span>{'\n'}
-                <span className="text-emerald-300">    1 : output(&quot;Saldo Anda saat ini: Rp2.500.000&quot;)</span>{'\n'}
-                <span className="text-sky-300">    2 : output(&quot;Silakan pilih nominal penarikan&quot;)</span>{'\n'}
-                <span className="text-amber-300">    3 : output(&quot;Masukkan rekening tujuan dan nominal&quot;)</span>{'\n'}
-                <span className="text-purple-300">    4 : output(&quot;Kartu ATM dikeluarkan. Terima kasih!&quot;)</span>{'\n'}
-                <span className="text-rose-300">    otherwise : output(&quot;Pilihan menu tidak valid!&quot;)</span>{'\n'}
-                <span className="text-amber-300 font-bold">  endcase</span>{'\n'}
-                <span className="text-slate-400">  output(&quot;Transaksi selesai.&quot;)</span>
+                <span className="text-sky-600 dark:text-sky-400 font-bold">KAMUS:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  pilihan : integer</span>{'\n\n'}
+                <span className="text-amber-600 dark:text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  input(pilihan)</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  case</span> <span className="text-amber-900 dark:text-amber-100 font-bold">pilihan</span> <span className="text-amber-700 dark:text-amber-300 font-bold">of</span>{'\n'}
+                <span className="text-emerald-700 dark:text-emerald-300">    1 : output(&quot;Saldo Anda saat ini: Rp2.500.000&quot;)</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300">    2 : output(&quot;Silakan pilih nominal penarikan&quot;)</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300">    3 : output(&quot;Masukkan rekening tujuan dan nominal&quot;)</span>{'\n'}
+                <span className="text-purple-700 dark:text-purple-300">    4 : output(&quot;Kartu ATM dikeluarkan. Terima kasih!&quot;)</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300">    otherwise : output(&quot;Pilihan menu tidak valid!&quot;)</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  endcase</span>{'\n'}
+                <span className="text-slate-600 dark:text-slate-400">  output(&quot;Transaksi selesai.&quot;)</span>
               </pre>
             </div>
           </motion.div>
@@ -1182,14 +1187,14 @@ export default function SwitchMatchLab() {
         {/* 4. TAB KODE PROGRAM */}
         {activeTab === 'kode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 💻 <strong>Kode Program Eksekusi Langsung</strong> — Python 3.10+ (match-case) vs JavaScript (switch-case).
               </p>
             </div>
 
             {/* Language Selector */}
-            <div className="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 w-fit">
+            <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-border/80 dark:border-slate-700 w-fit">
               {(['python', 'js'] as const).map(lang => (
                 <button
                   key={lang}
@@ -1199,7 +1204,7 @@ export default function SwitchMatchLab() {
                       ? lang === 'python'
                         ? 'bg-blue-600 text-white'
                         : 'bg-yellow-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   {lang === 'python' ? '🐍 Python (match-case)' : '⚡ JavaScript (switch-case)'}
@@ -1209,13 +1214,13 @@ export default function SwitchMatchLab() {
 
             {/* Toggle Khusus JS: Simulasi Fall-Through */}
             {activeLang === 'js' && (
-              <div className="p-3 rounded-xl border border-rose-500/30 bg-rose-500/10 flex items-center justify-between gap-3">
+              <div className="p-3 rounded-xl border border-rose-300 dark:border-rose-500/30 bg-rose-50 dark:bg-rose-500/10 flex items-center justify-between gap-3">
                 <div>
-                  <div className="text-xs font-bold text-rose-300 flex items-center gap-1.5">
-                    <Flame className="w-3.5 h-3.5 text-rose-400" />
+                  <div className="text-xs font-bold text-rose-800 dark:text-rose-300 flex items-center gap-1.5">
+                    <Flame className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
                     <span>Simulasikan Lupa &apos;break;&apos; (Bahaya Fall-Through):</span>
                   </div>
-                  <div className="text-[10px] text-rose-400/80">
+                  <div className="text-[10px] text-rose-600 dark:text-rose-400/80">
                     Eksekusi akan bablas ke case di bawahnya!
                   </div>
                 </div>
@@ -1224,7 +1229,7 @@ export default function SwitchMatchLab() {
                   className={`px-2.5 py-1 rounded-lg text-xs font-bold border transition-all cursor-pointer ${
                     simulateFallthrough
                       ? 'bg-rose-600 text-white border-rose-500 shadow-sm'
-                      : 'bg-slate-800 text-slate-300 border-slate-700'
+                      : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-border dark:border-slate-700'
                   }`}
                 >
                   {simulateFallthrough ? 'AKTIF (Bahaya)' : 'Mati (Aman)'}
@@ -1233,55 +1238,55 @@ export default function SwitchMatchLab() {
             )}
 
             {/* Code Block Container */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                     {activeLang === 'python' ? 'menu_atm.py' : 'menuAtm.js'}
                   </span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto">
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
                 {activeLang === 'python' ? (
                   <>
-                    <span className="text-slate-400">pilihan = {selectedOption}</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">match pilihan:</span>{'\n'}
-                    <span className="text-emerald-300">    case 1:</span>{'\n'}
-                    <span className="text-emerald-300 font-medium">        print(&quot;Saldo Anda saat ini: Rp2.500.000&quot;){'\n'}</span>
-                    <span className="text-sky-300">    case 2:</span>{'\n'}
-                    <span className="text-sky-300 font-medium">        print(&quot;Silakan pilih nominal penarikan&quot;){'\n'}</span>
-                    <span className="text-amber-300">    case 3:</span>{'\n'}
-                    <span className="text-amber-300 font-medium">        print(&quot;Masukkan rekening tujuan &amp; nominal&quot;){'\n'}</span>
-                    <span className="text-purple-300">    case 4:</span>{'\n'}
-                    <span className="text-purple-300 font-medium">        print(&quot;Kartu ATM dikeluarkan. Terima kasih!&quot;){'\n'}</span>
-                    <span className="text-rose-300">    case _:</span>{'\n'}
-                    <span className="text-rose-300 font-medium">        print(&quot;Pilihan menu tidak valid!&quot;){'\n\n'}</span>
+                    <span className="text-slate-600 dark:text-slate-400">pilihan = {selectedOption}</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">match pilihan:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">    case 1:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">        print(&quot;Saldo Anda saat ini: Rp2.500.000&quot;){'\n'}</span>
+                    <span className="text-sky-700 dark:text-sky-300">    case 2:</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-medium">        print(&quot;Silakan pilih nominal penarikan&quot;){'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300">    case 3:</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-medium">        print(&quot;Masukkan rekening tujuan &amp; nominal&quot;){'\n'}</span>
+                    <span className="text-purple-700 dark:text-purple-300">    case 4:</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-medium">        print(&quot;Kartu ATM dikeluarkan. Terima kasih!&quot;){'\n'}</span>
+                    <span className="text-rose-700 dark:text-rose-300">    case _:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">        print(&quot;Pilihan menu tidak valid!&quot;){'\n\n'}</span>
                     <span className="text-slate-500 italic text-xs"># Python tidak butuh break dan bebas dari risiko fall-through!</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-slate-400">const pilihan = {selectedOption};</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">switch (pilihan) {'{'}</span>{'\n'}
-                    <span className="text-emerald-300">    case 1:</span>{'\n'}
-                    <span className="text-emerald-300 font-medium">        console.log(&quot;Saldo Anda: Rp2.500.000&quot;);{'\n'}</span>
-                    <span className="text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
-                    <span className="text-sky-300">    case 2:</span>{'\n'}
-                    <span className="text-sky-300 font-medium">        console.log(&quot;Pilih nominal penarikan&quot;);{'\n'}</span>
-                    <span className="text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
-                    <span className="text-amber-300">    case 3:</span>{'\n'}
-                    <span className="text-amber-300 font-medium">        console.log(&quot;Rekening tujuan &amp; nominal&quot;);{'\n'}</span>
-                    <span className="text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
-                    <span className="text-purple-300">    case 4:</span>{'\n'}
-                    <span className="text-purple-300 font-medium">        console.log(&quot;Kartu ATM dikeluarkan.&quot;);{'\n'}</span>
-                    <span className="text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
-                    <span className="text-rose-300">    default:</span>{'\n'}
-                    <span className="text-rose-300 font-medium">        console.log(&quot;Pilihan tidak valid!&quot;);{'\n'}</span>
-                    <span className="text-amber-300 font-bold">{'}'}</span>
+                    <span className="text-slate-600 dark:text-slate-400">const pilihan = {selectedOption};</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">switch (pilihan) {'{'}</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300">    case 1:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">        console.log(&quot;Saldo Anda: Rp2.500.000&quot;);{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300">    case 2:</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-medium">        console.log(&quot;Pilih nominal penarikan&quot;);{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300">    case 3:</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-medium">        console.log(&quot;Rekening tujuan &amp; nominal&quot;);{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300">    case 4:</span>{'\n'}
+                    <span className="text-purple-700 dark:text-purple-300 font-medium">        console.log(&quot;Kartu ATM dikeluarkan.&quot;);{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-400">{simulateFallthrough ? '        // OOPS: Lupa break!' : '        break;'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300">    default:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">        console.log(&quot;Pilihan tidak valid!&quot;);{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'}</span>
                   </>
                 )}
               </pre>

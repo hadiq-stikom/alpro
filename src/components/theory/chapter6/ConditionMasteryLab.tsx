@@ -365,26 +365,26 @@ export default function ConditionMasteryLab() {
     userRight === scenario.correctRight;
 
   return (
-    <div className="bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl space-y-0 text-slate-100">
+    <div className="bg-card dark:bg-slate-950 border border-border/70 dark:border-slate-800 rounded-3xl overflow-hidden shadow-2xl space-y-0 text-slate-800 dark:text-slate-100">
       
       {/* ── Header Modul ────────────────────────────────────────────────────────── */}
-      <div className="p-6 md:p-8 bg-gradient-to-br from-slate-900 via-indigo-950/40 to-slate-950 border-b border-slate-800 space-y-5">
+      <div className="p-6 md:p-8 bg-gradient-to-br from-slate-50 via-indigo-50/40 to-slate-100 dark:from-slate-900 dark:via-indigo-950/40 dark:to-slate-950 border-b border-border/70 dark:border-slate-800 space-y-5">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-bold font-mono w-fit whitespace-nowrap">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs font-bold font-mono w-fit whitespace-nowrap">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500 dark:text-amber-400 shrink-0" />
             <span>Laboratorium Fondasi Logika Bab 6</span>
           </div>
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-snug">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-snug">
             Anatomi &amp; Cara Merumuskan Kondisi yang Benar
           </h2>
-          <p className="text-xs sm:text-sm text-slate-400 max-w-3xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-3xl leading-relaxed">
             Kunci keberhasilan percabangan komputer terletak pada <strong>ketepatan kondisi</strong>. 
             Pelajari unsur pembentuknya, kuasai 6 operator relasional, dan hindari kesalahan fatal pemula.
           </p>
         </div>
 
         {/* Full-width Responsive Tab Navigation Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 bg-slate-200/70 dark:bg-slate-900/90 p-1.5 rounded-2xl border border-slate-300/70 dark:border-slate-800">
           {[
             { id: 'anatomy', label: '1. Anatomi Kondisi', icon: Layers },
             { id: 'operators', label: '2. 6 Operator & Garis Bilangan', icon: Scale },
@@ -400,7 +400,7 @@ export default function ConditionMasteryLab() {
                 className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   isActive
                     ? 'bg-amber-500 text-slate-950 shadow-md font-extrabold'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60'
                 }`}
               >
                 <Icon className="w-4 h-4 shrink-0" />
@@ -419,35 +419,35 @@ export default function ConditionMasteryLab() {
         {activeTab === 'anatomy' && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             
-            <div className="p-4 bg-amber-950/30 border border-amber-500/30 rounded-2xl">
-              <p className="text-amber-200 text-xs md:text-sm leading-relaxed">
-                💡 <strong>Prinsip Utama:</strong> Sebuah kondisi <em>bukan kalimat biasa</em>, melainkan sebuah <strong>ekspresi relasional</strong> yang membandingkan dua nilai dan <strong>pasti menghasilkan jawaban benar (True) atau salah (False)</strong>.
+            <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs">
+              <p className="text-amber-950 dark:text-amber-100 text-xs md:text-sm leading-relaxed font-medium">
+                💡 <strong className="text-amber-900 dark:text-amber-300 font-black">Prinsip Utama:</strong> Sebuah kondisi <em>bukan kalimat biasa</em>, melainkan sebuah <strong>ekspresi relasional</strong> yang membandingkan dua nilai dan <strong>pasti menghasilkan jawaban benar (True) atau salah (False)</strong>.
               </p>
             </div>
 
             {/* Diagram Anatomi 3 Komponen */}
             <div className="space-y-3">
-              <h3 className="text-sm font-bold text-slate-300 font-mono flex items-center gap-2">
-                <Layers className="w-4 h-4 text-amber-400" />
+              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 font-mono flex items-center gap-2">
+                <Layers className="w-4 h-4 text-amber-500" />
                 <span>Struktur 3 Unsur Pembentuk Kondisi:</span>
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 
                 {/* Blok 1: Operan Kiri */}
-                <div className="p-5 bg-slate-900 border-2 border-sky-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
-                  <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-sky-500/20 text-sky-300 border-b border-l border-sky-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
+                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-sky-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
+                  <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-sky-500/20 text-sky-800 dark:text-sky-300 border-b border-l border-sky-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
                     UNSUR 1
                   </div>
-                  <span className="text-xs font-bold text-sky-400 uppercase tracking-wider block font-mono">
+                  <span className="text-xs font-black text-sky-700 dark:text-sky-400 uppercase tracking-wider block font-mono">
                     Operan Kiri (Left Operand)
                   </span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                     Data atau subjek yang sedang <strong>diuji nilainya</strong>. Dapat berupa variabel murni atau hasil kalkulasi matematika.
                   </p>
                   <div className="pt-2 space-y-1 text-xs font-mono">
-                    <span className="text-[11px] text-slate-400 block">Contoh bentuk:</span>
-                    <div className="bg-slate-950 p-2 rounded-lg text-sky-300 border border-sky-900/50 space-y-0.5">
+                    <span className="text-[11px] text-slate-600 dark:text-slate-400 block font-semibold">Contoh bentuk:</span>
+                    <div className="bg-slate-100 dark:bg-slate-950 p-2.5 rounded-lg text-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-900/50 space-y-0.5">
                       <div>• <code className="font-bold">nilai</code> (Variabel tunggal)</div>
                       <div>• <code className="font-bold">angka % 2</code> (Ekspresi sisa bagi)</div>
                       <div>• <code className="font-bold">saldo</code> (Data akun pengguna)</div>
@@ -456,43 +456,43 @@ export default function ConditionMasteryLab() {
                 </div>
 
                 {/* Blok 2: Operator Relasional */}
-                <div className="p-5 bg-slate-900 border-2 border-amber-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
-                  <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-amber-500/20 text-amber-300 border-b border-l border-amber-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
+                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-amber-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
+                  <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-amber-500/20 text-amber-800 dark:text-amber-300 border-b border-l border-amber-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
                     UNSUR 2
                   </div>
-                  <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block font-mono">
+                  <span className="text-xs font-black text-amber-700 dark:text-amber-400 uppercase tracking-wider block font-mono">
                     Operator Pembanding (Relasional)
                   </span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                     Simbol matematika yang menentukan <strong>aturan hubungan logika</strong> antara sisi kiri dan sisi kanan.
                   </p>
                   <div className="pt-2 space-y-1 text-xs font-mono">
-                    <span className="text-[11px] text-slate-400 block">6 Operator Baku:</span>
-                    <div className="grid grid-cols-3 gap-1 bg-slate-950 p-2 rounded-lg text-amber-300 border border-amber-900/50 font-bold text-center">
-                      <span className="bg-slate-900 py-0.5 rounded">&gt;</span>
-                      <span className="bg-slate-900 py-0.5 rounded">&gt;=</span>
-                      <span className="bg-slate-900 py-0.5 rounded">==</span>
-                      <span className="bg-slate-900 py-0.5 rounded">&lt;</span>
-                      <span className="bg-slate-900 py-0.5 rounded">&lt;=</span>
-                      <span className="bg-slate-900 py-0.5 rounded">!=</span>
+                    <span className="text-[11px] text-slate-600 dark:text-slate-400 block font-semibold">6 Operator Baku:</span>
+                    <div className="grid grid-cols-3 gap-1 bg-slate-100 dark:bg-slate-950 p-2 rounded-lg text-amber-950 dark:text-amber-300 border border-amber-200 dark:border-amber-900/50 font-bold text-center">
+                      <span className="bg-slate-200/80 dark:bg-slate-900 py-0.5 rounded">&gt;</span>
+                      <span className="bg-slate-200/80 dark:bg-slate-900 py-0.5 rounded">&gt;=</span>
+                      <span className="bg-slate-200/80 dark:bg-slate-900 py-0.5 rounded">==</span>
+                      <span className="bg-slate-200/80 dark:bg-slate-900 py-0.5 rounded">&lt;</span>
+                      <span className="bg-slate-200/80 dark:bg-slate-900 py-0.5 rounded">&lt;=</span>
+                      <span className="bg-slate-200/80 dark:bg-slate-900 py-0.5 rounded">!=</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Blok 3: Operan Kanan */}
-                <div className="p-5 bg-slate-900 border-2 border-purple-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
-                  <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-purple-500/20 text-purple-300 border-b border-l border-purple-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
+                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-purple-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
+                  <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-purple-500/20 text-purple-800 dark:text-purple-300 border-b border-l border-purple-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
                     UNSUR 3
                   </div>
-                  <span className="text-xs font-bold text-purple-400 uppercase tracking-wider block font-mono">
+                  <span className="text-xs font-black text-purple-700 dark:text-purple-400 uppercase tracking-wider block font-mono">
                     Operan Kanan (Right Operand)
                   </span>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                     Nilai acuan, <strong>ambang batas (threshold)</strong>, atau variabel lain sebagai pembanding.
                   </p>
                   <div className="pt-2 space-y-1 text-xs font-mono">
-                    <span className="text-[11px] text-slate-400 block">Contoh bentuk:</span>
-                    <div className="bg-slate-950 p-2 rounded-lg text-purple-300 border border-purple-900/50 space-y-0.5">
+                    <span className="text-[11px] text-slate-600 dark:text-slate-400 block font-semibold">Contoh bentuk:</span>
+                    <div className="bg-slate-100 dark:bg-slate-950 p-2.5 rounded-lg text-purple-950 dark:text-purple-300 border border-purple-200 dark:border-purple-900/50 space-y-0.5">
                       <div>• <code className="font-bold">75</code> (Konstanta angka)</div>
                       <div>• <code className="font-bold">0</code> (Nilai nol ambang)</div>
                       <div>• <code className="font-bold">hargaBarang</code> (Variabel lain)</div>
@@ -503,15 +503,15 @@ export default function ConditionMasteryLab() {
               </div>
 
               {/* Output Result Arrow Banner */}
-              <div className="p-4 bg-emerald-950/40 border border-emerald-500/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+              <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-500/40 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center text-emerald-300 font-bold shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500 flex items-center justify-center text-emerald-800 dark:text-emerald-300 font-bold shrink-0">
                     ➔
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-emerald-300 font-mono">Hasil Akhir Evaluasi Kondisi:</p>
-                    <p className="text-xs text-slate-300">
-                      Harus selalu menghasilkan nilai tipe <strong>Boolean</strong>: <code className="text-emerald-400 font-bold font-mono">TRUE</code> (Benar / 1) atau <code className="text-rose-400 font-bold font-mono">FALSE</code> (Salah / 0).
+                    <p className="text-xs font-bold text-emerald-950 dark:text-emerald-300 font-mono">Hasil Akhir Evaluasi Kondisi:</p>
+                    <p className="text-xs text-slate-700 dark:text-slate-300">
+                      Harus selalu menghasilkan nilai tipe <strong>Boolean</strong>: <code className="text-emerald-800 dark:text-emerald-400 font-bold font-mono">TRUE</code> (Benar / 1) atau <code className="text-rose-800 dark:text-rose-400 font-bold font-mono">FALSE</code> (Salah / 0).
                     </p>
                   </div>
                 </div>
@@ -524,7 +524,7 @@ export default function ConditionMasteryLab() {
 
             {/* Galeri 4 Pola Hubungan Operan */}
             <div className="space-y-3 pt-2">
-              <h3 className="text-sm font-bold text-slate-300 font-mono">
+              <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 font-mono">
                 🔍 4 Pola Pasangan Operan yang Sering Digunakan:
               </h3>
 
@@ -555,17 +555,17 @@ export default function ConditionMasteryLab() {
                     badge: 'Karakter/Teks',
                   },
                 ].map(item => (
-                  <div key={item.title} className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-2 hover:border-slate-700 transition-all">
+                  <div key={item.title} className="p-4 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 rounded-2xl space-y-2 hover:border-slate-400 dark:hover:border-slate-700 transition-all shadow-xs">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-200">{item.title}</span>
-                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-800 text-amber-300 border border-slate-700">
+                      <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.title}</span>
+                      <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-amber-950 dark:text-amber-300 border border-slate-300 dark:border-slate-700">
                         {item.badge}
                       </span>
                     </div>
-                    <code className="text-sm font-mono font-bold text-amber-300 bg-slate-950 px-3 py-1.5 rounded-lg block border border-slate-800 tracking-wider">
+                    <code className="text-sm font-mono font-bold text-amber-950 dark:text-amber-300 bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-lg block border border-slate-300 dark:border-slate-800 tracking-wider">
                       {item.formula}
                     </code>
-                    <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{item.desc}</p>
                   </div>
                 ))}
               </div>
@@ -582,7 +582,7 @@ export default function ConditionMasteryLab() {
             
             {/* Operator Selection Bar */}
             <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-slate-400 block">Pilih Operator yang Ingin Dipelajari:</span>
+              <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 block">Pilih Operator yang Ingin Dipelajari:</span>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {OPERATORS_DATA.map((op, idx) => (
                   <button
@@ -590,16 +590,16 @@ export default function ConditionMasteryLab() {
                     onClick={() => handleSelectOp(idx)}
                     className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center gap-1 ${
                       selectedOpIdx === idx
-                        ? 'bg-amber-500/20 border-amber-400 text-white shadow-lg ring-2 ring-amber-400/30'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                        ? 'bg-amber-500/20 border-amber-500 text-slate-900 dark:text-white shadow-lg ring-2 ring-amber-400/30 font-bold'
+                        : 'bg-card dark:bg-slate-900 border-border/70 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
                     }`}
                   >
-                    <span className="text-lg font-mono font-black text-amber-300">{op.symbol}</span>
+                    <span className="text-lg font-mono font-black text-amber-700 dark:text-amber-300">{op.symbol}</span>
                     <span className="text-[10px] font-bold truncate max-w-full">{op.name.split(' ')[0]} {op.name.split(' ')[1] || ''}</span>
-                    <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono uppercase ${
-                      op.type === 'inklusif' ? 'bg-emerald-950 text-emerald-300 border border-emerald-700' :
-                      op.type === 'eksklusif' ? 'bg-sky-950 text-sky-300 border border-sky-700' :
-                      'bg-purple-950 text-purple-300 border border-purple-700'
+                    <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono uppercase font-black ${
+                      op.type === 'inklusif' ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700' :
+                      op.type === 'eksklusif' ? 'bg-sky-100 dark:bg-sky-950 text-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-700' :
+                      'bg-purple-100 dark:bg-purple-950 text-purple-950 dark:text-purple-300 border border-purple-300 dark:border-purple-700'
                     }`}>
                       {op.type}
                     </span>
@@ -609,41 +609,41 @@ export default function ConditionMasteryLab() {
             </div>
 
             {/* Kartu Detail Operator Terpilih */}
-            <div className="p-5 md:p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-6 shadow-xl">
+            <div className="p-5 md:p-6 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 rounded-3xl space-y-6 shadow-xl">
               
               {/* Header Info */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/70 dark:border-slate-800 pb-4">
                 <div>
                   <div className="flex items-center gap-2.5">
-                    <span className="text-2xl md:text-3xl font-mono font-black text-amber-300">{selectedOp.symbol}</span>
-                    <span className="text-lg font-bold text-white">({selectedOp.name})</span>
+                    <span className="text-2xl md:text-3xl font-mono font-black text-amber-700 dark:text-amber-300">{selectedOp.symbol}</span>
+                    <span className="text-lg font-bold text-slate-900 dark:text-white">({selectedOp.name})</span>
                   </div>
-                  <p className="text-xs text-slate-400 pt-1 leading-relaxed">{selectedOp.meaning}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 pt-1 leading-relaxed">{selectedOp.meaning}</p>
                 </div>
-                <div className="text-xs font-mono bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-slate-300 shrink-0">
-                  Matematika: <strong className="text-amber-300 text-base">{selectedOp.mathSymbol}</strong>
+                <div className="text-xs font-mono bg-slate-100 dark:bg-slate-950 px-3 py-1.5 rounded-xl border border-border/70 dark:border-slate-800 text-slate-800 dark:text-slate-300 shrink-0 font-bold">
+                  Matematika: <strong className="text-amber-700 dark:text-amber-300 text-base">{selectedOp.mathSymbol}</strong>
                 </div>
               </div>
 
               {/* Skenario Riil */}
-              <div className="p-4 bg-slate-950/80 rounded-2xl border border-slate-800/80 space-y-1.5">
-                <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider block">
+              <div className="p-4 bg-slate-50 dark:bg-slate-950/80 rounded-2xl border border-border/70 dark:border-slate-800/80 space-y-1.5">
+                <span className="text-xs font-mono font-black text-amber-700 dark:text-amber-400 uppercase tracking-wider block">
                   📌 Kasus Riil: {selectedOp.scenarioTitle}
                 </span>
-                <p className="text-xs text-slate-300 leading-relaxed">{selectedOp.scenarioDesc}</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">{selectedOp.scenarioDesc}</p>
               </div>
 
               {/* Garis Bilangan Visual (SVG) & Live Evaluation */}
-              <div className="space-y-4 p-5 bg-slate-950 rounded-2xl border border-slate-800 shadow-inner">
+              <div className="space-y-4 p-5 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-border/70 dark:border-slate-800 shadow-inner">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-slate-300 flex items-center gap-1.5">
-                    <Scale className="w-4 h-4 text-amber-400" />
+                  <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-300 flex items-center gap-1.5">
+                    <Scale className="w-4 h-4 text-amber-500" />
                     <span>Visualisasi Garis Bilangan &amp; Titik Ambang Batas:</span>
                   </span>
-                  <span className={`px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold border ${
+                  <span className={`px-2.5 py-0.5 rounded-lg text-xs font-mono font-black border ${
                     selectedOp.evalFn(sliderVal)
-                      ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500'
-                      : 'bg-rose-950/80 text-rose-300 border-rose-500'
+                      ? 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-950 dark:text-emerald-300 border-emerald-500'
+                      : 'bg-rose-100 dark:bg-rose-950/80 text-rose-950 dark:text-rose-300 border-rose-500'
                   }`}>
                     Hasil: {selectedOp.evalFn(sliderVal) ? 'TRUE (Lolos/Masuk)' : 'FALSE (Gagal/Bypass)'}
                   </span>
@@ -653,11 +653,11 @@ export default function ConditionMasteryLab() {
                 <div className="relative pt-2 pb-6 px-4 select-none">
                   {/* Status Banner Text on Line */}
                   <div className="flex justify-between text-[11px] font-mono font-bold pb-2">
-                    <span className="text-slate-500">Batas Bawah: {selectedOp.min}</span>
-                    <span className="text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-600/50">
+                    <span className="text-slate-500 dark:text-slate-400">Batas Bawah: {selectedOp.min}</span>
+                    <span className="text-amber-950 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/60 px-2.5 py-0.5 rounded border border-amber-300 dark:border-amber-600/50 font-black">
                       Titik Batas: {selectedOp.threshold}{selectedOp.unit}
                     </span>
-                    <span className="text-slate-500">Batas Atas: {selectedOp.max}</span>
+                    <span className="text-slate-500 dark:text-slate-400">Batas Atas: {selectedOp.max}</span>
                   </div>
 
                   {/* SVG Bar */}
@@ -704,10 +704,10 @@ export default function ConditionMasteryLab() {
                 </div>
 
                 {/* Slider Input Controller */}
-                <div className="space-y-2 pt-2 border-t border-slate-800/80">
-                  <div className="flex items-center justify-between text-xs text-slate-300 font-mono">
-                    <span>Ubah Nilai <code className="text-amber-300 font-bold">{selectedOp.varName}</code>:</span>
-                    <span className="text-base font-black text-white px-2 py-0.5 bg-slate-900 border border-slate-700 rounded-lg">
+                <div className="space-y-2 pt-2 border-t border-border/70 dark:border-slate-800/80">
+                  <div className="flex items-center justify-between text-xs text-slate-700 dark:text-slate-300 font-mono font-bold">
+                    <span>Ubah Nilai <code className="text-amber-700 dark:text-amber-300 font-black">{selectedOp.varName}</code>:</span>
+                    <span className="text-base font-black text-slate-900 dark:text-white px-2.5 py-0.5 bg-slate-100 dark:bg-slate-900 border border-border/70 dark:border-slate-700 rounded-lg">
                       {sliderVal}{selectedOp.unit}
                     </span>
                   </div>
@@ -718,7 +718,7 @@ export default function ConditionMasteryLab() {
                     step={selectedOp.step}
                     value={sliderVal}
                     onChange={e => setSliderVal(Number(e.target.value))}
-                    className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                    className="w-full accent-amber-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                   />
                   <div className="flex justify-between text-[11px] text-slate-500 font-mono">
                     <span>{selectedOp.min}{selectedOp.unit}</span>
@@ -728,14 +728,14 @@ export default function ConditionMasteryLab() {
                 </div>
 
                 {/* Live Expression Box */}
-                <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between font-mono text-xs">
+                <div className="p-3 bg-slate-100 dark:bg-slate-900 rounded-xl border border-border/70 dark:border-slate-800 flex items-center justify-between font-mono text-xs">
                   <div>
-                    <span className="text-slate-400">Ekspresi: </span>
-                    <strong className="text-slate-200">{selectedOp.varName} {selectedOp.symbol} {selectedOp.threshold}</strong>
-                    <span className="text-slate-500"> ➔ ({sliderVal} {selectedOp.symbol} {selectedOp.threshold})</span>
+                    <span className="text-slate-600 dark:text-slate-400">Ekspresi: </span>
+                    <strong className="text-slate-900 dark:text-slate-200">{selectedOp.varName} {selectedOp.symbol} {selectedOp.threshold}</strong>
+                    <span className="text-slate-600 dark:text-slate-400"> ➔ ({sliderVal} {selectedOp.symbol} {selectedOp.threshold})</span>
                   </div>
-                  <span className={`font-black px-2 py-0.5 rounded ${
-                    selectedOp.evalFn(sliderVal) ? 'bg-emerald-600 text-white' : 'bg-rose-600 text-white'
+                  <span className={`font-black px-2.5 py-0.5 rounded text-white ${
+                    selectedOp.evalFn(sliderVal) ? 'bg-emerald-600' : 'bg-rose-600'
                   }`}>
                     {selectedOp.evalFn(sliderVal) ? 'TRUE' : 'FALSE'}
                   </span>
@@ -745,36 +745,36 @@ export default function ConditionMasteryLab() {
 
               {/* Komparasi Sintaks 3 Bahasa */}
               <div className="space-y-2">
-                <span className="text-xs font-mono font-bold text-slate-400">Cara Penulisan di Berbagai Bahasa:</span>
+                <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Cara Penulisan di Berbagai Bahasa:</span>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
-                  <div className="p-3 bg-slate-950 border border-purple-900/40 rounded-xl">
-                    <span className="text-[10px] text-purple-400 font-bold block mb-1">📋 PSEUDOCODE</span>
-                    <code className="text-purple-200 font-bold">{selectedOp.pseudo}</code>
+                  <div className="p-3 bg-card dark:bg-slate-950 border border-purple-300 dark:border-purple-900/40 rounded-xl shadow-xs">
+                    <span className="text-[10px] text-purple-700 dark:text-purple-400 font-black block mb-1">📋 PSEUDOCODE</span>
+                    <code className="text-purple-950 dark:text-purple-200 font-bold">{selectedOp.pseudo}</code>
                   </div>
-                  <div className="p-3 bg-slate-950 border border-sky-900/40 rounded-xl">
-                    <span className="text-[10px] text-sky-400 font-bold block mb-1">🐍 PYTHON</span>
-                    <code className="text-sky-200 font-bold">{selectedOp.python}</code>
+                  <div className="p-3 bg-card dark:bg-slate-950 border border-sky-300 dark:border-sky-900/40 rounded-xl shadow-xs">
+                    <span className="text-[10px] text-sky-700 dark:text-sky-400 font-black block mb-1">🐍 PYTHON</span>
+                    <code className="text-sky-950 dark:text-sky-200 font-bold">{selectedOp.python}</code>
                   </div>
-                  <div className="p-3 bg-slate-950 border border-yellow-900/40 rounded-xl">
-                    <span className="text-[10px] text-yellow-400 font-bold block mb-1">⚡ JAVASCRIPT</span>
-                    <code className="text-yellow-200 font-bold">{selectedOp.js}</code>
+                  <div className="p-3 bg-card dark:bg-slate-950 border border-amber-300 dark:border-yellow-900/40 rounded-xl shadow-xs">
+                    <span className="text-[10px] text-amber-700 dark:text-yellow-400 font-black block mb-1">⚡ JAVASCRIPT</span>
+                    <code className="text-amber-950 dark:text-yellow-200 font-bold">{selectedOp.js}</code>
                   </div>
                 </div>
               </div>
 
               {/* Best Practice & Pitfall Note */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                <div className="p-3.5 bg-emerald-950/30 border border-emerald-600/30 rounded-xl space-y-1">
-                  <p className="text-xs font-bold text-emerald-300 flex items-center gap-1.5 font-mono">
+                <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/30 rounded-xl space-y-1">
+                  <p className="text-xs font-bold text-emerald-950 dark:text-emerald-300 flex items-center gap-1.5 font-mono">
                     <ShieldCheck className="w-3.5 h-3.5" /> Best Practice:
                   </p>
-                  <p className="text-xs text-slate-300 leading-relaxed">{selectedOp.bestPractice}</p>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">{selectedOp.bestPractice}</p>
                 </div>
-                <div className="p-3.5 bg-rose-950/30 border border-rose-600/30 rounded-xl space-y-1">
-                  <p className="text-xs font-bold text-rose-300 flex items-center gap-1.5 font-mono">
+                <div className="p-3.5 bg-rose-50 dark:bg-rose-950/30 border border-rose-300 dark:border-rose-600/30 rounded-xl space-y-1">
+                  <p className="text-xs font-bold text-rose-950 dark:text-rose-300 flex items-center gap-1.5 font-mono">
                     <AlertTriangle className="w-3.5 h-3.5" /> Jebakan yang Harus Dihindari:
                   </p>
-                  <p className="text-xs text-slate-300 leading-relaxed">{selectedOp.pitfall}</p>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">{selectedOp.pitfall}</p>
                 </div>
               </div>
 
@@ -789,15 +789,15 @@ export default function ConditionMasteryLab() {
         {activeTab === 'builder' && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             
-            <div className="p-4 bg-sky-950/30 border border-sky-500/30 rounded-2xl">
-              <p className="text-sky-200 text-xs md:text-sm leading-relaxed">
-                🛠️ <strong>Studio Perakitan Kondisi:</strong> Baca masalah di bawah ini, lalu rakit kondisi yang benar dengan memilih <strong>Operan Kiri</strong>, <strong>Operator</strong>, dan <strong>Operan Kanan</strong>.
+            <div className="p-4 bg-sky-50 dark:bg-sky-950/40 border-2 border-sky-300 dark:border-sky-600/50 rounded-2xl shadow-xs">
+              <p className="text-sky-950 dark:text-sky-100 text-xs md:text-sm leading-relaxed font-medium">
+                🛠️ <strong className="text-sky-900 dark:text-sky-300 font-black">Studio Perakitan Kondisi:</strong> Baca masalah di bawah ini, lalu rakit kondisi yang benar dengan memilih <strong className="text-sky-900 dark:text-sky-200 font-bold">Operan Kiri</strong>, <strong className="text-sky-900 dark:text-sky-200 font-bold">Operator</strong>, dan <strong className="text-sky-900 dark:text-sky-200 font-bold">Operan Kanan</strong>.
               </p>
             </div>
 
             {/* Pilihan Skenario Kasus */}
             <div className="space-y-2">
-              <span className="text-xs font-mono font-bold text-slate-400">Pilih Tantangan Kasus:</span>
+              <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Pilih Tantangan Kasus:</span>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {BUILDER_SCENARIOS.map((sc, idx) => (
                   <button
@@ -805,30 +805,30 @@ export default function ConditionMasteryLab() {
                     onClick={() => handleSelectScenario(idx)}
                     className={`p-3 rounded-2xl border text-left transition-all cursor-pointer space-y-1 ${
                       builderScenarioIdx === idx
-                        ? 'bg-sky-500/20 border-sky-400 text-white shadow-md'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                        ? 'bg-sky-500/20 border-sky-400 text-slate-900 dark:text-white shadow-md font-bold'
+                        : 'bg-card dark:bg-slate-900 border-border/70 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-700 hover:text-slate-900 dark:hover:text-slate-200'
                     }`}
                   >
-                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-800 text-sky-300">
+                    <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-sky-100 dark:bg-sky-950 text-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-800">
                       {sc.category}
                     </span>
-                    <p className="text-xs font-bold text-slate-200 line-clamp-1">{sc.title}</p>
+                    <p className="text-xs font-bold text-slate-900 dark:text-slate-200 line-clamp-1">{sc.title}</p>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Deskripsi Kasus */}
-            <div className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-1.5">
-              <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider block">
+            <div className="p-4 bg-slate-50 dark:bg-slate-950/80 border border-border/70 dark:border-slate-800 rounded-2xl space-y-1.5">
+              <span className="text-xs font-mono font-black text-amber-800 dark:text-amber-400 uppercase tracking-wider block">
                 🎯 Masalah yang Harus Diselesaikan:
               </span>
-              <p className="text-xs md:text-sm text-slate-200 leading-relaxed">{scenario.story}</p>
+              <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">{scenario.story}</p>
             </div>
 
             {/* Interactive Assembly Selector */}
-            <div className="p-5 md:p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-5 shadow-xl">
-              <span className="text-xs font-mono font-bold text-slate-300 block">
+            <div className="p-5 md:p-6 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 rounded-3xl space-y-5 shadow-xl">
+              <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200 block">
                 Rakit 3 Unsur Kondisi:
               </span>
 
@@ -836,7 +836,7 @@ export default function ConditionMasteryLab() {
                 
                 {/* 1. Operan Kiri Selector */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono font-bold text-sky-400 block">
+                  <label className="text-xs font-mono font-black text-sky-700 dark:text-sky-400 block">
                     1. Operan Kiri (Variabel/Ekspresi):
                   </label>
                   <div className="space-y-1.5">
@@ -846,8 +846,8 @@ export default function ConditionMasteryLab() {
                         onClick={() => setUserLeft(opt)}
                         className={`w-full p-2.5 rounded-xl border text-left text-xs font-mono font-bold transition-all cursor-pointer ${
                           userLeft === opt
-                            ? 'bg-sky-500/30 border-sky-400 text-sky-200 shadow-sm'
-                            : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                            ? 'bg-sky-500/30 border-sky-400 text-sky-950 dark:text-sky-200 shadow-sm font-black'
+                            : 'bg-slate-50 dark:bg-slate-950 border-border/70 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                         }`}
                       >
                         {opt}
@@ -858,7 +858,7 @@ export default function ConditionMasteryLab() {
 
                 {/* 2. Operator Relasional Selector */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono font-bold text-amber-400 block">
+                  <label className="text-xs font-mono font-black text-amber-700 dark:text-amber-400 block">
                     2. Operator Pembanding:
                   </label>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -868,8 +868,8 @@ export default function ConditionMasteryLab() {
                         onClick={() => setUserOp(op)}
                         className={`p-2.5 rounded-xl border text-center text-sm font-mono font-black transition-all cursor-pointer ${
                           userOp === op
-                            ? 'bg-amber-500/30 border-amber-400 text-amber-200 shadow-sm'
-                            : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                            ? 'bg-amber-500/30 border-amber-400 text-amber-950 dark:text-amber-200 shadow-sm'
+                            : 'bg-slate-50 dark:bg-slate-950 border-border/70 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                         }`}
                       >
                         {op}
@@ -880,7 +880,7 @@ export default function ConditionMasteryLab() {
 
                 {/* 3. Operan Kanan Selector */}
                 <div className="space-y-2">
-                  <label className="text-xs font-mono font-bold text-purple-400 block">
+                  <label className="text-xs font-mono font-black text-purple-700 dark:text-purple-400 block">
                     3. Operan Kanan (Ambang Batas):
                   </label>
                   <div className="space-y-1.5">
@@ -890,8 +890,8 @@ export default function ConditionMasteryLab() {
                         onClick={() => setUserRight(opt)}
                         className={`w-full p-2.5 rounded-xl border text-left text-xs font-mono font-bold transition-all cursor-pointer ${
                           userRight === opt
-                            ? 'bg-purple-500/30 border-purple-400 text-purple-200 shadow-sm'
-                            : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-slate-200'
+                            ? 'bg-purple-500/30 border-purple-400 text-purple-950 dark:text-purple-200 shadow-sm font-black'
+                            : 'bg-slate-50 dark:bg-slate-950 border-border/70 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                         }`}
                       >
                         {opt}
@@ -903,33 +903,33 @@ export default function ConditionMasteryLab() {
               </div>
 
               {/* Preview Hasil Rakitan Kondisi */}
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+              <div className="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-border/70 dark:border-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono text-slate-400">Hasil Kondisi yang Anda Rakit:</span>
-                  <span className={`px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold border ${
-                    isBuilderCorrect ? 'bg-emerald-950 text-emerald-300 border-emerald-500' : 'bg-amber-950 text-amber-300 border-amber-500'
+                  <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-400">Hasil Kondisi yang Anda Rakit:</span>
+                  <span className={`px-2.5 py-0.5 rounded-lg text-xs font-mono font-black border ${
+                    isBuilderCorrect ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-950 dark:text-emerald-300 border-emerald-500' : 'bg-amber-100 dark:bg-amber-950 text-amber-950 dark:text-amber-300 border-amber-500'
                   }`}>
                     {isBuilderCorrect ? '✅ Kondisi Logika TEPAT' : '⚠️ Belum Tepat'}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-center p-4 bg-slate-900 rounded-xl border border-slate-800 font-mono text-base md:text-lg font-black tracking-wide">
-                  <span className="text-sky-300 mr-2">{userLeft}</span>
-                  <span className="text-amber-400 mr-2">{userOp}</span>
-                  <span className="text-purple-300">{userRight}</span>
+                <div className="flex items-center justify-center p-4 bg-card dark:bg-slate-900 rounded-xl border border-border/70 dark:border-slate-800 font-mono text-base md:text-lg font-black tracking-wide">
+                  <span className="text-sky-700 dark:text-sky-400 mr-2">{userLeft}</span>
+                  <span className="text-amber-700 dark:text-amber-400 mr-2">{userOp}</span>
+                  <span className="text-purple-700 dark:text-purple-400">{userRight}</span>
                 </div>
 
                 {/* Penjelasan Verifikasi */}
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-700 dark:text-slate-400 leading-relaxed">
                   💡 <strong>Analisis Logika:</strong> {scenario.explanation}
                 </p>
               </div>
 
               {/* Uji Kondisi Rakitan dengan Live Slider */}
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
-                <div className="flex items-center justify-between text-xs font-mono">
-                  <span className="text-slate-300">Uji Nilai Input (<code className="text-amber-300 font-bold">{scenario.testVarName}</code>):</span>
-                  <span className="text-white font-bold px-2 py-0.5 bg-slate-900 border border-slate-700 rounded-lg">
+              <div className="p-4 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-border/70 dark:border-slate-800 space-y-3">
+                <div className="flex items-center justify-between text-xs font-mono font-bold">
+                  <span className="text-slate-800 dark:text-slate-300">Uji Nilai Input (<code className="text-amber-700 dark:text-amber-300 font-black">{scenario.testVarName}</code>):</span>
+                  <span className="text-slate-900 dark:text-white font-black px-2.5 py-0.5 bg-slate-100 dark:bg-slate-900 border border-border/70 dark:border-slate-700 rounded-lg">
                     {builderTestVal}{scenario.testUnit}
                   </span>
                 </div>
@@ -941,7 +941,7 @@ export default function ConditionMasteryLab() {
                   step={scenario.testStep}
                   value={builderTestVal}
                   onChange={e => setBuilderTestVal(Number(e.target.value))}
-                  className="w-full accent-sky-500 cursor-pointer h-2 bg-slate-800 rounded-lg"
+                  className="w-full accent-sky-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
                 />
 
                 <div className="flex justify-between text-[11px] font-mono text-slate-500">
@@ -952,11 +952,11 @@ export default function ConditionMasteryLab() {
                 {/* Status Evaluasi Live */}
                 <div className={`p-3 rounded-xl border text-xs font-mono font-bold flex items-center justify-between ${
                   scenario.evalTarget(builderTestVal)
-                    ? 'bg-emerald-950/60 border-emerald-500 text-emerald-200'
-                    : 'bg-rose-950/60 border-rose-500 text-rose-200'
+                    ? 'bg-emerald-100/90 dark:bg-emerald-950/60 border-emerald-500 text-emerald-950 dark:text-emerald-200'
+                    : 'bg-rose-100/90 dark:bg-rose-950/60 border-rose-500 text-rose-950 dark:text-rose-200'
                 }`}>
                   <span>Status Saat Nilai = {builderTestVal}:</span>
-                  <span className="px-2 py-0.5 rounded bg-slate-900">
+                  <span className="px-2.5 py-0.5 rounded bg-slate-200 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-black">
                     {scenario.evalTarget(builderTestVal) ? 'TRUE ➔ Masuk Cabang YA' : 'FALSE ➔ Masuk Cabang TIDAK'}
                   </span>
                 </div>
@@ -973,14 +973,14 @@ export default function ConditionMasteryLab() {
         {activeTab === 'pitfalls' && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             
-            <div className="p-4 bg-rose-950/30 border border-rose-500/30 rounded-2xl">
-              <p className="text-rose-200 text-xs md:text-sm leading-relaxed">
-                ⚠️ <strong>Galeri Jebakan Pemula:</strong> Kesalahan menulis kondisi sering kali tidak menghasilkan <em>error</em> kompilasi secara langsung, melainkan <strong>kesalahan logika (logical bug)</strong> yang sangat berbahaya karena membuat program memberikan keputusan yang salah.
+            <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-300 dark:border-rose-600/50 rounded-2xl shadow-xs">
+              <p className="text-rose-950 dark:text-rose-100 text-xs md:text-sm leading-relaxed font-medium">
+                ⚠️ <strong className="text-rose-900 dark:text-rose-300 font-black">Galeri Jebakan Pemula:</strong> Kesalahan menulis kondisi sering kali tidak menghasilkan <em>error</em> kompilasi secara langsung, melainkan <strong>kesalahan logika (logical bug)</strong> yang sangat berbahaya karena membuat program memberikan keputusan yang salah.
               </p>
             </div>
 
             {/* Quiz Selector */}
-            <div className="flex gap-2 border-b border-slate-800 pb-3 overflow-x-auto">
+            <div className="flex gap-2 border-b border-border/70 dark:border-slate-800 pb-3 overflow-x-auto">
               {PITFALL_QUIZZES.map((q, idx) => (
                 <button
                   key={q.id}
@@ -992,7 +992,7 @@ export default function ConditionMasteryLab() {
                   className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer whitespace-nowrap ${
                     quizIdx === idx
                       ? 'bg-rose-600 text-white shadow-md'
-                      : 'bg-slate-900 text-slate-400 hover:text-slate-200'
+                      : 'bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   Tantangan #{q.id}
@@ -1001,44 +1001,58 @@ export default function ConditionMasteryLab() {
             </div>
 
             {/* Kotak Soal Analisis Jebakan */}
-            <div className="p-6 bg-slate-900 border border-slate-800 rounded-3xl space-y-5 shadow-xl">
+            <div className="p-6 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 rounded-3xl space-y-5 shadow-xl">
               
               <div className="space-y-2">
-                <span className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider block">
+                <span className="text-xs font-mono font-black text-rose-700 dark:text-rose-400 uppercase tracking-wider block">
                   Kasus Kesalahan #{activeQuiz.id}:
                 </span>
-                <p className="text-xs md:text-sm text-slate-200 leading-relaxed font-medium">
+                <p className="text-xs md:text-sm text-slate-800 dark:text-slate-200 leading-relaxed font-semibold">
                   {activeQuiz.question}
                 </p>
               </div>
 
-              {/* Perbandingan Kode: SALAH vs BENAR */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
-                <div className="p-4 bg-rose-950/40 border border-rose-600/40 rounded-2xl space-y-1.5">
-                  <span className="text-[11px] font-bold text-rose-400 flex items-center gap-1.5">
-                    <XCircle className="w-4 h-4" /> KODE KELIRU (YANG DITULIS):
+              {/* Tampilan Kode Bermasalah (Sebelum Diperiksa) vs Perbandingan Kode (Setelah Diperiksa) */}
+              {!isAnswerChecked ? (
+                <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-300 dark:border-rose-600/50 rounded-2xl space-y-2">
+                  <span className="text-[11px] font-black text-rose-800 dark:text-rose-300 flex items-center gap-1.5 uppercase font-mono">
+                    <XCircle className="w-4 h-4 text-rose-600 shrink-0" /> Kode yang Ditulis Mahasiswa (Mengandung Bug Logika):
                   </span>
-                  <code className="text-rose-200 font-bold block bg-rose-950/80 p-2.5 rounded-lg border border-rose-800">
+                  <code className="text-rose-950 dark:text-rose-100 font-bold block bg-rose-100 dark:bg-rose-950/80 p-3 rounded-xl border border-rose-300 dark:border-rose-800 font-mono text-xs md:text-sm">
                     {activeQuiz.wrongCode}
                   </code>
-                  <p className="text-[11px] text-rose-300/90 pt-1 font-sans">{activeQuiz.problemSummary}</p>
+                  <p className="text-xs text-rose-900 dark:text-rose-200/90 font-sans font-medium">
+                    ⚠️ <strong>Dampak Bug:</strong> {activeQuiz.problemSummary}
+                  </p>
                 </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
+                  <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-300 dark:border-rose-600/40 rounded-2xl space-y-1.5">
+                    <span className="text-[11px] font-black text-rose-700 dark:text-rose-400 flex items-center gap-1.5 font-mono">
+                      <XCircle className="w-4 h-4 text-rose-600 shrink-0" /> KODE AWAL (MENGANDUNG BUG):
+                    </span>
+                    <code className="text-rose-950 dark:text-rose-200 font-bold block bg-rose-100 dark:bg-rose-950/80 p-2.5 rounded-lg border border-rose-300 dark:border-rose-800">
+                      {activeQuiz.wrongCode}
+                    </code>
+                    <p className="text-[11px] text-rose-900 dark:text-rose-300/90 pt-1 font-sans font-medium">{activeQuiz.problemSummary}</p>
+                  </div>
 
-                <div className="p-4 bg-emerald-950/40 border border-emerald-600/40 rounded-2xl space-y-1.5">
-                  <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" /> KODE YANG BENAR:
-                  </span>
-                  <code className="text-emerald-200 font-bold block bg-emerald-950/80 p-2.5 rounded-lg border border-emerald-800">
-                    {activeQuiz.correctedCode}
-                  </code>
-                  <p className="text-[11px] text-emerald-300/90 pt-1 font-sans">Menggunakan perbandingan relasional yang tepat.</p>
+                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-600/40 rounded-2xl space-y-1.5">
+                    <span className="text-[11px] font-black text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5 font-mono">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" /> KODE SETELAH DIPERBAIKI (BENAR):
+                    </span>
+                    <code className="text-emerald-950 dark:text-emerald-200 font-bold block bg-emerald-100 dark:bg-emerald-950/80 p-2.5 rounded-lg border border-emerald-300 dark:border-emerald-800">
+                      {activeQuiz.correctedCode}
+                    </code>
+                    <p className="text-[11px] text-emerald-900 dark:text-emerald-300/90 pt-1 font-sans font-medium">Menggunakan perbandingan relasional yang tepat.</p>
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Pilihan Perbaikan (Kuis Diagnostik) */}
               <div className="space-y-3 pt-2">
-                <span className="text-xs font-mono font-bold text-slate-300 block">
-                  Bagaimana cara memperbaiki kesalahan di atas?
+                <span className="text-xs font-mono font-bold text-slate-800 dark:text-slate-200 block">
+                  Sebagai programmer, bagaimana cara Anda memperbaiki bug pada kode di atas?
                 </span>
 
                 <div className="space-y-2">
@@ -1046,15 +1060,15 @@ export default function ConditionMasteryLab() {
                     const isSelected = selectedAnswer === idx;
                     const isCorrect = idx === activeQuiz.correctIdx;
 
-                    let btnStyle = 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-700';
+                    let btnStyle = 'bg-slate-50 dark:bg-slate-950 border-border/70 dark:border-slate-800 text-slate-800 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-700';
                     if (isAnswerChecked) {
                       if (isCorrect) {
-                        btnStyle = 'bg-emerald-950/80 border-emerald-500 text-emerald-200 font-bold';
+                        btnStyle = 'bg-emerald-100 dark:bg-emerald-950/80 border-emerald-500 text-emerald-950 dark:text-emerald-200 font-bold';
                       } else if (isSelected && !isCorrect) {
-                        btnStyle = 'bg-rose-950/80 border-rose-500 text-rose-200 font-bold';
+                        btnStyle = 'bg-rose-100 dark:bg-rose-950/80 border-rose-500 text-rose-950 dark:text-rose-200 font-bold';
                       }
                     } else if (isSelected) {
-                      btnStyle = 'bg-amber-500/20 border-amber-400 text-amber-200';
+                      btnStyle = 'bg-amber-500/20 border-amber-400 text-amber-950 dark:text-amber-200 font-bold';
                     }
 
                     return (
@@ -1067,43 +1081,80 @@ export default function ConditionMasteryLab() {
                         className={`w-full p-3.5 rounded-xl border text-left text-xs md:text-sm transition-all cursor-pointer flex items-center justify-between gap-3 ${btnStyle}`}
                       >
                         <span>{opt}</span>
-                        {isAnswerChecked && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />}
-                        {isAnswerChecked && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-rose-400 shrink-0" />}
+                        {isAnswerChecked && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />}
+                        {isAnswerChecked && isSelected && !isCorrect && <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />}
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Tombol Periksa Jawaban */}
+                {/* Tombol Periksa Jawaban / Feedback Pembahasan */}
                 {!isAnswerChecked ? (
                   <button
                     onClick={() => {
                       if (selectedAnswer !== null) setIsAnswerChecked(true);
                     }}
                     disabled={selectedAnswer === null}
-                    className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold text-xs transition-all cursor-pointer shadow-md mt-2"
+                    className="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-black text-xs transition-all cursor-pointer shadow-md mt-2"
                   >
                     Periksa Jawaban
                   </button>
                 ) : (
-                  <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 mt-3">
-                    <p className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Info className="w-4 h-4 text-sky-400" />
-                      <span>Penjelasan Mengapa Terjadi Kesalahan Logika:</span>
-                    </p>
-                    <p className="text-xs text-slate-300 leading-relaxed font-sans">
-                      {activeQuiz.whyWrong}
-                    </p>
-                    <button
-                      onClick={() => {
-                        setSelectedAnswer(null);
-                        setIsAnswerChecked(false);
-                        setQuizIdx((quizIdx + 1) % PITFALL_QUIZZES.length);
-                      }}
-                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl transition-all cursor-pointer mt-2"
-                    >
-                      Lanjut ke Tantangan Berikutnya ➔
-                    </button>
+                  <div className="space-y-3 pt-2">
+                    {/* Banner Status Jawaban Mahasiswa */}
+                    {selectedAnswer === activeQuiz.correctIdx ? (
+                      <div className="p-4 bg-emerald-100 dark:bg-emerald-950/80 border-2 border-emerald-500 rounded-2xl flex items-center gap-3 text-emerald-950 dark:text-emerald-200 shadow-sm">
+                        <CheckCircle2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <div>
+                          <p className="text-sm font-black">Analisis &amp; Jawaban Anda Tepat Sekali! 🎉</p>
+                          <p className="text-xs font-medium text-emerald-900 dark:text-emerald-300">
+                            Solusi perbaikan yang Anda pilih berhasil memecahkan bug logika pada kode kasus ini.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-4 bg-rose-100 dark:bg-rose-950/80 border-2 border-rose-500 rounded-2xl flex items-center gap-3 text-rose-950 dark:text-rose-200 shadow-sm">
+                        <XCircle className="w-6 h-6 text-rose-600 dark:text-rose-400 shrink-0" />
+                        <div>
+                          <p className="text-sm font-black">Jawaban Belum Tepat! ❌</p>
+                          <p className="text-xs font-medium text-rose-900 dark:text-rose-300">
+                            Pilihan yang Anda pilih belum menyelesaikan akar masalah bug logika tersebut. Periksa pembahasan di bawah.
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Pembahasan Kasus (Mengapa Kode Kasus Bermasalah) */}
+                    <div className="p-4 bg-sky-50 dark:bg-sky-950/50 rounded-2xl border-2 border-sky-300 dark:border-sky-800 space-y-2 text-slate-800 dark:text-slate-200 shadow-xs">
+                      <p className="text-xs font-black text-sky-950 dark:text-sky-300 flex items-center gap-1.5">
+                        <Info className="w-4 h-4 text-sky-600 dark:text-sky-400 shrink-0" />
+                        <span>Pembahasan Masalah Kasus (Mengapa Kode Awal Mengalami Bug Logika):</span>
+                      </p>
+                      <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-sans font-medium">
+                        {activeQuiz.whyWrong}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2 pt-2">
+                        <button
+                          onClick={() => {
+                            setSelectedAnswer(null);
+                            setIsAnswerChecked(false);
+                          }}
+                          className="px-3.5 py-2 bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 text-xs font-bold rounded-xl transition-all cursor-pointer"
+                        >
+                          🔄 Coba Lagi Soal Ini
+                        </button>
+                        <button
+                          onClick={() => {
+                            setSelectedAnswer(null);
+                            setIsAnswerChecked(false);
+                            setQuizIdx((quizIdx + 1) % PITFALL_QUIZZES.length);
+                          }}
+                          className="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-sm"
+                        >
+                          Lanjut ke Tantangan Berikutnya ➔
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 )}
 

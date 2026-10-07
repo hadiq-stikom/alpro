@@ -620,10 +620,11 @@ export default function AnimatedNestedIfDefinition() {
             exit={{ rotateY: 75, opacity: 0 }}
             transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
             onClick={() => setIsFlipped(true)}
-            className="w-full cursor-pointer transition-all duration-300 origin-center p-5 md:p-6 bg-gradient-to-br from-purple-500/10 via-indigo-500/5 to-slate-900/10 dark:from-slate-950 dark:via-purple-950/20 dark:to-slate-950 border-2 border-purple-400 dark:border-purple-500/70 rounded-3xl shadow-md space-y-4 hover:scale-[1.015] sm:hover:scale-[1.02] hover:-translate-y-1.5 hover:shadow-[0_25px_60px_rgba(168,85,247,0.25)] hover:border-purple-500 hover:ring-2 hover:ring-purple-400/30 subpixel-antialiased select-none"
+            className="w-full cursor-pointer transition-transform duration-300 ease-out origin-center p-5 md:p-6 bg-gradient-to-br from-purple-500/10 via-indigo-500/5 to-slate-900/10 dark:from-slate-950 dark:via-purple-950/20 dark:to-slate-950 border-2 border-purple-400 dark:border-purple-500/70 rounded-3xl shadow-md space-y-4 hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-500 hover:ring-2 hover:ring-purple-400/40 relative z-0 hover:z-50 select-none antialiased"
             style={{
               textRendering: 'optimizeLegibility',
-              WebkitFontSmoothing: 'subpixel-antialiased',
+              WebkitFontSmoothing: 'antialiased',
+              MozOsxFontSmoothing: 'grayscale',
             }}
           >
             {/* Header Definisi */}
@@ -738,14 +739,14 @@ export default function AnimatedNestedIfDefinition() {
             <div className="lg:col-span-5 flex flex-col justify-between gap-3">
               
               {/* 1. Dual Slider Input & Tombol Presets */}
-              <div className="p-3.5 bg-slate-900 rounded-2xl border border-slate-700 shadow-md space-y-3 text-white">
+              <div className="p-3.5 bg-card dark:bg-slate-900 rounded-2xl border border-border/70 dark:border-slate-700 shadow-md space-y-3 text-slate-900 dark:text-white">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-mono font-bold text-slate-300">Kontrol Variabel Runtime:</span>
+                  <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Kontrol Variabel Runtime:</span>
                   <button
                     onClick={() => setReplayKey(k => k + 1)}
-                    className="flex items-center gap-1 text-[11px] font-bold text-slate-200 hover:text-white bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-slate-600 transition-all cursor-pointer shadow-xs"
+                    className="flex items-center gap-1 text-[11px] font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-2.5 py-1 rounded-lg border border-border/70 dark:border-slate-600 transition-all cursor-pointer shadow-xs"
                   >
-                    <RefreshCcw className="w-3 h-3 text-purple-400" />
+                    <RefreshCcw className="w-3 h-3 text-purple-600 dark:text-purple-400" />
                     <span>Ulangi Alur</span>
                   </button>
                 </div>
@@ -753,8 +754,8 @@ export default function AnimatedNestedIfDefinition() {
                 {/* Slider 1 (Gerbang Luar) */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-purple-300 font-bold">1. {scenario.var1Label}:</span>
-                    <span className="font-black bg-purple-950 border border-purple-500/50 px-2 py-0.2 rounded text-purple-200">
+                    <span className="text-purple-700 dark:text-purple-300 font-bold">1. {scenario.var1Label}:</span>
+                    <span className="font-black bg-purple-500/10 dark:bg-purple-950 border border-purple-500/40 px-2 py-0.2 rounded text-purple-700 dark:text-purple-200">
                       {scenario.var1Name} = {scenario.id === 'beasiswa' ? (v1 / 10).toFixed(1) : v1}{scenario.var1Unit}
                     </span>
                   </div>
@@ -767,15 +768,15 @@ export default function AnimatedNestedIfDefinition() {
                       setV1(Number(e.target.value));
                       setReplayKey(k => k + 1);
                     }}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+                    className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
                   />
                 </div>
 
                 {/* Slider 2 (Gerbang Dalam) */}
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-emerald-300 font-bold">2. {scenario.var2Label}:</span>
-                    <span className="font-black bg-emerald-950 border border-emerald-500/50 px-2 py-0.2 rounded text-emerald-200">
+                    <span className="text-emerald-700 dark:text-emerald-300 font-bold">2. {scenario.var2Label}:</span>
+                    <span className="font-black bg-emerald-500/10 dark:bg-emerald-950 border border-emerald-500/40 px-2 py-0.2 rounded text-emerald-700 dark:text-emerald-200">
                       {scenario.var2Name} = {v2}{scenario.var2Unit}
                     </span>
                   </div>
@@ -788,13 +789,13 @@ export default function AnimatedNestedIfDefinition() {
                       setV2(Number(e.target.value));
                       setReplayKey(k => k + 1);
                     }}
-                    className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                    className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-500"
                   />
                 </div>
 
                 {/* Presets Uji Cepat */}
-                <div className="space-y-1 pt-1 border-t border-slate-800">
-                  <span className="text-[10px] font-mono text-slate-400 block">Skenario Uji Diagnostik:</span>
+                <div className="space-y-1 pt-1 border-t border-border/70 dark:border-slate-800">
+                  <span className="text-[10px] font-mono text-slate-500 dark:text-slate-400 block">Skenario Uji Diagnostik:</span>
                   <div className="flex flex-col gap-1">
                     {scenario.presets.map((p, i) => (
                       <button
@@ -807,7 +808,7 @@ export default function AnimatedNestedIfDefinition() {
                         className={`text-left px-2 py-1 rounded-md text-[10px] font-mono font-bold transition-all cursor-pointer flex items-center justify-between ${
                           v1 === p.v1 && v2 === p.v2
                             ? 'bg-purple-600 text-white shadow-xs'
-                            : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700'
+                            : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-border/70 dark:border-slate-700'
                         }`}
                       >
                         <span>{p.label}</span>

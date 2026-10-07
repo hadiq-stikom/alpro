@@ -48,6 +48,7 @@ export default function VariableAndIdentifierIntro() {
     {
       step: 1,
       title: '1. Deklarasi & Inisialisasi Pertama',
+      codePseudo: 'skor = 100',
       codePy: 'skor = 100',
       codeJs: 'let skor = 100;',
       varName: 'skor',
@@ -59,6 +60,7 @@ export default function VariableAndIdentifierIntro() {
     {
       step: 2,
       title: '2. Pembaruan Nilai (Re-assignment)',
+      codePseudo: 'skor = 150',
       codePy: 'skor = 150',
       codeJs: 'skor = 150;',
       varName: 'skor',
@@ -70,6 +72,7 @@ export default function VariableAndIdentifierIntro() {
     {
       step: 3,
       title: '3. Operasi Aritmatika pada Wadah',
+      codePseudo: 'skor = skor + 25',
       codePy: 'skor = skor + 25',
       codeJs: 'skor = skor + 25;',
       varName: 'skor',
@@ -81,7 +84,8 @@ export default function VariableAndIdentifierIntro() {
     {
       step: 4,
       title: '4. Membaca & Menampilkan Isi Wadah',
-      codePy: 'output("Skor akhir:", skor)',
+      codePseudo: 'output("Skor akhir:", skor)',
+      codePy: 'print("Skor akhir:", skor)',
       codeJs: 'console.log("Skor akhir:", skor);',
       varName: 'skor',
       varValue: '175',
@@ -172,7 +176,7 @@ export default function VariableAndIdentifierIntro() {
                 >
                   <span className="text-xs font-mono block font-bold text-cyan-800 dark:text-cyan-400">Langkah {item.step}:</span>
                   <span className="text-xs sm:text-sm font-black font-mono truncate block text-slate-900 dark:text-slate-100">
-                    {item.codePy}
+                    {item.codePseudo}
                   </span>
                 </button>
               ))}
@@ -194,14 +198,18 @@ export default function VariableAndIdentifierIntro() {
                     </span>
                   </div>
 
-                  <div className="p-4 bg-white dark:bg-slate-950 rounded-xl border-2 border-slate-200 dark:border-slate-800 font-mono space-y-2.5 shadow-xs">
+                  <div className="p-4 bg-white dark:bg-slate-950 rounded-xl border-2 border-slate-200 dark:border-slate-800 font-mono space-y-3 shadow-xs">
                     <div>
                       <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">📋 Notasi Universal (Pseudocode):</span>
-                      <strong className="text-cyan-800 dark:text-cyan-300 text-sm sm:text-base font-black">{currentStory.codePy}</strong>
+                      <strong className="text-purple-800 dark:text-purple-300 text-xs sm:text-sm font-black block mt-0.5">{currentStory.codePseudo}</strong>
                     </div>
-                    <div className="pt-2.5 border-t border-slate-100 dark:border-slate-900">
+                    <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80">
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">🐍 Implementasi Python:</span>
+                      <strong className="text-blue-800 dark:text-blue-300 text-xs sm:text-sm font-black block mt-0.5">{currentStory.codePy}</strong>
+                    </div>
+                    <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80">
                       <span className="text-xs text-slate-600 dark:text-slate-400 font-sans block font-bold">🌐 Implementasi JavaScript:</span>
-                      <strong className="text-amber-800 dark:text-amber-300 text-xs sm:text-sm font-black">{currentStory.codeJs}</strong>
+                      <strong className="text-amber-800 dark:text-amber-300 text-xs sm:text-sm font-black block mt-0.5">{currentStory.codeJs}</strong>
                     </div>
                   </div>
                 </div>

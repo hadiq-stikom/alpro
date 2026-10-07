@@ -106,6 +106,6 @@ Untuk memotivasi mahasiswa dan memetakan performa belajar:
 - **Bagian 1 (Pertemuan 1 - 4)**: Konsep Komputer & Algoritma, Unit Data & Memori, Pseudocode & Naratif, Tipe Data & Identifier. (Selesai dengan Visualizer & Lab Interaktif).
 - **Bagian 2 (Pertemuan 5 - 7+)**:
   - Pertemuan 5: Operator Aritmatika, Relasional, Logika, Modulo, Manipulasi String.
-  - Pertemuan 6: Percabangan Tunggal (IF) & Ganda (IF-ELSE).
+  - Pertemuan 6: Percabangan Statemen Tunggal (IF) & Ganda (IF-ELSE).
   - Pertemuan 7: Percabangan Majemuk (IF-ELSE IF-ELSE), Seleksi Diskrit (Switch/Match), dan Percabangan Bersarang (Nested IF).
   - Workspace Studio Multi-Kolom Fleksibel dengan engine Python Pyodide in-browser.

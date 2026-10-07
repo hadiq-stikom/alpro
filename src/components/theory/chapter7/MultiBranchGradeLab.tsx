@@ -347,8 +347,8 @@ function MultiBranchVerticalFlowchart({
 
       {/* ─── 1. START TERMINAL ─── */}
       <g opacity={isStepActive(1) ? 1 : 0.2}>
-        <rect x="145" y="16" width="140" height="42" rx="21" fill="rgba(16,185,129,0.18)" stroke="#10b981" strokeWidth="2.5" />
-        <text x="215" y="42" textAnchor="middle" fontSize="14" fontWeight="900" fill="#6ee7b7" fontFamily="monospace">
+        <rect x="145" y="16" width="140" height="42" rx="21" fill="#059669" stroke="#047857" strokeWidth="2.5" />
+        <text x="215" y="38" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           MULAI
         </text>
       </g>
@@ -356,11 +356,11 @@ function MultiBranchVerticalFlowchart({
 
       {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="135,88 325,88 295,134 105,134" fill="rgba(168,85,247,0.25)" stroke="#a855f7" strokeWidth="2.5" />
-        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="bold" fill="#e9d5ff" fontFamily="monospace">
+        <polygon points="135,88 325,88 295,134 105,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input({scenario.variable})
         </text>
-        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fbcfe8" fontFamily="monospace">
+        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{sliderVal}{scenario.unit}]
         </text>
       </g>
@@ -501,7 +501,7 @@ function MultiBranchVerticalFlowchart({
               x="346"
               y={cy - 6}
               textAnchor="middle"
-              fill={isHit ? '#6ee7b7' : '#94a3b8'}
+              fill={isHit ? '#ffffff' : '#94a3b8'}
               fontSize="11"
               fontWeight="bold"
               fontFamily="monospace"
@@ -512,18 +512,19 @@ function MultiBranchVerticalFlowchart({
             {/* JAJARAN GENJANG OUTPUT (MENCABANG DI SISI KANAN) */}
             <polygon
               points={`405,${cy - 25} 615,${cy - 25} 590,${cy + 25} 380,${cy + 25}`}
-              fill={isHit ? '#064e3b' : '#0f172a'}
-              stroke={isHit ? '#10b981' : '#1e293b'}
+              fill={isHit ? '#047857' : isSkipped ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.45)'}
+              stroke={isHit ? '#10b981' : isSkipped ? '#64748b' : '#94a3b8'}
               strokeWidth={isHit ? 3 : 1.5}
+              strokeDasharray={isHit ? undefined : '4 3'}
             />
             <text
               x="497"
               y={cy}
               dominantBaseline="central"
               textAnchor="middle"
-              fill={isHit ? '#a7f3d0' : '#475569'}
+              fill={isHit ? '#ffffff' : '#64748b'}
               fontSize="13.5"
-              fontWeight="bold"
+              fontWeight="900"
               fontFamily="monospace"
             >
               output({b.outputLabel})
@@ -564,7 +565,7 @@ function MultiBranchVerticalFlowchart({
               x={cx + 31}
               y={cy + 54}
               textAnchor="middle"
-              fill={isPassedFalse ? '#fecdd3' : '#64748b'}
+              fill={isPassedFalse ? '#ffffff' : '#64748b'}
               fontSize="10"
               fontWeight="bold"
               fontFamily="monospace"
@@ -580,18 +581,19 @@ function MultiBranchVerticalFlowchart({
         {/* Jajaran Genjang Blok ELSE */}
         <polygon
           points="135,565 325,565 300,615 110,615"
-          fill={isElseHit ? '#881337' : '#0f172a'}
-          stroke={isElseHit ? '#f43f5e' : '#1e293b'}
+          fill={isElseHit ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={isElseHit ? '#f43f5e' : '#94a3b8'}
           strokeWidth={isElseHit ? 3 : 1.5}
+          strokeDasharray={isElseHit ? undefined : '4 3'}
         />
         <text
           x="217"
           y="590"
           dominantBaseline="central"
           textAnchor="middle"
-          fill={isElseHit ? '#fecdd3' : '#475569'}
+          fill={isElseHit ? '#ffffff' : '#64748b'}
           fontSize="13.5"
-          fontWeight="bold"
+          fontWeight="900"
           fontFamily="monospace"
         >
           output({scenario.elseLabel})
@@ -657,8 +659,8 @@ function MultiBranchVerticalFlowchart({
           width="140"
           height="42"
           rx="21"
-          fill={activeIndex !== -1 || isElseHit ? 'rgba(239,68,68,0.35)' : 'rgba(239,68,68,0.18)'}
-          stroke={activeIndex !== -1 || isElseHit ? '#f87171' : '#ef4444'}
+          fill={activeIndex !== -1 || isElseHit ? '#be123c' : 'rgba(190,18,60,0.2)'}
+          stroke={activeIndex !== -1 || isElseHit ? '#9f1239' : '#881337'}
           strokeWidth={activeIndex !== -1 || isElseHit ? 3.5 : 2.5}
         />
         <text
@@ -666,9 +668,10 @@ function MultiBranchVerticalFlowchart({
           y="686"
           dominantBaseline="central"
           textAnchor="middle"
-          fontSize="14"
+          fontSize="13"
           fontWeight="900"
-          fill={activeIndex !== -1 || isElseHit ? '#fecdd3' : '#fca5a5'}
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           SELESAI
@@ -757,8 +760,8 @@ function MultiBranchHorizontalFlowchart({
           width="76"
           height="36"
           rx="18"
-          fill="rgba(16,185,129,0.18)"
-          stroke="#10b981"
+          fill="#059669"
+          stroke="#047857"
           strokeWidth="2.5"
         />
         <text
@@ -767,8 +770,9 @@ function MultiBranchHorizontalFlowchart({
           dominantBaseline="central"
           textAnchor="middle"
           fontSize="12.5"
-          fontWeight="bold"
-          fill="#6ee7b7"
+          fontWeight="900"
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           MULAI
@@ -788,8 +792,8 @@ function MultiBranchHorizontalFlowchart({
       <g opacity={isStepActive(2) ? 1 : 0.2}>
         <polygon
           points="126,24 242,24 224,76 108,76"
-          fill="rgba(168,85,247,0.25)"
-          stroke="#a855f7"
+          fill="#7e22ce"
+          stroke="#581c87"
           strokeWidth="2.5"
         />
         <text
@@ -798,8 +802,8 @@ function MultiBranchHorizontalFlowchart({
           dominantBaseline="central"
           textAnchor="middle"
           fontSize="11.5"
-          fontWeight="bold"
-          fill="#e9d5ff"
+          fontWeight="900"
+          fill="#ffffff"
           fontFamily="monospace"
         >
           input({scenario.variable})
@@ -811,7 +815,7 @@ function MultiBranchHorizontalFlowchart({
           textAnchor="middle"
           fontSize="12.5"
           fontWeight="900"
-          fill="#fbcfe8"
+          fill="#fef08a"
           fontFamily="monospace"
         >
           [{sliderVal}{scenario.unit}]
@@ -964,7 +968,7 @@ function MultiBranchHorizontalFlowchart({
               y={cy + 60.5}
               dominantBaseline="central"
               textAnchor="middle"
-              fill={isHit ? '#6ee7b7' : '#94a3b8'}
+              fill={isHit ? '#ffffff' : '#94a3b8'}
               fontSize="9.5"
               fontWeight="bold"
               fontFamily="monospace"
@@ -975,18 +979,19 @@ function MultiBranchHorizontalFlowchart({
             {/* Jajaran Genjang Output */}
             <polygon
               points={`${cx - 68},186 ${cx + 80},186 ${cx + 56},244 ${cx - 92},244`}
-              fill={isHit ? '#064e3b' : '#0f172a'}
-              stroke={isHit ? '#10b981' : '#1e293b'}
-              strokeWidth={3}
+              fill={isHit ? '#047857' : isSkipped ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.45)'}
+              stroke={isHit ? '#10b981' : isSkipped ? '#64748b' : '#94a3b8'}
+              strokeWidth={isHit ? 3 : 1.5}
+              strokeDasharray={isHit ? undefined : '4 3'}
             />
             <text
               x={cx - 6}
               y={215}
               dominantBaseline="central"
               textAnchor="middle"
-              fill={isHit ? '#a7f3d0' : '#475569'}
+              fill={isHit ? '#ffffff' : '#64748b'}
               fontSize="12.5"
-              fontWeight="bold"
+              fontWeight="900"
               fontFamily="monospace"
             >
               output({b.outputLabel})
@@ -1084,18 +1089,19 @@ function MultiBranchHorizontalFlowchart({
         {/* Jajaran Genjang ELSE (Sejajar di baris output y = 186) */}
         <polygon
           points={`${cxElse - 68},186 ${cxElse + 80},186 ${cxElse + 56},244 ${cxElse - 92},244`}
-          fill={isElseHit ? '#881337' : '#0f172a'}
-          stroke={isElseHit ? '#f43f5e' : '#1e293b'}
-          strokeWidth={3}
+          fill={isElseHit ? '#be123c' : 'rgba(148,163,184,0.35)'}
+          stroke={isElseHit ? '#f43f5e' : '#94a3b8'}
+          strokeWidth={isElseHit ? 3 : 1.5}
+          strokeDasharray={isElseHit ? undefined : '4 3'}
         />
         <text
           x={cxElse - 6}
           y={215}
           dominantBaseline="central"
           textAnchor="middle"
-          fill={isElseHit ? '#fecdd3' : '#475569'}
+          fill={isElseHit ? '#ffffff' : '#64748b'}
           fontSize="12.5"
-          fontWeight="bold"
+          fontWeight="900"
           fontFamily="monospace"
         >
           output({scenario.elseLabel})
@@ -1145,10 +1151,9 @@ function MultiBranchHorizontalFlowchart({
           width="96"
           height="40"
           rx="20"
-          fill={isFlowActive ? 'rgba(239,68,68,0.25)' : 'rgba(239,68,68,0.1)'}
-          stroke={isFlowActive ? '#ef4444' : '#7f1d1d'}
-          strokeWidth={isFlowActive ? 3 : 2}
-          filter={isFlowActive ? 'url(#mbh-glow-diamond)' : undefined}
+          fill={isFlowActive ? '#be123c' : 'rgba(190,18,60,0.2)'}
+          stroke={isFlowActive ? '#9f1239' : '#881337'}
+          strokeWidth={isFlowActive ? 3.5 : 2.5}
         />
         <text
           x={cxSelesai + 48}
@@ -1157,7 +1162,8 @@ function MultiBranchHorizontalFlowchart({
           textAnchor="middle"
           fontSize="13"
           fontWeight="900"
-          fill={isFlowActive ? '#fca5a5' : '#991b1b'}
+          fill="#ffffff"
+          letterSpacing="1"
           fontFamily="monospace"
         >
           SELESAI
@@ -1262,15 +1268,15 @@ export default function MultiBranchGradeLab() {
   ] as const;
 
   return (
-    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl transition-all duration-300 ${
-      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
+    <div className={`border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl transition-all duration-300 ${
+      isProjectorMode ? 'fixed inset-4 z-50 overflow-y-auto bg-card/98 dark:bg-slate-950/98 ring-4 ring-orange-500/50 backdrop-blur-2xl p-2' : ''
     }`}>
       {/* ─── Header Lab ─────────────────────────────────────────────────────── */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">1️⃣</span>
           <div>
-            <h3 className="font-bold text-sm md:text-base text-slate-100 flex items-center gap-2">
+            <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100 flex items-center gap-2">
               <span>Lab Percabangan Majemuk (IF – ELIF – ELSE)</span>
               {isProjectorMode && (
                 <span className="text-[10px] bg-orange-500 text-white px-2 py-0.5 rounded-full font-black uppercase tracking-wider animate-pulse">
@@ -1283,7 +1289,7 @@ export default function MultiBranchGradeLab() {
 
         {/* 4 Pilar Tabs Header */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 flex-wrap">
+          <div className="flex items-center gap-1 bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 flex-wrap">
             {tabs.map(tab => (
               <button
                 key={tab.id}
@@ -1291,7 +1297,7 @@ export default function MultiBranchGradeLab() {
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
                   activeTab === tab.id
                     ? 'bg-amber-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
               >
                 {tab.icon}
@@ -1311,7 +1317,7 @@ export default function MultiBranchGradeLab() {
               className={`p-2 rounded-xl border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                 isProjectorMode
                   ? 'bg-orange-500 text-white border-orange-400 shadow-lg ring-2 ring-orange-400/50'
-                  : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-800'
+                  : 'bg-slate-200/80 hover:bg-slate-300 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-border/80 dark:border-slate-800'
               }`}
               title={isProjectorMode ? 'Kembali ke Tampilan Normal' : 'Mode Layar Penuh Maximize (Keputusan Berjejer ke Samping)'}
             >
@@ -1332,7 +1338,7 @@ export default function MultiBranchGradeLab() {
       </div>
 
       {/* ─── Scenario Selector & Orientation Switcher Bar ────────────────────── */}
-      <div className="p-3 md:px-6 bg-slate-900/50 border-b border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-3 md:px-6 bg-slate-50/80 dark:bg-slate-900/50 border-b border-border/60 dark:border-slate-800/50 flex flex-wrap items-center justify-between gap-3">
         {/* Scenario Chips */}
         <div className="flex flex-wrap gap-2">
           {SCENARIOS.map(sc => (
@@ -1341,8 +1347,8 @@ export default function MultiBranchGradeLab() {
               onClick={() => handleScenarioChange(sc.id)}
               className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 scenarioId === sc.id
-                  ? 'bg-amber-700 text-white shadow-sm'
-                  : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'bg-amber-600 dark:bg-amber-700 text-white shadow-sm'
+                  : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100'
               }`}
             >
               {sc.title}
@@ -1355,14 +1361,14 @@ export default function MultiBranchGradeLab() {
           <div className="flex flex-wrap items-center gap-2">
             {/* Orientasi Flowchart */}
             {isProjectorMode ? (
-              <div className="flex items-center bg-orange-950/70 border border-orange-500/50 text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
-                <ArrowRight className="w-3.5 h-3.5 text-orange-400" />
+              <div className="flex items-center bg-orange-500/10 dark:bg-orange-950/70 border border-orange-500/40 text-orange-700 dark:text-orange-200 px-3 py-1.5 rounded-xl text-[11px] font-bold gap-2 shadow-sm">
+                <ArrowRight className="w-3.5 h-3.5 text-orange-500" />
                 <span>Mode Maximize: Keputusan Berjejer ke Samping</span>
-                <span className="text-[10px] bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
+                <span className="text-[10px] bg-orange-500/20 text-orange-600 dark:text-orange-300 px-1.5 py-0.5 rounded border border-orange-500/30 font-mono">Lanskap 16:9</span>
               </div>
             ) : (
-              <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-                <span className="text-slate-500 px-2 flex items-center gap-1">
+              <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+                <span className="text-slate-600 dark:text-slate-400 px-2 flex items-center gap-1">
                   <Tv className="w-3.5 h-3.5" /> Orientasi:
                 </span>
                 <button
@@ -1370,7 +1376,7 @@ export default function MultiBranchGradeLab() {
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'vertical'
                       ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Atas ke Bawah: Keputusan Mengalir Vertikal dengan Output Mencabang"
                 >
@@ -1382,7 +1388,7 @@ export default function MultiBranchGradeLab() {
                   className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
                     flowchartOrientation === 'horizontal'
                       ? 'bg-orange-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                   title="Arah Kiri ke Kanan: Keputusan Berjejer ke Samping (Optimal untuk Layar Lebar)"
                 >
@@ -1393,8 +1399,8 @@ export default function MultiBranchGradeLab() {
             )}
 
             {/* Kontrol Pembesaran / Zoom */}
-            <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800 text-[11px] font-bold">
-              <span className="text-slate-500 px-2">🔍 Skala:</span>
+            <div className="flex items-center bg-slate-200/80 dark:bg-slate-950 p-1 rounded-xl border border-border/70 dark:border-slate-800 text-[11px] font-bold">
+              <span className="text-slate-600 dark:text-slate-400 px-2">🔍 Skala:</span>
               {[0.85, 1.0, 1.2, 1.4].map(scale => (
                 <button
                   key={scale}
@@ -1402,7 +1408,7 @@ export default function MultiBranchGradeLab() {
                   className={`px-2 py-0.5 rounded-lg transition-all cursor-pointer ${
                     zoomLevel === scale
                       ? 'bg-amber-600 text-white font-black'
-                      : 'text-slate-400 hover:text-white'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
                   {Math.round(scale * 100)}%
@@ -1435,44 +1441,44 @@ export default function MultiBranchGradeLab() {
         {/* 1. TAB NARATIF */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-slate-50 dark:bg-slate-900 border border-border/70 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📝 <strong>Algoritma Naratif Baku</strong> — Disusun dalam satu nomor urut utama dengan anak-cabang <code>Selain itu, jika:</code> dan <code>Selain itu:</code> yang menjorok tanpa nomor baru.
               </p>
             </div>
 
-            <pre className="bg-slate-900 p-5 rounded-2xl border border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-300 whitespace-pre">
-              <span className="text-slate-400">1. Masukkan nilai {scenario.variable}.</span>{'\n\n'}
-              <span className="font-bold text-amber-300">2. Jika {branches[0].condStr} maka:</span>{'\n'}
-              <span className="text-emerald-300">      Tampilkan {branches[0].outputLabel} ke layar.</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu, jika {branches[1].condStr} maka:</span>{'\n'}
-              <span className="text-sky-300">      Tampilkan {branches[1].outputLabel} ke layar.</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu, jika {branches[2].condStr} maka:</span>{'\n'}
-              <span className="text-amber-300">      Tampilkan {branches[2].outputLabel} ke layar.</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu, jika {branches[3].condStr} maka:</span>{'\n'}
-              <span className="text-orange-300">      Tampilkan {branches[3].outputLabel} ke layar.</span>{'\n'}
-              <span className="font-bold text-amber-300">   Selain itu:</span>{'\n'}
-              <span className="text-rose-300">      Tampilkan {scenario.elseLabel} ke layar.</span>{'\n\n'}
-              <span className="text-slate-400">Selesai.</span>
+            <pre className="bg-card dark:bg-slate-900 p-5 rounded-2xl border border-border/70 dark:border-slate-800 font-mono text-sm leading-relaxed overflow-x-auto shadow-sm text-slate-800 dark:text-slate-300 whitespace-pre">
+              <span className="text-slate-500 dark:text-slate-400">1. Masukkan nilai {scenario.variable}.</span>{'\n\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">2. Jika {branches[0].condStr} maka:</span>{'\n'}
+              <span className="text-emerald-700 dark:text-emerald-300">      Tampilkan {branches[0].outputLabel} ke layar.</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu, jika {branches[1].condStr} maka:</span>{'\n'}
+              <span className="text-sky-700 dark:text-sky-300">      Tampilkan {branches[1].outputLabel} ke layar.</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu, jika {branches[2].condStr} maka:</span>{'\n'}
+              <span className="text-amber-700 dark:text-amber-300">      Tampilkan {branches[2].outputLabel} ke layar.</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu, jika {branches[3].condStr} maka:</span>{'\n'}
+              <span className="text-orange-700 dark:text-orange-300">      Tampilkan {branches[3].outputLabel} ke layar.</span>{'\n'}
+              <span className="font-bold text-amber-700 dark:text-amber-300">   Selain itu:</span>{'\n'}
+              <span className="text-rose-700 dark:text-rose-300">      Tampilkan {scenario.elseLabel} ke layar.</span>{'\n\n'}
+              <span className="text-slate-500 dark:text-slate-400">Selesai.</span>
             </pre>
 
             {/* Perbandingan Struktur Percabangan */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              <div className="p-3 bg-slate-900 border border-emerald-600/30 rounded-xl">
-                <p className="text-xs font-bold text-emerald-400 mb-1.5">✅ IF Tunggal</p>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-3 bg-slate-50 dark:bg-slate-900 border border-emerald-600/30 rounded-xl">
+                <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-1.5">✅ IF Statemen Tunggal</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Tepat <strong>1 kondisi</strong> dan <strong>1 aksi</strong>. Jika kondisi False, program melompat tanpa ada aksi cadangan.
                 </p>
               </div>
-              <div className="p-3 bg-slate-900 border border-amber-600/30 rounded-xl">
-                <p className="text-xs font-bold text-amber-400 mb-1.5">✅ IF-ELSE (Ganda)</p>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-3 bg-slate-50 dark:bg-slate-900 border border-amber-600/30 rounded-xl">
+                <p className="text-xs font-bold text-amber-600 dark:text-amber-400 mb-1.5">✅ IF-ELSE (Statemen Ganda)</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Tepat <strong>2 cabang alternatif</strong>. Menjamin salah satu dari 2 aksi pasti dieksekusi komputer.
                 </p>
               </div>
-              <div className="p-3 bg-slate-900 border border-purple-600/30 rounded-xl">
-                <p className="text-xs font-bold text-purple-400 mb-1.5">✅ IF-ELIF-ELSE (Majemuk)</p>
-                <p className="text-xs text-slate-400 leading-relaxed">
+              <div className="p-3 bg-slate-50 dark:bg-slate-900 border border-purple-600/30 rounded-xl">
+                <p className="text-xs font-bold text-purple-600 dark:text-purple-400 mb-1.5">✅ IF-ELIF-ELSE (Percabangan Majemuk)</p>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
                   Mendukung <strong>3 atau lebih pilihan mutually exclusive</strong>. Begitu satu cabang True, percabangan di bawahnya diabaikan (short-circuit).
                 </p>
               </div>
@@ -1486,7 +1492,7 @@ export default function MultiBranchGradeLab() {
 
 
             {/* ─── ZONA ATAS: KANVAS FLOWCHART LEBAR & ZOOMABLE ─── */}
-            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-900/90 rounded-3xl border border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
+            <div className={`w-full flex flex-col items-center justify-center p-4 md:p-6 bg-slate-50 dark:bg-slate-900/90 rounded-3xl border border-border/70 dark:border-slate-800 shadow-inner overflow-x-auto ${effectiveOrientation === 'horizontal' ? 'min-h-[380px]' : 'min-h-[480px]'}`}>
               <div
                 style={{
                   transform: `scale(${zoomLevel})`,
@@ -1515,15 +1521,15 @@ export default function MultiBranchGradeLab() {
             </div>
 
             {/* ─── ZONA BAWAH: CONTROL DOCK TERPADU & TIDAK TERPOTONG ─── */}
-            <div className="p-4 md:p-6 bg-slate-900 rounded-3xl border border-slate-800 shadow-xl space-y-4">
+            <div className="p-4 md:p-6 bg-card dark:bg-slate-900 rounded-3xl border border-border/70 dark:border-slate-800 shadow-xl space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
                 {/* 1. Kontrol Slider & Preset */}
                 <div className="md:col-span-7 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-mono font-bold text-slate-300 flex items-center gap-1.5">
-                      <span>Nilai Input (<code className="text-amber-400 font-bold">{scenario.variable}</code>):</span>
+                    <span className="font-mono font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                      <span>Nilai Input (<code className="text-amber-600 dark:text-amber-400 font-bold">{scenario.variable}</code>):</span>
                     </span>
-                    <span className="font-mono font-black text-amber-400 text-xl px-3.5 py-0.5 rounded-xl bg-slate-950 border border-amber-500/40">
+                    <span className="font-mono font-black text-amber-600 dark:text-amber-400 text-xl px-3.5 py-0.5 rounded-xl bg-slate-100 dark:bg-slate-950 border border-border/70 dark:border-amber-500/40">
                       {sliderVal}{scenario.unit}
                     </span>
                   </div>
@@ -1537,7 +1543,7 @@ export default function MultiBranchGradeLab() {
                       setSliderVal(Number(e.target.value));
                       reset();
                     }}
-                    className="w-full accent-amber-500 cursor-pointer h-2.5 bg-slate-800 rounded-lg"
+                    className="w-full accent-amber-500 cursor-pointer h-2.5 bg-slate-200 dark:bg-slate-800 rounded-lg"
                   />
 
                   {/* Preset Nilai Cepat */}
@@ -1554,7 +1560,7 @@ export default function MultiBranchGradeLab() {
                           className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
                             sliderVal === pv
                               ? 'bg-amber-600 text-white shadow-sm'
-                              : 'bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'
                           }`}
                         >
                           {pv}
@@ -1587,7 +1593,7 @@ export default function MultiBranchGradeLab() {
                     className={`flex-1 flex items-center justify-center gap-2 px-3.5 py-3 rounded-2xl text-xs md:text-sm font-black transition-all cursor-pointer shadow-lg border ${
                       step > 0 && !isRunning
                         ? 'bg-sky-600 hover:bg-sky-500 text-white border-sky-400/60 shadow-sky-950/40 ring-2 ring-sky-400/30'
-                        : 'bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border-slate-700 shadow-md'
+                        : 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-sky-700 dark:text-sky-300 border-border dark:border-slate-700 shadow-sm'
                     }`}
                     title="Maju langkah demi langkah (Step-by-Step) sambil menjelaskan materi"
                   >
@@ -1599,7 +1605,7 @@ export default function MultiBranchGradeLab() {
 
                   <button
                     onClick={reset}
-                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-slate-800 hover:border-slate-700 shadow-md shrink-0"
+                    className="flex items-center justify-center gap-1.5 px-3 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 text-xs font-bold transition-all cursor-pointer border border-border dark:border-slate-800 shadow-sm shrink-0"
                     title="Reset ke Tampilan Penuh (Semua Alur)"
                   >
                     <RotateCcw className="w-4 h-4" />
@@ -1609,17 +1615,17 @@ export default function MultiBranchGradeLab() {
 
               {/* Bilah Edukasi Mode Manual / Langkah Aktif */}
               {step > 0 && (
-                <div className="p-3 rounded-2xl bg-sky-950/70 border border-sky-600/50 text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
+                <div className="p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-600/50 text-sky-900 dark:text-sky-200 text-xs flex flex-wrap items-center justify-between gap-3 shadow-md font-mono">
                   <div className="flex items-center gap-2.5">
-                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
+                    <span className="px-2 py-0.5 rounded-lg bg-sky-500/20 text-sky-700 dark:text-sky-300 font-black border border-sky-500/30 text-[11px] shrink-0">
                       {isRunning ? '🤖 OTOMATIS' : '👤 MANUAL'} • Langkah {step}/{maxSteps}
                     </span>
-                    <span className="font-sans font-semibold text-slate-100">
+                    <span className="font-sans font-semibold text-slate-900 dark:text-slate-100">
                       {getStepDescription(step)}
                     </span>
                   </div>
                   {!isRunning && (
-                    <span className="text-[11px] text-sky-300/80 font-bold shrink-0">
+                    <span className="text-[11px] text-sky-700 dark:text-sky-300/80 font-bold shrink-0">
                       {step === maxSteps ? '✓ Selesai' : 'Klik "Mode Manual" untuk lanjut →'}
                     </span>
                   )}
@@ -1629,27 +1635,27 @@ export default function MultiBranchGradeLab() {
               {/* 3. Pita Evaluasi Status Live — Widescreen, Jelas & Bebas Terpotong */}
               <div className={`p-4 rounded-2xl border-2 text-xs font-bold flex flex-wrap items-center justify-between gap-3 shadow-md ${
                 activeBranch
-                  ? 'border-emerald-500/80 bg-emerald-950/70 text-emerald-200'
-                  : 'border-rose-500/80 bg-rose-950/70 text-rose-200'
+                  ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-950/70 text-emerald-900 dark:text-emerald-200'
+                  : 'border-rose-500 bg-rose-50 dark:bg-rose-950/70 text-rose-900 dark:text-rose-200'
               }`}>
                 <div className="flex items-center gap-3">
                   <div className={`p-2 rounded-xl text-base ${
-                    activeBranch ? 'bg-emerald-900/80 text-emerald-300' : 'bg-rose-900/80 text-rose-300'
+                    activeBranch ? 'bg-emerald-100 dark:bg-emerald-900/80 text-emerald-700 dark:text-emerald-300' : 'bg-rose-100 dark:bg-rose-900/80 text-rose-700 dark:text-rose-300'
                   }`}>
                     {activeBranch ? '✓' : '✗'}
                   </div>
                   <div>
-                    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono">
+                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider font-mono">
                       Hasil Evaluasi Komputer (Runtime Live):
                     </div>
-                    <div className="text-sm md:text-base font-black font-mono text-white pt-0.5">
+                    <div className="text-sm md:text-base font-black font-mono text-slate-900 dark:text-white pt-0.5">
                       {activeBranch ? (
                         <span>
-                          Kondisi Terpenuhi: <span className="text-amber-300">{activeBranch.condStr}</span>
+                          Kondisi Terpenuhi: <span className="text-amber-600 dark:text-amber-300">{activeBranch.condStr}</span>
                         </span>
                       ) : (
                         <span>
-                          Seluruh Kondisi Terlewati (False) $\rightarrow$ Eksekusi Blok <span className="text-rose-300 font-bold">ELSE</span>
+                          Seluruh Kondisi Terlewati (False) $\rightarrow$ Eksekusi Blok <span className="text-rose-600 dark:text-rose-300 font-bold">ELSE</span>
                         </span>
                       )}
                     </div>
@@ -1669,8 +1675,8 @@ export default function MultiBranchGradeLab() {
 
               {/* Peringatan Bahaya Logika jika Mode Hazard Aktif */}
               {hazardMode && (
-                <div className="p-3 bg-rose-950/80 rounded-2xl border border-rose-600 text-xs text-rose-200 flex items-start gap-2.5 shadow-md">
-                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                <div className="p-3 bg-rose-50 dark:bg-rose-950/80 rounded-2xl border border-rose-300 dark:border-rose-600 text-xs text-rose-900 dark:text-rose-200 flex items-start gap-2.5 shadow-md">
+                  <AlertTriangle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
                   <div>
                     <strong>BAHAYA URUTAN LOGIKA (ORDER HAZARD):</strong> Kondisi paling longgar dievaluasi di awal. 
                     Karena nilai <strong>{sliderVal}</strong> memenuhi kondisi awal yang longgar, komputer langsung melompat keluar (short-circuit) tanpa sempat memeriksa kondisi yang lebih spesifik!
@@ -1684,42 +1690,42 @@ export default function MultiBranchGradeLab() {
         {/* 3. TAB PSEUDOCODE */}
         {activeTab === 'pseudocode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 📋 <strong>Pseudocode Standar Buku Teks (CLRS)</strong> — Format baku 3 blok dengan kata kunci <code>if ... then</code>, <code>else if ... then</code>, dan <code>else ... endif</code>.
               </p>
             </div>
 
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">pseudocode — IF - ELSE IF - ELSE</span>
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">pseudocode — IF - ELSE IF - ELSE</span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed whitespace-pre overflow-x-auto">
-                <span className="text-purple-400 font-bold">PROGRAM</span> <span className="text-white font-semibold">{scenarioId === 'nilai' ? 'PenentuIndeksNilai' : scenarioId === 'tiket' ? 'TarifTiketWisata' : 'TarifPajakProgresif'}</span>{'\n'}
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed whitespace-pre overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
+                <span className="text-purple-600 dark:text-purple-400 font-bold">PROGRAM</span> <span className="text-slate-900 dark:text-white font-semibold">{scenarioId === 'nilai' ? 'PenentuIndeksNilai' : scenarioId === 'tiket' ? 'TarifTiketWisata' : 'TarifPajakProgresif'}</span>{'\n'}
                 <span className="text-slate-500 italic text-xs">// Evaluasi bertingkat saling lepas (mutually exclusive)</span>{'\n\n'}
-                <span className="text-sky-400 font-bold">KAMUS:</span>{'\n'}
-                <span className="text-slate-300">  {scenario.variable} : integer</span>{'\n\n'}
-                <span className="text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
-                <span className="text-slate-300">  input({scenario.variable})</span>{'\n'}
-                <span className="text-amber-300 font-bold">  if</span> <span className="text-amber-100 font-bold">{branches[0].condStr}</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-emerald-300 font-medium">    output({branches[0].outputLabel})</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else if</span> <span className="text-amber-100 font-bold">{branches[1].condStr}</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-sky-300 font-medium">    output({branches[1].outputLabel})</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else if</span> <span className="text-amber-100 font-bold">{branches[2].condStr}</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-amber-300 font-medium">    output({branches[2].outputLabel})</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else if</span> <span className="text-amber-100 font-bold">{branches[3].condStr}</span> <span className="text-amber-300 font-bold">then</span>{'\n'}
-                <span className="text-orange-300 font-medium">    output({branches[3].outputLabel})</span>{'\n'}
-                <span className="text-amber-300 font-bold">  else</span>{'\n'}
-                <span className="text-rose-300 font-medium">    output({scenario.elseLabel})</span>{'\n'}
-                <span className="text-amber-300 font-bold">  endif</span>{'\n'}
-                <span className="text-slate-400">  output(&quot;Program selesai.&quot;)</span>
+                <span className="text-sky-600 dark:text-sky-400 font-bold">KAMUS:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  {scenario.variable} : integer</span>{'\n\n'}
+                <span className="text-amber-600 dark:text-amber-400 font-bold">ALGORITMA:</span>{'\n'}
+                <span className="text-slate-700 dark:text-slate-300">  input({scenario.variable})</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">{branches[0].condStr}</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-emerald-700 dark:text-emerald-300 font-medium">    output({branches[0].outputLabel})</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">{branches[1].condStr}</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-sky-700 dark:text-sky-300 font-medium">    output({branches[1].outputLabel})</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">{branches[2].condStr}</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-medium">    output({branches[2].outputLabel})</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else if</span> <span className="text-amber-900 dark:text-amber-100 font-bold">{branches[3].condStr}</span> <span className="text-amber-700 dark:text-amber-300 font-bold">then</span>{'\n'}
+                <span className="text-orange-700 dark:text-orange-300 font-medium">    output({branches[3].outputLabel})</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  else</span>{'\n'}
+                <span className="text-rose-700 dark:text-rose-300 font-medium">    output({scenario.elseLabel})</span>{'\n'}
+                <span className="text-amber-700 dark:text-amber-300 font-bold">  endif</span>{'\n'}
+                <span className="text-slate-600 dark:text-slate-400">  output(&quot;Program selesai.&quot;)</span>
               </pre>
             </div>
           </motion.div>
@@ -1728,14 +1734,14 @@ export default function MultiBranchGradeLab() {
         {/* 4. TAB KODE PROGRAM */}
         {activeTab === 'kode' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3 bg-slate-900 border border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
-              <p className="text-slate-300 text-xs font-medium">
+            <div className="p-3 bg-card dark:bg-slate-900 border border-border/80 dark:border-slate-700/60 rounded-xl flex items-center justify-between flex-wrap gap-2">
+              <p className="text-slate-700 dark:text-slate-300 text-xs font-medium">
                 💻 <strong>Kode Program Eksekusi Langsung</strong> — Perhatikan perbedaan kata kunci <code>elif</code> pada Python vs <code>else if</code> pada JavaScript.
               </p>
             </div>
 
             {/* Language Selector */}
-            <div className="flex gap-1 bg-slate-900 p-1 rounded-xl border border-slate-700 w-fit">
+            <div className="flex gap-1 bg-slate-100 dark:bg-slate-900 p-1 rounded-xl border border-border/80 dark:border-slate-700 w-fit">
               {(['python', 'js'] as const).map(lang => (
                 <button
                   key={lang}
@@ -1745,7 +1751,7 @@ export default function MultiBranchGradeLab() {
                       ? lang === 'python'
                         ? 'bg-blue-600 text-white'
                         : 'bg-yellow-600 text-white'
-                      : 'text-slate-400 hover:text-slate-200'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   {lang === 'python' ? '🐍 Python' : '⚡ JavaScript'}
@@ -1755,9 +1761,9 @@ export default function MultiBranchGradeLab() {
 
             {/* Slider Live Input Sync */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-slate-400">
-                <span>Nilai <code className="text-amber-400 font-mono">{scenario.variable}</code>:</span>
-                <span className="font-mono font-bold text-white text-base">
+              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+                <span>Nilai <code className="text-amber-600 dark:text-amber-400 font-mono">{scenario.variable}</code>:</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-white text-base">
                   {sliderVal}{scenario.unit}
                 </span>
               </div>
@@ -1775,69 +1781,69 @@ export default function MultiBranchGradeLab() {
             </div>
 
             {/* Code Block Container */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-500/60" />
                     <div className="w-3 h-3 rounded-full bg-amber-500/60" />
                     <div className="w-3 h-3 rounded-full bg-emerald-500/60" />
                   </div>
-                  <span className="text-xs text-slate-400 font-mono">
+                  <span className="text-xs text-slate-600 dark:text-slate-400 font-mono">
                     {activeLang === 'python' ? 'percabangan_majemuk.py' : 'percabanganMajemuk.js'}
                   </span>
                 </div>
               </div>
-              <pre className="p-5 text-sm font-mono text-slate-200 leading-relaxed overflow-x-auto">
+              <pre className="p-5 text-sm font-mono text-slate-800 dark:text-slate-200 leading-relaxed overflow-x-auto bg-slate-50 dark:bg-slate-950/60">
                 {activeLang === 'python' ? (
                   <>
-                    <span className="text-slate-400">{scenario.variable} = {sliderVal}</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">if {branches[0].condStr}:</span>{'\n'}
-                    <span className="text-emerald-300 font-medium">    print({branches[0].outputLabel}){'\n'}</span>
-                    <span className="text-amber-300 font-bold">elif {branches[1].condStr}:</span>{'\n'}
-                    <span className="text-sky-300 font-medium">    print({branches[1].outputLabel}){'\n'}</span>
-                    <span className="text-amber-300 font-bold">elif {branches[2].condStr}:</span>{'\n'}
-                    <span className="text-amber-300 font-medium">    print({branches[2].outputLabel}){'\n'}</span>
-                    <span className="text-amber-300 font-bold">elif {branches[3].condStr}:</span>{'\n'}
-                    <span className="text-orange-300 font-medium">    print({branches[3].outputLabel}){'\n'}</span>
-                    <span className="text-amber-300 font-bold">else:</span>{'\n'}
-                    <span className="text-rose-300 font-medium">    print({scenario.elseLabel}){'\n\n'}</span>
-                    <span className="text-slate-400">print(&quot;Pemeriksaan selesai.&quot;)</span>
+                    <span className="text-slate-600 dark:text-slate-400">{scenario.variable} = {sliderVal}</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">if {branches[0].condStr}:</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">    print({branches[0].outputLabel}){'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">elif {branches[1].condStr}:</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-medium">    print({branches[1].outputLabel}){'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">elif {branches[2].condStr}:</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-medium">    print({branches[2].outputLabel}){'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">elif {branches[3].condStr}:</span>{'\n'}
+                    <span className="text-orange-700 dark:text-orange-300 font-medium">    print({branches[3].outputLabel}){'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">else:</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">    print({scenario.elseLabel}){'\n\n'}</span>
+                    <span className="text-slate-600 dark:text-slate-400">print(&quot;Pemeriksaan selesai.&quot;)</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-slate-400">const {scenario.variable} = {sliderVal};</span>{'\n\n'}
-                    <span className="text-amber-300 font-bold">if ({branches[0].condStr}) {'{'}</span>{'\n'}
-                    <span className="text-emerald-300 font-medium">    console.log({branches[0].outputLabel});{'\n'}</span>
-                    <span className="text-amber-300 font-bold">{'}'} else if ({branches[1].condStr}) {'{'}</span>{'\n'}
-                    <span className="text-sky-300 font-medium">    console.log({branches[1].outputLabel});{'\n'}</span>
-                    <span className="text-amber-300 font-bold">{'}'} else if ({branches[2].condStr}) {'{'}</span>{'\n'}
-                    <span className="text-amber-300 font-medium">    console.log({branches[2].outputLabel});{'\n'}</span>
-                    <span className="text-amber-300 font-bold">{'}'} else if ({branches[3].condStr}) {'{'}</span>{'\n'}
-                    <span className="text-orange-300 font-medium">    console.log({branches[3].outputLabel});{'\n'}</span>
-                    <span className="text-amber-300 font-bold">{'}'} else {'{'}</span>{'\n'}
-                    <span className="text-rose-300 font-medium">    console.log({scenario.elseLabel});{'\n'}</span>
-                    <span className="text-amber-300 font-bold">{'}'}</span>{'\n\n'}
-                    <span className="text-slate-400">console.log(&quot;Pemeriksaan selesai.&quot;);</span>
+                    <span className="text-slate-600 dark:text-slate-400">const {scenario.variable} = {sliderVal};</span>{'\n\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">if ({branches[0].condStr}) {'{'}</span>{'\n'}
+                    <span className="text-emerald-700 dark:text-emerald-300 font-medium">    console.log({branches[0].outputLabel});{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else if ({branches[1].condStr}) {'{'}</span>{'\n'}
+                    <span className="text-sky-700 dark:text-sky-300 font-medium">    console.log({branches[1].outputLabel});{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else if ({branches[2].condStr}) {'{'}</span>{'\n'}
+                    <span className="text-amber-700 dark:text-amber-300 font-medium">    console.log({branches[2].outputLabel});{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else if ({branches[3].condStr}) {'{'}</span>{'\n'}
+                    <span className="text-orange-700 dark:text-orange-300 font-medium">    console.log({branches[3].outputLabel});{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'} else {'{'}</span>{'\n'}
+                    <span className="text-rose-700 dark:text-rose-300 font-medium">    console.log({scenario.elseLabel});{'\n'}</span>
+                    <span className="text-amber-700 dark:text-amber-300 font-bold">{'}'}</span>{'\n\n'}
+                    <span className="text-slate-600 dark:text-slate-400">console.log(&quot;Pemeriksaan selesai.&quot;);</span>
                   </>
                 )}
               </pre>
             </div>
 
             {/* Live Terminal Output Simulator */}
-            <div className="bg-slate-900 rounded-2xl border border-slate-700 overflow-hidden shadow-md">
-              <div className="px-4 py-2 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
-                <span className="text-xs text-amber-400 font-bold font-mono">Hasil Output Program</span>
+            <div className="bg-card dark:bg-slate-900 rounded-2xl border border-border/80 dark:border-slate-700 overflow-hidden shadow-md">
+              <div className="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-b border-border/80 dark:border-slate-700 flex items-center justify-between">
+                <span className="text-xs text-amber-600 dark:text-amber-400 font-bold font-mono">Hasil Output Program</span>
                 <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
                   activeBranch 
-                    ? 'bg-emerald-950 border border-emerald-500/40 text-emerald-300' 
-                    : 'bg-rose-950 border border-rose-500/40 text-rose-300'
+                    ? 'bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-500/40 text-emerald-700 dark:text-emerald-300' 
+                    : 'bg-rose-100 dark:bg-rose-950 border border-rose-300 dark:border-rose-500/40 text-rose-700 dark:text-rose-300'
                 }`}>
                   {activeBranch ? `✔ Cabang ${activeBranch.outputLabel.replace(/"/g, '')}` : '✖ Cabang ELSE'}
                 </span>
               </div>
-              <div className="p-4 space-y-1">
-                <p className={`text-sm font-mono font-bold ${activeBranch ? 'text-emerald-300' : 'text-rose-300'}`}>
+              <div className="p-4 space-y-1 bg-slate-50 dark:bg-slate-950/60">
+                <p className={`text-sm font-mono font-bold ${activeBranch ? 'text-emerald-700 dark:text-emerald-300' : 'text-rose-700 dark:text-rose-300'}`}>
                   &gt; {activeBranch ? activeBranch.outputLabel.replace(/"/g, '') : scenario.elseLabel.replace(/"/g, '')}
                 </p>
                 <p className="text-slate-500 text-xs font-mono">&gt; Program selesai.</p>

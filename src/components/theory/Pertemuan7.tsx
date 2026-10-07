@@ -40,8 +40,8 @@ export default function Pertemuan7() {
     <div className="space-y-12 overflow-visible">
       {/* ─── Hero Header ─────────────────────────────────────────────────────── */}
       <header className="text-center space-y-4 mb-16">
-        <div className="inline-flex items-center justify-center p-4 bg-orange-500/10 rounded-full mb-4 shadow-inner">
-          <GitFork className="w-10 h-10 text-orange-600 dark:text-orange-400" />
+        <div className="inline-flex items-center justify-center p-4 bg-amber-500/10 rounded-full mb-4 shadow-inner">
+          <GitFork className="w-10 h-10 text-amber-600 dark:text-amber-400" />
         </div>
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
           Percabangan Majemuk &amp; Bersarang
@@ -73,7 +73,7 @@ export default function Pertemuan7() {
         <div className="pt-2">
           <Link
             href="/workspace?chapter=7"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all cursor-pointer hover:scale-105"
           >
             <Terminal className="w-4 h-4" />
             <span>Buka Interactive Code Studio (Latihan Coding Bab 7)</span>
@@ -85,17 +85,19 @@ export default function Pertemuan7() {
       {/* ═══════════════════════════════════════════════════════════════════════ */}
       {/* 1. HAKIKAT PERCABANGAN MAJEMUK (IF - ELIF - ELSE)                     */}
       {/* ═══════════════════════════════════════════════════════════════════════ */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-orange-500/40 ${isOpen1 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-amber-500/40 ${isOpen1 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button
           onClick={() => setIsOpen1(!isOpen1)}
-          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
+          className="group w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2 flex items-center gap-3">
-              <GitFork className="w-8 h-8" />
-              1. Hakikat Percabangan Majemuk &amp; Urutan Evaluasi (Order of Evaluation)
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-3">
+              <span className="p-2 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 shrink-0">
+                <GitFork className="w-6 h-6 md:w-7 md:h-7" />
+              </span>
+              <span>1. Hakikat Percabangan Majemuk &amp; Urutan Evaluasi (Order of Evaluation)</span>
             </h2>
-            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium pl-1">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Capaian: Memahami kapan skenario percabangan majemuk dibutuhkan, memahami mekanisme evaluasi sekuensial (short-circuit), dan menghindari jebakan logika urutan terbalik.</span>
             </div>
@@ -149,17 +151,19 @@ export default function Pertemuan7() {
       {/* ═══════════════════════════════════════════════════════════════════════ */}
       {/* 2. PERCABANGAN BERSARANG (NESTED IF) — POHON KEPUTUSAN               */}
       {/* ═══════════════════════════════════════════════════════════════════════ */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-orange-500/40 ${isOpen2 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-indigo-500/40 ${isOpen2 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button
           onClick={() => setIsOpen2(!isOpen2)}
-          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
+          className="group w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2 flex items-center gap-3">
-              <Layers className="w-8 h-8" />
-              2. Percabangan Bersarang (Nested IF) — Keputusan di Dalam Keputusan
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-3">
+              <span className="p-2 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 shrink-0">
+                <Layers className="w-6 h-6 md:w-7 md:h-7" />
+              </span>
+              <span>2. Percabangan Bersarang (Nested IF) — Keputusan di Dalam Keputusan</span>
             </h2>
-            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium pl-1">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Capaian: Memahami konsep gerbang prasyarat (gatekeeper), hierarki pohon keputusan logis, serta penulisan indentasi bersarang yang bebas ambiguitas.</span>
             </div>
@@ -192,17 +196,19 @@ export default function Pertemuan7() {
       {/* ═══════════════════════════════════════════════════════════════════════ */}
       {/* 3. KONDISI MAJEMUK DENGAN OPERATOR LOGIKA (AND, OR) & ANALISIS USE CASE */}
       {/* ═══════════════════════════════════════════════════════════════════════ */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-orange-500/40 ${isOpen3 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-sky-500/40 ${isOpen3 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button
           onClick={() => setIsOpen3(!isOpen3)}
-          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
+          className="group w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2 flex items-center gap-3">
-              <Scale className="w-8 h-8" />
-              3. Kondisi Majemuk dengan Operator Logika (AND, OR) &amp; Analisis Kritis Use Case
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-3">
+              <span className="p-2 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 shrink-0">
+                <Scale className="w-6 h-6 md:w-7 md:h-7" />
+              </span>
+              <span>3. Kondisi Majemuk dengan Operator Logika (AND, OR) &amp; Analisis Kritis Use Case</span>
             </h2>
-            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium pl-1">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Capaian: Memahami penggabungan kondisi logika boolean, evaluasi short-circuit, serta membedakan secara kritis kapan harus memakai Operator Logika vs kapan mutlak wajib menggunakan Nested IF.</span>
             </div>
@@ -254,17 +260,19 @@ export default function Pertemuan7() {
       {/* ═══════════════════════════════════════════════════════════════════════ */}
       {/* 4. STRUKTUR PEMILIHAN NILAI DISKRIT (SWITCH & MATCH CASE)             */}
       {/* ═══════════════════════════════════════════════════════════════════════ */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-orange-500/40 ${isOpen4 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-emerald-500/40 ${isOpen4 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button
           onClick={() => setIsOpen4(!isOpen4)}
-          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
+          className="group w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2 flex items-center gap-3">
-              <Code2 className="w-8 h-8" />
-              4. Pemilihan Nilai Diskrit (switch-case &amp; match-case)
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-3">
+              <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shrink-0">
+                <Code2 className="w-6 h-6 md:w-7 md:h-7" />
+              </span>
+              <span>4. Pemilihan Nilai Diskrit (switch-case &amp; match-case)</span>
             </h2>
-            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium pl-1">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Capaian: Menguasai konstruksi alternatif untuk pencocokan nilai pasti diskrit, memahami fitur Pattern Matching Python 3.10+, dan mengantisipasi bahaya fall-through pada JavaScript.</span>
             </div>
@@ -306,17 +314,19 @@ export default function Pertemuan7() {
       {/* ═══════════════════════════════════════════════════════════════════════ */}
       {/* 5. STUDI KASUS NYATA TERPADU (KASIR RESTORAN)                         */}
       {/* ═══════════════════════════════════════════════════════════════════════ */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-orange-500/40 ${isOpen5 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-purple-500/40 ${isOpen5 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button
           onClick={() => setIsOpen5(!isOpen5)}
-          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
+          className="group w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2 flex items-center gap-3">
-              <FlaskConical className="w-8 h-8" />
-              5. Studi Kasus Nyata Terpadu — Sistem Kasir Restoran Nusantara
+            <h2 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2 flex items-center gap-3">
+              <span className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 shrink-0">
+                <FlaskConical className="w-6 h-6 md:w-7 md:h-7" />
+              </span>
+              <span>5. Studi Kasus Nyata Terpadu — Sistem Kasir Restoran Nusantara</span>
             </h2>
-            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium pl-1">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <span>Capaian: Mengintegrasikan multi-way selection dan nested IF dalam satu kasus komersial nyata, diverifikasi melalui 4 representasi baku tersinkronisasi.</span>
             </div>

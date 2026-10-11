@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Image from 'next/image';
 import { useAntiCheat } from '@/hooks/useAntiCheat';
 import { EssayQuestion } from '@/lib/essay-bank';
 import { 
@@ -9,6 +10,7 @@ import {
   Sparkles, 
   FileEdit, 
   ShieldAlert, 
+  ShieldCheck,
   Check, 
   AlertCircle, 
   Lock, 
@@ -35,15 +37,26 @@ export interface EssayItemResult {
 interface EssayContainerProps {
   questions: EssayQuestion[];
   userId: string;
+  baselineProfile?: {
+    wpm: number;
+    backspaceRatio: number;
+    sampleText: string;
+    totalKeystrokes?: number;
+  } | null;
   onComplete: (
     results: EssayItemResult[], 
     timeSpent: number, 
     tabSwitches: number,
-    answers: Record<string, string>
+    answers: Record<string, string>,
+    telemetry?: {
+      wpm: number;
+      backspaceRatio: number;
+      burstAttempts: number;
+    }
   ) => void;
 }
 
-export function EssayContainer({ questions, userId, onComplete }: EssayContainerProps) {
+export function EssayContainer({ questions, userId, baselineProfile, onComplete }: EssayContainerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Index soal yang sedang aktif
@@ -74,9 +87,19 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
   const [timeLeft, setTimeLeft] = useState(questions[0]?.timeLimit || 300);
   const [startTime] = useState(Date.now());
   const [showWarning, setShowWarning] = useState(false);
+  const [burstAlert, setBurstAlert] = useState(false);
 
-  // Hook Anti-Cheat (akan mematikan klik kanan, copy-paste)
-  const { tabSwitches, lastSwitchTime, containerProps } = useAntiCheat(true);
+  // Hook Anti-Cheat Lini 1 (akan mematikan klik kanan, copy-paste, drag-drop, dan rekam telemetri)
+  const { 
+    tabSwitches, 
+    lastSwitchTime, 
+    burstAttempts, 
+    keystrokeCount, 
+    backspaceCount, 
+    trackKeyInput, 
+    filterInputBurst, 
+    containerProps 
+  } = useAntiCheat(true);
 
   const currentQuestion = questions[currentIndex];
   const currentAnswer = answers[currentQuestion?.id] || '';
@@ -119,13 +142,21 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
 
   const handleAnswerChange = (val: string) => {
     if (!currentQuestion) return;
-    setAnswers(prev => ({
-      ...prev,
-      [currentQuestion.id]: val
+    const prev = answers[currentQuestion.id] || '';
+    const { safeValue, isBurst } = filterInputBurst(prev, val, 15);
+
+    if (isBurst) {
+      setBurstAlert(true);
+      setTimeout(() => setBurstAlert(false), 3500);
+    }
+
+    setAnswers(prevAnswers => ({
+      ...prevAnswers,
+      [currentQuestion.id]: safeValue
     }));
   };
 
-  // Kirim soal aktif ke AI untuk dinilai langsung
+  // Kirim soal aktif ke AI untuk dinilai langsung (dengan verifikasi baseline)
   const handleGradeCurrentQuestion = async () => {
     if (!currentQuestion || currentWordCount < 10) return;
     
@@ -133,13 +164,24 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
     setSubmitError(null);
     
     try {
+      const timeElapsedSeconds = Math.max(10, Math.floor((Date.now() - startTime) / 1000));
+      const currentWpm = Math.round(currentWordCount / (timeElapsedSeconds / 60));
+      const currentBackspaceRatio = keystrokeCount > 0 ? Number((backspaceCount / keystrokeCount).toFixed(3)) : 0.1;
+
       const res = await fetch('/api/grade-essay', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           question: currentQuestion.text,
           answer: currentAnswer,
-          rubric: currentQuestion.rubric
+          rubric: currentQuestion.rubric,
+          baselineProfile: baselineProfile || null,
+          currentTelemetry: {
+            wpm: currentWpm,
+            backspaceRatio: currentBackspaceRatio,
+            burstAttempts,
+            keystrokes: keystrokeCount
+          }
         })
       });
 
@@ -233,7 +275,15 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
       };
     });
 
-    onComplete(formattedResults, timeSpent, tabSwitches, answers);
+    const totalWords = answeredQuestions.reduce((acc, q) => acc + (answers[q.id] || '').trim().split(/\s+/).filter(w => w.length > 0).length, 0);
+    const finalWpm = Math.round(totalWords / Math.max(0.5, timeSpent / 60));
+    const finalBackspaceRatio = keystrokeCount > 0 ? Number((backspaceCount / keystrokeCount).toFixed(3)) : 0.1;
+
+    onComplete(formattedResults, timeSpent, tabSwitches, answers, {
+      wpm: finalWpm,
+      backspaceRatio: finalBackspaceRatio,
+      burstAttempts
+    });
   };
 
   const formatTime = (seconds: number) => {
@@ -261,7 +311,8 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
     <div 
       ref={containerRef}
       {...containerProps} 
-      className={`w-full max-w-3xl mx-auto relative ${containerProps.className}`}
+      id="essay-container-card"
+      className={`w-full max-w-5xl xl:max-w-6xl mx-auto relative scroll-mt-36 ${containerProps.className}`}
     >
       {/* Warning Overlay */}
       <AnimatePresence>
@@ -287,12 +338,12 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
       </AnimatePresence>
 
       {/* Main Container */}
-      <div className="relative rounded-2xl overflow-hidden bg-[#121929] border border-slate-700/60 shadow-2xl transition-all">
+      <div className="relative rounded-2xl overflow-hidden bg-card border border-slate-200 dark:border-slate-800 shadow-2xl transition-all">
         {/* Top Gradient Line */}
         <div className="w-full h-1 bg-gradient-to-r from-primary via-indigo-500 to-emerald-400" />
 
         {/* HEADER: Stepper Mastery Gateway & Timer */}
-        <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-slate-700/50 bg-slate-900/60">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/90 dark:bg-slate-900/60">
           <div className="flex items-center gap-2.5 sm:gap-3">
             {/* Step indicator pills */}
             <div className="flex items-center gap-1 sm:gap-1.5">
@@ -321,12 +372,12 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
                       isCurrent 
                         ? 'bg-primary text-white scale-110 shadow-md ring-2 ring-primary/40' 
                         : isPassed 
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/30 cursor-pointer' 
+                          ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/40 hover:bg-emerald-500/25 cursor-pointer' 
                           : isNeedsRevision
-                            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40 hover:bg-amber-500/30 cursor-pointer'
+                            ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/40 hover:bg-amber-500/25 cursor-pointer'
                             : isUnlocked 
-                              ? 'bg-slate-800 text-slate-300 hover:bg-slate-700 cursor-pointer' 
-                              : 'bg-slate-900/60 text-slate-600 border border-slate-800/80 cursor-not-allowed opacity-60'
+                              ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 cursor-pointer' 
+                              : 'bg-slate-100/60 dark:bg-slate-900/60 text-slate-400 dark:text-slate-600 border border-slate-200/80 dark:border-slate-800/80 cursor-not-allowed opacity-60'
                     }`}
                     title={
                       isPassed 
@@ -354,136 +405,211 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
               })}
             </div>
             
-            <span className="text-[11px] sm:text-xs text-slate-300 font-semibold hidden sm:inline">
-              Misi Esai: <strong className="text-emerald-400">{passedCount}/5 Lolos (≥80)</strong>
+            <span className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300 font-semibold hidden sm:inline">
+              Misi Esai: <strong className="text-emerald-600 dark:text-emerald-400">{passedCount}/5 Lolos (≥80)</strong>
             </span>
           </div>
           
           {/* Timer Display */}
           <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all ${
             isTimeCritical 
-              ? 'bg-red-500/20 border-red-500/60 text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.3)]' 
-              : 'bg-slate-800/90 border-slate-700/80 text-slate-200 shadow-sm'
+              ? 'bg-red-500/10 border-red-500/40 text-red-600 dark:text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' 
+              : 'bg-slate-100 dark:bg-slate-800/90 border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-200 shadow-sm'
           }`}>
-            <Clock className={`w-3.5 h-3.5 ${isTimeCritical ? 'text-red-400' : 'text-primary'}`} />
+            <Clock className={`w-3.5 h-3.5 ${isTimeCritical ? 'text-red-500 dark:text-red-400' : 'text-primary'}`} />
             <div className="flex flex-col items-end leading-none">
-              <span className="text-[8px] uppercase tracking-wider text-slate-400 font-bold">Total Waktu</span>
+              <span className="text-[8px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Total Waktu</span>
               <span className="font-mono font-black text-xs sm:text-sm tabular-nums">{formatTime(timeLeft)}</span>
             </div>
           </div>
         </div>
 
         {/* BODY CONTENT */}
-        <div className="p-4 sm:p-6 space-y-3.5">
+        <div className="p-3.5 sm:p-5">
           
-          {/* 1. KOTAK PERTANYAAN SOAL */}
-          <div className="bg-slate-900/70 border border-slate-700/50 rounded-xl p-3.5 sm:p-4 relative">
-            <div className="text-[11px] font-bold text-primary uppercase tracking-wider mb-1.5 flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
-                Pertanyaan Soal #{currentIndex + 1} dari 5:
-              </span>
-              <span className="text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">
-                Standar Lolos: Skor ≥ 80
-              </span>
-            </div>
-            <p className="text-xs sm:text-sm md:text-[14px] text-slate-100 leading-relaxed font-medium">
-              {currentQuestion.text}
-            </p>
-          </div>
-
           {/* 2. MODE PENILAIAN SEDANG BERJALAN (EVALUATING) */}
           {questionMode === 'evaluating' && (
-            <div className="bg-slate-900/80 border border-slate-700/60 rounded-xl p-8 flex flex-col items-center justify-center text-center space-y-4">
-              <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
-              <div>
-                <h3 className="text-sm sm:text-base font-bold text-white mb-1">
-                  Jawaban sedang dinilai...
-                </h3>
-                <p className="text-xs text-slate-400 max-w-md">
-                  Jawaban Anda sedang dianalisis berdasarkan rubrik dan standar tata tulis materi kuliah. Harap tunggu 1–2 detik.
-                </p>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-stretch">
+              <div className="md:col-span-5 bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col justify-between space-y-3 opacity-75">
+                <div>
+                  <div className="text-[11px] font-bold text-primary uppercase tracking-wider mb-2 flex items-center justify-between">
+                    <span>Pertanyaan Soal #{currentIndex + 1} dari 5:</span>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+                      Standar Lolos: Skor ≥ 80
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-100 leading-relaxed font-medium">
+                    {currentQuestion.text}
+                  </p>
+                </div>
+                <div className="text-[10px] text-slate-400 font-mono">Evaluasi AI Multidimensi Aktif...</div>
+              </div>
+
+              <div className="md:col-span-7 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 flex flex-col items-center justify-center text-center space-y-4">
+                <div className="w-10 h-10 border-3 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mb-1">
+                    Jawaban sedang dianalisis Dosen AI...
+                  </h3>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 max-w-md">
+                    Jawaban Anda sedang dievaluasi berdasarkan rubrik logika dan standar materi kuliah. Harap tunggu sebentar.
+                  </p>
+                </div>
               </div>
             </div>
           )}
 
-          {/* 3. MODE MENJAWAB (ANSWERING) */}
+          {/* 3. MODE MENJAWAB (ANSWERING): LAYOUT DUA KOLOM BERSANDING */}
           {questionMode === 'answering' && (
-            <div className="space-y-3.5">
-              {/* Notifikasi jika ini adalah mode perbaikan/revisi */}
-              {currentResult && currentResult.score < 80 && (
-                <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 text-xs text-amber-200 flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-amber-300 block mb-0.5">Mode Perbaikan Jawaban (Percobaan ke-{(currentResult.attempts || 1) + 1})</strong>
-                    <span>Saran Dosen AI sebelumnya: <em>"{currentResult.feedback}"</em></span>
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3.5 items-stretch">
+              {/* KOLOM KIRI (5/12): Banner Dosen, Pengingat Integritas & Teks Soal */}
+              <div className="md:col-span-5 bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800 rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between space-y-3 shadow-2xs">
+                <div className="space-y-2.5">
+                  {/* Banner Foto Semangat & Integritas dari Pak Hadiq */}
+                  <div className="flex items-center gap-3 p-2.5 sm:p-3 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-transparent border border-emerald-500/20 dark:border-emerald-500/30">
+                    <div className="relative shrink-0">
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border-2 border-emerald-500/50 shadow-sm relative bg-slate-200 dark:bg-slate-800">
+                        <Image
+                          src="/dosen-smile.png"
+                          alt="Pak Hadiq"
+                          width={44}
+                          height={44}
+                          className="object-cover w-full h-full"
+                          priority
+                        />
+                      </div>
+                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-1.5 mb-0.5">
+                        <span className="text-[11px] sm:text-xs font-bold text-slate-900 dark:text-slate-100 truncate">
+                          Pesan Semangat dari Pak Hadiq:
+                        </span>
+                        <span className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.2 rounded-full text-[9px] font-semibold bg-emerald-500/15 text-emerald-800 dark:text-emerald-300 shrink-0">
+                          <ShieldCheck className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
+                          Integritas
+                        </span>
+                      </div>
+                      <p className="text-[10.5px] sm:text-[11px] text-slate-700 dark:text-slate-300 leading-snug italic">
+                        &ldquo;Kerjakan dengan tenang ya! Bapak jauh lebih menghargai satu kalimat murni pemikiranmu sendiri daripada sepuluh paragraf salinan mesin. Kamu pasti bisa!&rdquo;
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Header Soal & Standar Kelulusan */}
+                  <div className="text-[11px] font-bold text-primary uppercase tracking-wider flex items-center justify-between pt-0.5">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
+                      Pertanyaan Soal #{currentIndex + 1} dari 5:
+                    </span>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+                      Standar Lolos: Skor ≥ 80
+                    </span>
+                  </div>
+
+                  {/* Isi Pertanyaan Soal */}
+                  <div className="bg-white dark:bg-slate-950/60 p-3 sm:p-3.5 rounded-xl border border-slate-200/80 dark:border-slate-800/80">
+                    <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-100 leading-relaxed font-medium">
+                      {currentQuestion.text}
+                    </p>
                   </div>
                 </div>
-              )}
 
-              {/* Notifikasi jika ada Error API (sehingga tidak pakai alert() native) */}
-              {submitError && (
-                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-xs text-red-200 flex items-start gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-red-400 block mb-0.5">Gagal Mengirim Jawaban</strong>
-                    <span>{submitError}</span>
-                  </div>
+                <div className="text-[10px] text-slate-400 dark:text-slate-500 flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
+                  <span>Sistem Mastery Gateway</span>
+                  <span>Evaluasi AI Multidimensi</span>
                 </div>
-              )}
-
-              {/* Textarea Area */}
-              <div>
-                <textarea
-                  value={currentAnswer}
-                  onChange={(e) => handleAnswerChange(e.target.value)}
-                  placeholder={`Tuliskan analisis & penjelasan Anda untuk Soal #${currentIndex + 1} di sini...`}
-                  className="w-full h-36 sm:h-44 md:h-48 bg-black/40 border border-slate-700/60 rounded-xl p-3.5 sm:p-4 text-xs sm:text-sm text-white placeholder:text-slate-500 resize-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-all font-sans leading-relaxed"
-                />
               </div>
 
-              {/* Footer Controls */}
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg border ${
-                    currentWordCount >= 10 
-                      ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
-                      : 'bg-slate-800/60 border-slate-700/50 text-slate-400'
-                  }`}>
-                    {currentWordCount} Kata
-                  </span>
-                  
-                  {/* Badge Copy-Paste dipindah ke bawah agar tidak menghalangi teks textarea */}
-                  <span className="text-[10px] sm:text-[11px] text-slate-500 flex items-center gap-1">
-                    <Lock className="w-2.5 h-2.5" /> Copy-Paste Dinonaktifkan
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  {/* Tombol Lihat Review Sebelumnya (jika sudah ada hasil) */}
-                  {currentResult && (
-                    <button
-                      type="button"
-                      onClick={() => setQuestionMode('reviewed')}
-                      className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2 px-3 rounded-xl transition-all text-xs flex items-center gap-1.5 cursor-pointer border border-slate-700"
-                    >
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>Lihat Review</span>
-                    </button>
+              {/* KOLOM KANAN (7/12): Form Jawaban & Tombol Kirim Langsung */}
+              <div className="md:col-span-7 flex flex-col justify-between space-y-3 bg-slate-50/50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-3.5 sm:p-4 shadow-2xs">
+                <div className="space-y-2.5 flex-1 flex flex-col">
+                  {/* Notifikasi jika ini adalah mode perbaikan/revisi */}
+                  {currentResult && currentResult.score < 80 && (
+                    <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-2.5 text-xs text-amber-800 dark:text-amber-200 flex items-start gap-2">
+                      <AlertCircle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-amber-700 dark:text-amber-300 block mb-0.5">Mode Perbaikan (Percobaan ke-{(currentResult.attempts || 1) + 1})</strong>
+                        <span className="line-clamp-2">Saran Dosen AI sebelumnya: <em>"{currentResult.feedback}"</em></span>
+                      </div>
+                    </div>
                   )}
 
-                  {/* Tombol Kirim untuk Dinilai AI */}
-                  <button
-                    type="button"
-                    onClick={handleGradeCurrentQuestion}
-                    disabled={currentWordCount < 10}
-                    className="bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-5 sm:px-6 rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-xs sm:text-sm shadow-[0_0_15px_rgba(var(--primary),0.35)] cursor-pointer"
-                  >
-                    <span>Kirim Jawaban #{currentIndex + 1}</span>
-                    <Send className="w-3.5 h-3.5" />
-                  </button>
+                  {/* Notifikasi jika ada Error API */}
+                  {submitError && (
+                    <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-2.5 text-xs text-red-800 dark:text-red-200 flex items-start gap-2">
+                      <AlertCircle className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-red-700 dark:text-red-400 block mb-0.5">Gagal Mengirim Jawaban</strong>
+                        <span>{submitError}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Notifikasi jika ada paste massal (Delta Burst Limiter) */}
+                  {burstAlert && (
+                    <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-2 text-xs text-red-800 dark:text-red-300 flex items-center gap-2 animate-bounce">
+                      <AlertCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                      <span>Penyalinan teks massal diblokir sistem. Ketikkan penalaran Anda secara mandiri!</span>
+                    </div>
+                  )}
+
+                  {/* Textarea Area */}
+                  <div className="flex-1 flex flex-col min-h-[140px] sm:min-h-[160px] md:min-h-[175px]">
+                    <textarea
+                      value={currentAnswer}
+                      onChange={(e) => handleAnswerChange(e.target.value)}
+                      onKeyDown={trackKeyInput}
+                      placeholder={`Tuliskan analisis & penjelasan Anda untuk Soal #${currentIndex + 1} di sini...`}
+                      className="w-full flex-1 min-h-[140px] sm:min-h-[160px] bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700/80 rounded-xl p-3 sm:p-3.5 text-xs sm:text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-sans leading-relaxed shadow-2xs"
+                    />
+                  </div>
                 </div>
+
+                {/* Footer Controls & Tombol Kirim */}
+                <div className="flex items-center justify-between pt-1 border-t border-slate-200/60 dark:border-slate-800/60">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <span className={`text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-lg border ${
+                      currentWordCount >= 10 
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-700 dark:text-emerald-400' 
+                        : 'bg-slate-100 dark:bg-slate-800/60 border-slate-200 dark:border-slate-700/50 text-slate-500 dark:text-slate-400'
+                    }`}>
+                      {currentWordCount} Kata
+                    </span>
+                    
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 hidden sm:flex items-center gap-1">
+                      <Lock className="w-2.5 h-2.5" /> Copy-Paste Dinonaktifkan
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {/* Tombol Lihat Review Sebelumnya */}
+                    {currentResult && (
+                      <button
+                        type="button"
+                        onClick={() => setQuestionMode('reviewed')}
+                        className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-2 px-3 rounded-xl transition-all text-xs flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Review</span>
+                      </button>
+                    )}
+
+                    {/* Tombol Kirim untuk Dinilai AI */}
+                    <button
+                      type="button"
+                      onClick={handleGradeCurrentQuestion}
+                      disabled={currentWordCount < 10}
+                      className="bg-primary hover:bg-primary/90 text-white font-bold py-2 sm:py-2.5 px-4 sm:px-5 rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-xs sm:text-sm shadow-[0_0_15px_rgba(var(--primary),0.35)] cursor-pointer"
+                    >
+                      <span>Kirim Jawaban #{currentIndex + 1}</span>
+                      <Send className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
               </div>
+
             </div>
           )}
 
@@ -497,26 +623,26 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
               {/* Banner Status Lolos / Perlu Revisi */}
               <div className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
                 isCurrentPassed 
-                  ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300' 
-                  : 'bg-amber-500/15 border-amber-500/40 text-amber-300'
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-800 dark:text-emerald-300' 
+                  : 'bg-amber-500/10 border-amber-500/30 text-amber-800 dark:text-amber-300'
               }`}>
                 <div className="flex items-center gap-2.5">
                   {isCurrentPassed ? (
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shrink-0">
                       <CheckCircle2 className="w-5 h-5" />
                     </div>
                   ) : (
-                    <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 shrink-0">
                       <AlertCircle className="w-5 h-5" />
                     </div>
                   )}
                   <div>
-                    <h4 className="font-black text-sm sm:text-base text-white">
+                    <h4 className="font-black text-sm sm:text-base text-slate-900 dark:text-white">
                       {isCurrentPassed 
                         ? `🎉 Selamat! Jawaban Memenuhi Standar Kelulusan` 
                         : `⚠️ Perlu Disempurnakan (Belum Mencapai 80)`}
                     </h4>
-                    <p className="text-xs text-slate-300">
+                    <p className="text-xs text-slate-600 dark:text-slate-300">
                       {isCurrentPassed 
                         ? `Skor Anda telah memenuhi syarat (≥80). Pintu ke soal berikutnya telah dibuka!` 
                         : `Gunakan ulasan Dosen AI di bawah ini untuk melengkapi jawaban Anda lalu kirim ulang.`}
@@ -524,35 +650,35 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
                   </div>
                 </div>
 
-                <div className="text-right shrink-0 bg-black/30 px-3.5 py-1.5 rounded-xl border border-white/10 self-end sm:self-auto">
-                  <div className={`text-2xl font-black ${isCurrentPassed ? 'text-emerald-400' : 'text-amber-400'}`}>
+                <div className="text-right shrink-0 bg-white dark:bg-black/30 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-white/10 self-end sm:self-auto shadow-2xs">
+                  <div className={`text-2xl font-black ${isCurrentPassed ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'}`}>
                     {currentResult.score}<span className="text-xs text-slate-400 font-normal">/100</span>
                   </div>
-                  <div className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Skor Soal #{currentIndex + 1}</div>
+                  <div className="text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Skor Soal #{currentIndex + 1}</div>
                 </div>
               </div>
 
               {/* DUA PANEL BERSANDING: JAWABAN ANDA VS SARAN DOSEN AI */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                 {/* Panel Kiri: Jawaban yang Dikirim */}
-                <div className="bg-slate-900/60 border border-slate-700/50 rounded-xl p-3.5 space-y-2">
-                  <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between border-b border-slate-700/50 pb-1.5">
-                    <span className="flex items-center gap-1.5 text-slate-300">
+                <div className="bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-xl p-3.5 space-y-2">
+                  <div className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-1.5">
+                    <span className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
                       <FileEdit className="w-3.5 h-3.5 text-primary" />
                       Jawaban Anda:
                     </span>
-                    <span className="text-[10px] text-slate-500">
+                    <span className="text-[10px] text-slate-400">
                       Percobaan ke-{currentResult.attempts}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-200 leading-relaxed font-sans max-h-40 overflow-y-auto whitespace-pre-wrap pr-1">
+                  <p className="text-xs text-slate-800 dark:text-slate-200 leading-relaxed font-sans max-h-40 overflow-y-auto whitespace-pre-wrap pr-1">
                     {currentResult.submittedAnswer}
                   </p>
                 </div>
 
                 {/* Panel Kanan: Ulasan & Feedback Dosen AI */}
-                <div className="bg-slate-900/80 border border-slate-700/60 rounded-xl p-3.5 space-y-2">
-                  <div className="text-[11px] font-bold text-primary uppercase tracking-wider flex items-center justify-between border-b border-slate-700/50 pb-1.5">
+                <div className="bg-primary/5 dark:bg-slate-900/80 border border-primary/20 dark:border-slate-800 rounded-xl p-3.5 space-y-2">
+                  <div className="text-[11px] font-bold text-primary uppercase tracking-wider flex items-center justify-between border-b border-primary/20 dark:border-slate-800 pb-1.5">
                     <span className="flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5" />
                       Ulasan Dosen AI:
@@ -561,14 +687,14 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
                       {currentResult.provider}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-100 leading-relaxed font-medium max-h-40 overflow-y-auto pr-1">
+                  <p className="text-xs text-slate-800 dark:text-slate-100 leading-relaxed font-medium max-h-40 overflow-y-auto pr-1">
                     "{currentResult.feedback}"
                   </p>
                 </div>
               </div>
 
               {/* Action Buttons Sesuai Hasil */}
-              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-700/40">
+              <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-slate-200 dark:border-slate-700/40">
                 {!isCurrentPassed ? (
                   /* JIKA BELUM LOLOS: TOMBOL PERBAIKI JAWABAN */
                   <button
@@ -577,7 +703,7 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
                     className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-2.5 px-5 sm:px-6 rounded-xl transition-all active:scale-95 flex items-center gap-2 text-xs sm:text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] cursor-pointer"
                   >
                     <Edit3 className="w-4 h-4" />
-                    <span>Perbaiki & Sempurnakan Jawaban</span>
+                    <span>Perbaiki &amp; Sempurnakan Jawaban</span>
                   </button>
                 ) : (
                   /* JIKA SUDAH LOLOS: BISA EDIT LAGI ATAU LANJUT */
@@ -585,7 +711,7 @@ export function EssayContainer({ questions, userId, onComplete }: EssayContainer
                     <button
                       type="button"
                       onClick={handleStartRevision}
-                      className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-4 rounded-xl transition-all text-xs flex items-center gap-1.5 cursor-pointer border border-slate-700"
+                      className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-2.5 px-4 rounded-xl transition-all text-xs flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                       <span>Ubah Jawaban</span>

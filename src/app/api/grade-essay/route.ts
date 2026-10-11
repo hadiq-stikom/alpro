@@ -9,6 +9,20 @@ interface GradeItem {
   rubric: string;
 }
 
+interface BaselineProfile {
+  wpm?: number;
+  backspaceRatio?: number;
+  sampleText?: string;
+  totalKeystrokes?: number;
+}
+
+interface CurrentTelemetry {
+  wpm?: number;
+  backspaceRatio?: number;
+  burstAttempts?: number;
+  keystrokes?: number;
+}
+
 function parseJsonSafe(raw: string): any {
   try {
     return JSON.parse(raw);
@@ -24,7 +38,9 @@ function parseJsonSafe(raw: string): any {
 async function gradeSingleEssay(
   question: string,
   answer: string,
-  rubric: string
+  rubric: string,
+  baselineProfile?: BaselineProfile | null,
+  currentTelemetry?: CurrentTelemetry | null
 ): Promise<{ score: number; feedback: string; provider: string }> {
   if (!answer || answer.trim().length < 5) {
     return {
@@ -33,6 +49,23 @@ async function gradeSingleEssay(
       provider: 'system'
     };
   }
+
+  const baselineInstruction = baselineProfile ? `
+    PANDUAN VERIFIKASI INTEGRITAS & STYLOMETRI (ANTI-AI REPHRASE):
+    - Mahasiswa ini pada tahap gerbang definisi konsep memiliki profil pengetikan:
+      * Kecepatan ketik baseline: ~${baselineProfile.wpm || 'N/A'} WPM
+      * Rasio koreksi tombol (backspace/delete): ~${Math.round((baselineProfile.backspaceRatio || 0.1) * 100)}%
+      * Sampel kalimat orisinal mahasiswa: "${(baselineProfile.sampleText || '').slice(0, 300)}"
+    - Metrik pengetikan esai saat ini:
+      * Kecepatan ketik esai: ~${currentTelemetry?.wpm || 'N/A'} WPM
+      * Percobaan paste/burst yang diblokir sistem: ${currentTelemetry?.burstAttempts || 0} kali
+
+    ATURAN EVALUASI KONSISTENSI GAYA BAHASA:
+    1. Bandingkan gaya bahasa esai dengan sampel kalimat baseline di atas.
+    2. Mahasiswa pemula biasanya memiliki diksi sederhana, analogi personal, dan sedikit ketidaksempurnaan tata bahasa alami.
+    3. Jika jawaban esai mendadak menggunakan diksi super-ensiklopedis/baku tingkat tinggi tanpa cela khas output LLM/ChatGPT (contoh: "mengejawantahkan", "mereduksi disparitas", "paradigma imperatif yang komprehensif") yang melompat jauh dari gaya baseline, ATAU kecepatan WPM melompat tidak wajar (> 3x lipat baseline), BATASI skor maksimal pada 75-78 (Grade B/AB) meskipun kontennya lengkap, serta berikan catatan konstruktif pada feedback agar mahasiswa menggunakan penjelasan analogi mereka sendiri.
+    4. Jika gaya bahasa konsisten dengan profil mahasiswa orisinal, berikan apresiasi penuh (hingga 90-100) sesuai rubrik logika & tata tulis.
+  ` : '';
 
   const systemPrompt = `
     Anda adalah dosen ahli Algoritma dan Pemrograman yang adil, teliti, dan suportif. Tugas Anda menilai jawaban esai mahasiswa secara objektif berdasarkan rubrik penilaian yang diberikan.
@@ -50,8 +83,10 @@ async function gradeSingleEssay(
     6. Kapitalisasi Kata Kunci: Kata kunci struktur (PROGRAM, KAMUS, ALGORITMA, IF, THEN, ELSE, END IF) ditulis menggunakan huruf kapital.
 
     PANDUAN PEMBERIAN SKOR:
-    - Berikan skor tinggi (90-100) jika mahasiswa menerapkan struktur 3 blok (PROGRAM, KAMUS, ALGORITMA) dengan logika seleksi dan I/O yang tepat.
-    - Jika mahasiswa hanya menuliskan logika IF-ELSE tanpa blok PROGRAM dan KAMUS yang lengkap, kurangi poin struktur sesuai rubrik dan berikan saran konstruktif di feedback agar mahasiswa membiasakan menulis 3 blok baku.
+    - Berikan skor tinggi (90-100) jika mahasiswa menerapkan struktur 3 blok (PROGRAM, KAMUS, ALGORITMA) dengan logika seleksi dan I/O yang tepat serta bahasa yang orisinal.
+    - Jika mahasiswa hanya menuliskan logika IF-ELSE tanpa blok PROGRAM dan KAMUS yang lengkap, kurangi poin struktur sesuai rubrik dan berikan saran konstruktif di feedback.
+
+    ${baselineInstruction}
     
     ATURAN FORMAT OUTPUT:
     Kembalikan respons HANYA dalam format JSON murni tanpa kata pengantar atau penutup apapun:
@@ -72,7 +107,7 @@ async function gradeSingleEssay(
     ${rubric}
   `;
 
-  // 1. Groq API - Primary: qwen/qwen3.8-27b
+  // 1. Groq API - Primary
   if (process.env.GROQ_API_KEY) {
     try {
       const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
@@ -95,9 +130,8 @@ async function gradeSingleEssay(
         provider: 'groq (qwen3.8)'
       };
     } catch (groqError: any) {
-      console.warn('Groq qwen3.8 error, trying Groq gpt-oss fallback...', groqError.message);
+      console.warn('Groq qwen3.8 error, trying Groq fallback...', groqError.message);
       
-      // 1b. Groq Fallback Model: openai/gpt-oss-120b
       try {
         const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
         const chatCompletion = await groq.chat.completions.create({
@@ -124,12 +158,12 @@ async function gradeSingleEssay(
     }
   }
 
-  // 2. Gemini API Fallback - Primary: gemini-3.5-flash-lite
+  // 2. Gemini API Fallback
   if (process.env.GEMINI_API_KEY) {
     try {
       const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
       const model = genAI.getGenerativeModel({
-        model: 'gemini-3.5-flash-lite',
+        model: 'gemini-2.5-flash-lite',
         generationConfig: {
           responseMimeType: 'application/json',
           temperature: 0.1
@@ -144,16 +178,15 @@ async function gradeSingleEssay(
       return {
         score: typeof parsed.score === 'number' ? Math.min(100, Math.max(0, parsed.score)) : 75,
         feedback: parsed.feedback || 'Penilaian selesai.',
-        provider: 'gemini (3.5-flash-lite)'
+        provider: 'gemini-2.5-flash-lite'
       };
     } catch (geminiError: any) {
-      console.warn('Gemini 3.5-flash-lite error, trying gemini-3.8-flash...', geminiError.message);
+      console.warn('Gemini 2.5-flash-lite error, trying gemini-1.5-flash...', geminiError.message);
       
-      // 2b. Gemini Fallback: gemini-3.8-flash
       try {
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
         const model = genAI.getGenerativeModel({
-          model: 'gemini-3.8-flash',
+          model: 'gemini-1.5-flash',
           generationConfig: {
             responseMimeType: 'application/json',
             temperature: 0.1
@@ -168,15 +201,15 @@ async function gradeSingleEssay(
         return {
           score: typeof parsed.score === 'number' ? Math.min(100, Math.max(0, parsed.score)) : 75,
           feedback: parsed.feedback || 'Penilaian selesai.',
-          provider: 'gemini (3.8-flash)'
+          provider: 'gemini-1.5-flash'
         };
       } catch (gemini2Error: any) {
-        console.warn('Gemini 3.8-flash also failed...', gemini2Error.message);
+        console.warn('Gemini fallback failed...', gemini2Error.message);
       }
     }
   }
 
-  // 3. Final Resilience Safety Net: Hindari crash HTTP 500 jika seluruh upstream AI offline
+  // 3. Fallback Safety Net
   const wordCount = answer.trim().split(/\s+/).length;
   const estimatedScore = Math.min(85, Math.max(65, 50 + Math.round(wordCount * 1.2)));
 
@@ -194,15 +227,21 @@ export async function POST(req: Request) {
     // BATCH MODE: Menilai beberapa soal esai sekaligus
     if (body.items && Array.isArray(body.items)) {
       const items: GradeItem[] = body.items;
+      const { baselineProfile, currentTelemetry } = body;
       
       if (items.length === 0) {
         return NextResponse.json({ error: 'Array items kosong' }, { status: 400 });
       }
 
-      // Jalankan penilaian untuk semua soal secara paralel
       const results = await Promise.all(
         items.map(async (item) => {
-          const graded = await gradeSingleEssay(item.question, item.answer, item.rubric);
+          const graded = await gradeSingleEssay(
+            item.question, 
+            item.answer, 
+            item.rubric, 
+            baselineProfile, 
+            currentTelemetry
+          );
           return {
             id: item.id,
             score: graded.score,
@@ -224,12 +263,18 @@ export async function POST(req: Request) {
     }
 
     // SINGLE MODE: Menilai 1 soal esai
-    const { question, answer, rubric } = body;
+    const { question, answer, rubric, baselineProfile, currentTelemetry } = body;
     if (!question || !rubric) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const result = await gradeSingleEssay(question, answer, rubric);
+    const result = await gradeSingleEssay(
+      question, 
+      answer, 
+      rubric, 
+      baselineProfile, 
+      currentTelemetry
+    );
     return NextResponse.json(result);
 
   } catch (error: any) {
@@ -240,4 +285,3 @@ export async function POST(req: Request) {
     );
   }
 }
-

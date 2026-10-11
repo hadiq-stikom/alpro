@@ -354,13 +354,13 @@ function MultiBranchVerticalFlowchart({
       </g>
       <line x1="215" y1="58" x2="215" y2="88" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#mbs-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
+      {/* ─── 2. INPUT JAJARAN GENJANG (DIPERLEBAR AGAR VARIABEL PANJANG FIT) ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="135,88 325,88 295,134 105,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points="105,86 355,86 325,134 75,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="103" dominantBaseline="central" textAnchor="middle" fontSize={scenario.variable.length > 8 ? 11 : 12} fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input({scenario.variable})
         </text>
-        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{sliderVal}{scenario.unit}]
         </text>
       </g>
@@ -509,21 +509,21 @@ function MultiBranchVerticalFlowchart({
               Ya
             </text>
 
-            {/* JAJARAN GENJANG OUTPUT (MENCABANG DI SISI KANAN) */}
+            {/* JAJARAN GENJANG OUTPUT (MENCABANG DI SISI KANAN, DIPERLEBAR AGAR FIT) */}
             <polygon
-              points={`405,${cy - 25} 615,${cy - 25} 590,${cy + 25} 380,${cy + 25}`}
+              points={`390,${cy - 25} 640,${cy - 25} 610,${cy + 25} 360,${cy + 25}`}
               fill={isHit ? '#047857' : isSkipped ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.45)'}
               stroke={isHit ? '#10b981' : isSkipped ? '#64748b' : '#94a3b8'}
               strokeWidth={isHit ? 3 : 1.5}
               strokeDasharray={isHit ? undefined : '4 3'}
             />
             <text
-              x="497"
+              x="500"
               y={cy}
               dominantBaseline="central"
               textAnchor="middle"
               fill={isHit ? '#ffffff' : '#64748b'}
-              fontSize="13.5"
+              fontSize={b.outputLabel.length > 20 ? 10.5 : b.outputLabel.length > 14 ? 11.5 : 12.5}
               fontWeight="900"
               fontFamily="monospace"
             >
@@ -532,7 +532,7 @@ function MultiBranchVerticalFlowchart({
 
             {/* Panah Pengumpul dari Output ke Rel Bus */}
             <line
-              x1="590"
+              x1="625"
               y1={cy}
               x2="675"
               y2={cy}
@@ -578,21 +578,21 @@ function MultiBranchVerticalFlowchart({
 
       {/* ─── 5. CABANG ELSE (JIKA SELURUH KONDISI TIDAK TERPENUHI) ─── */}
       <g opacity={isStepActive(7) ? (isElseHit ? 1 : 0.35) : 0.2}>
-        {/* Jajaran Genjang Blok ELSE */}
+        {/* Jajaran Genjang Blok ELSE (Diperlebar agar teks fit) */}
         <polygon
-          points="135,565 325,565 300,615 110,615"
+          points="105,565 355,565 325,615 75,615"
           fill={isElseHit ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={isElseHit ? '#f43f5e' : '#94a3b8'}
           strokeWidth={isElseHit ? 3 : 1.5}
           strokeDasharray={isElseHit ? undefined : '4 3'}
         />
         <text
-          x="217"
+          x="215"
           y="590"
           dominantBaseline="central"
           textAnchor="middle"
           fill={isElseHit ? '#ffffff' : '#64748b'}
-          fontSize="13.5"
+          fontSize={scenario.elseLabel.length > 20 ? 10.5 : scenario.elseLabel.length > 14 ? 11.5 : 12.5}
           fontWeight="900"
           fontFamily="monospace"
         >
@@ -788,20 +788,20 @@ function MultiBranchHorizontalFlowchart({
         />
       </g>
 
-      {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
+      {/* ─── 2. INPUT JAJARAN GENJANG (DIPERLEBAR) ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
         <polygon
-          points="126,24 242,24 224,76 108,76"
+          points="110,24 255,24 235,76 90,76"
           fill="#7e22ce"
           stroke="#581c87"
           strokeWidth="2.5"
         />
         <text
-          x="175"
+          x="172.5"
           y="42"
           dominantBaseline="central"
           textAnchor="middle"
-          fontSize="11.5"
+          fontSize={scenario.variable.length > 8 ? 10 : 11}
           fontWeight="900"
           fill="#ffffff"
           fontFamily="monospace"
@@ -809,11 +809,11 @@ function MultiBranchHorizontalFlowchart({
           input({scenario.variable})
         </text>
         <text
-          x="175"
+          x="172.5"
           y="59"
           dominantBaseline="central"
           textAnchor="middle"
-          fontSize="12.5"
+          fontSize="11"
           fontWeight="900"
           fill="#fef08a"
           fontFamily="monospace"
@@ -821,7 +821,7 @@ function MultiBranchHorizontalFlowchart({
           [{sliderVal}{scenario.unit}]
         </text>
         <line
-          x1="233"
+          x1="245"
           y1="50"
           x2="260"
           y2="50"
@@ -976,21 +976,21 @@ function MultiBranchHorizontalFlowchart({
               Ya
             </text>
 
-            {/* Jajaran Genjang Output */}
+            {/* Jajaran Genjang Output (Diperlebar) */}
             <polygon
-              points={`${cx - 68},186 ${cx + 80},186 ${cx + 56},244 ${cx - 92},244`}
+              points={`${cx - 75},186 ${cx + 85},186 ${cx + 62},244 ${cx - 98},244`}
               fill={isHit ? '#047857' : isSkipped ? 'rgba(148,163,184,0.35)' : 'rgba(148,163,184,0.45)'}
               stroke={isHit ? '#10b981' : isSkipped ? '#64748b' : '#94a3b8'}
               strokeWidth={isHit ? 3 : 1.5}
               strokeDasharray={isHit ? undefined : '4 3'}
             />
             <text
-              x={cx - 6}
+              x={cx - 7}
               y={215}
               dominantBaseline="central"
               textAnchor="middle"
               fill={isHit ? '#ffffff' : '#64748b'}
-              fontSize="12.5"
+              fontSize={b.outputLabel.length > 20 ? 9.5 : b.outputLabel.length > 14 ? 10.5 : 11.5}
               fontWeight="900"
               fontFamily="monospace"
             >
@@ -1086,21 +1086,21 @@ function MultiBranchHorizontalFlowchart({
           Else
         </text>
 
-        {/* Jajaran Genjang ELSE (Sejajar di baris output y = 186) */}
+        {/* Jajaran Genjang ELSE (Diperlebar) */}
         <polygon
-          points={`${cxElse - 68},186 ${cxElse + 80},186 ${cxElse + 56},244 ${cxElse - 92},244`}
+          points={`${cxElse - 75},186 ${cxElse + 85},186 ${cxElse + 62},244 ${cxElse - 98},244`}
           fill={isElseHit ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={isElseHit ? '#f43f5e' : '#94a3b8'}
           strokeWidth={isElseHit ? 3 : 1.5}
           strokeDasharray={isElseHit ? undefined : '4 3'}
         />
         <text
-          x={cxElse - 6}
+          x={cxElse - 7}
           y={215}
           dominantBaseline="central"
           textAnchor="middle"
           fill={isElseHit ? '#ffffff' : '#64748b'}
-          fontSize="12.5"
+          fontSize={scenario.elseLabel.length > 20 ? 9.5 : scenario.elseLabel.length > 14 ? 10.5 : 11.5}
           fontWeight="900"
           fontFamily="monospace"
         >

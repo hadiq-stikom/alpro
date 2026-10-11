@@ -3,14 +3,22 @@
 import { useState, useEffect, useCallback } from 'react';
 
 /**
- * Hook khusus untuk mengimplementasikan Anti-AI dan Anti-Cheat
- * pada kontainer kuis atau asesmen.
- * 
- * @param isActive Menentukan apakah sistem anti-cheat sedang aktif
+ * Hook komprehensif Anti-AI, Anti-Cheat, dan Perekam Telemetri Ketikan Mahasiswa (Lini 1).
+ * Mengamankan kontainer asesmen dari:
+ * 1. Perpindahan tab (Visibility & Blur/Focus)
+ * 2. Clipboard injection / Paste / Drag & Drop
+ * 3. Delta Burst (deteksi injeksi teks instan > 15 karakter per tick)
+ * 4. Merekam metrik ritme ketikan (Keystrokes, Backspaces, Koreksi)
  */
 export function useAntiCheat(isActive: boolean = true) {
   const [tabSwitches, setTabSwitches] = useState(0);
   const [lastSwitchTime, setLastSwitchTime] = useState<number | null>(null);
+  const [burstAttempts, setBurstAttempts] = useState(0);
+  const [lastBurstTime, setLastBurstTime] = useState<number | null>(null);
+
+  // Telemetri ketikan
+  const [keystrokeCount, setKeystrokeCount] = useState(0);
+  const [backspaceCount, setBackspaceCount] = useState(0);
 
   // Layer 4: Pencatat perpindahan tab (Visibility Change)
   useEffect(() => {
@@ -18,10 +26,8 @@ export function useAntiCheat(isActive: boolean = true) {
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        // Terjadi saat user pindah ke tab browser lain atau me-minimize browser
         setTabSwitches((prev) => prev + 1);
       } else {
-        // Terjadi saat user kembali ke tab ini
         setLastSwitchTime(Date.now());
         console.warn('Anti-Cheat: Terdeteksi user kembali setelah berpindah tab!');
       }
@@ -73,10 +79,27 @@ export function useAntiCheat(isActive: boolean = true) {
   const handlePaste = useCallback((e: React.ClipboardEvent) => {
     if (isActive) {
       e.preventDefault();
+      setBurstAttempts((prev) => prev + 1);
+      setLastBurstTime(Date.now());
     }
   }, [isActive]);
 
-  // Mencegah keydown shortcut spesifik (Ctrl+C, Ctrl+V, F12)
+  // Layer Drag & Drop lockout
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    if (isActive) {
+      e.preventDefault();
+    }
+  }, [isActive]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    if (isActive) {
+      e.preventDefault();
+      setBurstAttempts((prev) => prev + 1);
+      setLastBurstTime(Date.now());
+    }
+  }, [isActive]);
+
+  // Pelindung shortcut developer tools & keyboard paste
   useEffect(() => {
     if (!isActive) return;
 
@@ -84,15 +107,19 @@ export function useAntiCheat(isActive: boolean = true) {
       // Cegah Developer Tools (F12, Ctrl+Shift+I, Ctrl+Shift+J)
       if (
         e.key === 'F12' || 
-        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C'))
       ) {
         e.preventDefault();
         console.warn('Anti-Cheat: Akses Developer Tools diblokir.');
       }
       
-      // Cegah Copy/Paste via Keyboard (Ctrl+C, Ctrl+V, Ctrl+X)
-      if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x')) {
+      // Cegah Copy/Paste via Keyboard (Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+U)
+      if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'u')) {
         e.preventDefault();
+        if (e.key === 'v') {
+          setBurstAttempts((prev) => prev + 1);
+          setLastBurstTime(Date.now());
+        }
       }
     };
 
@@ -100,16 +127,68 @@ export function useAntiCheat(isActive: boolean = true) {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isActive]);
 
+  /**
+   * Perekam Telemetri Ketukan Tombol untuk Input Area (onKeyDown)
+   */
+  const trackKeyInput = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    if (!isActive) return;
+
+    if (e.key === 'Backspace' || e.key === 'Delete') {
+      setBackspaceCount((prev) => prev + 1);
+    } else if (e.key.length === 1 || e.key === 'Enter') {
+      setKeystrokeCount((prev) => prev + 1);
+    }
+  }, [isActive]);
+
+  /**
+   * Delta Burst Limiter:
+   * Memvalidasi perubahan nilai input. Jika delta penambahan panjang karakter
+   * melebihi maxBurst (default 15 karakter) dalam 1 tick/event (ciri khas paste/injeksi),
+   * tolak penambahan tersebut dan pertahankan teks sebelumnya.
+   */
+  const filterInputBurst = useCallback((
+    prevVal: string, 
+    nextVal: string, 
+    maxBurst: number = 15
+  ): { safeValue: string; isBurst: boolean } => {
+    if (!isActive) return { safeValue: nextVal, isBurst: false };
+
+    const diff = nextVal.length - prevVal.length;
+    // Jika ada penambahan lebih dari 15 karakter secara instan
+    if (diff > maxBurst) {
+      setBurstAttempts((prev) => prev + 1);
+      setLastBurstTime(Date.now());
+      console.warn(`Anti-Cheat: Terdeteksi lonjakan karakter instan (+${diff} chars). Injeksi diblokir!`);
+      return { safeValue: prevVal, isBurst: true };
+    }
+
+    return { safeValue: nextVal, isBurst: false };
+  }, [isActive]);
+
+  const resetTelemetry = useCallback(() => {
+    setKeystrokeCount(0);
+    setBackspaceCount(0);
+    setBurstAttempts(0);
+  }, []);
+
   return {
     tabSwitches,
     lastSwitchTime,
-    // Prop ini harus disematkan (spread) ke root <div> dari kuis
+    burstAttempts,
+    lastBurstTime,
+    keystrokeCount,
+    backspaceCount,
+    trackKeyInput,
+    filterInputBurst,
+    resetTelemetry,
+    // Prop ini disematkan (spread) ke kontainer asesmen
     containerProps: {
       onContextMenu: handleContextMenu,
       onCopy: handleCopy,
       onCut: handleCut,
       onPaste: handlePaste,
-      // 'select-none' mencegah user memblok/menyeleksi teks dengan kursor
+      onDragOver: handleDragOver,
+      onDrop: handleDrop,
       className: isActive ? 'select-none' : '',
     }
   };

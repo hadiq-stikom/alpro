@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { QuizContainer } from '@/components/assessment/QuizContainer';
-import { AssessmentGateway } from '@/components/assessment/AssessmentGateway';
+import { WarmupChat } from '@/components/assessment/WarmupChat';
+import { ConceptBaselineProfile } from '@/components/assessment/RapidConceptGateway';
 import { EssayContainer } from '@/components/assessment/EssayContainer';
-import { getQuestionsByMeetingId } from '@/lib/question-bank';
 import { getEssaysByMeetingId } from '@/lib/essay-bank';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
@@ -20,9 +19,9 @@ interface TheoryAssessmentProps {
 export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
   const { profile } = useAuth();
   
-  const [stage, setStage] = useState<'intro' | 'mcq' | 'gateway' | 'essay' | 'result'>('intro');
-  const [mcqScore, setMcqScore] = useState<number | null>(null);
-  const [mcqTabSwitches, setMcqTabSwitches] = useState(0);
+  const [stage, setStage] = useState<'intro' | 'warmup' | 'essay' | 'result'>('intro');
+  const [conceptScore, setConceptScore] = useState<number | null>(null);
+  const [baselineProfile, setBaselineProfile] = useState<ConceptBaselineProfile | null>(null);
   
   const [isGrading, setIsGrading] = useState(false);
   const [essayResult, setEssayResult] = useState<{
@@ -30,14 +29,13 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     feedback: string;
     aiProvider: string;
     finalScore: number; 
-    breakdown?: Array<{ id: string; score: number; feedback: string }>;
+    breakdown?: Array<{ id: string; score: number; feedback: string; answer?: string }>;
   } | null>(null);
   
   // State for Context-Aware UI
   const [prevGrade, setPrevGrade] = useState<{ score: number; badge: any } | null>(null);
   const [loadingPrevGrade, setLoadingPrevGrade] = useState(true);
 
-  const questions = useMemo(() => getQuestionsByMeetingId(meetingId), [meetingId]);
   const essayQuestions = useMemo(() => getEssaysByMeetingId(meetingId), [meetingId]);
 
   // Cek apakah mahasiswa sudah punya nilai sebelumnya
@@ -76,17 +74,23 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     fetchPreviousGrade();
   }, [profile?.id, meetingId]);
 
-  // Scroll smoothly to assessment when entering active stages
+  // Scroll smoothly to assessment when entering active stages (memberikan ruang estetika di bawah sticky sub-header)
   useEffect(() => {
     if (stage !== 'intro') {
-      const el = document.getElementById('assessment-section');
+      const el = document.getElementById('essay-container-card') || document.getElementById('warmup-chat-card') || document.getElementById('assessment-section');
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        setTimeout(() => {
+          // Total tinggi sticky bar: 64px (navbar) + ~70px (sub-header) + 20px (gap estetika agar garis tepi atas form terlihat jelas) = 154px
+          const headerOffset = 154;
+          const y = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+          window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+        }, 80);
       }
     }
   }, [stage]);
 
   // Helper untuk menyimpan ke Supabase
+  // Helper untuk menyimpan ke Supabase via Server API (Reliable & Bypasses RLS Token Expiry)
   const saveSubmissionToDB = async (
     quizType: 'quiz' | 'essay',
     quizId: string,
@@ -115,12 +119,26 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     };
 
     try {
-      const { error } = await (supabase.from('quiz_submissions' as any) as any).insert(payload);
-      
-      if (error) {
-        console.error('Gagal menyimpan hasil submission ke Supabase:', error);
+      // 1. Prioritaskan Server API agar kebal terhadap kadaluwarsa token JWT browser
+      const res = await fetch('/api/submit-assessment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const resJson = await res.json();
+
+      if (res.ok && resJson.success) {
+        console.log(`[Assessment] Submission ${payload.quiz_key} berhasil disimpan via API (Skor: ${payload.score})`);
       } else {
-        console.log(`[Assessment] Submission ${payload.quiz_key} berhasil disimpan (Skor: ${payload.score})`);
+        console.warn('[Assessment] API submit-assessment gagal, mencoba fallback Supabase client:', resJson.error || resJson);
+        // Fallback langsung ke Supabase client jika server API merespons error
+        const { error: clientError } = await (supabase.from('quiz_submissions' as any) as any).insert(payload);
+        if (clientError) {
+          console.error('Gagal menyimpan hasil submission ke Supabase:', clientError.message || clientError.code || clientError);
+        } else {
+          console.log(`[Assessment] Submission ${payload.quiz_key} berhasil disimpan via Supabase client fallback.`);
+        }
       }
       
       // Update state prevGrade secara lokal agar UI sinkron
@@ -129,19 +147,44 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
         badge: getBadgeFromScore(score)
       });
 
-    } catch (e) {
-      console.error('Exception saat menyimpan hasil submission:', e);
+    } catch (e: any) {
+      console.error('Exception saat menyimpan hasil submission:', e?.message || e);
     }
   };
 
-  const handleMCQComplete = async (accuracy: number, timeReward: number, timeSpent: number, tabSwitches: number, answers: Record<string, string>) => {
-    setMcqScore(accuracy);
-    setMcqTabSwitches(tabSwitches);
+  const handleWarmupComplete = async (baseline: ConceptBaselineProfile) => {
+    setConceptScore(100);
+    setBaselineProfile(baseline);
     
-    // Simpan MCQ Result ke database
-    await saveSubmissionToDB('quiz', `m${meetingId}-mcq`, accuracy, timeSpent, tabSwitches, answers);
+    // Simpan ke database Supabase sebagai syarat gerbang (quiz_type = 'quiz' agar tidak masuk rerata nilai akhir)
+    await saveSubmissionToDB(
+      'quiz', 
+      `m${meetingId}-warmup`, 
+      100, 
+      baseline.timeSpentSeconds, 
+      baseline.tabSwitches, 
+      {
+        sampleText: baseline.sampleText,
+        wpm: baseline.wpm,
+        backspaceRatio: baseline.backspaceRatio,
+        keystrokes: baseline.totalKeystrokes,
+        backspaces: baseline.totalBackspaces
+      },
+      'Selesai Obrolan Santai Pra-Ujian (Golden Baseline Terbentuk)'
+    );
     
-    setStage('gateway');
+    setStage('essay');
+
+    // Pastikan jendela otomatis terfokus ke puncak kartu esai di bawah sticky header dengan margin estetika
+    setTimeout(() => {
+      const el = document.getElementById('essay-container-card') || document.getElementById('assessment-section') || document.getElementById('assessment');
+      if (el) {
+        const headerOffset = 154;
+        const currentScrollY = window.scrollY || window.pageYOffset;
+        const targetY = Math.max(0, currentScrollY + el.getBoundingClientRect().top - headerOffset);
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleEssayComplete = async (
@@ -156,7 +199,12 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     }>,
     timeSpent: number,
     tabSwitches: number,
-    answers: Record<string, string>
+    answers: Record<string, string>,
+    telemetry?: {
+      wpm: number;
+      backspaceRatio: number;
+      burstAttempts: number;
+    }
   ) => {
     if (!essayQuestions || essayQuestions.length === 0) return;
     
@@ -164,11 +212,7 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     setStage('result');
     
     try {
-      // EssayContainer.handleFinalSubmit sudah memfilter hanya soal yang dijawab.
-      // completedResults berisi HANYA soal yang sudah dinilai AI.
-      // Rata-rata dihitung dari jumlah soal yang dijawab (bukan dari total soal).
       const answeredResults = completedResults.filter(r => r.score !== undefined && r.score !== null);
-      
       if (answeredResults.length === 0) return;
       
       const totalScore = answeredResults.reduce((acc, curr) => acc + curr.score, 0);
@@ -188,14 +232,19 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
         breakdown: completedResults
       });
       
-      // Simpan Esai Result ke database
+      // Simpan Esai Result ke database dengan telemetri & baseline profile
       await saveSubmissionToDB(
         'essay', 
         `m${meetingId}-essay`, 
         finalCalculated, 
         timeSpent, 
         tabSwitches, 
-        answers, 
+        {
+          ...answers,
+          telemetry: telemetry || null,
+          baseline_wpm: baselineProfile?.wpm || null,
+          baseline_backspace_ratio: baselineProfile?.backspaceRatio || null
+        }, 
         feedbackSummary
       );
       
@@ -206,23 +255,25 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     }
   };
 
-  // Jika tidak ada soal untuk meeting ini
-  if (!questions || questions.length === 0) {
+  // Jika tidak ada soal esai untuk meeting ini
+  if (!essayQuestions || essayQuestions.length === 0) {
     return null;
   }
 
   return (
-    <div className="w-full mt-4 mb-16 relative z-10" id="assessment-section">
+    <div className="w-full mt-4 sm:mt-6 mb-16 relative z-10 scroll-mt-36" id="assessment-section">
       <div className="absolute inset-0 bg-primary/5 rounded-3xl -z-10 blur-xl"></div>
       
       {stage === 'intro' && (
         <div 
-          className="bg-card border-2 rounded-3xl p-8 md:p-12 text-center max-w-3xl mx-auto shadow-2xl transition-all duration-500"
+          className="bg-card border-2 rounded-3xl p-8 md:p-12 text-center max-w-3xl mx-auto shadow-2xl transition-all duration-500 relative overflow-hidden"
           style={{ 
             borderColor: prevGrade ? prevGrade.badge.hexColor : 'hsl(var(--primary) / 0.2)',
             boxShadow: prevGrade ? `0 20px 25px -5px ${prevGrade.badge.hexColor}20` : undefined
           }}
         >
+          {/* Top Gradient Line */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-indigo-500 to-emerald-400" />
           {loadingPrevGrade ? (
             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
           ) : prevGrade ? (
@@ -250,8 +301,8 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
               )}
               
               <button 
-                onClick={() => setStage('mcq')}
-                className="text-white font-bold py-4 px-10 rounded-xl transition-all text-lg hover:scale-105"
+                onClick={() => setStage('warmup')}
+                className="text-white font-bold py-4 px-10 rounded-xl transition-all text-lg hover:scale-105 cursor-pointer"
                 style={{ 
                   backgroundColor: prevGrade.badge.hexColor,
                   boxShadow: `0 0 20px ${prevGrade.badge.hexColor}50`
@@ -268,7 +319,7 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
               </div>
               <h2 className="text-2xl md:text-3xl font-black mb-4">Uji Pemahaman Minggu {meetingId}</h2>
               <p className="text-muted-foreground mb-8 text-lg">
-                Selesaikan modul ini dengan menjawab 5 Soal Pilihan Ganda. Jika nilai Anda mencapai standar (≥80) tanpa kecurangan, Anda akan membuka Ujian 5 Soal Esai Berbasis AI untuk meraih lencana di dashboard!
+                Sesi evaluasi ini diawali dengan obrolan santai bersama Pak Hadiq untuk menyegarkan pikiran dan membangun suasana rileks, dilanjutkan dengan 5 Soal Esai Belajar Tuntas untuk merebut lencana capaian tertinggi!
               </p>
               
               {!profile ? (
@@ -287,10 +338,10 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
                 </div>
               ) : (
                 <button 
-                  onClick={() => setStage('mcq')}
+                  onClick={() => setStage('warmup')}
                   className="bg-primary text-white font-bold py-4 px-10 rounded-xl hover:bg-primary/90 transition-all text-lg shadow-[0_0_20px_rgba(var(--primary),0.3)] hover:scale-105 cursor-pointer"
                 >
-                  Mulai Kuis Sekarang
+                  Mulai Obrolan Santai &amp; Ujian
                 </button>
               )}
             </>
@@ -298,21 +349,10 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
         </div>
       )}
 
-      {stage === 'mcq' && (
-        <QuizContainer 
-          questions={questions}
-          userId={profile?.id || 'guest'}
+      {stage === 'warmup' && (
+        <WarmupChat 
           meetingId={meetingId}
-          onComplete={handleMCQComplete}
-        />
-      )}
-
-      {stage === 'gateway' && (
-        <AssessmentGateway 
-          mcqScore={mcqScore} 
-          tabSwitches={mcqTabSwitches}
-          onRetakeMCQ={() => setStage('mcq')}
-          onStartEssay={() => setStage('essay')}
+          onWarmupComplete={handleWarmupComplete}
         />
       )}
 
@@ -320,6 +360,7 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
         <EssayContainer 
           questions={essayQuestions}
           userId={profile?.id || 'guest'}
+          baselineProfile={baselineProfile}
           onComplete={handleEssayComplete}
         />
       )}

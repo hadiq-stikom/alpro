@@ -53,7 +53,7 @@ Platform pembelajaran interaktif mata kuliah **Algoritma & Pemrograman (TI-101, 
 | **UI/UX** | **Halaman Depan (Homepage) Ramah Pemula** | ✅ **Selesai** | Hero terfokus dengan *Single Primary CTA* ("Mulai Belajar: Minggu 01"), Quick Hub Pertemuan Aktif (M-01 s.d. M-05), Onboarding 3 Langkah, 3D Dual-Tone Icons (`ChapterIllustration`), Leaderboard Top 5. |
 | **Pilar 1 (Bagian 1)** | **Fondasi Logika, Algoritma & Tipe Data (Minggu 1–5)** | ✅ **Selesai 100%** | **24+ Lab Interaktif Lengkap**, **Bank Soal Kuis (5 MCQ/minggu)**, dan **Bank Soal Esai (5 Esai/minggu)** dengan sistem penilaian AI otomatis. |
 | **Fase 2** | **Badge & Gamification System** | ✅ **Selesai** | Utilitas kalkulasi skor 9 tingkat + komponen visual lencana. |
-| **Fase 3** | **Sistem Asesmen & Anti-AI (1–5)** | ✅ **Selesai** | Kuis timer ketat, timer akumulasi esai (carry-over), tab-switch watcher tanpa alert modal fokus, auto-remedial gateway. |
+| **Fase 3** | **Sistem Asesmen & Dual-Shield Anti-AI** | ✅ **Selesai 100%** | Obrolan Santai Pra-Ujian Berbasis LLM (`WarmupChat.tsx`, 4 Dimensi Dinamis Bab 1–16, Kesadaran Waktu, Perekam Golden Baseline WPM/Backspace/Stilometri), Delta Burst Limiter (Δchar ≤ 15/tick), Drag & Drop lockout, Validasi Silang Stilometri di `/api/grade-essay`, isolasi view `meeting_grades` khusus esai/lab. |
 | **Fase 4** | **Dashboard Mahasiswa** | ✅ **Selesai** | Rute `/student/dashboard` & `/student/meeting/[id]`, visualisasi lencana dinamis (`BadgeDisplay.tsx`), agregasi view `overall_grades` & `meeting_grades`. |
 | **Fase 5** | **Dashboard Dosen** | ✅ **Selesai** | Rute `/lecturer/dashboard` (analitik kelas, filter pencarian mahasiswa) & `/lecturer/student/[id]` (detail rapor, detektor anti-cheat, ulasan AI grader). |
 | **Pilar 2 (Bagian 2)** | **Struktur Percabangan Statemen Tunggal & Ganda (Minggu 6)** | ✅ **Selesai 100%** | Teori 4 Representasi Terpadu (`Pertemuan6.tsx`), 4 Lab Interaktif (Anatomi Kondisi, IF Tunggal, IF-ELSE Ganda, 3 Kasus Nyata Terpadu), Mode Proyektor Fullscreen, dan **5 Misi Coding Percabangan di Workspace Studio** (`/workspace?chapter=6`). |
@@ -406,10 +406,135 @@ Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu da
 3. **Pemberantasan Anomali "Black Slab"**:
    - Menghilangkan tampilan kotak hitam pekat yang "bocor" atau terisolasi di tengah halaman saat pengguna memilih Mode Terang.
 
+### 6.15 Standar Kelengkapan Dual-Language (Python & JavaScript) pada Simulator & Lab Interaktif
+1. **Wajib Dua Bahasa Sekaligus**:
+   - Seluruh modul lab interaktif, visualizer memori/stack/RAM, interactive playground, dan simulator alur kerja algoritma di setiap bab perkuliahan WAJIB menyediakan implementasi dalam **KEDUA BAHASA PEMROGRAMAN SEKALIGUS (Python & JavaScript)** dengan tab/toggle pemilih bahasa (`activeTab: 'python' | 'javascript'`).
+2. **Larangan Monolingual**:
+   - **DILARANG KERAS** hanya menyediakan salah satu bahasa (misalnya hanya JavaScript saja atau hanya Python saja). Platform ini berlandaskan pedagogi komparasi dwibahasa: mahasiswa berhak melihat bagaimana konsep logika yang sama diimplementasikan dalam Python maupun JavaScript secara berdampingan.
+
+### 6.16 Standar Anti-Clipping Simbol Flowchart & Safe Margins Geometri (Zero Boundary Collision)
+1. **Prinsip Bebas Tubrukan Batas (Zero Clipping)**:
+   - Teks instruksi di dalam simbol flowchart (khususnya Jajar Genjang Input/Output dan Belah Ketupat Decision) WAJIB berada sepenuhnya di dalam batas simbol dengan *safe inner margin* minimal 15–20px di setiap sisi miring. Teks DILARANG KERAS menabrak, memotong, atau menembus garis tepi polygon.
+2. **Kompensasi Sudut Miring Parallelogram**:
+   - Sisi miring parallelogram memotong area horizontal sebesar 20–30px di kedua ujung.
+   - Untuk teks instruksi berkarakter panjang (seperti `input(var1, var2, ...)`, `output("Pesan Lengkap...")`), dimensi lebar simbol WAJIB diperlebar secara proporsional (lebar dasar 250–280px untuk vertikal, 150–200px untuk horizontal) dan ukuran font diskalakan secara dinamis (`9.5px`–`11.5px`), bukan memaksakan font besar statis yang menembus garis tepi.
+3. **Perhitungan Kapasitas Monospace**:
+   - Huruf monospace berukuran font 12px membutuhkan lebar ~7.2px per karakter. Teks 30 karakter membutuhkan ruang horizontal ~216px. Jika dimasukkan ke dalam parallelogram berlebar 200px dengan kemiringan 25px (lebar aman hanya ~150px), teks dipastikan menabrak tepi. Developer/AI Agent WAJIB memperlebar polygon (misal ke 260px) dan/atau menurunkan font ke 10px–11px.
+
+### 6.17 Standar Kontinuitas Jalur Aktif Flowchart (Unbroken Solid Path to Terminator)
+1. **Alur Aktif Utuh Tanpa Cacat**:
+   - Aliran eksekusi dari cabang yang bernilai benar (True / Ya) WAJIB digambarkan sebagai garis alir solid tebal aktif (`strokeWidth="3.5"`, warna solid cerah seperti emerald `#10b981`) yang menyambung secara kontinu dari port keluar decision, melewati kotak proses/aksi, melalui rel bus pengumpul (*collector bus*), menyatu ke *merge node*, hingga mencapai terminator `SELESAI`.
+2. **Larangan Garis Putus-Putus pada Jalur Aktif**:
+   - DILARANG KERAS membiarkan segmen rel pengumpul (collector bus) tetap berupa garis putus-putus (*dashed line*) abu-abu saat cabang yang menuju ke sana sedang aktif dieksekusi. Garis putus-putus hanya digunakan untuk jalur yang sedang tidak aktif / dilewati (*skipped*).
+
+### 6.18 Standar Pencegahan Warna Pastel Pudar pada Diagram SVG di Mode Terang (Anti-Washed Out Graphic Tokens)
+1. **Larangan Teks & Latar Pastel Pudar**:
+   - Pada seluruh diagram SVG dan simbol flowchart, DILARANG KERAS menggunakan warna pastel muda (seperti hijau muda `#a7f3d0`, pink muda `#fda4af`, teks putih di atas latar terang, atau teks abu-abu redup di latar putih) pada elemen aksi/output di Mode Terang (*Light Mode*).
+2. **Dual-Mode High Contrast Token**:
+   - **Mode Terang (Light Mode)**: Menggunakan latar lembut dengan border tegas (`fill="#ecfdf5"` border `#059669` untuk sukses/true; `fill="#fff1f2"` border `#e11d48` untuk gagal/false) dan teks warna jenuh pekat (*deep jewel tones*, misal `fill="#064e3b"` atau `fill="#881337"` dengan `fontWeight="900"`).
+   - **Mode Gelap (Dark Mode)**: Menggunakan latar belakang gelap pekat (`dark:fill-slate-950` / `dark:fill-emerald-950/80`) dengan teks cerah kontras tinggi (`dark:fill-emerald-200`, `dark:fill-rose-200`).
+
+### 6.19 Standar Kehadiran Sosial Humanis & Nudge Kejujuran (Watching Eyes Effect & Persona "Bapak")
+1. **Efek Kehadiran Sosial Humanis (Watching Eyes Effect)**:
+   - Berdasarkan riset ilmiah Bateson, Nettle, & Roberts (2006, *Biology Letters*) dan Bryan et al. (2011, *PNAS*): stimulus tatapan mata ramah figur otoritas moral secara bawah sadar meningkatkan kesadaran etis (*ethical self-awareness*) dan menekan niat berbuat curang tanpa menimbulkan rasa terintimidasi.
+   - Form obrolan santai dan lembar pengerjaan esai WAJIB menyertakan foto potret senyum hangat Dosen Pengampu (`/dosen-smile.png`) yang didampingi badge hijau *Integritas Akademik* dan kutipan pendampingan kebapakan:
+     *“Kerjakan dengan tenang ya! Bapak jauh lebih menghargai satu kalimat murni pemikiranmu sendiri daripada sepuluh paragraf salinan mesin. Kamu pasti bisa!”*
+2. **Panggilan Persona Dosen Baku ("Bapak")**:
+   - Seluruh teks percakapan, prompt sistem LLM, dialog antarmuka, dan instruksi WAJIB menggunakan sebutan persona **"Bapak"** (DILARANG KERAS menggunakan kata "Aku" yang terlalu informal atau "Saya" yang berjarak kaku).
+   - Mencerminkan budaya akademis perguruan tinggi Indonesia yang hangat, kebapakan, mengayomi, dan santun.
+
+### 6.20 Standar Tata Letak Bersanding 2 Kolom pada Lembar Esai (Dual-Column Side-by-Side Responsive Architecture)
+1. **Pemisahan Horizontal Bebas Tumpukan (`md:grid-cols-12`)**:
+   - DILARANG KERAS menumpuk foto dosen, pertanyaan soal, textarea pengetikan, dan tombol kirim dalam satu kolom vertikal panjang yang memicu pemotongan tombol (*cutoff below the fold*).
+   - Layout pengerjaan esai WAJIB menggunakan format bersanding 2 kolom mulai breakpoint `md:` (≥768px):
+     - **Kolom Kiri (`md:col-span-5`)**: Banner dosen ramah + Pesan integritas + Teks pertanyaan soal lengkap dengan nomor soal dan badge standar kelulusan (≥80).
+     - **Kolom Kanan (`md:col-span-7`)**: Area pengetikan jawaban (*textarea*) + notifikasi revisi/telemetri + Word counter + Tombol **"Kirim Jawaban"** yang menonjol (`bg-primary`).
+2. **Pelebaran Kontainer Proporsional (`max-w-5xl xl:max-w-6xl`)**:
+   - DILARANG membatasi lebar lembar esai pada `max-w-3xl` yang sempit. Kontainer diperluas ke `max-w-5xl xl:max-w-6xl` agar seimbang, lapang, dan selaras dengan lebar konten teori.
+3. **Optimasi Viewport Bebas Gulir (*Zero-Scroll Guarantee*)**:
+   - Total tinggi vertikal kartu dikompresi menjadi hanya **~340px–370px**.
+   - Seluruh elemen penting (pertanyaan soal, textarea, dan tombol Kirim Jawaban) terjamin tampil 100% utuh dalam satu pandangan mata (*in-viewport*) pada monitor/laptop standar (1366×768 atau 1080p).
+   - Mahasiswa dapat membaca teks soal di sisi kiri sembari mengetikkan penalarannya di sisi kanan tanpa bolak-balik scroll.
+   - Layar ponsel (<768px): Otomatis beralih ke tata letak vertikal alami (*fluid stack*) dengan textarea yang tetap ringkas.
+
+### 6.21 Standar Jarak Bebas Estetika Bilah Menempel & Aksen Gradien Puncak Kartu (Sticky Header Clearance & Floating Card Geometry)
+1. **Offset Navigasi Baku 154px**:
+   - Total tinggi elemen menempel (*sticky*) di atas layar adalah ~134px (Navbar 64px + Sub-header materi ~70px).
+   - Seluruh mekanisme *scroll restoration* dan tombol *Uji Pemahaman* WAJIB menggunakan konstanta `headerOffset = 154` (bukan 118px) untuk memberikan ruang napas estetika (*aesthetic breathing room*) sebesar ~20px di bawah bilah sub-header.
+2. **Garis Aksen Gradien Relaksasi Puncak Kartu**:
+   - Seluruh kartu evaluasi (Kartu Intro, Form Obrolan Santai `WarmupChat`, dan Form Esai `EssayContainer`) WAJIB menyertakan garis gradien halus di puncak kartu: `<div className="w-full h-1 bg-gradient-to-r from-primary via-indigo-500 to-emerald-400 shrink-0" />`.
+   - Garis tepi atas, sudut membulat (*rounded corners*), dan bayangan kartu (*drop shadow*) WAJIB tampak utuh mengambang bebas (*floating card*), DILARANG terpotong atau terselip di bawah bilah navigasi menempel.
+
+### 6.22 Standar Arsitektur Energi Ganda Psikologis (Dual-Energy Interface Harmony / Yerkes-Dodson Law)
+1. **Zona Materi Teori & Laboratorium (Tinggi Semangat / High Arousal)**:
+   - Tetap menggunakan tone berenergi tinggi, dinamis, dan semarak (*vibrant jewel tones*, zoom interaktif 1.2x, animasi alir flowchart, flip card 2D tajam, simulator dwibahasa Python & JavaScript).
+   - Tujuannya menjaga atensi, mengaktifkan dopamin, mencegah rasa kantuk/kebosanan saat membedah logika kode yang rumit.
+2. **Zona Evaluasi & Obrolan Santai (Penenang & Ramah / Low-to-Medium Arousal)**:
+   - Menggunakan tone sejuk, menenangkan, humanis, dan minim stres visual (aksen hijau zamrud/slate/indigo lembut, senyum Pak Hadiq, garis gradien halus).
+   - Tujuannya menurunkan kortisol/kecemasan ujian (*exam anxiety*), menciptakan rasa aman, dan mendorong kejujuran intelektual.
+3. **Larangan Menyamaratakan Tone**: DILARANG meredupkan atau menerapkan tone menenangkan pada materi teori, dan sebaliknya DILARANG menggunakan gaya visual agresif/menegangkan pada sesi ujian.
+
+### 6.23 Standar Asesmen Esai Murni & Sequential Progressive Mastery Gateway (Gembok Bertingkat)
+1. **Asesmen Esai Murni Tanpa Pilihan Ganda**:
+   - Seluruh evaluasi pemahaman mahasiswa pada platform resmi menggunakan **100% Ujian Esai Interaktif** yang dinilai langsung oleh AI Grader berbasis rubrik analitik komprehensif (`src/lib/essay-bank.ts`).
+   - Kuis Pilihan Ganda (`question-bank.ts`) resmi ditinggalkan/ditiadakan dalam alur belajar aktif untuk mengeliminasi budaya tebak spekulatif dan mendorong pemikiran komputasional mendalam.
+2. **Mekanisme Ujian: Sequential Progressive Mastery Gateway**:
+   - Soal esai disajikan satu per satu secara berurutan (5 soal per pertemuan).
+   - Soal berikutnya **HANYA AKAN TERBUKA** apabila soal sebelumnya telah memperoleh nilai kelulusan minimal ($\ge 80$).
+   - **Tiga Pilar Rasional Pedagogis**:
+     1. *Membangun Grit & Daya Juang Mental*: Membiasakan mahasiswa untuk tidak mudah menyerah dan pantang bosan saat merevisi jawaban atas bimbingan korektif AI yang ramah dan suportif.
+     2. *Anti Bulk-Prompt Dumping*: Menutup celah kecurangan penyalinan borongan soal ke AI luar (ChatGPT/Claude/Gemini), karena mahasiswa tidak dapat mengakses soal berikutnya sebelum menyelesaikan soal saat ini.
+     3. *Mastery Learning (Belajar Tuntas)*: Menjamin bahwa kompetensi prasyarat telah benar-benar dikuasai sebelum berpindah ke tingkat kesulitan berikutnya.
+
+### 6.24 Standar Navigasi Beranda Dua Baris 16 Pekan (Two-Row Semester Navigator & Zero Scroll Above-the-Fold)
+1. **Akses Instan Tanpa Gulir (*Above-the-Fold Guarantee*)**:
+   - Area puncak beranda (`src/app/page.tsx`) wajib menyediakan gerbang navigasi langsung menuju seluruh 16 pekan perkuliahan tanpa mengharuskan pengguna menggulir ke bawah (*zero scroll*).
+   - Tata letak menggunakan **Two-Row Semester Bar Matrix**:
+     - **Baris 1**: Pertemuan `01` s.d. `08` (Paruh Pertama Semester - UTS).
+     - **Baris 2**: Pertemuan `09` s.d. `16` (Paruh Kedua Semester - UAS).
+2. **Tipografi & Estetika Humanis Plus Jakarta Sans**:
+   - Menggunakan font modern bulat dinamis **Plus Jakarta Sans** (`font-heading font-bold`) dengan penomoran dua digit (`01` s.d. `16`) agar tampil proporsional, ramah, dan bebas kesan kaku monospaced.
+   - Status visual:
+     - Hijau Zamrud Aktif (`bg-emerald-500 text-white shadow-emerald-500/25`): Pertemuan `01` s.d. `07` (tersedia & siap diakses).
+     - Aksen Border Biru/Spesial: Pekan evaluasi UTS (08) dan UAS (16).
+     - Gembok Redup: Pekan materi lanjutan yang masih dalam tahap persiapan.
+3. **Bilah Pratinjau Interaktif 1 Baris (*Live Single-Line Preview Bar*)**:
+   - Tepat di bawah matriks tombol pekan disematkan bilah pratinjau ringkas setinggi 36px.
+   - Mengarahkan kursor (*hover*) ke sembarang tombol pekan langsung menampilkan judul materi dan capaian pembelajaran secara instan tanpa pergeseran tata letak (*zero layout shift*).
+
+### 6.25 Status Kurikulum & Standar Baku Pertemuan 1 s.d. 7 (Immutable & Verified)
+1. **Status FIX & Final**:
+   - Seluruh konten pembelajaran Pertemuan 1 sampai 7 telah dinyatakan **100% LENGKAP, TERUJI, dan BERSTATUS FIX (SINGLE SOURCE OF TRUTH)**.
+   - Mencakup materi teori lengkap, visualizer 4 representasi, modul laboratorium interaktif dwibahasa (Python & JavaScript), modul Pra-Ujian Obrolan Santai (*Warmup Chat*), serta bank 5 soal esai penalaran berbobot.
+2. **Kepatuhan Penambahan Materi Baru (Pertemuan 8 s.d. 16)**:
+   - Seluruh modul lanjutan (Pekan 8 s.d. 16) WAJIB mengadopsi standar pedagogis yang telah dibakukan pada Pertemuan 1–7 tanpa pengecualian.
+
+### 6.26 Standar Silabus & Capaian Pembelajaran Paruh Kedua (Pertemuan 9 s.d. 16 — 4 SKS / 200 Menit)
+1. **Struktur Pembelajaran 4 SKS (200 Menit per Pertemuan)**:
+   - Alokasi waktu memfasilitasi siklus lengkap: Konsep & Analogi (30-35') $\rightarrow$ Visualizer Lab (40-50') $\rightarrow$ Hands-on Coding Mandiri (35-45') $\rightarrow$ Asesmen Esai AI Bertingkat (35-40').
+2. **Matriks Silabus Baku Pertemuan 9 s.d. 16**:
+   - **Pertemuan 09: Dasar Perulangan (FOR & WHILE Loop)**: Iterasi terhitung (`range`), iterasi berkondisi (`sentinel/flag`), pencegahan *infinite loop*, variabel akumulator (*sum/count*).
+   - **Pertemuan 10: Perulangan Bersarang (Nested Loop)**: Iterasi multi-dimensi, alur outer vs inner loop, pemetaan koordinat spasial ($i, j$), pembangkit pola visual geometris, kompleksitas $O(n^2)$.
+   - **Pertemuan 11: Struktur Data Berurutan (List & Tuple)**:
+     - *Porsi Dominan 75% List*: Manipulasi CRUD (*append, insert, pop, remove*), *slicing*, algoritma agregasi & *Linear Search*.
+     - *Porsi Khusus 25% Tuple*: Integritas data (*immutability vault*), koordinat paten, dan *tuple unpacking*.
+   - **Pertemuan 12: Struktur Data Asosiatif (Dictionary & Set)**:
+     - *Porsi Khusus 25% Set*: Deduplikasi instan (`list(set(data))`), pencarian cepat $O(1)$, operasi diagram Venn.
+     - *Porsi Dominan 75% Dictionary*: Pasangan *Key-Value*, aturan kunci unik, metode `.get()`, traversal `.items()`.
+     - *Klimaks Terapan: List of Dictionaries*: Representasi tabel mini-database (rekaman data dunia nyata/JSON ready), penelusuran display dan filtering dengan `if`.
+   - **Pertemuan 13: Fungsi Dasar & Top-Down Design**:
+     - *Aturan Mutlak*: **Belum ada parameter dan belum ada return value**.
+     - Filosofi modularitas (DRY), dekomposisi masalah *Top-Down*, alur kontrol pemanggilan *Call-and-Return*, simbol baku ANSI/ISO **Predefined Process** (`| [Nama] |`), Pseudocode `procedure`, sintaks Python `def` dan JS `function`.
+   - **Pertemuan 14: Fungsi Lanjutan (Parameter & Return Value)**:
+     - Parameter Formal vs Argumen Aktual, ragam akses (*positional, named/keyword, default*), isolasi ruang lingkup (*scope lokal vs global* di RAM), mekanisme `return` vs *void*, **Matriks Keputusan Desain Fungsi 4 Kuadran**, fungsi pemroses *List of Dictionaries*.
+   - **Pertemuan 15: Penanganan Galat & Teknik Debugging**:
+     - Taksonomi 3 jenis galat: **Syntax Error** (waktu compile/parse), **Runtime Error / Exception** (`ZeroDivisionError`, `IndexError`, `TypeError`, `ValueError`), dan **Logical Error** (bug semantik).
+     - Mekanisme defensif: Blok `try - except - finally` di Python vs `try - catch - finally` di JavaScript.
+     - Toolkit debugging: Membaca *Stack Trace*, *Print/Logging Debugging*, *RAM State Tracing*, dan *Rubber Duck Debugging*.
+   - **Pertemuan 16: Evaluasi Akhir Semester (UAS) & Proyek Terapan**:
+     - Evaluasi komprehensif integrasi seluruh pilar dan perakitan proyek aplikasi terapan mandiri yang modular dan kokoh bebas crash.
+
 ---
 
-*Dokumen ini terakhir diperbarui: 30 September 2026 (Versi 2.4)*  
+*Dokumen ini terakhir diperbarui: 11 Oktober 2026 (Versi 2.8)*  
 *Disusun dan disepakati oleh: Hadiq, ST, M.Kom bersama Antigravity AI*
-
-
-

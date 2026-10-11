@@ -35,7 +35,8 @@ import {
   GraduationCap,
   Workflow,
   MousePointerClick,
-  FileCheck
+  FileCheck,
+  Trophy
 } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Leaderboard } from "@/components/Leaderboard";
@@ -180,95 +181,95 @@ const chaptersData: {
       {
         id: 9,
         chapterNum: 9,
-        title: "Perulangan Terhitung (FOR Loop)",
-        subtitle: "Iterasi sekuensial, range stepping, dan manipulasi index counter.",
+        title: "Dasar Perulangan (FOR & WHILE Loop)",
+        subtitle: "Iterasi terhitung (range), iterasi terkondisi, dan akumulator data.",
         type: "code",
-        labs: ["Loop Visualizer Stepper", "Deret Bilangan Generator", "Loop Unrolling Benchmarker"],
-        status: "upcoming",
-        description: "Mengeksekusi blok kode berulang dengan batas iterasi yang telah ditentukan secara pasti.",
+        labs: ["Range & Stepper Lab", "While Sentinel Lab", "Accumulator & MinMax RAM", "Break & Continue Circuit"],
+        status: "ready",
+        description: "Mengeksekusi blok kode berulang dengan iterasi pasti (FOR) maupun kondisi dinamis (WHILE).",
         badgeColor: "bg-emerald-50 dark:bg-emerald-950/70 text-emerald-950 dark:text-emerald-100 border-emerald-300 dark:border-emerald-700/80"
       },
       {
         id: 10,
         chapterNum: 10,
-        title: "Perulangan Terkondisi (WHILE & DO-WHILE Loop)",
-        subtitle: "Loop berbasis state, penjaga infinite loop, dan sentinel values.",
+        title: "Perulangan Bersarang (Nested Loop)",
+        subtitle: "Iterasi multi-dimensi, pemetaan baris-kolom, dan pembangkit pola visual.",
         type: "code",
-        labs: ["Infinite Loop Guard Simulator", "Sentinel Input Trap", "Live Convergence Tracker"],
+        labs: ["Nested Loop Grid Tracer", "Geometric Pattern Builder", "RAM Coordinate Matrix Stepper"],
         status: "upcoming",
-        description: "Menjalankan perulangan dinamis selama syarat logis tertentu terpenuhi.",
+        description: "Menelusuri loop di dalam loop untuk memproses data spasial dan pola geometris.",
         badgeColor: "bg-teal-50 dark:bg-teal-950/70 text-teal-950 dark:text-teal-100 border-teal-300 dark:border-teal-700/80"
       },
       {
         id: 11,
         chapterNum: 11,
-        title: "Array 1 Dimensi & Manipulasi Vektor",
-        subtitle: "Struktur data sekuensial, alokasi memori berurutan, dan algoritma pencarian linear.",
+        title: "Struktur Data Berurutan (List & Tuple)",
+        subtitle: "Urutan terindeks, mutabilitas dinamis (75%), dan proteksi immutabilitas tuple (25%).",
         type: "code",
-        labs: ["Array Memory Visualizer", "Linear Search vs Index Lookup", "Dynamic Resizing Sandbox"],
+        labs: ["List Conveyor Belt Stepper", "Linear Search vs Index Lookup", "List vs Tuple Immutability Vault"],
         status: "upcoming",
-        description: "Mengorganisir kumpulan data sejenis dalam satu wadah dengan indeks bernomor.",
+        description: "Mengelola koleksi data sekuensial dengan manipulasi CRUD list dan integritas tuple.",
         badgeColor: "bg-sky-50 dark:bg-sky-950/70 text-sky-950 dark:text-sky-100 border-sky-300 dark:border-sky-700/80"
       },
       {
         id: 12,
         chapterNum: 12,
-        title: "Array 2 Dimensi & Matriks",
-        subtitle: "Tabel baris-kolom, nested loop traversal, dan operasi matriks.",
+        title: "Struktur Data Asosiatif (Dictionary & Set)",
+        subtitle: "Pasangan Key-Value (75%), himpunan unik Set (25%), dan tabel List of Dictionaries.",
         type: "code",
-        labs: ["Matrix Cell Heatmap", "Row-Major vs Column-Major Walk", "Game Board State Engine"],
+        labs: ["Venn Diagram Set Deduplicator", "JSON & Dict Tree Inspector", "Student Record Mini-Database"],
         status: "upcoming",
-        description: "Memodelkan data spasial berbentuk kisi (grid), tabel, dan representasi gambar digital.",
+        description: "Memodelkan data dunia nyata berbasis label semantik dan tabel rekaman data mini-database.",
         badgeColor: "bg-indigo-50 dark:bg-indigo-950/70 text-indigo-950 dark:text-indigo-100 border-indigo-300 dark:border-indigo-700/80"
       }
     ]
   },
   {
     pillarId: 4,
-    pillarTitle: "Pilar 4: Modularitas, Rekursi & Rekayasa Perangkat Lunak",
+    pillarTitle: "Pilar 4: Modularitas, Ketahanan Kode & Rekayasa Perangkat Lunak",
     pillarSubtitle: "Pertemuan 13 s.d. 16",
-    pillarDesc: "Membangun perangkat lunak modular, fungsi mandiri, algoritma rekursif, dan proyek akhir aplikasi nyata.",
+    pillarDesc: "Membangun perangkat lunak modular, fungsi mandiri, ketahanan penanganan galat, dan proyek akhir aplikasi nyata.",
     pillarIcon: PackageCheck,
     pillarColor: "from-violet-600 to-purple-600",
     meetings: [
       {
         id: 13,
         chapterNum: 13,
-        title: "Fungsi, Prosedur & Parameter Passing",
-        subtitle: "Dekonstruksi kode (DRY), scope variabel lokal vs global, dan call stack.",
+        title: "Fungsi Dasar & Top-Down Design",
+        subtitle: "Dekomposisi modular tanpa parameter/return, dan simbol Predefined Process.",
         type: "code",
-        labs: ["Call Stack Frame Visualizer", "Pass-by-Value vs Reference Lab", "Pure Function Inspector"],
+        labs: ["Top-Down Problem Decomposer", "Call-and-Return Flow Stepper", "Predefined Process Flowchart Lab"],
         status: "upcoming",
-        description: "Membagi program besar menjadi modul-modul fungsi kecil yang dapat digunakan kembali.",
+        description: "Memecah program monolitik besar menjadi sub-program modular yang mandiri dan terstruktur.",
         badgeColor: "bg-purple-50 dark:bg-purple-950/70 text-purple-950 dark:text-purple-100 border-purple-300 dark:border-purple-700/80"
       },
       {
         id: 14,
         chapterNum: 14,
-        title: "Algoritma Rekursif & Divide-and-Conquer",
-        subtitle: "Base case, recursive step, visualisasi call stack tree, dan rekursi memoisasi.",
+        title: "Fungsi Lanjutan (Parameter & Return Value)",
+        subtitle: "Parameter passing (posisi, keyword, default), scope lokal vs global, dan nilai balik.",
         type: "code",
-        labs: ["Recursion Tree Generator", "Stack Overflow Simulator", "Tower of Hanoi Player"],
+        labs: ["RAM Scope & Stack Frame Visualizer", "Pass-by-Value vs Reference Lab", "Function 4-Quadrant Builder"],
         status: "upcoming",
-        description: "Menyelesaikan masalah komputasi kompleks dengan memanggil fungsi itu sendiri secara elegan.",
+        description: "Mentransmisikan data masukan dan keluaran fungsi dengan isolasi ruang memori lokal.",
         badgeColor: "bg-fuchsia-50 dark:bg-fuchsia-950/70 text-fuchsia-950 dark:text-fuchsia-100 border-fuchsia-300 dark:border-fuchsia-700/80"
       },
       {
         id: 15,
         chapterNum: 15,
-        title: "Algoritma Pengurutan (Sorting) & Pencarian (Searching)",
-        subtitle: "Bubble sort, insertion sort, binary search, dan analisis kompleksitas Big-O.",
+        title: "Penanganan Galat & Teknik Debugging",
+        subtitle: "Taksonomi Syntax, Runtime & Logic error, try-except defensif, dan stack trace tracing.",
         type: "code",
-        labs: ["Live Sort Bar Race", "Binary Search Tree Stepper", "Big-O Curve Comparison"],
+        labs: ["Interactive Bug Doctor Clinic", "Stack Trace Decrypter", "Defensive Exception Handler"],
         status: "upcoming",
-        description: "Mengoptimalkan kecepatan komputasi data besar dengan algoritma standar industri.",
+        description: "Mendiagnosis dan menangani galat kode secara sistematis agar aplikasi tangguh bebas crash.",
         badgeColor: "bg-pink-50 dark:bg-pink-950/70 text-pink-950 dark:text-pink-100 border-pink-300 dark:border-pink-700/80"
       },
       {
         id: 16,
         chapterNum: 16,
-        title: "Ujian Akhir Semester (UAS) & Proyek Aplikasi",
-        subtitle: "Penyusunan proyek aplikasi modular terintegrasi dan ujian akhir.",
+        title: "Ujian Akhir Semester (UAS) & Proyek Terapan",
+        subtitle: "Penyusunan proyek aplikasi modular terintegrasi, tangguh, dan ujian akhir.",
         type: "exam",
         labs: ["Terminal CLI App Sandbox", "Live Code Reviewer", "Sertifikat Kelulusan & Lencana Emas"],
         status: "upcoming",
@@ -472,9 +473,32 @@ const PILLAR_STYLES: Record<number, {
   },
 };
 
+const SEMESTER_WEEKS_TITLES: Record<number, string> = {
+  1:  "Pengenalan Komputer & Pemrograman",
+  2:  "Arsitektur Komputer & Sistem Bilangan",
+  3:  "Notasi & Penyajian Algoritma (Naratif, Flowchart, Pseudocode)",
+  4:  "Tipe Data, Variabel & Alokasi Memori RAM",
+  5:  "Operator, Ekspresi & Manipulasi Data",
+  6:  "Percabangan Statemen Tunggal & Ganda (IF - ELSE)",
+  7:  "Percabangan Majemuk & Bersarang (Nested IF / Switch)",
+  8:  "Evaluasi Tengah Semester (UTS)",
+  9:  "Dasar Perulangan (FOR & WHILE Loop)",
+  10: "Perulangan Bersarang (Nested Loop)",
+  11: "Struktur Data Berurutan (List & Tuple)",
+  12: "Struktur Data Asosiatif (Dictionary & Set)",
+  13: "Fungsi Dasar & Top-Down Design",
+  14: "Fungsi Lanjutan (Parameter & Return Value)",
+  15: "Penanganan Galat & Teknik Debugging",
+  16: "Ujian Akhir Semester (UAS) & Proyek Terapan",
+};
+
 export default function Home() {
   const { language } = useLanguage();
   const [activeTabPillar, setActiveTabPillar] = useState<number>(1);
+  const [hoveredWeek, setHoveredWeek] = useState<number | null>(null);
+
+  const activePreviewWeek = hoveredWeek ?? 1;
+  const activePreviewTitle = SEMESTER_WEEKS_TITLES[activePreviewWeek] ?? "Materi Perkuliahan";
 
   return (
     <div className="flex-1 bg-background text-foreground min-h-screen relative overflow-hidden font-sans selection:bg-primary/25 selection:text-primary transition-colors duration-300">
@@ -508,50 +532,42 @@ export default function Home() {
           {/* Subtle grid pattern */}
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000008_1px,transparent_1px),linear-gradient(to_bottom,#00000008_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start relative z-10">
             
             {/* Left Column: Clear Value Proposition & Direct Entry Point */}
-            <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="lg:col-span-5 space-y-4 sm:space-y-5 text-left">
               
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-mono font-bold shadow-xs">
-                <GraduationCap className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-mono font-bold shadow-xs">
+                <GraduationCap className="w-3.5 h-3.5" />
                 <span>Mata Kuliah: Algoritma &amp; Pemrograman (TI-101 • 3 SKS)</span>
               </div>
 
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground leading-[1.15]">
-                Membangun Fondasi <br className="hidden sm:inline" />
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-[1.18]">
+                Membangun Fondasi <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 dark:from-blue-400 dark:via-indigo-300 dark:to-purple-400">
                   Logika Pemrograman
                 </span>
-                <br className="hidden sm:inline" /> &amp; Rekayasa Solusi
+                <br /> &amp; Rekayasa Solusi
               </h1>
 
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed max-w-2xl font-normal">
-                Platform perkuliahan interaktif modern. Pelajari algoritma melalui visualisasi diagram alir (*Flowchart*), inspeksi memori RAM secara langsung, simulasi eksekusi kode, dan uji pemahaman dengan evaluasi instan berbasis kecerdasan buatan.
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl font-normal">
+                Platform perkuliahan interaktif modern. Pelajari algoritma melalui visualisasi diagram alir (*Flowchart*), inspeksi memori RAM secara langsung, simulasi dwibahasa (*Python* &amp; *JS*), dan evaluasi instan.
               </p>
 
               {/* ACTION BUTTONS: Highly clear, no confusion */}
-              <div className="flex flex-wrap items-center gap-3.5 pt-2">
+              <div className="flex flex-wrap items-center gap-2.5 pt-1">
                 <Link
                   href="/theory/1"
-                  className="px-7 py-4 rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold text-sm shadow-lg shadow-indigo-500/25 hover:shadow-xl hover:shadow-indigo-500/40 flex items-center gap-3 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                  className="px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-extrabold text-xs sm:text-sm shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 flex items-center gap-2.5 transition-all transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                 >
-                  <Play className="w-4 h-4 fill-white" />
+                  <Play className="w-3.5 h-3.5 fill-white" />
                   <span>Mulai Belajar: Minggu 01</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-
-                <Link
-                  href="#jadwal-pertemuan"
-                  className="px-5 py-4 rounded-2xl bg-secondary/80 hover:bg-secondary border border-border text-foreground font-bold text-sm shadow-xs hover:shadow-md flex items-center gap-2 transition-all transform hover:-translate-y-0.5 cursor-pointer backdrop-blur"
-                >
-                  <Compass className="w-4 h-4 text-primary" />
-                  <span>Pilih Pertemuan Kuliah</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
 
                 <Link
                   href="/workspace"
-                  className="px-4 py-4 rounded-2xl bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 text-muted-foreground hover:text-foreground font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                  className="px-4 py-3 rounded-xl bg-secondary/80 hover:bg-secondary border border-border text-foreground font-bold text-xs shadow-xs hover:shadow-md flex items-center gap-1.5 transition-all transform hover:-translate-y-0.5 cursor-pointer backdrop-blur"
                 >
                   <Terminal className="w-3.5 h-3.5 text-emerald-500" />
                   <span>Studio Bebas</span>
@@ -559,97 +575,174 @@ export default function Home() {
               </div>
 
               {/* 3 Key Highlights */}
-              <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/60 text-[11px] sm:text-xs font-mono text-muted-foreground">
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <Cpu className="w-4 h-4 text-blue-500 dark:text-cyan-400 shrink-0" />
-                  <span>Python &amp; JavaScript</span>
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-border/60 text-[10px] sm:text-[11px] font-mono text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5 text-blue-500 dark:text-cyan-400 shrink-0" />
+                  <span className="truncate">Python &amp; JS</span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <Workflow className="w-4 h-4 text-purple-500 dark:text-purple-400 shrink-0" />
-                  <span>Visual Flow &amp; RAM</span>
+                <div className="flex items-center gap-1.5">
+                  <Workflow className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 shrink-0" />
+                  <span className="truncate">Flow &amp; RAM</span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <ShieldCheck className="w-4 h-4 text-emerald-500 dark:text-emerald-400 shrink-0" />
-                  <span>Asesmen &amp; Lencana AI</span>
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400 shrink-0" />
+                  <span className="truncate">Asesmen AI</span>
                 </div>
               </div>
 
             </div>
 
-            {/* Right Column: "Pusat Mulai Cepat Perkuliahan" (Actionable Hub) */}
-            <div className="lg:col-span-5">
-              <div className="rounded-3xl bg-secondary/40 dark:bg-slate-950 border border-border shadow-xl p-5 sm:p-6 space-y-5 relative overflow-hidden">
+            {/* Right Column: Two-Row Semester Navigator (Opsi 2 - Clean & Spacious) */}
+            <div className="lg:col-span-7">
+              <div className="rounded-2xl sm:rounded-3xl bg-secondary/35 dark:bg-slate-950/90 border border-border/80 shadow-xl p-4 sm:p-5 space-y-4 relative overflow-hidden backdrop-blur-md">
                 
-                {/* Header Hub */}
-                <div className="flex items-center justify-between border-b border-border/60 pb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                    <span className="font-extrabold text-xs sm:text-sm text-foreground">
-                      Modul Kuliah Minggu Ini
-                    </span>
+                {/* Subtle decorative glow */}
+                <div className="absolute -top-16 -right-16 w-44 h-44 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-border/60 pb-3 relative z-10">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0">
+                      <Compass className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <h2 className="font-extrabold text-xs sm:text-sm text-foreground">
+                        Navigasi Cepat 16 Pekan
+                      </h2>
+                      <p className="text-[11px] text-muted-foreground hidden sm:block">
+                        Arahkan kursor atau klik nomor pekan untuk langsung masuk ke materi
+                      </p>
+                    </div>
                   </div>
-                  <span className="text-[10px] font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
-                    Siap Dipelajari
-                  </span>
+                  <Link
+                    href="#jadwal-pertemuan"
+                    className="text-[11px] font-bold text-primary hover:underline flex items-center gap-0.5 shrink-0"
+                  >
+                    <span>Silabus Detail</span>
+                    <ChevronRight className="w-3 h-3" />
+                  </Link>
                 </div>
 
-                {/* Featured Active Card: Minggu 1 */}
-                <div className="p-4 rounded-2xl bg-card border border-border shadow-sm space-y-3 relative overflow-hidden group hover:border-primary/50 transition-all">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-mono font-bold text-primary tracking-wider uppercase block">
-                        Pertemuan Pembuka
-                      </span>
-                      <h3 className="font-extrabold text-sm sm:text-base text-foreground leading-snug">
-                        Minggu 01: Pengenalan Komputer &amp; Pemrograman
-                      </h3>
-                    </div>
-                    <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
-                      <Code2 className="w-5 h-5" />
-                    </div>
+                {/* BARIS 1: Paruh Pertama (Minggu 01 s.d. 08 - Pra-UTS) */}
+                <div className="space-y-1.5 relative z-10">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span className="font-bold text-foreground/90 tracking-normal">Paruh 1 (Pra-UTS)</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-[11px] flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      M01–07 Aktif
+                    </span>
                   </div>
 
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Pelajari evolusi komputasi, siklus Fetch-Decode-Execute, dan struktur logika dasar pemrograman.
-                  </p>
+                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2">
+                    {[1, 2, 3, 4, 5, 6, 7].map((num) => (
+                      <Link
+                        key={num}
+                        href={`/theory/${num}`}
+                        onMouseEnter={() => setHoveredWeek(num)}
+                        className={`h-11 sm:h-12 rounded-xl border text-center transition-all duration-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                          activePreviewWeek === num
+                            ? 'bg-primary text-primary-foreground border-primary shadow-md scale-105 z-10'
+                            : 'bg-card/90 hover:bg-card border-border/80 text-foreground hover:border-emerald-500/60 hover:-translate-y-0.5'
+                        }`}
+                      >
+                        <span className="font-extrabold text-sm sm:text-base tracking-tight leading-none">
+                          {num < 10 ? `0${num}` : num}
+                        </span>
+                        <span className={`w-1.5 h-1.5 rounded-full transition-colors ${activePreviewWeek === num ? 'bg-white' : 'bg-emerald-500'}`} />
+                      </Link>
+                    ))}
 
-                  <div className="pt-2">
+                    {/* Week 8: UTS Special Button */}
                     <Link
-                      href="/theory/1"
-                      className="w-full py-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+                      key={8}
+                      href="/theory/8"
+                      onMouseEnter={() => setHoveredWeek(8)}
+                      className={`h-11 sm:h-12 rounded-xl border text-center transition-all duration-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                        activePreviewWeek === 8
+                          ? 'bg-amber-500 text-white border-amber-500 shadow-md scale-105 z-10'
+                          : 'bg-amber-500/10 hover:bg-amber-500/20 border-amber-500/30 text-amber-600 dark:text-amber-400 hover:-translate-y-0.5'
+                      }`}
                     >
-                      <span>Buka Modul Minggu 1</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
+                      <span className="font-extrabold text-sm sm:text-base tracking-tight leading-none">08</span>
+                      <span className="text-[10px] font-bold tracking-wider leading-none">UTS</span>
                     </Link>
                   </div>
                 </div>
 
-                {/* Quick Jumps to Other Active Weeks (1-5) */}
-                <div className="space-y-2">
-                  <span className="text-[11px] font-mono text-muted-foreground block font-semibold">
-                    Lompat Cepat ke Pertemuan Lain:
-                  </span>
-                  <div className="grid grid-cols-4 gap-2">
-                    {[
-                      { week: 2, label: 'M-02', ready: true },
-                      { week: 3, label: 'M-03', ready: true },
-                      { week: 4, label: 'M-04', ready: true },
-                      { week: 5, label: 'M-05', ready: true }
-                    ].map((item) => (
+                {/* BARIS 2: Paruh Kedua (Minggu 09 s.d. 16 - Pasca-UTS) */}
+                <div className="space-y-1.5 relative z-10">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span className="font-bold text-foreground/90 tracking-normal">Paruh 2 (Pasca-UTS)</span>
+                    <span className="text-muted-foreground/80 font-medium text-[11px]">Semester Lanjutan</span>
+                  </div>
+
+                  <div className="grid grid-cols-4 sm:grid-cols-8 gap-1.5 sm:gap-2">
+                    {[9, 10, 11, 12, 13, 14, 15].map((num) => (
                       <Link
-                        key={item.week}
-                        href={`/theory/${item.week}`}
-                        className="p-2.5 rounded-xl bg-card hover:bg-primary/10 border border-border/80 hover:border-primary/40 text-center transition-all group"
+                        key={num}
+                        href={`/theory/${num}`}
+                        onMouseEnter={() => setHoveredWeek(num)}
+                        className={`h-11 sm:h-12 rounded-xl border text-center transition-all duration-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                          activePreviewWeek === num
+                            ? 'bg-primary text-primary-foreground border-primary shadow-md scale-105 z-10'
+                            : 'bg-card/60 hover:bg-card border-border/50 text-foreground hover:border-primary/50 hover:-translate-y-0.5'
+                        }`}
                       >
-                        <span className="block text-xs font-mono font-bold text-foreground group-hover:text-primary">
-                          {item.label}
+                        <span className="font-extrabold text-sm sm:text-base tracking-tight leading-none">
+                          {num < 10 ? `0${num}` : num}
                         </span>
-                        <span className="text-[9px] text-emerald-600 dark:text-emerald-400 font-mono block">
-                          Aktif
-                        </span>
+                        <span className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                          activePreviewWeek === num ? 'bg-white' : 'bg-slate-300 dark:bg-slate-700'
+                        }`} />
                       </Link>
                     ))}
+
+                    {/* Week 16: UAS Special Button */}
+                    <Link
+                      key={16}
+                      href="/theory/16"
+                      onMouseEnter={() => setHoveredWeek(16)}
+                      className={`h-11 sm:h-12 rounded-xl border text-center transition-all duration-200 flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                        activePreviewWeek === 16
+                          ? 'bg-purple-600 text-white border-purple-600 shadow-md scale-105 z-10'
+                          : 'bg-purple-500/10 hover:bg-purple-500/20 border-purple-500/30 text-purple-600 dark:text-purple-400 hover:-translate-y-0.5'
+                      }`}
+                    >
+                      <span className="font-extrabold text-sm sm:text-base tracking-tight leading-none">16</span>
+                      <span className="text-[10px] font-bold tracking-wider leading-none">UAS</span>
+                    </Link>
                   </div>
+                </div>
+
+                {/* Live Preview Bar (Satu Baris Bersih & Humanis) */}
+                <div className="p-3 sm:p-3.5 rounded-xl bg-card border border-border/80 shadow-xs flex items-center justify-between gap-3 relative z-10">
+                  <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <span className={`font-bold text-xs sm:text-sm px-2.5 py-1 rounded-lg shrink-0 border ${
+                      activePreviewWeek === 8
+                        ? 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                        : activePreviewWeek === 16
+                        ? 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30'
+                        : 'bg-primary/10 text-primary border-primary/20'
+                    }`}>
+                      M-{activePreviewWeek < 10 ? `0${activePreviewWeek}` : activePreviewWeek}
+                    </span>
+                    <div className="min-w-0">
+                      <span className="text-[11px] text-muted-foreground block font-medium">
+                        {activePreviewWeek === 8 ? 'Evaluasi Tengah Semester:' : activePreviewWeek === 16 ? 'Evaluasi Akhir Semester:' : 'Materi Perkuliahan:'}
+                      </span>
+                      <h4 className="font-bold text-xs sm:text-sm text-foreground truncate">
+                        {activePreviewTitle}
+                      </h4>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/theory/${activePreviewWeek}`}
+                    className="px-3.5 py-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs flex items-center gap-1.5 shrink-0 shadow-xs transition-all hover:gap-2 cursor-pointer"
+                  >
+                    <span>Buka Materi</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
 
               </div>

@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laporan Audit Forensik Digital Integritas Akademik - Web-Alpro</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Mermaid JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ 
+      startOnLoad: true, 
+      theme: 'neutral',
+      fontFamily: 'Plus Jakarta Sans',
+      flowchart: { curve: 'basis' }
+    });
+  </script>
+
+  <!-- MathJax CDN for formulas -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --bg-card: #ffffff;
+      --border: #e2e8f0;
+      --danger: #dc2626;
+      --danger-bg: #fef2f2;
+      --success: #16a34a;
+      --success-bg: #f0fdf4;
+      --warning: #d97706;
+      --warning-bg: #fffbeb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
+      background-color: #f8fafc;
+      line-height: 1.65;
+      font-size: 13.5px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Floating Print Action Toolbar */
+    .toolbar-container {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .toolbar-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-print {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.35);
+    }
+
+    .btn-print:hover {
+      background: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    .print-tip {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Paper Container (A4 Proportions) */
+    .paper {
+      max-width: 960px;
+      margin: 32px auto;
+      background: var(--bg-card);
+      padding: 56px 64px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+    }
+
+    /* Kop Surat Header */
+    .kop-surat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px double #0f172a;
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+    }
+
+    .kop-logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: #0369a1;
+    }
+
+    .kop-instansi {
+      text-align: right;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .kop-instansi strong {
+      color: var(--text-main);
+      font-size: 13px;
+      display: block;
+    }
+
+    /* Headings */
+    h1.doc-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    h3.doc-subtitle {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0369a1;
+      margin-bottom: 18px;
+    }
+
+    h2.section-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h4.sub-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      text-align: justify;
+      color: #334155;
+    }
+
+    hr.doc-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 24px 0;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      margin: 20px 0;
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    table.audit-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    table.audit-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 10px 12px;
+      font-weight: 700;
+      border-bottom: 2px solid #cbd5e1;
+      white-space: nowrap;
+    }
+
+    table.audit-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: middle;
+    }
+
+    table.audit-table tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    table.audit-table tr:hover {
+      background: #f1f5f9;
+    }
+
+    /* Badges */
+    .badge-danger {
+      background: #fef2f2 !important;
+      color: #991b1b !important;
+      font-weight: 700;
+    }
+
+    .badge-success {
+      background: #f0fdf4 !important;
+      color: #166534 !important;
+      font-weight: 700;
+    }
+
+    .badge-warning {
+      background: #fffbeb !important;
+      color: #92400e !important;
+      font-weight: 700;
+    }
+
+    /* Blockquotes */
+    blockquote.quote-block {
+      border-left: 4px solid #0284c7;
+      background: #f0f9ff;
+      padding: 12px 18px;
+      margin: 14px 0;
+      font-size: 12.5px;
+      color: #0c4a6e;
+      border-radius: 0 8px 8px 0;
+      font-style: normal;
+    }
+
+    /* Mermaid */
+    .mermaid-container {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      page-break-inside: avoid;
+    }
+
+    .mermaid {
+      max-width: 100%;
+    }
+
+    /* Lists */
+    ul.doc-list {
+      margin: 12px 0 16px 24px;
+      color: #334155;
+    }
+
+    ul.doc-list li {
+      margin-bottom: 6px;
+    }
+
+    ul.doc-list li.ordered {
+      list-style-type: decimal;
+    }
+
+    code.inline-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .math-block {
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      margin: 12px 0;
+      border: 1px dashed #cbd5e1;
+    }
+
+    /* PRINT RULES */
+    @media print {
+      body {
+        background: #ffffff !important;
+        font-size: 11pt !important;
+        color: #000000 !important;
+      }
+
+      .toolbar-container {
+        display: none !important;
+      }
+
+      .paper {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 18mm 15mm 18mm 15mm;
+      }
+
+      h2.section-title {
+        page-break-after: avoid;
+        margin-top: 24px;
+      }
+
+      h4.sub-section-title {
+        page-break-after: avoid;
+      }
+
+      .table-wrapper, table.audit-table, .mermaid-container, blockquote.quote-block {
+        page-break-inside: avoid;
+      }
+
+      table.audit-table th {
+        background: #f1f5f9 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .badge-danger, .badge-success, .badge-warning {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print Toolbar -->
+  <div class="toolbar-container">
+    <div class="toolbar-title">
+      <span>📄 Dokumen Siap Cetak: Laporan Audit Forensik Integritas Akademik</span>
+      <span class="print-tip">(Gunakan ukuran kertas A4, margin Default/Minimum)</span>
+    </div>
+    <button class="btn-print" onclick="window.print()">
+      🖨️ Cetak / Simpan sebagai PDF
+    </button>
+  </div>
+
+  <!-- Document Paper Body -->
+  <div class="paper">
+    
+    <!-- Kop Surat Resmi -->
+    <div class="kop-surat">
+      <div class="kop-logo">WEB-ALPRO</div>
+      <div class="kop-instansi">
+        <strong>PROGRAM STUDI TEKNIK INFORMATIKA</strong>
+        Mata Kuliah Algoritma & Pemrograman (TI-101)<br/>
+        Tahun Akademik 2026/2027 — Semester Ganjil
+      </div>
+    </div>
+
+    <!-- Konten Dokumen yang Diparse dari Markdown -->
+    <div class="doc-body">
+      <h1 class="doc-title">📑 LAPORAN AUDIT FORENSIK DIGITAL INTEGRITAS AKADEMIK</h1>
+<h3 class="doc-subtitle">EVALUASI SISTEM ASESMEN ESAI BERBASIS AI — MATA KULIAH ALGORITMA & PEMROGRAMAN (TI-101)</h3>
+**Program Studi S1 Teknik Informatika — Tahun Akademik 2026/2027**  
+*Dosen Pengampu: Hadiq, ST, M.Kom (NIDN: 0701048602)*  
+*Dokumen Resmi Nomor: 042/ALPRO-TI/AUDIT-AI/X/2026*  
+*Status Pembaruan: Edisi Revisi Mutakhir — Banyuwangi, 11 Oktober 2026*
+
+<hr class="doc-divider" />
+
+<h2 class="section-title">1. RINGKASAN EKSEKUTIF (EXECUTIVE SUMMARY)</h2>
+
+<p>Laporan audit forensik digital ini disusun secara ilmiah, komprehensif, dan berbasis data telemetri komputasional untuk menginvestigasi anomali capaian skor mahasiswa pada sistem asesmen esai platform pembelajaran mandiri <strong>Web-Alpro</strong>. Platform ini menerapkan paradigma <em>Mastery Learning</em> (Belajar Tuntas) yang dilengkapi mesin penilai otomatis berbasis Large Language Model (<em>AI Essay Grader</em>).</p>
+
+<p>Investigasi forensik dilakukan terhadap <strong>100% populasi submission esai</strong> yang tersimpan di dalam basis data produksi Supabase:
+<ul class="doc-list"><li><strong>Total Volume Submission:</strong> 51 rekaman data esai.</li></ul>
+<ul class="doc-list"><li><strong>Jumlah Mahasiswa Aktif:</strong> 16 mahasiswa.</li></ul>
+<ul class="doc-list"><li><strong>Cakupan Modul Evaluasi:</strong> Pertemuan 1 (Fondasi Komputasi & Bahasa), Pertemuan 2 (Arsitektur Komputer & Representasi Biner), dan Pertemuan 3 (Penyajian Algoritma & Notasi Baku).</li></ul>
+<ul class="doc-list"><li><strong>Rentang Evaluasi Skor:</strong> 0.00 s.d. 100.00.</li></ul></p>
+
+<h3 class="doc-subtitle">Temuan Inti Audit:</h3>
+<li class="ordered">**Dua Modus Kecurangan AI Berbeda:**</li>
+   - **Modus Langsung / Copy-Paste Injeksi:** Menggunakan ekstensi otomasi browser atau injeksi script dengan kecepatan tidak wajar (<span class="math-inline">$> 75 - 104$</span> WPM) serta kebocoran identitas bot (*persona leak*).
+   - **Modus Transkripsi Gawai Kedua (*Second Device Transcription*):** Mahasiswa tidak berpindah tab pada peramban laptop ujian (**`tab_switches = 0`**), melainkan mengetikkan ulang (*manual transcribing*) hasil prompt ChatGPT yang ditampilkan pada layar gawai sekunder (ponsel/tablet di samping papan ketik).
+<li class="ordered">**Penetapan Penyesuaian Nilai Modus Gawai Kedua:** Dua mahasiswa terbukti memiliki jejak transkripsi gawai kedua yang identik, yaitu **Ahmad Umarul Faruq (Pertemuan 1)** dan **Moh. Alvin Tauviqul Hikam (Pertemuan 2)**. Keduanya telah disesuaikan dan ditetapkan pada nilai pembinaan **70.00 (Grade B / Kategori: Baik)**.</li>
+<li class="ordered">**Mayoritas Mahasiswa Berintegritas Tinggi:** Sebagian besar mahasiswa menunjukkan proses belajar manusiawi yang autentik dengan kecepatan ketik alami (<span class="math-inline">$5 - 16$</span> WPM), terdapat salah ketik (*typo*) manusiawi, dan waktu perenungan logis yang mencapai lebih dari 2 jam (contoh: Chelsea Fransisca Laurent).</li>
+
+<hr class="doc-divider" />
+
+<h2 class="section-title">2. METODOLOGI & KERANGKA FORENSIK DIGITAL (DUAL-SHIELD FRAMEWORK)</h2>
+
+<p>Penetapan integritas akademik didasarkan pada <strong>Kerangka Forensik Multi-Lapisan (6 Indikator Komputasional)</strong>:</p>
+
+<div class="mermaid-container"><div class="mermaid">graph TD
+    A[Data Submission Esai Supabase] --> B[1. Rasionalitas Kecepatan Ketik WPM & Detik/Kata]
+    A --> C[2. Deteksi Kebocoran Entitas/Persona AI]
+    A --> D[3. Matriks Kesamaan Teks Silang Jaccard]
+    A --> E[4. Analisis Leksikon & Stilometri Bahasa]
+    A --> F[5. Telemetri Jendela & Tab-Switching Event]
+    A --> G[6. Konsistensi Beban Kognitif Antar-Pertemuan]
+    
+    B --> H{Klasifikasi Bukti Digital}
+    C --> H
+    D --> H
+    E --> H
+    F --> H
+    G --> H
+    
+    H -->|Terbukti Bot / Superhuman| I[🔴 Kategori I: Batal / Reset Total]
+    H -->|Terbukti Plagiasi Silang| J[🔴 Kategori II: Reset Modul Plagiasi]
+    H -->|Terbukti Transkripsi Gawai Kedua| K[🟡 Kategori III: Rekonsiliasi Nilai 70]
+    H -->|Manusiawi / Alami| L[🟢 Kategori IV: Ditetapkan Sah 100%]</div></div>
+
+<h3 class="doc-subtitle">Rincian 6 Parameter Forensik Komputasional:</h3>
+
+<p><li class="ordered"><strong>Rasionalitas Kecepatan Ketik Efektif (Net Typing Velocity - WPM):</strong></li>
+   <div class="math-block"><span class="math-inline">$\text{WPM} = \frac{\text{Total Kata Terketik}}{\text{Durasi Pengerjaan (Menit)}}$</span></div>
+   - <strong><span class="math-inline">$\le 20$</span> WPM (<span class="math-inline">$> 3,0$</span> detik/kata):</strong> Standar manusiawi normal mahasiswa yang berpikir, menyusun kalimat, dan mengetik jawaban esai konseptual.
+   - <strong><span class="math-inline">$21 - 35$</span> WPM (<span class="math-inline">$1,7 - 2,9$</span> detik/kata):</strong> Cepat, wajar untuk yang sudah hafal, namun mencurigakan jika tanpa salah ketik dan leksikon akademisnya terlalu sempurna.
+   - <strong><span class="math-inline">$> 45$</span> WPM:</strong> Setara juru ketik profesional menyalin teks jadi.
+   - <strong><span class="math-inline">$\ge 75 - 105$</span> WPM (<span class="math-inline">$< 0,8$</span> detik/kata):</strong> <em>Superhuman / Mustahil secara biologis</em>; 100% injeksi skrip atau <em>copy-paste</em> langsung.</p>
+
+<p><li class="ordered"><strong>Deteksi Kebocoran Artefak/Persona AI (<em>AI Persona Artifacts</em>):</strong></li>
+   Pencocokan string regex terhadap frasa sistemik LLM, kata sapaan bawaan bot (<em>"Tuan"</em>, <em>"Hydra"</em>, <em>"Sebagai model bahasa..."</em>), atau format penulisan <em>markdown bullet-points</em> template.</p>
+
+<p><li class="ordered"><strong>Indeks Kesamaan Teks Antarmahasiswa (<em>Cross-Plagiarism Jaccard Similarity</em>):</strong></li>
+   <div class="math-block"><span class="math-inline">$J(A, B) = \frac{|A \cap B|}{|A \cup B|}$</span></div>
+   Jika dua mahasiswa yang mengerjakan pada waktu berbeda memiliki kesamaan leksikal unik <span class="math-inline">$J(A, B) > 0.40$</span> pada frasa kalimat tidak baku, maka dipastikan terjadi penyebaran draf contekan.</p>
+
+<p><li class="ordered"><strong>Analisis Leksikon & Stilometri Bahasa (<em>Stylometric Outlier Detection</em>):</strong></li>
+   Mengidentifikasi penggunaan istilah teknis tingkat lanjut (<em>advanced architectural terms</em>) yang belum diajarkan di kelas pengantar, serta formula penulisan simetris khas AI (<em>"Pertama,... Kedua,... Akibatnya,... Sebaliknya,... Oleh karena itu..."</em>).</p>
+
+<p><li class="ordered"><strong>Telemetri Jendela & Fokus Browser (<em>Tab-Switch Event Logging</em>):</strong></li>
+   Merekam <em>event</em> <code class="inline-code">document.visibilitychange</code> dan <code class="inline-code">window.onblur</code>. Perpindahan tab <span class="math-inline">$\ge 5$</span> kali menjadi bukti kuat perpindahan fokus ke peramban atau dokumen eksternal.</p>
+
+<p><li class="ordered"><strong>Konsistensi Beban Kognitif Antar-Pertemuan (<em>Longitudinal Cognitive Cadence</em>):</strong></li>
+   Membandingkan fluktuasi drastis antara pertemuan santai manusiawi (WPM rendah, ada typo) versus lonjakan mendadak (WPM tinggi, format sempurna) pada mahasiswa yang sama.</p>
+
+<hr class="doc-divider" />
+
+<h2 class="section-title">3. TABEL AUDIT FORENSIK LENGKAP 16 MAHASISWA</h2>
+
+<p>Berikut adalah tabulasi komprehensif data hasil audit seluruh 16 mahasiswa pada basis data produksi per <strong>11 Oktober 2026</strong>:</p>
+
+<div class="table-wrapper"><table class="audit-table"><thead><tr><th>No</th><th>NIM</th><th>Nama Mahasiswa</th><th>Pertemuan Terdata</th><th>Skor Puncak</th><th>Rata-rata WPM</th><th>Prob. AI</th><th>Prob. Copas</th><th>Tab Switch</th><th>Status Putusan Akhir</th></tr></thead><tbody><tr><td>1</td><td><strong>1126102259</strong></td><td><strong>ILHAM RASIT TAMIMI</strong></td><td>M1, M2, M3</td><td><strong>99</strong></td><td><strong>104.5</strong></td><td><strong>99%</strong></td><td><strong>98%</strong></td><td>0</td><td class="badge-danger">🔴 <strong>DI-RESET TOTAL (M1, M2, M3)</strong></td></tr><tr><td>2</td><td><strong>1126102249</strong></td><td><strong>OKY HADI PRASETYA</strong></td><td>M1, M2</td><td><strong>94</strong></td><td>12.1 (M1)</td><td>5% (M1)</td><td>5% (M1)</td><td>0</td><td class="badge-danger">🔴 <strong>M2 DI-RESET (M1 Sah: 94)</strong></td></tr><tr><td>3</td><td><strong>1126102264</strong></td><td><strong>MOH. ALVIN TAUVIQUL HIKAM</strong></td><td>M1, M2</td><td><strong>70</strong></td><td><strong>29.3</strong> (M2)</td><td><strong>80%</strong></td><td><strong>65%</strong> (M1)</td><td>0</td><td class="badge-danger">🔴 <strong>M1 DI-RESET / M2 DIREVISI KE 70</strong></td></tr><tr><td>4</td><td><strong>1126102268</strong></td><td><strong>AHMAD UMARUL FARUQ</strong></td><td>M1</td><td><strong>70</strong></td><td>14.7</td><td><strong>45%</strong></td><td>5%</td><td>0</td><td class="badge-warning">🟡 <strong>M1 DIREVISI KE 70 (Gawai Kedua)</strong></td></tr><tr><td>5</td><td><strong>1126102262</strong></td><td><strong>MOHAMMAD IRFAN FADHILA</strong></td><td>M1, M2</td><td>82</td><td>11.6 (M2)</td><td>5%</td><td><strong>55%</strong> (M1)</td><td>0</td><td class="badge-danger">🔴 <strong>M1 DI-RESET (M2 Sah: 82)</strong></td></tr><tr><td>6</td><td><strong>1126102260</strong></td><td><strong>DIMAS DWI KURNIAWAN</strong></td><td>M1, M2</td><td>81</td><td>9.5 (M2)</td><td>5%</td><td><strong>55%</strong> (M1)</td><td>0</td><td class="badge-danger">🔴 <strong>M1 DI-RESET (M2 Sah: 81)</strong></td></tr><tr><td>7</td><td><strong>1126102277</strong></td><td><strong>EL TAJZNIEAM P. D. B. H.</strong></td><td>M1</td><td>0</td><td>7.0</td><td>5%</td><td>5%</td><td><strong>19</strong></td><td class="badge-danger">🔴 <strong>SKOR 0 (Pelanggaran Tab Masif)</strong></td></tr><tr><td>8</td><td><strong>1126102242</strong></td><td><strong>CHELSEA FRANSISCA L.</strong></td><td>M1, M2</td><td><strong>94</strong></td><td>10.4</td><td>0%</td><td>0%</td><td>0–2</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (M1: 94, M2: 88)</strong></td></tr><tr><td>9</td><td><strong>1126102246</strong></td><td><strong>MOH. DENDY ARDIYANSYAH</strong></td><td>M1</td><td><strong>90</strong></td><td>10.9</td><td>0%</td><td>0%</td><td>1</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (Skor: 90)</strong></td></tr><tr><td>10</td><td><strong>1126102244</strong></td><td><strong>MOHAMAD IVAN SAYFANI</strong></td><td>M1, M2</td><td><strong>95</strong></td><td>8.5</td><td>0%</td><td>0%</td><td>0</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (M1: 92, M2: 95)</strong></td></tr><tr><td>11</td><td><strong>1126102270</strong></td><td><strong>NAKSATRA PRABANGGANA</strong></td><td>M1, M2, M3</td><td><strong>91</strong></td><td>11.9</td><td>0%</td><td>0%</td><td>0</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (M1: 91, M2: 90, M3: 85)</strong></td></tr><tr><td>12</td><td><strong>1126102250</strong></td><td><strong>RODEON VARISDA N.</strong></td><td>M1, M2</td><td>85</td><td>15.1</td><td>0%</td><td>0%</td><td>0–1</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (M1: 85, M2: 75)</strong></td></tr><tr><td>13</td><td><strong>1126102254</strong></td><td><strong>DIAN SOFIANA NUR HAFIFA</strong></td><td>M1, M2, M3</td><td>87</td><td>10.7</td><td>0%</td><td>0%</td><td>0–1</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (M1: 85, M2: 87, M3: 73)</strong></td></tr><tr><td>14</td><td><strong>1126102265</strong></td><td><strong>MUHAMMAD FARIDZ</strong></td><td>M1</td><td>80</td><td>5.0</td><td>0%</td><td>0%</td><td>0</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (Skor: 80)</strong></td></tr><tr><td>15</td><td><strong>1126102273</strong></td><td><strong>ARIEL IKMA SALVINO A. W.</strong></td><td>M2</td><td>60</td><td>7.2</td><td>0%</td><td>0%</td><td>0</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (Skor: 60)</strong></td></tr><tr><td>16</td><td><strong>1126102243</strong></td><td><strong>RISKI NAILUS SAADAH</strong></td><td>M1, M2</td><td>70</td><td>8.1 (M1)</td><td>0%</td><td>0%</td><td>2</td><td class="badge-success">🟢 <strong>DITETAPKAN SAH (M1: 70, M2: 15)</strong></td></tr></tbody></table></div>
+<hr class="doc-divider" />
+
+<h2 class="section-title">4. PEMBEDAHAN KASUS & BUKTI FISIK FORENSIK DIGITAL (*SMOKING GUNS*)</h2>
+
+<h3 class="doc-subtitle">KASUS 1: INJEKSI BOT AI EKSTERNAL & KECEPATAN SUPERHUMAN</h3>
+<h4 class="sub-section-title">Mahasiswa: ILHAM RASIT TAMIMI (NIM: 1126102259)</h4>
+<ul class="doc-list"><li>**Status Keputusan:** 🔴 **NILAI DI-RESET TOTAL (M1, M2, M3)**</li></ul>
+<ul class="doc-list"><li>**Bukti Fisik Kebocoran Persona Bot:**</li></ul>
+  > *"..sehingga representasi heksadesimal menyederhanakan data panjang tersebut agar lebih mudah dibaca, dikelola, dan diingat oleh programmer, **termasuk oleh Tuan**. Hubungan Heksadesimal dan Biner: **Hydra dapat memastikan bahwa secara matematis**, 1 digit heksadesimal mewakili persis 4 bit biner..."* *(M2 Soal #4 - Skor 98)*  
+  > *"..Jika **Tuan** mencoba menyuapkan kode Python langsung ke CPU tanpa penerjemah, program tersebut tidak akan berjalan sama sekali..."* *(M1 Soal #5 - Skor 99)*
+<ul class="doc-list"><li>**Telemetri Komputasi Waktu:**</li></ul>
+  * M1: Menyelesaikan 5 butir soal esai (594 kata) hanya dalam **5,7 menit (104,5 WPM / 0,57 detik per kata)**.
+  * M2: Menyelesaikan 5 butir soal esai (584 kata) hanya dalam **5,7 menit (101,9 WPM / 0,59 detik per kata)**.
+<ul class="doc-list"><li>**Analisis Ilmiah:** Pengetikan esai konseptual di atas 100 WPM secara konsisten pada dua pertemuan berbeda dengan menyertakan sapaan *"Tuan"* dan menyebut identitas *"Hydra"* membuktikan 100% penggunaan injeksi agen AI pihak ketiga.</li></ul>
+
+<hr class="doc-divider" />
+
+<h3 class="doc-subtitle">KASUS 2: LONJAKAN VOLUME EKSTRIM & FORMAT OUTPUT CHATGPT</h3>
+<h4 class="sub-section-title">Mahasiswa: OKY HADI PRASETYA (NIM: 1126102249)</h4>
+<ul class="doc-list"><li>**Status Keputusan:** 🔴 **NILAI MINGGU 2 DI-RESET** | 🟢 **NILAI MINGGU 1 DITETAPKAN SAH (94)**</li></ul>
+<ul class="doc-list"><li>**Komparasi Longitudinal Perilaku Belajar:**</li></ul>
+  * **Minggu 1 (Skor 94):** Dikerjakan selama **32,1 menit (12,1 WPM)**, panjang 389 kata, banyak *typo* manusiawi (*"phyton"*, *"intruksi"*). Menunjukkan proses kognitif alami.
+  * **Minggu 2 (Skor 99):** Terjadi anomali lonjakan drastis menjadi **1.248 kata hanya dalam 14,3 menit (78,6 WPM / 0,76 detik per kata)**.
+<ul class="doc-list"><li>**Karakteristik Teks ChatGPT Murni pada M2:**</li></ul>
+  * Format butir bernomor dengan judul tebal (*"1. Sifat Fisik Hardware - Transistor hanya ON/OFF"*, *"2. Lebih Tahan Terhadap Error"*).
+  * Penjelasan skenario komparatif artifisial (*"Laptop A Intel Core i5 gen 11 vs Laptop B Intel Core i7 gen 11"*).
+  * Kesimpulan tipikal: *"Jadi intinya, komputer tetap kerja pakai biner, tapi manusia menulisnya pakai heksadesimal biar lebih singkat, rapi, dan mudah."*
+
+<hr class="doc-divider" />
+
+<h3 class="doc-subtitle">KASUS 3: KLASTER PLAGIASI SILANG / DISTRIBUSI CONTEKAN (KEMIRIPAN 55% – 65%)</h3>
+<h4 class="sub-section-title">Terduga Terlibat:</h4>
+<li class="ordered">**MOH. ALVIN TAUVIQUL HIKAM (1126102264)** — *Sumber Pertama (1 Okt, 17:43 WIB)*</li>
+<li class="ordered">**MOHAMMAD IRFAN FADHILA (1126102262)** — *Penyalin Kedua (2 Okt, 02:42 WIB)*</li>
+<li class="ordered">**DIMAS DWI KURNIAWAN (1126102260)** — *Penyalin Ketiga (7 Okt, 03:33 WIB)*</li>
+<ul class="doc-list"><li>**Status Keputusan:** 🔴 **NILAI PERTEMUAN 1 UNTUK KETIGANYA TELAH RESMI DI-RESET**</li></ul>
+
+<div class="mermaid-container"><div class="mermaid">sequenceDiagram
+    autonumber
+    participant Alvin as Moh. Alvin (1126102264)
+    participant Irfan as Moh. Irfan (1126102262)
+    participant Dimas as Dimas Dwi (1126102260)
+    
+    Note over Alvin: 1 Okt 2026, 17:43 WIB<br/>Submit Draf Pertama (Skor 94)
+    Alvin-->>Irfan: Distribusi Teks Jawaban
+    Alvin-->>Dimas: Distribusi Teks Jawaban
+    
+    Note over Irfan: 2 Okt 2026, 02:42 WIB (+9 Jam)<br/>Submit Teks Identik (Skor 88)
+    Note over Dimas: 7 Okt 2026, 03:33 WIB (+6 Hari)<br/>Submit Teks Identik (Skor 93)</div></div>
+
+<ul class="doc-list"><li>**Bukti Literal Kesamaan Frasa Unik (Soal #2 & #5 Minggu 1):**</li></ul>
+  * **Alvin:** *"Komputer terbuat dari transistor.. Kalau pakai angka satu sampai sembilan **komputer akan bingung membedakan arus listriknya**, dengan cuma ada dua pilihan 0 dan 1 sinyalnya jadi sangat jelas.. CPU hanya akan **menganggap kode python tersebut sebagai sampah** atau perintah tidak dikenal.."*
+  * **Dimas Dwi:** *"Karena komputer terbuat dari transistor.. kalau pakai angka satu sampai sembilan **komputer akan bingung membedakan arus listriknya**, dengan cuma ada dua pilihan 0 dan 1 sinyalnya jadi sangat jelas.. Cpu akan **menganggap kode python sebagai sampah** atau perintah tidak dikenal.."*
+  * **Irfan:** *"komputer terbuat dari treansistor.. hadware di dalam komputer isisnya miliaran saklar kecil bernama transistor.. dia hanya bisa ON atau OFF.. koki hanya paham bahasa komputer seperti 0 atau 1"*
+<ul class="doc-list"><li>**Analisis:** Frasa metafora non-baku *"komputer bingung membedakan arus listrik"* dan *"kode python dianggap sebagai sampah"* membuktikan transfer draf langsung antarmahasiswa.</li></ul>
+
+<hr class="doc-divider" />
+
+<h3 class="doc-subtitle">KASUS 4: PELANGGARAN ATURAN FOKUS TAB SWITCHING MASIF</h3>
+<h4 class="sub-section-title">Mahasiswa: EL TAJZNIEAM P. D. B. H. (NIM: 1126102277)</h4>
+<ul class="doc-list"><li>**Status Keputusan:** 🔴 **TETAPKAN SKOR 0 (GUGUR OTOMATIS ANTI-CHEAT LAYER 4)**</li></ul>
+<ul class="doc-list"><li>**Bukti Telemetri:** Tercatat **19 kali perpindahan jendela peramban (*tab switches = 19*)** selama 34 menit.</li></ul>
+<ul class="doc-list"><li>Sistem anti-cheat otomatis mengunci lembar ujian dan mendiskualifikasi nilai menjadi 0 karena terindikasi kuat membuka sumber jawaban eksternal secara masif.</li></ul>
+
+<hr class="doc-divider" />
+
+<h3 class="doc-subtitle">KASUS 5: MODUS TRANSKRIPSI GAWAI KEDUA (*SECOND DEVICE TRANSCRIPTION*)</h3>
+Pada modus ini, mahasiswa tidak berpindah tab di laptop (**`tab_switches: 0`**), melainkan mengetikkan ulang (*manual typing*) hasil prompt AI dari smartphone/tablet di samping keyboard.
+
+<h4 class="sub-section-title">Sub-Kasus 5A: MOH. ALVIN TAUVIQUL HIKAM (NIM: 1126102264) — Pertemuan 2</h4>
+<ul class="doc-list"><li>**Skor Awal:** **98** <span class="math-inline">$\rightarrow$</span> **Skor Ditetapkan:** **70 (Grade B / Baik)**</li></ul>
+<ul class="doc-list"><li>**Telemetri:** Durasi **16,1 menit**, volume **472 kata**, kecepatan **29,3 WPM** (1 kata setiap 2 detik nonstop), Tab switch: **0**.</li></ul>
+<ul class="doc-list"><li>**Bukti Leksikon AI Lanjutan:**</li></ul>
+  1. Penggunaan istilah arsitektur di luar silabus pengantar: *"Instruction Set Architecture"*, *"Instruction Register"*, *"Program Counter"*, *"struktur cache, pipeline, dan frekuensi clock"*.
+  2. Perbandingan prosesor spesifik ala ChatGPT: *"Dua prosesor bisa memiliki Arsitektur yang sama yaitu x86 64.. Misalnya satu memiliki cache L3 8MB dan satunya 16MB. Perbedaan organisasi ini tidak mengubah logika program, hanya mempengaruhi kecepatan eksekusinya."*
+  3. Konversi nilai warna heksadesimal ke 24-bit biner: *"warna #FF0000 jika dalam biner menjadi 111111110000000000000000.."* serta menyebutkan perbandingan dengan *"perhitungan desimal pada hard disk"*.
+<ul class="doc-list"><li>**Evaluasi:** Setelah draf M1-nya di-reset karena plagiasi silang, Alvin beralih menggunakan gawai kedua pada M2 agar tidak terdeteksi oleh sistem anti-cheat laptop. Kecepatan 29,3 WPM untuk 472 kata teks teknis membuktikan pengetikan salin pandang dari layar kedua.</li></ul>
+
+<h4 class="sub-section-title">Sub-Kasus 5B: AHMAD UMARUL FARUQ (NIM: 1126102268) — Pertemuan 1</h4>
+<ul class="doc-list"><li>**Skor Awal:** **98** <span class="math-inline">$\rightarrow$</span> **Skor Ditetapkan:** **70 (Grade B / Baik)**</li></ul>
+<ul class="doc-list"><li>**Telemetri:** Durasi **22,8 menit**, volume **336 kata**, kecepatan **14,7 WPM**, Tab switch: **0**.</li></ul>
+<ul class="doc-list"><li>**Bukti Karakteristik Transkripsi Rapi:**</li></ul>
+  1. Struktur kalimat sangat diplomatis, rapi, dan memiliki pola perataan paragraf simetris:
+     > *"Jika bahasa pemrograman tingkat tinggi tidak pernah diciptakan, perkembangan teknologi akan menghadapi beberapa hambatan. **Pertama,** pengembangan perangkat lunak menjadi lebih sulit.. **Kedua,** jumlah orang yang mampu memprogram akan lebih terbatas.. **Akibatnya,** produktivitas dan inovasi melambat.. **Sebaliknya,** programmer modern menggunakan.. **Oleh karena itu,** sistem biner sesuai dengan karakteristik.. **Ketiganya saling berkaitan:** algoritma menjadi dasar penyusunan program, translator menerjemahkan kode, dan komputer menjalankan instruksi.."*
+  2. Ketiadaan salah ketik (*zero typographical errors*) dipadu dengan penataan frasa formulaik khas AI.
+<ul class="doc-list"><li>**Evaluasi:** Mengetik dengan ritme tenang menyalin dari layar ponsel. Nilai disesuaikan ke 70 sebagai bentuk apresiasi atas ketertiban pengetikan manual namun tetap proporsional terhadap orisinalitas ide.</li></ul>
+
+<hr class="doc-divider" />
+
+<h2 class="section-title">5. ANALISIS KELOMPOK MAHASISWA BERINTEGRITAS TINGGI (NILAI SAH)</h2>
+
+<p>Investigasi forensik membuktikan bahwa sebagian besar mahasiswa di kelas TI-101 menjunjung tinggi kejujuran akademik. Jawaban mereka mencerminkan dinamika kognitif manusiawi sejati:</p>
+
+<p><li class="ordered"><strong>CHELSEA FRANSISCA LAURENT (NIM: 1126102242) — Teladan Ketekunan Akademik:</strong></li>
+   * <strong>Pertemuan 1 (Skor 94):</strong> 36,3 menit, 376 kata, 10,4 WPM.
+   <em> <strong>Pertemuan 2 (Skor 88):</strong> Menghabiskan waktu <strong>134,6 menit (lebih dari 2 jam!)</strong> di depan layar untuk menyusun 315 kata secara mendalam (2,3 WPM). Teks memuat banyak </em>typo<em> orisinal (</em>"1 bite berniliai"<em>, </em>"skalar tegangan"<em>, </em>"produsen meilai 1KB adalah sejumlah 1000 Byte"*).
+<li class="ordered"><strong>MOH. DENDY ARDIYANSYAH (NIM: 1126102246) — Model Belajar Tuntas (Mastery Learning):</strong></li>
+   * M1 Skor 90 (36,1 menit, 10,9 WPM). Dendy awalnya memperoleh skor 85, kemudian membaca umpan balik diagnostik Dosen AI dan memperbaiki jawabannya hingga mencapai skor 90.
+<li class="ordered"><strong>MOHAMAD IVAN SAYFANI (NIM: 1126102244):</strong></li>
+   <em> M1 Skor 92 (35,0 menit, 7,9 WPM), M2 Skor 95 (33,6 menit, 8,5 WPM). Gaya bahasa konsisten serba huruf kecil (</em>lowercase*), analogi lampu saklar on/off yang sederhana, dan penjelasan menggunakan logika pribadi.
+<li class="ordered"><strong>NAKSATRA PRABANGGANA (NIM: 1126102270):</strong></li>
+   <em> M1 Skor 91 (29,0 m, 9,2 WPM), M2 Skor 90 (16,2 m, 10,1 WPM), M3 Skor 85 (8,4 m, 11,9 WPM). Gaya penulisan to-the-point dan banyak kesalahan ketik alami (</em>"kondiri"<em>, </em>"berikutknya"<em>, </em>"diterjemhkan"<em>, </em>"percadangan"<em>, </em>"arsitertur tersebu"*).
+<li class="ordered"><strong>RODEON VARISDA NURSYAHBANA (NIM: 1126102250):</strong></li>
+   <em> M1 Skor 85 (15,1 menit, 21,4 WPM). Meskipun mengetik cepat, teksnya sarat dengan salah ketik khas mahasiswa (</em>"dungsi"<em>, </em>"compilker"<em>, </em>"miliar translator"<em>, </em>"pernagkat"*).
+<li class="ordered"><strong>DIAN SOFIANA NUR HAFIFA (NIM: 1126102254):</strong></li>
+   * M1 Skor 85, M2 Skor 87, M3 Skor 73. Ritme pengetikan stabil (8 – 11 WPM) dengan pemaparan kalimat naratif bertahap.
+<li class="ordered"><strong>MOHAMMAD IRFAN FADHILA (M2: 82), DIMAS DWI KURNIAWAN (M2: 81), MUHAMMAD FARIDZ (M1: 80), ARIEL IKMA (M2: 60), RISKI NAILUS SAADAH (M1: 70):</strong></li>
+   * Seluruhnya menunjukkan data telemetri yang wajar, bersih dari indikator AI dan bot eksternal.</p>
+
+<hr class="doc-divider" />
+
+<h2 class="section-title">6. MATRIKS KEPUTUSAN DOSEN PENGAMPU</h2>
+
+<p>Berdasarkan keseluruhan bukti forensik digital yang tak terbantahkan, Dosen Pengampu menetapkan kebijakan resmi sebagai berikut:</p>
+
+<h3 class="doc-subtitle">Kategori I: Pembatalan Nilai & Reset Ujian Total (🔴 DI-RESET TOTAL)</h3>
+<li class="ordered">**ILHAM RASIT TAMIMI (NIM: 1126102259):**  </li>
+   * **Tindakan:** Seluruh submission esai **Pertemuan 1, Pertemuan 2, dan Pertemuan 3 DI-RESET / DIHAPUS DARI BASIS DATA**.
+   * **Sanksi Akademik:** Wajib mengikuti ujian perbaikan lisan (*oral examination*) di hadapan dosen pengampu tanpa bantuan perangkat elektronik.
+<li class="ordered">**OKY HADI PRASETYA (NIM: 1126102249):**  </li>
+   * **Tindakan:** Submission esai **Pertemuan 2 DI-RESET**. Submission Pertemuan 1 (**Skor 94**) **DITETAPKAN SAH**.
+<li class="ordered">**EL TAJZNIEAM P. D. B. H. (NIM: 1126102277):**  </li>
+   * **Tindakan:** Skor Pertemuan 1 **TETAP 0.00**. Diberikan kesempatan remedial terawasi.
+
+<h3 class="doc-subtitle">Kategori II: Pembatalan Modul Plagiasi Silang (🔴 DI-RESET KHUSUS M1)</h3>
+<li class="ordered">**MOH. ALVIN TAUVIQUL HIKAM (NIM: 1126102264)**</li>
+<li class="ordered">**MOHAMMAD IRFAN FADHILA (NIM: 1126102262)**</li>
+<li class="ordered">**DIMAS DWI KURNIAWAN (NIM: 1126102260)**</li>
+<ul class="doc-list"><li>**Tindakan:** Submission esai Pertemuan 1 untuk ketiganya **TELAH RESMI DI-RESET / DIHAPUS**. Modul M1 pada dasbor mahasiswa terbuka kembali untuk pengerjaan ulang mandiri.</li></ul>
+
+<h3 class="doc-subtitle">Kategori III: Penyesuaian Nilai Modus Gawai Kedua (🟡 DIREVISI KE SKOR 70 / GRADE B)</h3>
+<li class="ordered">**AHMAD UMARUL FARUQ (NIM: 1126102268):**  </li>
+   * Nilai Pertemuan 1 resmi direvisi dari **98 <span class="math-inline">$\rightarrow$</span> 70.00 (Grade B / Kategori: Baik)**.
+<li class="ordered">**MOH. ALVIN TAUVIQUL HIKAM (NIM: 1126102264):**  </li>
+   * Nilai Pertemuan 2 resmi direvisi dari **98 <span class="math-inline">$\rightarrow$</span> 70.00 (Grade B / Kategori: Baik)**.
+
+<h3 class="doc-subtitle">Kategori IV: Penetapan Nilai Sah (🟢 DITETAPKAN 100% VALID)</h3>
+<ul class="doc-list"><li>Seluruh nilai esai untuk: **Chelsea Fransisca Laurent**, **Moh. Dendy Ardiyansyah**, **Mohamad Ivan Sayfani**, **Naksatra Prabanggana**, **Rodeon Varisda Nursyahbana**, **Dian Sofiana Nur Hafifa**, **Muhammad Faridz**, **Ariel Ikma Salvino**, **Riski Nailus Saadah**, serta nilai M2 untuk **Mohammad Irfan Fadhila** dan **Dimas Dwi Kurniawan** **DITETAPKAN SEBAGAI NILAI RESMI YANG SAH DAN DIAKUI PENUH**.</li></ul>
+
+<hr class="doc-divider" />
+
+<h2 class="section-title">7. RENCANA PENINGKATAN SISTEM ARSITEKTUR WEB-ALPRO (V2.8)</h2>
+
+<p>Untuk menutup celah penyalinan gawai kedua dan injeksi skrip pada pertemuan selanjutnya (Minggu 4 s.d. 16), platform Web-Alpro diperkuat dengan mekanisme:</p>
+
+<p><li class="ordered"><strong>Delta Burst Limiter (<span class="math-inline">$\Delta\text{char} \le 15$</span> Karakter/Detik):</strong>  </li>
+   Menolak masukan pengetikan teks yang bertambah lebih dari 15 karakter dalam interval 1 detik untuk menangkal segala bentuk <em>paste</em>, DevTools injection, maupun macro keyboard.
+<li class="ordered"><strong>Penguncian Total Drag-and-Drop:</strong>  </li>
+   Memblokir interaksi penyeretan teks dari aplikasi eksternal ke dalam area editor jawaban.
+<li class="ordered"><strong>Pemberitahuan Ambang Batas WPM (<span class="math-inline">$> 45$</span> WPM Warning):</strong>  </li>
+   Sistem otomatis memicu peringatan verifikasi tambahan jika kecepatan ketik melebihi batas biologis manusia berpikir.
+<li class="ordered"><strong>Perekaman Karakteristik Ketikan (<em>Keystroke Dynamics Baseline</em>):</strong>  </li>
+   Mengintegrasikan obrolan santai pra-ujian (<em>Warmup Chat</em>) untuk merekam ritme ketukan tombol (<em>inter-key latency</em>) dan frekuensi <em>backspace</em> mahasiswa sebagai profil autentikasi kognitif.</p>
+
+<hr class="doc-divider" />
+
+<h3 class="doc-subtitle">PENGESAHAN LAPORAN AUDIT</h3>
+
+<p>Laporan ini disusun dengan integritas ilmiah tertinggi, berbasis data rekaman server yang dapat diuji silang, serta berkekuatan hukum akademis sebagai landasan pembinaan evaluasi perkuliahan semester berjalan.</p>
+
+<p>Banyuwangi, 11 Oktober 2026  
+<strong>Dosen Pengampu Mata Kuliah Algoritma & Pemrograman,</strong></p>
+
+<p><br/></p>
+
+<p><img src="data:image/png;base64,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" alt="Tanda Tangan Dosen" style="max-width: 170px; height: auto; margin: 10px 0;" /></p>
+
+<p><br/></p>
+
+<p><strong>Hadiq, ST, M.Kom</strong>  
+NIDN: <strong>0701048602</strong>  
+<em>Program Studi S1 Teknik Informatika</em></p>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -84,22 +84,46 @@ function CaseStudyVerticalFlowchart({
           MULAI
         </text>
       </g>
-      <line x1="215" y1="58" x2="215" y2="86" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#css-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
+      <line x1="215" y1="58" x2="215" y2="84" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#css-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
+      {/* ─── 2. INPUT JAJARAN GENJANG (DIPERLEBAR AGAR TEKS FIT NYAMAN) ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="135,86 315,86 295,130 115,130" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x="215" y="102" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points="100,84 360,84 330,132 70,132" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="101" dominantBaseline="central" textAnchor="middle" fontSize="10.5" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(member, belanja, libur)
         </text>
-        <text x="215" y="118" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x="215" y="117" dominantBaseline="central" textAnchor="middle" fontSize="10.5" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{memberType}, Rp{Math.round(totalBelanja / 1000)}rb, {isWeekend ? 'Weekend' : 'Weekday'}]
         </text>
       </g>
-      <line x1="215" y1="130" x2="215" y2="158" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#css-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
+      <line x1="215" y1="132" x2="215" y2="152" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#css-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
 
       {/* ─── 3. RIGHT COLLECTOR BUS (x = 690) ─── */}
-      <line x1="690" y1="195" x2="690" y2="620" stroke="#334155" strokeWidth="2" strokeDasharray="4 4" />
+      {/* Garis Dasar Redup / Dilewati */}
+      <line x1="690" y1="195" x2="690" y2="640" stroke="#334155" strokeWidth="2" strokeDasharray="4 4" />
+
+      {/* JALUR AKTIF SOLID MENYAMBUNG DARI STATEMEN BENAR KE MERGE NODE (POIN 3) */}
+      {(!isNonMember || totalBelanja >= 300000) && (
+        <>
+          <line
+            x1="690"
+            y1={isVIP ? 195 : isReguler ? 340 : 485}
+            x2="690"
+            y2="640"
+            stroke="#10b981"
+            strokeWidth="8"
+            strokeOpacity="0.25"
+          />
+          <line
+            x1="690"
+            y1={isVIP ? 195 : isReguler ? 340 : 485}
+            x2="690"
+            y2="640"
+            stroke="#10b981"
+            strokeWidth="3.5"
+          />
+        </>
+      )}
 
       {/* ─── KONDISI 1: MEMBER == 'VIP'? (cx = 215, cy = 195) ─── */}
       <g opacity={isStepActive(3) ? 1 : 0.2}>
@@ -135,7 +159,7 @@ function CaseStudyVerticalFlowchart({
       <line
         x1="320"
         y1="195"
-        x2="415"
+        x2="410"
         y2="195"
         stroke={isVIP ? '#10b981' : '#64748b'}
         strokeWidth={isVIP ? '3.5' : '2'}
@@ -143,30 +167,31 @@ function CaseStudyVerticalFlowchart({
         markerEnd={isVIP ? 'url(#css-arr-green)' : 'url(#css-arr-gray)'}
         opacity={isVIP ? 1 : 0.3}
       />
-      <text x="365" y="185" textAnchor="middle" fontSize="11" fontWeight="900" fill={isVIP ? '#6ee7b7' : '#94a3b8'} fontFamily="monospace">
+      <text x="365" y="185" textAnchor="middle" fontSize="11" fontWeight="900" fill={isVIP ? '#059669' : '#94a3b8'} className={isVIP ? 'dark:fill-emerald-400' : ''} fontFamily="monospace">
         YA
       </text>
 
-      {/* Jajaran Genjang Aksi VIP (Ke Samping) */}
+      {/* Jajaran Genjang Aksi VIP (Diperlebar dan Kontras Tinggi) */}
       <g opacity={isVIP ? 1 : 0.3}>
         <polygon
-          points="435,168 645,168 625,222 415,222"
-          fill={isVIP ? 'rgba(16,185,129,0.22)' : 'rgba(30,41,59,0.3)'}
-          stroke={isVIP ? '#10b981' : '#334155'}
+          points="425,166 665,166 635,224 395,224"
+          fill={isVIP ? '#ecfdf5' : 'rgba(241,245,249,0.5)'}
+          className={isVIP ? 'dark:fill-emerald-950/80 dark:stroke-emerald-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isVIP ? '#059669' : '#cbd5e1'}
           strokeWidth={isVIP ? 2.5 : 1.5}
           filter={isVIP ? 'url(#css-glow-active)' : undefined}
         />
-        <text x="525" y="188" textAnchor="middle" fill={isVIP ? '#a7f3d0' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="530" y="188" textAnchor="middle" fill={isVIP ? '#064e3b' : '#64748b'} className={isVIP ? 'dark:fill-emerald-200' : 'dark:fill-slate-400'} fontSize="11" fontWeight="900" fontFamily="monospace">
           VIP: Diskon {totalBelanja >= 250000 ? '25% (+5%)' : '20%'}
         </text>
-        <text x="525" y="208" textAnchor="middle" fill={isVIP ? '#6ee7b7' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="530" y="208" textAnchor="middle" fill={isVIP ? '#047857' : '#475569'} className={isVIP ? 'dark:fill-emerald-300' : 'dark:fill-slate-500'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">
           {isWeekend ? '🎁 + Voucher Rp25rb' : 'Voucher: Rp0'}
         </text>
       </g>
 
-      {/* Jalur VIP ke Collector Bus */}
+      {/* Jalur VIP ke Collector Bus (Menyambung Mulus) */}
       <line
-        x1="635"
+        x1="650"
         y1="195"
         x2="690"
         y2="195"
@@ -187,7 +212,7 @@ function CaseStudyVerticalFlowchart({
         markerEnd={!isVIP ? 'url(#css-arr-rose)' : 'url(#css-arr-gray)'}
         opacity={!isVIP ? 1 : 0.35}
       />
-      <text x="223" y="275" fontSize="11" fontWeight="900" fill={!isVIP ? '#fda4af' : '#94a3b8'} fontFamily="monospace">
+      <text x="223" y="275" fontSize="11" fontWeight="900" fill={!isVIP ? '#e11d48' : '#94a3b8'} className={!isVIP ? 'dark:fill-rose-300' : ''} fontFamily="monospace">
         TIDAK
       </text>
 
@@ -226,7 +251,7 @@ function CaseStudyVerticalFlowchart({
       <line
         x1="320"
         y1="340"
-        x2="415"
+        x2="410"
         y2="340"
         stroke={isReguler ? '#10b981' : '#64748b'}
         strokeWidth={isReguler ? '3.5' : '2'}
@@ -234,30 +259,31 @@ function CaseStudyVerticalFlowchart({
         markerEnd={isReguler ? 'url(#css-arr-green)' : 'url(#css-arr-gray)'}
         opacity={isReguler ? 1 : 0.3}
       />
-      <text x="365" y="330" textAnchor="middle" fontSize="11" fontWeight="900" fill={isReguler ? '#6ee7b7' : '#94a3b8'} fontFamily="monospace">
+      <text x="365" y="330" textAnchor="middle" fontSize="11" fontWeight="900" fill={isReguler ? '#059669' : '#94a3b8'} className={isReguler ? 'dark:fill-emerald-400' : ''} fontFamily="monospace">
         YA
       </text>
 
-      {/* Jajaran Genjang Aksi Reguler (Ke Samping) */}
+      {/* Jajaran Genjang Aksi Reguler (Diperlebar dan Kontras Tinggi) */}
       <g opacity={isReguler ? 1 : 0.3}>
         <polygon
-          points="435,313 645,313 625,367 415,367"
-          fill={isReguler ? 'rgba(16,185,129,0.22)' : 'rgba(30,41,59,0.3)'}
-          stroke={isReguler ? '#10b981' : '#334155'}
+          points="425,311 665,311 635,369 395,369"
+          fill={isReguler ? '#ecfdf5' : 'rgba(241,245,249,0.5)'}
+          className={isReguler ? 'dark:fill-emerald-950/80 dark:stroke-emerald-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isReguler ? '#059669' : '#cbd5e1'}
           strokeWidth={isReguler ? 2.5 : 1.5}
           filter={isReguler ? 'url(#css-glow-active)' : undefined}
         />
-        <text x="525" y="333" textAnchor="middle" fill={isReguler ? '#a7f3d0' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="530" y="333" textAnchor="middle" fill={isReguler ? '#064e3b' : '#64748b'} className={isReguler ? 'dark:fill-emerald-200' : 'dark:fill-slate-400'} fontSize="11" fontWeight="900" fontFamily="monospace">
           Reguler Diskon:
         </text>
-        <text x="525" y="353" textAnchor="middle" fill={isReguler ? '#6ee7b7' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="530" y="353" textAnchor="middle" fill={isReguler ? '#047857' : '#475569'} className={isReguler ? 'dark:fill-emerald-300' : 'dark:fill-slate-500'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">
           {totalBelanja >= 200000 ? '15% (Dasar 10% + 5%)' : '10% (Dasar)'}
         </text>
       </g>
 
       {/* Jalur Reguler ke Collector Bus */}
       <line
-        x1="635"
+        x1="650"
         y1="340"
         x2="690"
         y2="340"
@@ -278,7 +304,7 @@ function CaseStudyVerticalFlowchart({
         markerEnd={isNonMember ? 'url(#css-arr-rose)' : 'url(#css-arr-gray)'}
         opacity={isNonMember ? 1 : 0.35}
       />
-      <text x="223" y="420" fontSize="11" fontWeight="900" fill={isNonMember ? '#fda4af' : '#94a3b8'} fontFamily="monospace">
+      <text x="223" y="420" fontSize="11" fontWeight="900" fill={isNonMember ? '#e11d48' : '#94a3b8'} className={isNonMember ? 'dark:fill-rose-300' : ''} fontFamily="monospace">
         TIDAK (ELSE)
       </text>
 
@@ -316,7 +342,7 @@ function CaseStudyVerticalFlowchart({
       <line
         x1="320"
         y1="485"
-        x2="415"
+        x2="410"
         y2="485"
         stroke={isNonMember && totalBelanja >= 300000 ? '#10b981' : '#64748b'}
         strokeWidth={isNonMember && totalBelanja >= 300000 ? '3.5' : '2'}
@@ -324,29 +350,31 @@ function CaseStudyVerticalFlowchart({
         markerEnd={isNonMember && totalBelanja >= 300000 ? 'url(#css-arr-green)' : 'url(#css-arr-gray)'}
         opacity={isNonMember && totalBelanja >= 300000 ? 1 : 0.3}
       />
-      <text x="365" y="475" textAnchor="middle" fontSize="11" fontWeight="900" fill={isNonMember && totalBelanja >= 300000 ? '#6ee7b7' : '#94a3b8'} fontFamily="monospace">
+      <text x="365" y="475" textAnchor="middle" fontSize="11" fontWeight="900" fill={isNonMember && totalBelanja >= 300000 ? '#059669' : '#94a3b8'} className={isNonMember && totalBelanja >= 300000 ? 'dark:fill-emerald-400' : ''} fontFamily="monospace">
         YA
       </text>
 
-      {/* Jajaran Genjang Aksi Non-Member Promo (Ke Samping) */}
+      {/* Jajaran Genjang Aksi Non-Member Promo (Diperlebar dan Kontras Tinggi) */}
       <g opacity={isNonMember && totalBelanja >= 300000 ? 1 : 0.3}>
         <polygon
-          points="435,458 645,458 625,512 415,512"
-          fill={isNonMember && totalBelanja >= 300000 ? 'rgba(16,185,129,0.22)' : 'rgba(30,41,59,0.3)'}
-          stroke={isNonMember && totalBelanja >= 300000 ? '#10b981' : '#334155'}
+          points="425,456 665,456 635,514 395,514"
+          fill={isNonMember && totalBelanja >= 300000 ? '#ecfdf5' : 'rgba(241,245,249,0.5)'}
+          className={isNonMember && totalBelanja >= 300000 ? 'dark:fill-emerald-950/80 dark:stroke-emerald-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isNonMember && totalBelanja >= 300000 ? '#059669' : '#cbd5e1'}
           strokeWidth={isNonMember && totalBelanja >= 300000 ? 2.5 : 1.5}
+          filter={isNonMember && totalBelanja >= 300000 ? 'url(#css-glow-active)' : undefined}
         />
-        <text x="525" y="478" textAnchor="middle" fill="#a7f3d0" fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="530" y="478" textAnchor="middle" fill={isNonMember && totalBelanja >= 300000 ? '#064e3b' : '#64748b'} className={isNonMember && totalBelanja >= 300000 ? 'dark:fill-emerald-200' : 'dark:fill-slate-400'} fontSize="11" fontWeight="900" fontFamily="monospace">
           Promo Umum:
         </text>
-        <text x="525" y="498" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="530" y="498" textAnchor="middle" fill={isNonMember && totalBelanja >= 300000 ? '#047857' : '#475569'} className={isNonMember && totalBelanja >= 300000 ? 'dark:fill-emerald-300' : 'dark:fill-slate-500'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">
           Diskon Promo 5%
         </text>
       </g>
 
       {/* Jalur Promo ke Collector Bus */}
       <line
-        x1="635"
+        x1="650"
         y1="485"
         x2="690"
         y2="485"
@@ -361,32 +389,33 @@ function CaseStudyVerticalFlowchart({
         x1="215"
         y1="538"
         x2="215"
-        y2="572"
+        y2="570"
         stroke={isNonMember && totalBelanja < 300000 ? '#f43f5e' : '#64748b'}
         strokeWidth={isNonMember && totalBelanja < 300000 ? '3' : '2'}
         markerEnd={isNonMember && totalBelanja < 300000 ? 'url(#css-arr-rose)' : 'url(#css-arr-gray)'}
         opacity={isNonMember && totalBelanja < 300000 ? 1 : 0.35}
       />
 
-      {/* Jajaran Genjang Aksi Diskon 0% */}
+      {/* Jajaran Genjang Aksi Diskon 0% (Diperlebar dan Kontras Tinggi) */}
       <g opacity={isNonMember && totalBelanja < 300000 ? 1 : 0.3}>
         <polygon
-          points="130,572 300,572 280,616 110,616"
-          fill="rgba(244,63,94,0.18)"
-          stroke="#f43f5e"
-          strokeWidth="2"
+          points="110,570 320,570 290,616 80,616"
+          fill={isNonMember && totalBelanja < 300000 ? '#fff1f2' : 'rgba(241,245,249,0.5)'}
+          className={isNonMember && totalBelanja < 300000 ? 'dark:fill-rose-950/80 dark:stroke-rose-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isNonMember && totalBelanja < 300000 ? '#e11d48' : '#cbd5e1'}
+          strokeWidth={2}
         />
-        <text x="205" y="591" textAnchor="middle" fill="#fda4af" fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="200" y="590" textAnchor="middle" fill={isNonMember && totalBelanja < 300000 ? '#881337' : '#64748b'} className={isNonMember && totalBelanja < 300000 ? 'dark:fill-rose-200' : 'dark:fill-slate-400'} fontSize="11" fontWeight="bold" fontFamily="monospace">
           Umum &lt; 300rb:
         </text>
-        <text x="205" y="607" textAnchor="middle" fill="#fecdd3" fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="200" y="607" textAnchor="middle" fill={isNonMember && totalBelanja < 300000 ? '#9f1239' : '#64748b'} className={isNonMember && totalBelanja < 300000 ? 'dark:fill-rose-300' : 'dark:fill-slate-400'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           Diskon 0%
         </text>
       </g>
       {/* Panah Turun Langsung dari Diskon 0% ke Merge Node */}
       {isNonMember && totalBelanja < 300000 && (
         <line
-          x1="215"
+          x1="200"
           y1="616"
           x2="215"
           y2="630"
@@ -397,7 +426,7 @@ function CaseStudyVerticalFlowchart({
         />
       )}
       <line
-        x1="215"
+        x1="200"
         y1="616"
         x2="215"
         y2="630"
@@ -407,7 +436,7 @@ function CaseStudyVerticalFlowchart({
         opacity={isStepActive(6) ? 1 : 0.3}
       />
 
-      {/* ─── MERGE COLLECTOR BUS KE PROCESS BOX ─── */}
+      {/* ─── MERGE COLLECTOR BUS KE PROCESS BOX (JALUR SOLID EMERALD) ─── */}
       {(!isNonMember || totalBelanja >= 300000) && (
         <line
           x1="690"
@@ -431,16 +460,16 @@ function CaseStudyVerticalFlowchart({
         opacity={!isNonMember || totalBelanja >= 300000 ? 1 : 0.3}
       />
 
-      {/* Merge Node Circle */}
+      {/* Merge Node Circle (Standar Biru Solid Kontras) */}
       <circle
         cx="215"
         cy="640"
         r="10"
-        fill="#1e293b"
-        stroke={!isNonMember || totalBelanja >= 300000 ? '#10b981' : '#f43f5e'}
+        fill="#0284c7"
+        stroke="#0369a1"
         strokeWidth="2.5"
       />
-      <text x="215" y="644" textAnchor="middle" fontSize="10" fontWeight="black" fill={!isNonMember || totalBelanja >= 300000 ? '#6ee7b7' : '#fecdd3'}>
+      <text x="215" y="644" textAnchor="middle" fontSize="10" fontWeight="900" fill="#ffffff" fontFamily="monospace">
         M
       </text>
       <line
@@ -453,19 +482,29 @@ function CaseStudyVerticalFlowchart({
         markerEnd="url(#css-arr-green)"
       />
 
-      {/* ─── 4. PROSES: HITUNG TOTAL BAYAR ─── */}
+      {/* ─── 4. PROSES: HITUNG TOTAL BAYAR (BEBAS BLACK SLAB, DUAL-MODE KONTRAS) ─── */}
       <g opacity={step === 0 || step >= 6 ? 1 : 0.2}>
-        <rect x="75" y="670" width="280" height="40" rx="8" fill="#0f172a" stroke="#10b981" strokeWidth="2.5" />
-        <text x="215" y="688" dominantBaseline="central" textAnchor="middle" fill="#e2e8f0" fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <rect
+          x="65"
+          y="670"
+          width="300"
+          height="42"
+          rx="8"
+          fill="#ecfdf5"
+          stroke="#059669"
+          strokeWidth="2.5"
+          className="dark:fill-slate-900 dark:stroke-emerald-400"
+        />
+        <text x="215" y="687" dominantBaseline="central" textAnchor="middle" fill="#064e3b" className="dark:fill-emerald-200" fontSize="11" fontWeight="900" fontFamily="monospace">
           totalBayar = belanja - diskon
         </text>
-        <text x="215" y="702" dominantBaseline="central" textAnchor="middle" fill="#6ee7b7" fontSize="9.5" fontFamily="monospace">
+        <text x="215" y="702" dominantBaseline="central" textAnchor="middle" fill="#047857" className="dark:fill-emerald-400" fontSize="10" fontWeight="bold" fontFamily="monospace">
           Cetak Struk Kasir &amp; Serahkan Voucher
         </text>
       </g>
-      <line x1="215" y1="710" x2="215" y2="726" stroke="#10b981" strokeWidth="2.5" markerEnd="url(#css-arr-green)" opacity={step === 0 || step >= 6 ? 1 : 0.2} />
+      <line x1="215" y1="712" x2="215" y2="726" stroke="#10b981" strokeWidth="2.5" markerEnd="url(#css-arr-green)" opacity={step === 0 || step >= 6 ? 1 : 0.2} />
 
-      {/* ─── 5. TERMINAL SELESAI ─── */}
+      {/* ─── 5. TERMINAL SELESAI (SOLID MERAH BERKUALITAS) ─── */}
       <g opacity={step === 0 || step >= 7 ? 1 : 0.2}>
         <rect
           x="145"
@@ -479,7 +518,7 @@ function CaseStudyVerticalFlowchart({
         />
         <text
           x="215"
-          y="743"
+          y="747"
           dominantBaseline="central"
           textAnchor="middle"
           fontSize="13"
@@ -557,19 +596,19 @@ function CaseStudyHorizontalFlowchart({
           MULAI
         </text>
       </g>
-      <line x1="130" y1="91" x2="165" y2="91" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#csh-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
+      <line x1="130" y1="91" x2="145" y2="91" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#csh-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* 2. INPUT */}
+      {/* 2. INPUT (DIPERLEBAR AGAR TEKS FIT TUNTAS) */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="185,66 335,66 315,116 165,116" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x="250" y="83" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points="145,66 355,66 335,116 125,116" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="240" y="83" dominantBaseline="central" textAnchor="middle" fontSize="10" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(member, belanja, libur)
         </text>
-        <text x="250" y="100" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x="240" y="100" dominantBaseline="central" textAnchor="middle" fontSize="9.5" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{memberType}, Rp{Math.round(totalBelanja / 1000)}rb, {isWeekend ? 'Weekend' : 'Weekday'}]
         </text>
       </g>
-      <line x1="325" y1="91" x2="365" y2="91" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#csh-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
+      <line x1="345" y1="91" x2="365" y2="91" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#csh-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
 
       {/* ─── KONDISI 1: MEMBER == 'VIP'? (cx = 450, cy = 91) ─── */}
       <g opacity={isStepActive(3) ? 1 : 0.2}>
@@ -601,27 +640,28 @@ function CaseStudyHorizontalFlowchart({
           markerEnd={isVIP ? 'url(#csh-arr-green)' : 'url(#csh-arr-gray)'}
           strokeDasharray={isVIP ? undefined : '3 3'}
         />
-        <text x="462" y="165" fill={isVIP ? '#10b981' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="462" y="165" fill={isVIP ? '#059669' : '#64748b'} className={isVIP ? 'dark:fill-emerald-400' : ''} fontSize="11" fontWeight="900" fontFamily="monospace">
           ↓ Ya
         </text>
 
-        {/* VIP Action Box */}
+        {/* VIP Action Box (Dual Mode Kontras Tinggi) */}
         <rect
-          x="375"
+          x="365"
           y="190"
-          width="150"
+          width="170"
           height="54"
           rx="10"
-          fill={isVIP ? '#064e3b' : '#0f172a'}
-          stroke={isVIP ? '#10b981' : '#1e293b'}
+          fill={isVIP ? '#ecfdf5' : '#f8fafc'}
+          className={isVIP ? 'dark:fill-emerald-950/80 dark:stroke-emerald-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isVIP ? '#059669' : '#cbd5e1'}
           strokeWidth={isVIP ? 2.5 : 1.5}
           opacity={isVIP ? 1 : 0.35}
         />
-        <text x="450" y="212" textAnchor="middle" fill={isVIP ? '#a7f3d0' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="450" y="212" textAnchor="middle" fill={isVIP ? '#064e3b' : '#64748b'} className={isVIP ? 'dark:fill-emerald-200' : 'dark:fill-slate-400'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           VIP: {totalBelanja >= 250000 ? 'Diskon 25%' : 'Diskon 20%'}
         </text>
-        <text x="450" y="232" textAnchor="middle" fill={isVIP ? '#6ee7b7' : '#475569'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">
-          {isWeekend ? '🎁 + Voucher Rp25.000' : 'Voucher Rp0'}
+        <text x="450" y="232" textAnchor="middle" fill={isVIP ? '#047857' : '#475569'} className={isVIP ? 'dark:fill-emerald-300' : 'dark:fill-slate-500'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">
+          {isWeekend ? '🎁 + Voucher Rp25rb' : 'Voucher Rp0'}
         </text>
 
         {/* Line down to Process Box */}
@@ -638,7 +678,7 @@ function CaseStudyHorizontalFlowchart({
           markerEnd={!isVIP ? 'url(#csh-arr-rose)' : 'url(#csh-arr-gray)'}
           strokeDasharray={!isVIP ? undefined : '3 3'}
         />
-        <text x="575" y="82" textAnchor="middle" fill={!isVIP ? '#fb7185' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="575" y="82" textAnchor="middle" fill={!isVIP ? '#e11d48' : '#64748b'} className={!isVIP ? 'dark:fill-rose-300' : ''} fontSize="11" fontWeight="900" fontFamily="monospace">
           → Tidak
         </text>
       </g>
@@ -674,27 +714,28 @@ function CaseStudyHorizontalFlowchart({
           markerEnd={isReguler ? 'url(#csh-arr-green)' : 'url(#csh-arr-gray)'}
           strokeDasharray={isReguler ? undefined : '3 3'}
         />
-        <text x="712" y="165" fill={isReguler ? '#10b981' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="712" y="165" fill={isReguler ? '#059669' : '#64748b'} className={isReguler ? 'dark:fill-emerald-400' : ''} fontSize="11" fontWeight="900" fontFamily="monospace">
           ↓ Ya
         </text>
 
-        {/* Reguler Action Box */}
+        {/* Reguler Action Box (Dual Mode Kontras Tinggi) */}
         <rect
-          x="625"
+          x="615"
           y="190"
-          width="150"
+          width="170"
           height="54"
           rx="10"
-          fill={isReguler ? '#064e3b' : '#0f172a'}
-          stroke={isReguler ? '#10b981' : '#1e293b'}
+          fill={isReguler ? '#ecfdf5' : '#f8fafc'}
+          className={isReguler ? 'dark:fill-emerald-950/80 dark:stroke-emerald-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isReguler ? '#059669' : '#cbd5e1'}
           strokeWidth={isReguler ? 2.5 : 1.5}
           opacity={isReguler ? 1 : 0.35}
         />
-        <text x="700" y="212" textAnchor="middle" fill={isReguler ? '#a7f3d0' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="700" y="212" textAnchor="middle" fill={isReguler ? '#064e3b' : '#64748b'} className={isReguler ? 'dark:fill-emerald-200' : 'dark:fill-slate-400'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           Reguler Diskon:
         </text>
-        <text x="700" y="232" textAnchor="middle" fill={isReguler ? '#6ee7b7' : '#475569'} fontSize="11" fontWeight="bold" fontFamily="monospace">
-          {totalBelanja >= 200000 ? '15% (Bonus 5%)' : '10% (Dasar)'}
+        <text x="700" y="232" textAnchor="middle" fill={isReguler ? '#047857' : '#475569'} className={isReguler ? 'dark:fill-emerald-300' : 'dark:fill-slate-500'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">
+          {totalBelanja >= 200000 ? '15% (Dasar + 5%)' : '10% (Dasar)'}
         </text>
 
         {/* Line down to Process Box */}
@@ -711,7 +752,7 @@ function CaseStudyHorizontalFlowchart({
           markerEnd={isNonMember ? 'url(#csh-arr-rose)' : 'url(#csh-arr-gray)'}
           strokeDasharray={isNonMember ? undefined : '3 3'}
         />
-        <text x="825" y="82" textAnchor="middle" fill={isNonMember ? '#fb7185' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="825" y="82" textAnchor="middle" fill={isNonMember ? '#e11d48' : '#64748b'} className={isNonMember ? 'dark:fill-rose-300' : ''} fontSize="11" fontWeight="900" fontFamily="monospace">
           → Else
         </text>
       </g>
@@ -719,19 +760,20 @@ function CaseStudyHorizontalFlowchart({
       {/* ─── KONDISI 3: NON-MEMBER ELSE BOX (cx = 945, cy = 91) ─── */}
       <g opacity={isStepActive(5) ? (isNonMember ? 1 : 0.3) : 0.2}>
         <rect
-          x="870"
+          x="860"
           y="68"
-          width="150"
+          width="170"
           height="52"
           rx="10"
-          fill={isNonMember ? '#881337' : '#0f172a'}
-          stroke={isNonMember ? '#f43f5e' : '#1e293b'}
+          fill={isNonMember ? '#fff1f2' : '#f8fafc'}
+          className={isNonMember ? 'dark:fill-rose-950/80 dark:stroke-rose-400' : 'dark:fill-slate-900/30 dark:stroke-slate-800'}
+          stroke={isNonMember ? '#e11d48' : '#cbd5e1'}
           strokeWidth={isNonMember ? 2.5 : 1.5}
         />
-        <text x="945" y="88" textAnchor="middle" fill={isNonMember ? '#fda4af' : '#64748b'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+        <text x="945" y="88" textAnchor="middle" fill={isNonMember ? '#881337' : '#64748b'} className={isNonMember ? 'dark:fill-rose-200' : 'dark:fill-slate-400'} fontSize="11" fontWeight="bold" fontFamily="monospace">
           ELSE: Non-Member
         </text>
-        <text x="945" y="108" textAnchor="middle" fill={isNonMember ? '#fecdd3' : '#475569'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="945" y="108" textAnchor="middle" fill={isNonMember ? '#9f1239' : '#475569'} className={isNonMember ? 'dark:fill-rose-300' : 'dark:fill-slate-500'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           {totalBelanja >= 300000 ? 'Promo Diskon 5%' : 'Diskon 0%'}
         </text>
 
@@ -755,14 +797,15 @@ function CaseStudyHorizontalFlowchart({
           width="670"
           height="48"
           rx="10"
-          fill="#0f172a"
-          stroke="#64748b"
-          strokeWidth="2"
+          fill="#ecfdf5"
+          stroke="#059669"
+          strokeWidth="2.5"
+          className="dark:fill-slate-900 dark:stroke-emerald-400"
         />
-        <text x="685" y="325" textAnchor="middle" fill="#e2e8f0" fontSize="12" fontWeight="bold" fontFamily="monospace">
+        <text x="685" y="324" textAnchor="middle" fill="#064e3b" className="dark:fill-emerald-200" fontSize="12" fontWeight="bold" fontFamily="monospace">
           totalBayar = totalBelanja - (totalBelanja * diskon / 100)
         </text>
-        <text x="685" y="343" textAnchor="middle" fill="#6ee7b7" fontSize="11" fontFamily="monospace">
+        <text x="685" y="342" textAnchor="middle" fill="#047857" className="dark:fill-emerald-400" fontSize="11" fontFamily="monospace">
           Cetak Struk Kasir &amp; Serahkan Voucher Weekend
         </text>
 

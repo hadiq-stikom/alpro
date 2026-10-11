@@ -96,13 +96,13 @@ function SwitchMatchVerticalFlowchart({
       </g>
       <line x1="215" y1="58" x2="215" y2="88" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#sms-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
+      {/* ─── 2. INPUT JAJARAN GENJANG (DIPERLEBAR) ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="135,88 325,88 295,134 105,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points="100,88 360,88 330,134 70,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(pilihan)
         </text>
-        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [pilihan = {selectedOption}]
         </text>
       </g>
@@ -224,7 +224,7 @@ function SwitchMatchVerticalFlowchart({
             <line
               x1={cx + 105}
               y1={cy}
-              x2={385}
+              x2={375}
               y2={cy}
               stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#334155'}
               strokeWidth={activeOrFall ? 3.5 : 2}
@@ -254,7 +254,7 @@ function SwitchMatchVerticalFlowchart({
 
             {/* Label Kasus di Atas Jajaran Genjang */}
             <text
-              x="497"
+              x="502"
               y={cy - 30}
               textAnchor="middle"
               fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#fde68a' : '#6ee7b7') : '#64748b'}
@@ -265,9 +265,9 @@ function SwitchMatchVerticalFlowchart({
               Kasus {c.num}: {c.title}
             </text>
 
-            {/* JAJARAN GENJANG OUTPUT (MENCABANG DI SISI KANAN) */}
+            {/* JAJARAN GENJANG OUTPUT (MENCABANG DI SISI KANAN - DIPERLEBAR) */}
             <polygon
-              points={`405,${cy - 25} 615,${cy - 25} 590,${cy + 25} 380,${cy + 25}`}
+              points={`390,${cy - 25} 640,${cy - 25} 615,${cy + 25} 365,${cy + 25}`}
               fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#b45309' : '#047857') : 'rgba(148,163,184,0.35)'}
               stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#94a3b8'}
               strokeWidth={activeOrFall ? 3 : 1.5}
@@ -275,12 +275,12 @@ function SwitchMatchVerticalFlowchart({
               filter={activeOrFall ? 'url(#sms-glow-active)' : undefined}
             />
             <text
-              x="497"
+              x="502"
               y={cy}
               dominantBaseline="central"
               textAnchor="middle"
               fill={activeOrFall ? '#ffffff' : '#64748b'}
-              fontSize="12.5"
+              fontSize={c.action.length > 20 ? "10.5" : "11.5"}
               fontWeight="900"
               fontFamily="monospace"
             >
@@ -289,7 +289,7 @@ function SwitchMatchVerticalFlowchart({
 
             {/* Panah Pengumpul dari Output ke Rel Bus */}
             <line
-              x1="590"
+              x1="627"
               y1={cy}
               x2="675"
               y2={cy}
@@ -337,7 +337,7 @@ function SwitchMatchVerticalFlowchart({
       <g opacity={isStepActive(7) ? (isDefault || simulateFallthrough ? 1 : 0.35) : 0.2}>
         {/* Label di atas jajaran genjang */}
         <text
-          x="217"
+          x="215"
           y="553"
           textAnchor="middle"
           fill={isDefault || simulateFallthrough ? '#fca5a5' : '#64748b'}
@@ -350,19 +350,19 @@ function SwitchMatchVerticalFlowchart({
 
         {/* Jajaran Genjang Blok DEFAULT */}
         <polygon
-          points="135,565 325,565 300,615 110,615"
+          points="105,565 355,565 325,615 75,615"
           fill={isDefault || simulateFallthrough ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#94a3b8'}
           strokeWidth={isDefault || simulateFallthrough ? 3 : 1.5}
           strokeDasharray={isDefault || simulateFallthrough ? undefined : '4 3'}
         />
         <text
-          x="217"
+          x="215"
           y="590"
           dominantBaseline="central"
           textAnchor="middle"
           fill={isDefault || simulateFallthrough ? '#ffffff' : '#64748b'}
-          fontSize="12.5"
+          fontSize="11.5"
           fontWeight="900"
           fontFamily="monospace"
         >
@@ -540,14 +540,14 @@ function SwitchMatchHorizontalFlowchart({
       <line x1="325" y1="91" x2="355" y2="91" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#smh-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
 
       {/* 3. HORIZONTAL COLLECTOR BUS (y = 290) */}
-      <line x1="420" y1="290" x2="1165" y2="290" stroke="#334155" strokeWidth="2" strokeDasharray="4 4" />
+      <line x1="420" y1="290" x2="1195" y2="290" stroke="#334155" strokeWidth="2" strokeDasharray="4 4" />
       {isFlowActive && (
         <g>
           {/* Glow Underlayer */}
           <line
-            x1={isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1082}
+            x1={isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1080}
             y1="290"
-            x2="1165"
+            x2="1195"
             y2="290"
             stroke={activeColor}
             strokeWidth="8"
@@ -556,9 +556,9 @@ function SwitchMatchHorizontalFlowchart({
           />
           {/* Main Solid Line */}
           <line
-            x1={isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1082}
+            x1={isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1080}
             y1="290"
-            x2="1165"
+            x2="1195"
             y2="290"
             stroke={activeColor}
             strokeWidth="3.5"
@@ -566,9 +566,9 @@ function SwitchMatchHorizontalFlowchart({
           />
           {/* Panah Horisontal Menuju SELESAI */}
           <line
-            x1={(isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1082) + 10}
+            x1={(isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1080) + 10}
             y1="290"
-            x2={Math.min(1155, (isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1082) + Math.max(35, (1165 - (isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1082)) / 2))}
+            x2={Math.min(1185, (isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1080) + Math.max(35, (1195 - (isOption1 ? 420 : isOption2 ? 590 : isOption3 ? 760 : isOption4 ? 930 : 1080)) / 2))}
             y2="290"
             stroke={activeColor}
             strokeWidth="3.5"
@@ -634,15 +634,15 @@ function SwitchMatchHorizontalFlowchart({
 
             {/* Jajaran Genjang Aksi (ANSI/ISO Output) */}
             <polygon
-              points={`${c.cx - 55},186 ${c.cx + 70},186 ${c.cx + 55},238 ${c.cx - 70},238`}
+              points={`${c.cx - 70},186 ${c.cx + 80},186 ${c.cx + 65},238 ${c.cx - 85},238`}
               fill={activeOrFall ? (simulateFallthrough && !c.isHit ? '#b45309' : '#047857') : 'rgba(148,163,184,0.35)'}
               stroke={activeOrFall ? (simulateFallthrough && !c.isHit ? '#f59e0b' : '#10b981') : '#94a3b8'}
-              strokeWidth={activeOrFall ? 2.5 : 1.5}
+              strokeWidth={2.5}
               strokeDasharray={activeOrFall ? undefined : '4 3'}
               opacity={activeOrFall ? 1 : 0.35}
               filter={activeOrFall ? 'url(#smh-glow-active)' : undefined}
             />
-            <text x={c.cx} y="212" dominantBaseline="central" textAnchor="middle" fill={activeOrFall ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+            <text x={c.cx} y="212" dominantBaseline="central" textAnchor="middle" fill={activeOrFall ? '#ffffff' : '#64748b'} fontSize="10" fontWeight="900" fontFamily="monospace">
               output(&quot;{c.action}&quot;)
             </text>
 
@@ -679,7 +679,7 @@ function SwitchMatchHorizontalFlowchart({
                 <line
                   x1={c.cx + 65}
                   y1="91"
-                  x2={1025}
+                  x2={995}
                   y2="91"
                   stroke={isDefault ? '#f43f5e' : '#334155'}
                   strokeWidth={isDefault ? 3 : 2}
@@ -695,32 +695,32 @@ function SwitchMatchHorizontalFlowchart({
         );
       })}
 
-      {/* 5. DEFAULT CASE (PARALLELOGRAM ANSI/ISO) */}
+      {/* 5. DEFAULT CASE (PARALLELOGRAM ANSI/ISO - DIPERLEBAR) */}
       <g opacity={isStepActive(7) ? (isDefault || simulateFallthrough ? 1 : 0.3) : 0.2}>
-        <text x="1082" y="58" textAnchor="middle" fill={isDefault || simulateFallthrough ? '#fca5a5' : '#64748b'} fontSize="10.5" fontWeight="900" fontFamily="monospace">
+        <text x="1080" y="58" textAnchor="middle" fill={isDefault || simulateFallthrough ? '#fca5a5' : '#64748b'} fontSize="10.5" fontWeight="900" fontFamily="monospace">
           DEFAULT (case _):
         </text>
         <polygon
-          points="1025,68 1160,68 1140,118 1005,118"
+          points="1005,68 1180,68 1155,118 980,118"
           fill={isDefault || simulateFallthrough ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#94a3b8'}
           strokeWidth={2.5}
           strokeDasharray={isDefault || simulateFallthrough ? undefined : '4 3'}
         />
-        <text x="1082" y="93" dominantBaseline="central" textAnchor="middle" fill={isDefault || simulateFallthrough ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="1080" y="93" dominantBaseline="central" textAnchor="middle" fill={isDefault || simulateFallthrough ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Menu Tidak Valid!&quot;)
         </text>
 
-        <line x1="1082" y1="118" x2="1082" y2="290" stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#334155'} strokeWidth={3} markerEnd={isDefault || simulateFallthrough ? 'url(#smh-arr-rose)' : 'url(#smh-arr-gray)'} />
+        <line x1="1080" y1="118" x2="1080" y2="290" stroke={isDefault || simulateFallthrough ? '#f43f5e' : '#334155'} strokeWidth={3} markerEnd={isDefault || simulateFallthrough ? 'url(#smh-arr-rose)' : 'url(#smh-arr-gray)'} />
       </g>
 
       {/* 6. MERGE NODE & SELESAI */}
       <g opacity={isFlowActive ? 1 : 0.2}>
-        <circle cx="1165" cy="290" r="6" fill={isFlowActive ? activeColor : '#64748b'} stroke={isFlowActive ? '#ffffff' : '#334155'} strokeWidth="1.5" />
-        <line x1="1171" y1="290" x2="1208" y2="290" stroke={isFlowActive ? activeColor : '#64748b'} strokeWidth={isFlowActive ? 3.5 : 2} markerEnd={isFlowActive ? activeMarker : 'url(#smh-arr-gray)'} />
+        <circle cx="1195" cy="290" r="6" fill={isFlowActive ? activeColor : '#64748b'} stroke={isFlowActive ? '#ffffff' : '#334155'} strokeWidth="1.5" />
+        <line x1="1201" y1="290" x2="1225" y2="290" stroke={isFlowActive ? activeColor : '#64748b'} strokeWidth={isFlowActive ? 3.5 : 2} markerEnd={isFlowActive ? activeMarker : 'url(#smh-arr-gray)'} />
 
-        <rect x="1208" y="267" width="105" height="46" rx="23" fill={isFlowActive ? '#be123c' : 'rgba(190,18,60,0.2)'} stroke={isFlowActive ? '#9f1239' : '#881337'} strokeWidth={3} />
-        <text x="1260" y="290" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
+        <rect x="1225" y="267" width="105" height="46" rx="23" fill={isFlowActive ? '#be123c' : 'rgba(190,18,60,0.2)'} stroke={isFlowActive ? '#9f1239' : '#881337'} strokeWidth={3} />
+        <text x="1277" y="290" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#ffffff" letterSpacing="1" fontFamily="monospace">
           SELESAI
         </text>
       </g>

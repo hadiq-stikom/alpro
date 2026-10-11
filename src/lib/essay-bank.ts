@@ -553,6 +553,88 @@ export const ESSAY_BANK: EssayQuestion[] = [
          - Bahaya: Perintah dari case lain yang tidak seharusnya dijalankan akan ikut tereksekusi, menyebabkan bug serius (10 poin).
          - Pencegahan: Menyematkan kata kunci "break;" di akhir setiap blok case, atau beralih ke Python match-case yang tidak memiliki fall-through (10 poin).
     `
+  },
+  // ==========================================
+  // MINGGU 9: Dasar Perulangan (FOR & WHILE Loop)
+  // ==========================================
+  {
+    id: 'm9-essay-1',
+    meetingId: 9,
+    text: 'Dalam analisis komputasi, struktur perulangan dibagi menjadi dua kategori besar: Perulangan Terhitung (Definite Iteration) dan Perulangan Terkondisi (Indefinite Iteration).\n\n(A) Jelaskan perbedaan mendasar antara kedua kategori tersebut dari aspek kepastian jumlah iterasi di awal dan kondisi penghentiannya!\n(B) Berikan masing-masing 1 contoh kasus konkret dalam kehidupan sehari-hari atau sistem perangkat lunak di mana FOR loop dan WHILE loop paling ideal digunakan!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Definisi Definite vs Indefinite Iteration (50 poin):
+         - Definite Iteration (FOR): Jumlah putaran sudah pasti diketahui sebelum perulangan dimulai (misal: n kali, deret range, panjang elemen) (25 poin).
+         - Indefinite Iteration (WHILE): Jumlah putaran tidak diketahui di awal karena bergantung pada pemenuhan kondisi atau status dinamis runtime (25 poin).
+      B. Dua Contoh Kasus Konkret (50 poin — 25 poin per kasus):
+         - Contoh FOR: Mencetak kalender 30 hari, memproses 10 soal ujian, mengirim email ke 100 pelanggan terdaftar (25 poin).
+         - Contoh WHILE: Membaca input password sampai benar, kasir menghitung harga barang sampai pelanggan selesai belanja (sentinel), mobil berjalan selama bahan bakar > 0 (25 poin).
+    `
+  },
+  {
+    id: 'm9-essay-2',
+    meetingId: 9,
+    text: 'Perhatikan cuplikan pemanggilan fungsi range pada Python berikut:\n1. range(5)\n2. range(2, 10, 2)\n3. range(10, 0, -2)\n\n(A) Sebutkan daftar angka urutan yang dihasilkan secara eksak untuk masing-masing pemanggilan di atas!\n(B) Mengapa nilai pada parameter batas akhir (stop) bersifat eksklusif (tidak diikutsertakan ke dalam deret)? Jelaskan alasan matematis atau kemudahan bagi programmer dalam kaitannya dengan panjang data (panjang n)!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Deret Angka Eksak (45 poin — 15 poin per pemanggilan):
+         - range(5) menghasilkan: 0, 1, 2, 3, 4 (15 poin).
+         - range(2, 10, 2) menghasilkan: 2, 4, 6, 8 (15 poin).
+         - range(10, 0, -2) menghasilkan: 10, 8, 6, 4, 2 (15 poin).
+      B. Alasan Sifat Eksklusif Batas Stop (55 poin):
+         - Sifat setengah terbuka [start, stop) secara matematis menjamin bahwa selisih (stop - start) tepat sama dengan jumlah iterasi yang dieksekusi (30 poin).
+         - Sangat selaras dengan indeks array/list yang dimulai dari 0 sampai n-1, sehingga pemanggilan range(len(data)) mencakup seluruh elemen tanpa risiko off-by-one error (25 poin).
+    `
+  },
+  {
+    id: 'm9-essay-3',
+    meetingId: 9,
+    text: 'Sebuah program kasir menggunakan WHILE loop untuk menghitung total belanjaan pelanggan dengan aturan bahwa program akan terus meminta input harga barang sampai kasir memasukkan angka 0 (sentinel value). Namun, seorang mahasiswa membuat kesalahan pada kodenya sehingga program mengalami Infinite Loop (layar terminal hang dan tidak berhenti berputar).\n\n(A) Jelaskan apa yang dimaksud dengan Sentinel Value dan mengapa ia sangat krusial dalam perulangan tak tentu!\n(B) Sebutkan 3 elemen wajib perulangan WHILE, dan tunjukkan kesalahan kode spesifik apa yang paling sering memicu terjadinya Infinite Loop!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Konsep & Urgensi Sentinel Value (45 poin):
+         - Definisi: Nilai data khusus yang telah disepakati untuk memberi tahu program bahwa aliran input telah selesai dan loop harus berhenti (contoh: angka 0 atau string "selesai") (25 poin).
+         - Urgensi: Memberikan fleksibilitas penuh bagi pengguna untuk memasukkan data dalam jumlah berapapun tanpa harus dibatasi oleh batasan angka yang kaku (20 poin).
+      B. 3 Elemen Wajib & Kesalahan Pemicu Infinite Loop (55 poin):
+         - Tiga elemen wajib: (1) Inisialisasi awal variabel kondisi, (2) Pengujian ekspresi terminasi di kepala loop, dan (3) Pembaruan (update/increment) variabel di dalam badan loop (30 poin).
+         - Kesalahan spesifik pemicu infinite loop: Lupa menuliskan instruksi pembaruan (misal lupa baris counter += 1 atau lupa meminta input ulang di badan loop), sehingga kondisi pengujian selalu bernilai TRUE selamanya dan loop tidak pernah berhenti (25 poin).
+    `
+  },
+  {
+    id: 'm9-essay-4',
+    meetingId: 9,
+    text: 'Perhatikan potongan kode Python yang bertujuan menghitung rata-rata nilai berikut:\n\n# KODE A (Mahasiswa 1)\nnilai_list = [70, 80, 90]\ntotal = 0\nfor n in nilai_list:\n    total += n\nrata2 = total / len(nilai_list)\n\n# KODE B (Mahasiswa 2)\nnilai_list = [70, 80, 90]\nfor n in nilai_list:\n    total = 0\n    total += n\nrata2 = total / len(nilai_list)\n\n(A) Jelaskan perbedaan hasil eksekusi antara Kode A dan Kode B! Berapakah nilai akhir rata2 pada masing-masing kode?\n(B) Berdasarkan Pola Akumulator (Accumulator Pattern), mengapa inisialisasi variabel akumulator total = 0 WAJIB diletakkan di LUAR perulangan?',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Perbedaan Hasil & Nilai Akhir Rata-rata (50 poin):
+         - Kode A: Menghasilkan total = 240 dan rata2 = 80.0 (perhitungan benar) (25 poin).
+         - Kode B: Di setiap putaran variabel total di-reset kembali menjadi 0, sehingga di akhir total hanya bernilai 90 (elemen terakhir). Nilai rata2 menjadi 90 / 3 = 30.0 (hasil salah total) (25 poin).
+      B. Prinsip Pola Akumulator (50 poin):
+         - Variabel akumulator berfungsi sebagai wadah penampung kumulatif yang nilainya terus bertambah dari putaran ke putaran berikutnya (25 poin).
+         - Jika diletakkan di dalam badan perulangan, nilai yang sudah terkumpul pada putaran sebelumnya akan terhapus/ditimpa ulang menjadi 0, mematahkan esensi akumulasi data (25 poin).
+    `
+  },
+  {
+    id: 'm9-essay-5',
+    meetingId: 9,
+    text: 'Dalam pengendalian aliran perulangan, bahasa pemrograman menyediakan kata kunci break dan continue.\n\n(A) Bandingkan perbedaan mendasar perilaku kontrol eksekusi antara pernyataan break dan continue ketika suatu kondisi terpenuhi di dalam badan perulangan!\n(B) Pada bahasa Python, terdapat fitur unik klausa else: yang disematkan langsung setelah blok perulangan for atau while. Jelaskan kapan blok else: tersebut AKAN dieksekusi dan kapan blok else: tersebut TIDAK AKAN dieksekusi!\n(C) Berikan contoh kasus nyata algoritma pencarian linear (Linear Search) di mana kombinasi break dan loop else: menjadi solusi yang sangat elegan!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Perbedaan Break vs Continue (35 poin):
+         - break: Menghentikan perulangan secara paksa dan langsung melompat keluar ke baris perintah setelah loop; seluruh sisa putaran dibatalkan (20 poin).
+         - continue: Mengabaikan sisa perintah hanya pada putaran yang sedang aktif, lalu langsung melompat ke putaran berikutnya tanpa menghentikan perulangan (15 poin).
+      B. Klausul Loop Else di Python (35 poin):
+         - Blok else: AKAN dieksekusi jika perulangan selesai secara alami/tuntas sampai akhir tanpa terkena interupsi (20 poin).
+         - Blok else: TIDAK AKAN dieksekusi jika perulangan dihentikan secara paksa oleh pernyataan break di tengah jalan (15 poin).
+      C. Contoh Kasus Linear Search (30 poin):
+         - Di dalam loop: jika elemen target ditemukan, cetak "Ditemukan" lalu panggil break untuk menghemat proses (15 poin).
+         - Di blok else: cetak "Tidak Ditemukan", karena jika loop selesai tanpa pernah terkena break, berarti target memang tidak ada di dalam deret (15 poin).
+    `
   }
 ];
 

@@ -54,14 +54,14 @@ const ALL_MEETINGS: MeetingInfo[] = [
   { id: 6, title: "Struktur Percabangan Statemen Tunggal & Ganda", subtitle: "Kondisi IF & IF-ELSE, evaluasi True/False beranimasi", status: 'ready' },
   { id: 7, title: "Percabangan Majemuk & Bersarang", subtitle: "Cascading IF-ELSE IF, Nested IF & Multi-branch selector", status: 'ready' },
   { id: 8, title: "Evaluasi Tengah Semester (UTS)", subtitle: "Ujian komprehensif pilar logika dan kontrol alur", status: 'upcoming' },
-  { id: 9, title: "Struktur Perulangan (Looping FOR & WHILE)", subtitle: "Iterasi komputasi dan akumulator data", status: 'upcoming' },
-  { id: 10, title: "Perulangan Kompleks & Nested Loop", subtitle: "Matriks, pola nested loop dan optimasi iterasi", status: 'upcoming' },
-  { id: 11, title: "Fungsi, Prosedur & Modularitas Program", subtitle: "Dekomposisi masalah dan fungsi berparameter", status: 'upcoming' },
-  { id: 12, title: "Parameter Passing & Variable Scope", subtitle: "Pass-by-value vs pass-by-reference & call stack", status: 'upcoming' },
-  { id: 13, title: "Struktur Data Array / List 1 Dimensi", subtitle: "Indeks memori kontinu dan manipulasi larik", status: 'upcoming' },
-  { id: 14, title: "Array Multidimensi & Matriks", subtitle: "Operasi baris-kolom dan pemrosesan tabel data", status: 'upcoming' },
-  { id: 15, title: "Algoritma Pencarian & Pengurutan Dasar", subtitle: "Linear vs Binary Search & Bubble/Selection Sort", status: 'upcoming' },
-  { id: 16, title: "Evaluasi Akhir Semester (UAS)", subtitle: "Sintesis algoritma dan proyek akhir komputasional", status: 'upcoming' },
+  { id: 9, title: "Dasar Perulangan (FOR & WHILE Loop)", subtitle: "Iterasi terhitung (range), iterasi terkondisi, dan akumulator data", status: 'ready' },
+  { id: 10, title: "Perulangan Bersarang (Nested Loop)", subtitle: "Iterasi multi-dimensi, pemetaan baris-kolom, dan pembangkit pola visual", status: 'upcoming' },
+  { id: 11, title: "Struktur Data Berurutan (List & Tuple)", subtitle: "Urutan terindeks, mutabilitas dinamis (75%), dan proteksi immutabilitas tuple (25%)", status: 'upcoming' },
+  { id: 12, title: "Struktur Data Asosiatif (Dictionary & Set)", subtitle: "Pasangan Key-Value (75%), himpunan unik Set (25%), dan tabel List of Dictionaries", status: 'upcoming' },
+  { id: 13, title: "Fungsi Dasar & Top-Down Design", subtitle: "Dekomposisi modular tanpa parameter/return, dan simbol Predefined Process", status: 'upcoming' },
+  { id: 14, title: "Fungsi Lanjutan (Parameter & Return Value)", subtitle: "Parameter passing (posisi, keyword, default), scope lokal vs global, dan nilai balik", status: 'upcoming' },
+  { id: 15, title: "Penanganan Galat & Teknik Debugging", subtitle: "Taksonomi Syntax, Runtime & Logic error, try-except defensif, dan tracing bug", status: 'upcoming' },
+  { id: 16, title: "Ujian Akhir Semester (UAS) & Proyek Terapan", subtitle: "Sintesis algoritma terintegrasi, tangguh, dan portofolio proyek mandiri", status: 'upcoming' },
 ];
 
 export default function StudentDashboardPage() {

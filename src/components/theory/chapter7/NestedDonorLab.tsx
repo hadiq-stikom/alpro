@@ -86,13 +86,13 @@ function NestedVerticalFlowchart({
       </g>
       <line x1="215" y1="58" x2="215" y2="86" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#nss-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* ─── 2. INPUT JAJARAN GENJANG ─── */}
+      {/* ─── 2. INPUT JAJARAN GENJANG (DIPERLEBAR) ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="125,86 335,86 305,134 95,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x="215" y="104" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points="100,86 360,86 330,134 70,134" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="215" y="103" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(usia, berat, Hb)
         </text>
-        <text x="215" y="120" dominantBaseline="central" textAnchor="middle" fontSize="13" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x="215" y="119" dominantBaseline="central" textAnchor="middle" fontSize="11.5" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{usia}th, {berat}kg, {hb.toFixed(1)}]
         </text>
       </g>
@@ -181,18 +181,18 @@ function NestedVerticalFlowchart({
         <rect x="330" y="186" width="46" height="17" rx="4" fill={!g1 ? '#881337' : '#1e293b'} />
         <text x="353" y="198" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
-        {/* Jajaran Genjang Penolakan Gerbang 1 */}
+        {/* Jajaran Genjang Penolakan Gerbang 1 (Diperlebar) */}
         <polygon
-          points="405,180 615,180 590,230 380,230"
+          points="390,180 640,180 610,230 360,230"
           fill={!g1 ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={!g1 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={!g1 ? 3 : 1.5}
           strokeDasharray={!g1 ? undefined : '4 3'}
         />
-        <text x="497" y="205" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="13" fontWeight="900" fontFamily="monospace">
+        <text x="500" y="205" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Usia &lt; 17th&quot;)
         </text>
-        <line x1="590" y1="205" x2="675" y2="205" stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth={!g1 ? 3.5 : 1.5} />
+        <line x1="625" y1="205" x2="675" y2="205" stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth={!g1 ? 3.5 : 1.5} />
 
         {/* Cabang YA (Turun ke Gerbang 2) */}
         <line
@@ -241,18 +241,18 @@ function NestedVerticalFlowchart({
         <rect x="330" y="291" width="46" height="17" rx="4" fill={g1 && !g2 ? '#881337' : '#1e293b'} />
         <text x="353" y="303" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
-        {/* Jajaran Genjang Penolakan Gerbang 2 */}
+        {/* Jajaran Genjang Penolakan Gerbang 2 (Diperlebar) */}
         <polygon
-          points="405,285 615,285 590,335 380,335"
+          points="390,285 640,285 610,335 360,335"
           fill={g1 && !g2 ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={g1 && !g2 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={g1 && !g2 ? 3 : 1.5}
           strokeDasharray={g1 && !g2 ? undefined : '4 3'}
         />
-        <text x="497" y="310" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="13" fontWeight="900" fontFamily="monospace">
+        <text x="500" y="310" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Berat &lt; 45kg&quot;)
         </text>
-        <line x1="590" y1="310" x2="675" y2="310" stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth={g1 && !g2 ? 3.5 : 1.5} />
+        <line x1="625" y1="310" x2="675" y2="310" stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth={g1 && !g2 ? 3.5 : 1.5} />
 
         {/* Cabang YA (Turun ke Gerbang 3) */}
         <line
@@ -301,18 +301,18 @@ function NestedVerticalFlowchart({
         <rect x="330" y="396" width="46" height="17" rx="4" fill={g2 && !g3 ? '#881337' : '#1e293b'} />
         <text x="353" y="408" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="10.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
-        {/* Jajaran Genjang Penolakan Gerbang 3 */}
+        {/* Jajaran Genjang Penolakan Gerbang 3 (Diperlebar) */}
         <polygon
-          points="405,390 615,390 590,440 380,440"
+          points="390,390 640,390 610,440 360,440"
           fill={g2 && !g3 ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={g2 && !g3 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={g2 && !g3 ? 3 : 1.5}
           strokeDasharray={g2 && !g3 ? undefined : '4 3'}
         />
-        <text x="497" y="415" dominantBaseline="central" textAnchor="middle" fill={g1 && g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="13" fontWeight="900" fontFamily="monospace">
+        <text x="500" y="415" dominantBaseline="central" textAnchor="middle" fill={g1 && g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Hb &lt; 12.5&quot;)
         </text>
-        <line x1="590" y1="415" x2="675" y2="415" stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={g2 && !g3 ? 3.5 : 1.5} />
+        <line x1="625" y1="415" x2="675" y2="415" stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={g2 && !g3 ? 3.5 : 1.5} />
 
         {/* Cabang YA (Turun ke Sukses) */}
         <line
@@ -331,14 +331,14 @@ function NestedVerticalFlowchart({
       {/* ─── 4. JAJARAN GENJANG SUKSES (LOLOS SEMUA GERBANG) ─── */}
       <g opacity={isStepActive(6) ? (g3 ? 1 : 0.2) : 0.2}>
         <polygon
-          points="105,490 325,490 300,542 80,542"
+          points="80,490 340,490 310,542 50,542"
           fill={g3 ? '#047857' : 'rgba(148,163,184,0.35)'}
           stroke={g3 ? '#10b981' : '#94a3b8'}
           strokeWidth={g3 ? 3 : 1.5}
           strokeDasharray={g3 ? undefined : '4 3'}
           filter={g3 ? 'url(#nss-glow-active)' : undefined}
         />
-        <text x="200" y="516" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#64748b'} fontSize="13.5" fontWeight="900" fontFamily="monospace">
+        <text x="195" y="516" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
           output(&quot;LOLOS: Donor Darah!&quot;)
         </text>
         <line x1="215" y1="542" x2="215" y2="575" stroke={g3 ? '#10b981' : '#334155'} strokeWidth={g3 ? 3.5 : 1.5} />
@@ -463,17 +463,17 @@ function NestedHorizontalFlowchart({
       </g>
       <line x1="91" y1="60" x2="117" y2="60" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#nsth-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* 2. INPUT */}
+      {/* 2. INPUT (DIPERLEBAR) */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points="127,34 245,34 227,86 109,86" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x="178" y="51" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points="115,34 255,34 235,86 95,86" fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x="175" y="51" dominantBaseline="central" textAnchor="middle" fontSize="10" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           input(usia, berat, Hb)
         </text>
-        <text x="178" y="68" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x="175" y="68" dominantBaseline="central" textAnchor="middle" fontSize="10.5" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{usia}th, {berat}kg, {hb.toFixed(1)}]
         </text>
       </g>
-      <line x1="237" y1="60" x2="270" y2="60" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#nsth-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
+      <line x1="245" y1="60" x2="270" y2="60" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#nsth-arr-gray)" opacity={isStepActive(2) ? 1 : 0.2} />
 
       {/* 3. HORIZONTAL REJECTION BUS (y = 305) */}
       <line x1="328" y1={busY} x2="1060" y2={busY} stroke="#334155" strokeWidth="2.5" strokeDasharray="4 4" />
@@ -546,16 +546,16 @@ function NestedHorizontalFlowchart({
         <text x="368" y="126.5" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         <polygon
-          points="262,186 418,186 394,244 238,244"
+          points="236,186 440,186 416,244 212,244"
           fill={!g1 ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={!g1 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={!g1 ? 3 : 1.5}
           strokeDasharray={!g1 ? undefined : '4 3'}
         />
-        <text x="328" y="215" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="326" y="215" dominantBaseline="central" textAnchor="middle" fill={!g1 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Usia &lt; 17th&quot;)
         </text>
-        <line x1="328" y1="244" x2="328" y2={busY} stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth={!g1 ? 3.5 : 1.5} markerEnd={!g1 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
+        <line x1="326" y1="244" x2="326" y2={busY} stroke={!g1 ? '#f43f5e' : '#334155'} strokeWidth={!g1 ? 3.5 : 1.5} markerEnd={!g1 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
 
         {/* Cabang LOLOS (Lanjut ke Kanan - 70px) */}
         <line
@@ -606,16 +606,16 @@ function NestedHorizontalFlowchart({
         <text x="578" y="126.5" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         <polygon
-          points="472,186 628,186 604,244 448,244"
+          points="446,186 650,186 626,244 422,244"
           fill={g1 && !g2 ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={g1 && !g2 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={3}
           strokeDasharray={g1 && !g2 ? undefined : '4 3'}
         />
-        <text x="538" y="215" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="536" y="215" dominantBaseline="central" textAnchor="middle" fill={g1 && !g2 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Berat &lt; 45kg&quot;)
         </text>
-        <line x1="538" y1="244" x2="538" y2={busY} stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth={g1 && !g2 ? 3.5 : 1.5} markerEnd={g1 && !g2 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
+        <line x1="536" y1="244" x2="536" y2={busY} stroke={g1 && !g2 ? '#f43f5e' : '#334155'} strokeWidth={g1 && !g2 ? 3.5 : 1.5} markerEnd={g1 && !g2 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
 
         {/* Cabang LOLOS (Lanjut ke Kanan - 70px) */}
         <line
@@ -666,16 +666,16 @@ function NestedHorizontalFlowchart({
         <text x="788" y="126.5" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="bold" fontFamily="monospace">Tidak</text>
 
         <polygon
-          points="682,186 838,186 814,244 658,244"
+          points="656,186 860,186 836,244 632,244"
           fill={g2 && !g3 ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={g2 && !g3 ? '#f43f5e' : '#94a3b8'}
           strokeWidth={3}
           strokeDasharray={g2 && !g3 ? undefined : '4 3'}
         />
-        <text x="748" y="215" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="11" fontWeight="900" fontFamily="monospace">
+        <text x="746" y="215" dominantBaseline="central" textAnchor="middle" fill={g2 && !g3 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="900" fontFamily="monospace">
           output(&quot;Gagal: Hb &lt; 12.5&quot;)
         </text>
-        <line x1="748" y1="244" x2="748" y2={busY} stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={3.5} markerEnd={g2 && !g3 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
+        <line x1="746" y1="244" x2="746" y2={busY} stroke={g2 && !g3 ? '#f43f5e' : '#334155'} strokeWidth={3.5} markerEnd={g2 && !g3 ? 'url(#nsth-arr-rose)' : 'url(#nsth-arr-gray)'} />
 
         {/* Cabang LOLOS (SUKSES) */}
         <line
@@ -692,20 +692,20 @@ function NestedHorizontalFlowchart({
         <text x="863" y="46.5" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#94a3b8'} fontSize="10" fontWeight="bold" fontFamily="monospace">Ya</text>
       </g>
 
-      {/* ─── 4. JAJARAN GENJANG SUKSES ─── */}
+      {/* ─── 4. JAJARAN GENJANG SUKSES (DIPERLEBAR) ─── */}
       <g opacity={isStepActive(6) ? (g3 ? 1 : 0.2) : 0.2}>
         <polygon
-          points="905,34 1070,34 1048,86 883,86"
+          points="885,34 1085,34 1063,86 863,86"
           fill={g3 ? '#047857' : 'rgba(148,163,184,0.35)'}
           stroke={g3 ? '#10b981' : '#94a3b8'}
           strokeWidth={3}
           strokeDasharray={g3 ? undefined : '4 3'}
           filter={g3 ? 'url(#nsth-glow-active)' : undefined}
         />
-        <text x="976" y="60" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#64748b'} fontSize="11.5" fontWeight="900" fontFamily="monospace">
+        <text x="974" y="60" dominantBaseline="central" textAnchor="middle" fill={g3 ? '#ffffff' : '#64748b'} fontSize="9.5" fontWeight="900" fontFamily="monospace">
           output(&quot;LOLOS: Donor Darah!&quot;)
         </text>
-        <line x1="976" y1="86" x2="976" y2={busY} stroke={g3 ? '#10b981' : '#334155'} strokeWidth={3.5} markerEnd={g3 ? 'url(#nsth-arr-green)' : 'url(#nsth-arr-gray)'} />
+        <line x1="974" y1="86" x2="974" y2={busY} stroke={g3 ? '#10b981' : '#334155'} strokeWidth={3.5} markerEnd={g3 ? 'url(#nsth-arr-green)' : 'url(#nsth-arr-gray)'} />
       </g>
 
       {/* ─── 5. MERGE NODE & SELESAI ─── */}

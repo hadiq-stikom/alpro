@@ -12,6 +12,7 @@ import Pertemuan4 from '@/components/theory/Pertemuan4';
 import Pertemuan5 from '@/components/theory/Pertemuan5';
 import Pertemuan6 from '@/components/theory/Pertemuan6';
 import Pertemuan7 from '@/components/theory/Pertemuan7';
+import Pertemuan9 from '@/components/theory/Pertemuan9';
 import { TheoryAssessment } from '@/components/assessment/TheoryAssessment';
 
 export default function TheoryPage({ params }: { params: Promise<{ id: string }> }) {
@@ -42,9 +43,9 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
 
     if (shouldScrollToAssessment) {
       const scrollTimer = setTimeout(() => {
-        const el = document.getElementById('assessment') || document.getElementById('assessment-section');
+        const el = document.getElementById('essay-container-card') || document.getElementById('warmup-chat-card') || document.getElementById('assessment-section') || document.getElementById('assessment');
         if (el) {
-          const headerOffset = 90;
+          const headerOffset = 154; // navbar 64px + sub-header ~70px + aesthetic margin 20px
           const currentScrollY = window.scrollY || window.pageYOffset;
           const targetY = Math.max(0, currentScrollY + el.getBoundingClientRect().top - headerOffset);
           window.scrollTo({ top: targetY, behavior: 'smooth' });
@@ -75,6 +76,7 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
                unwrappedParams.id === '5' ? 'Pertemuan 5: Operator, Ekspresi & Manipulasi Data' :
                unwrappedParams.id === '6' ? 'Pertemuan 6: Struktur Percabangan Statemen Tunggal & Ganda' :
                unwrappedParams.id === '7' ? 'Pertemuan 7: Percabangan Majemuk & Bersarang' :
+               unwrappedParams.id === '9' ? 'Pertemuan 9: Dasar Perulangan (FOR & WHILE Loop)' :
                `Pertemuan ${unwrappedParams.id}`}
             </h1>
           </div>
@@ -83,13 +85,13 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
           </div>
 
           {/* Quick Jump to Assessment Button */}
-          {['1', '2', '3', '4', '5', '6', '7'].includes(unwrappedParams.id) && (
+          {['1', '2', '3', '4', '5', '6', '7', '9'].includes(unwrappedParams.id) && (
             <button
               type="button"
               onClick={() => {
-                const el = document.getElementById('assessment') || document.getElementById('assessment-section');
+                const el = document.getElementById('essay-container-card') || document.getElementById('warmup-chat-card') || document.getElementById('assessment-section') || document.getElementById('assessment');
                 if (el) {
-                  const headerOffset = 90;
+                  const headerOffset = 154; // navbar 64px + sub-header ~70px + aesthetic margin 20px
                   const currentScrollY = window.scrollY || window.pageYOffset;
                   const targetY = Math.max(0, currentScrollY + el.getBoundingClientRect().top - headerOffset);
                   window.scrollTo({ top: targetY, behavior: 'smooth' });
@@ -122,15 +124,15 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
         {unwrappedParams.id === '5' && <Pertemuan5 />}
         {unwrappedParams.id === '6' && <Pertemuan6 />}
         {unwrappedParams.id === '7' && <Pertemuan7 />}
-        {!['1','2','3','4','5','6','7'].includes(unwrappedParams.id) && (
+        {unwrappedParams.id === '9' && <Pertemuan9 />}
+        {!['1','2','3','4','5','6','7','9'].includes(unwrappedParams.id) && (
            <div className="p-8 text-center mt-20 text-muted-foreground font-mono">Materi belum tersedia untuk pertemuan ini.</div>
         )}
 
         {/* Asesmen & Uji Pemahaman */}
-        {['1', '2', '3', '4', '5', '6', '7'].includes(unwrappedParams.id) && (
-          <div id="assessment" className="pt-8 scroll-mt-28 md:scroll-mt-32 relative">
-            <span id="assessment-section" className="block -mt-28 pt-28 pointer-events-none" />
-            <hr className="border-border/50 mb-6" />
+        {['1', '2', '3', '4', '5', '6', '7', '9'].includes(unwrappedParams.id) && (
+          <div id="assessment" className="pt-2 relative">
+            <hr className="border-border/50 mb-3" />
             <TheoryAssessment meetingId={Number(unwrappedParams.id)} />
           </div>
         )}

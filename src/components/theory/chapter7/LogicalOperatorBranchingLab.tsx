@@ -154,13 +154,13 @@ function LogicVerticalFlowchart({
       </g>
       <line x1={cx} y1="58" x2={cx} y2="88" stroke="#64748b" strokeWidth="2.5" markerEnd="url(#lv-arr-gray)" opacity={isStepActive(1) ? 1 : 0.2} />
 
-      {/* 2. INPUT JAJARAN GENJANG */}
+      {/* 2. INPUT JAJARAN GENJANG (DIPERLEBAR) ─── */}
       <g opacity={isStepActive(2) ? 1 : 0.2}>
-        <polygon points={`${cx - 110},88 ${cx + 110},88 ${cx + 80},134 ${cx - 140},134`} fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
-        <text x={cx - 15} y="104" dominantBaseline="central" textAnchor="middle" fontSize="11.5" fontWeight="900" fill="#ffffff" fontFamily="monospace">
+        <polygon points={`${cx - 130},88 ${cx + 130},88 ${cx + 100},134 ${cx - 160},134`} fill="#7e22ce" stroke="#581c87" strokeWidth="2.5" />
+        <text x={cx - 15} y="104" dominantBaseline="central" textAnchor="middle" fontSize="11" fontWeight="900" fill="#ffffff" fontFamily="monospace">
           {inputLabel.split('[')[0]}
         </text>
-        <text x={cx - 15} y="120" dominantBaseline="central" textAnchor="middle" fontSize="12" fontWeight="900" fill="#fef08a" fontFamily="monospace">
+        <text x={cx - 15} y="120" dominantBaseline="central" textAnchor="middle" fontSize="11.5" fontWeight="900" fill="#fef08a" fontFamily="monospace">
           [{inputLabel.split('[')[1] || ''}
         </text>
       </g>
@@ -218,7 +218,7 @@ function LogicVerticalFlowchart({
         <line
           x1={cx + 140}
           y1={cyDiamond}
-          x2={435}
+          x2={408}
           y2={cyDiamond}
           stroke={isPass ? '#10b981' : '#334155'}
           strokeWidth={isPass ? 3.5 : 2}
@@ -226,7 +226,7 @@ function LogicVerticalFlowchart({
         />
         {/* Badge 'Ya' */}
         <rect
-          x="385"
+          x="372"
           y={cyDiamond - 19}
           width="36"
           height="18"
@@ -235,7 +235,7 @@ function LogicVerticalFlowchart({
           stroke={isPass ? '#10b981' : '#334155'}
         />
         <text
-          x="403"
+          x="390"
           y={cyDiamond - 6}
           textAnchor="middle"
           fill={isPass ? '#ffffff' : '#94a3b8'}
@@ -246,9 +246,9 @@ function LogicVerticalFlowchart({
           Ya
         </text>
 
-        {/* Jajaran Genjang Aksi TRUE */}
+        {/* Jajaran Genjang Aksi TRUE (Diperlebar) */}
         <polygon
-          points={`455,${cyDiamond - 25} 700,${cyDiamond - 25} 670,${cyDiamond + 25} 425,${cyDiamond + 25}`}
+          points={`420,${cyDiamond - 25} 700,${cyDiamond - 25} 675,${cyDiamond + 25} 395,${cyDiamond + 25}`}
           fill={isPass ? '#047857' : 'rgba(148,163,184,0.35)'}
           stroke={isPass ? '#10b981' : '#94a3b8'}
           strokeWidth={isPass ? 3 : 1.5}
@@ -256,12 +256,12 @@ function LogicVerticalFlowchart({
           filter={isPass ? 'url(#lv-glow-active)' : undefined}
         />
         <text
-          x="562"
+          x="548"
           y={cyDiamond}
           dominantBaseline="central"
           textAnchor="middle"
           fill={isPass ? '#ffffff' : '#64748b'}
-          fontSize="12"
+          fontSize={trueOutput.length > 25 ? 9.5 : 11}
           fontWeight="900"
           fontFamily="monospace"
         >
@@ -270,7 +270,7 @@ function LogicVerticalFlowchart({
 
         {/* Panah dari TRUE ke Rel Bus Kanan (x = 730) */}
         <line
-          x1="670"
+          x1="685"
           y1={cyDiamond}
           x2="730"
           y2={cyDiamond}
@@ -334,21 +334,21 @@ function LogicVerticalFlowchart({
           Tidak
         </text>
 
-        {/* Jajaran Genjang Aksi FALSE (Cabang Else) */}
+        {/* Jajaran Genjang Aksi FALSE (Cabang Else - Diperlebar) */}
         <polygon
-          points={`${cx - 130},325 ${cx + 130},325 ${cx + 105},375 ${cx - 155},375`}
+          points={`${cx - 170},325 ${cx + 190},325 ${cx + 165},375 ${cx - 195},375`}
           fill={!isPass ? '#be123c' : 'rgba(148,163,184,0.35)'}
           stroke={!isPass ? '#f43f5e' : '#94a3b8'}
           strokeWidth={!isPass ? 3 : 1.5}
           strokeDasharray={!isPass ? undefined : '4 3'}
         />
         <text
-          x={cx - 12}
+          x={cx - 2}
           y="350"
           dominantBaseline="central"
           textAnchor="middle"
           fill={!isPass ? '#ffffff' : '#64748b'}
-          fontSize="11"
+          fontSize={falseOutput.length > 25 ? 9.5 : 11}
           fontWeight="900"
           fontFamily="monospace"
         >

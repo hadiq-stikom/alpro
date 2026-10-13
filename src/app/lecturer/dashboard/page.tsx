@@ -15,7 +15,8 @@ import {
   CheckCircle2, 
   X, 
   RotateCcw,
-  ShieldAlert
+  ShieldAlert,
+  FlaskConical
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
@@ -239,6 +240,16 @@ export default function LecturerDashboardPage() {
                 Dashboard Dosen — TI-101 Algoritma &amp; Pemrograman
               </p>
             </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="/lecturer/praktikum"
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition-all cursor-pointer"
+            >
+              <FlaskConical className="w-4 h-4" />
+              <span>Pemeriksaan Praktikum (1 SKS)</span>
+            </Link>
           </div>
         </motion.div>
 

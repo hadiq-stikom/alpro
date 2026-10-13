@@ -16,22 +16,26 @@ import {
   ArrowRight,
   Code2,
   Terminal,
-  Play
+  Play,
+  RotateCcw
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import ExpressionAnatomyLab from './chapter5/ExpressionAnatomyLab';
 import ArithmeticModuloLab from './chapter5/ArithmeticModuloLab';
+import AssignmentOperatorLab from './chapter5/AssignmentOperatorLab';
 import RelationalLogicLab from './chapter5/RelationalLogicLab';
 import OperatorPrecedenceLab from './chapter5/OperatorPrecedenceLab';
-import CompoundStringLab from './chapter5/CompoundStringLab';
+import StringManipulationLab from './chapter5/StringManipulationLab';
 
 export default function Pertemuan5() {
-  const [isOpen1, setIsOpen1] = useState(false); // Closed by default
+  // Semua accordion tertutup secara default (Pedagogical Standard 19)
+  const [isOpen1, setIsOpen1] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
   const [isOpen3, setIsOpen3] = useState(false);
   const [isOpen4, setIsOpen4] = useState(false);
   const [isOpen5, setIsOpen5] = useState(false);
+  const [isOpen6, setIsOpen6] = useState(false);
 
   return (
     <div className="space-y-12 overflow-visible">
@@ -45,7 +49,7 @@ export default function Pertemuan5() {
           Operator, Ekspresi &amp; Manipulasi Data
         </h1>
         <p className="text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Mengubah data pasif di memori RAM menjadi <strong className="text-slate-900 dark:text-slate-100">komputasi dinamis</strong>. Membedah anatomi operator, keajaiban sisa bagi modulo (<code className="bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded font-mono font-bold">%</code>), logika kebenaran boolean, hirarki evaluasi PEMDAS, hingga manipulasi teks modern.
+          Mengubah data pasif di memori RAM menjadi <strong className="text-slate-900 dark:text-slate-100">komputasi dinamis</strong>. Membedah anatomi operator, keajaiban sisa bagi modulo (<code className="bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded font-mono font-bold">%</code>), hakikat operator penugasan (<code className="bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded font-mono font-bold">=</code>), logika boolean, hierarki evaluasi PEMDAS, hingga manipulasi teks modern.
         </p>
 
         {/* CTA Direct to Workspace Studio */}
@@ -112,7 +116,7 @@ export default function Pertemuan5() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible py-2">
                     
-                    {/* Pilar 1: Operand (Left) -> origin-center sm:origin-left */}
+                    {/* Pilar 1: Operand (Left) */}
                     <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-blue-500/50">
                       <div className="text-2xl">🏷️</div>
                       <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
@@ -123,7 +127,7 @@ export default function Pertemuan5() {
                       </p>
                     </div>
 
-                    {/* Pilar 2: Operator (Center) -> origin-center */}
+                    {/* Pilar 2: Operator (Center) */}
                     <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/50">
                       <div className="text-2xl">⚙️</div>
                       <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
@@ -134,7 +138,7 @@ export default function Pertemuan5() {
                       </p>
                     </div>
 
-                    {/* Pilar 3: Ekspresi (Right) -> origin-center sm:origin-right */}
+                    {/* Pilar 3: Ekspresi (Right) */}
                     <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-500/50">
                       <div className="text-2xl">✨</div>
                       <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
@@ -209,21 +213,21 @@ export default function Pertemuan5() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. OPERATOR RELASIONAL & LOGIKA BOOLEAN                                   */}
+      {/* 3. OPERATOR PENUGASAN (ASSIGNMENT & COMPOUND)                             */}
       {/* ========================================================================= */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-emerald-500/40 ${isOpen3 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-amber-500/40 ${isOpen3 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button 
           onClick={() => setIsOpen3(!isOpen3)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-3">
-              <GitBranch className="w-8 h-8" />
-              3. Operator Relasional &amp; Logika Boolean (Jebakan = vs == &amp; Truth Table)
+            <h2 className="text-2xl md:text-3xl font-bold text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-3">
+              <Zap className="w-8 h-8" />
+              3. Operator Penugasan: Hakikat Assignment (=) &amp; Compound (+=, -=)
             </h2>
             <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Capaian: Menguasai uji kesamaan/perbandingan, menghindari jebakan fatal = vs ==, serta simulasi tabel kebenaran AND, OR, NOT.</span>
+              <span>Capaian: Memahami aliran data Kanan-ke-Kiri, aturan ketat L-Value vs R-Value, menghindari jebakan fatal = vs ==, serta efisiensi compound operator.</span>
             </div>
           </div>
           <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen3 ? 'rotate-180' : ''}`} />
@@ -231,6 +235,102 @@ export default function Pertemuan5() {
 
         <AnimatePresence>
           {isOpen3 && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              className="overflow-visible"
+            >
+              <div className="p-6 md:p-8 pt-2 space-y-8 overflow-visible">
+                
+                {/* Definisi Akademik Assignment */}
+                <div className="p-5 md:p-6 bg-amber-500/10 dark:bg-amber-950/30 border-l-4 border-amber-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400 bg-background/95 dark:bg-slate-950/95">
+                  <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold text-xs uppercase tracking-wider font-mono">
+                    <Sparkles className="w-4 h-4" />
+                    <span>Definisi Akademik Resmi:</span>
+                  </div>
+                  <blockquote className="text-sm md:text-base text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
+                    &ldquo;<strong className="text-amber-600 dark:text-amber-300 font-black text-base md:text-lg underline decoration-amber-500/40">Operator Penugasan (Assignment)</strong> adalah operator fundamental yang bertugas menyimpan nilai hasil evaluasi ekspresi di sisi kanan (<strong className="text-purple-700 dark:text-purple-300 font-black bg-purple-500/15 dark:bg-purple-500/25 px-2 py-0.5 rounded-lg border border-purple-500/40 inline-block my-0.5">R-Value</strong>) ke dalam wadah penyimpanan memori variabel yang sah di sisi kiri (<strong className="text-cyan-700 dark:text-cyan-300 font-black bg-cyan-500/15 dark:bg-cyan-500/25 px-2 py-0.5 rounded-lg border border-cyan-500/40 inline-block my-0.5">L-Value</strong>) dengan arah aliran data baku <strong className="text-emerald-700 dark:text-emerald-300 font-black bg-emerald-500/15 dark:bg-emerald-500/25 px-2 py-0.5 rounded-lg border border-emerald-500/40 inline-block my-0.5">Kanan-ke-Kiri (&larr;)</strong>, serta menyediakan bentuk ringkas <strong className="text-indigo-700 dark:text-indigo-300 font-black bg-indigo-500/15 dark:bg-indigo-500/25 px-2 py-0.5 rounded-lg border border-indigo-500/40 inline-block my-0.5">Compound Assignment (+=, -=, *=)</strong> untuk memperbarui nilai variabel secara langsung.&rdquo;
+                  </blockquote>
+                </div>
+
+                {/* 3 Pilar Anatomi Penugasan */}
+                <div className="space-y-4 overflow-visible">
+                  <h3 className="text-base md:text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-amber-500" />
+                    3 Kaidah Emas Operator Penugasan dalam Komputasi:
+                  </h3>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible py-2">
+                    
+                    {/* Pilar 1: Aliran Data Right-to-Left */}
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500/50">
+                      <div className="text-2xl">⬅️</div>
+                      <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
+                        1. Arah Aliran Kanan-ke-Kiri
+                      </h4>
+                      <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                        Komputer selalu menghitung tuntas rumus di sisi kanan sama dengan (<code className="font-mono text-purple-600 dark:text-purple-400 font-bold">R-Value</code>), lalu menuangkan hasilnya ke wadah variabel kiri (<code className="font-mono text-cyan-600 dark:text-cyan-400 font-bold">L-Value</code>).
+                      </p>
+                    </div>
+
+                    {/* Pilar 2: Aturan Mutlak L-Value */}
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-rose-500/50">
+                      <div className="text-2xl">🛑</div>
+                      <h4 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
+                        2. Larangan Menukar Posisi (10 = x)
+                      </h4>
+                      <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                        Sisi kiri WAJIB berupa wadah memori variabel yang sah. Konstanta literal seperti <code className="font-mono text-rose-600 font-bold">10 = x</code> akan memicu <strong className="text-rose-600 dark:text-rose-400">SyntaxError: cannot assign to literal</strong>.
+                      </p>
+                    </div>
+
+                    {/* Pilar 3: Efisiensi Compound Assignment */}
+                    <div className="p-4 rounded-2xl bg-background border border-border/60 shadow-sm space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-500/50">
+                      <div className="text-2xl">⚡</div>
+                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
+                        3. Efisiensi Compound (+=, -=)
+                      </h4>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                        Bentuk ringkas <code className="font-mono text-emerald-600 dark:text-emerald-400 font-bold">x += 5</code> memperbarui variabel secara langsung di lokasi RAM tanpa perlu mengetik ulang nama variabel dua kali.
+                      </p>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Interactive Assignment Operator Lab */}
+                <AssignmentOperatorLab />
+
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* 4. OPERATOR RELASIONAL & LOGIKA BOOLEAN                                   */}
+      {/* ========================================================================= */}
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-emerald-500/40 ${isOpen4 ? 'overflow-visible' : 'overflow-hidden'}`}>
+        <button 
+          onClick={() => setIsOpen4(!isOpen4)}
+          className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
+        >
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-3">
+              <GitBranch className="w-8 h-8" />
+              4. Operator Relasional &amp; Logika Boolean (Jebakan = vs == &amp; Truth Table)
+            </h2>
+            <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>Capaian: Menguasai uji kesamaan/perbandingan, menghindari jebakan fatal = vs ==, serta simulasi tabel kebenaran AND, OR, NOT.</span>
+            </div>
+          </div>
+          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen4 ? 'rotate-180' : ''}`} />
+        </button>
+
+        <AnimatePresence>
+          {isOpen4 && (
             <motion.div 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
@@ -260,28 +360,28 @@ export default function Pertemuan5() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 4. PRESEDENSI OPERATOR & HIRARKI PEMDAS                                   */}
+      {/* 5. PRESEDENSI OPERATOR & HIRARKI PEMDAS                                   */}
       {/* ========================================================================= */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-purple-500/40 ${isOpen4 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-purple-500/40 ${isOpen5 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button 
-          onClick={() => setIsOpen4(!isOpen4)}
+          onClick={() => setIsOpen5(!isOpen5)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2 flex items-center gap-3">
               <Layers className="w-8 h-8" />
-              4. Presedensi Operator &amp; Hirarki Evaluasi (Aturan PEMDAS)
+              5. Presedensi Operator &amp; Hirarki Evaluasi Kompiler (Aturan PEMDAS)
             </h2>
             <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Capaian: Memahami urutan prioritas eksekusi kompiler dan penggunaan tanda kurung () untuk mencegah kesalahan hitung fatal.</span>
+              <span>Capaian: Memahami urutan prioritas eksekusi kompiler, tabel 8 hierarki presedensi, dan alasan mengapa penugasan berada di baris buncit.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen4 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen5 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
-          {isOpen4 && (
+          {isOpen5 && (
             <motion.div 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
@@ -311,28 +411,28 @@ export default function Pertemuan5() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 5. COMPOUND ASSIGNMENT & MANIPULASI STRING                                 */}
+      {/* 6. MANIPULASI STRING & FORMAT TEKS MODERN                                  */}
       {/* ========================================================================= */}
-      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-cyan-500/40 ${isOpen5 ? 'overflow-visible' : 'overflow-hidden'}`}>
+      <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-sm transition-all hover:border-cyan-500/40 ${isOpen6 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button 
-          onClick={() => setIsOpen5(!isOpen5)}
+          onClick={() => setIsOpen6(!isOpen6)}
           className="w-full text-left p-6 md:p-8 flex items-start md:items-center justify-between gap-4 bg-background cursor-pointer rounded-2xl"
         >
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-cyan-600 dark:text-cyan-400 mb-2 flex items-center gap-3">
               <Type className="w-8 h-8" />
-              5. Compound Assignment &amp; Manipulasi String (f-string vs Template Literal)
+              6. Manipulasi String &amp; Format Teks Modern (f-string vs Template Literal)
             </h2>
             <div className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 font-medium">
               <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Capaian: Menguasai operator penugasan ringkas (+=, -=) serta teknik penggabungan dan interpolasi teks modern.</span>
+              <span>Capaian: Menguasai penyambungan teks (+), pencegahan jebakan tipe "10" + "20", replikasi teks (*), serta interpolasi variabel modern.</span>
             </div>
           </div>
-          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen5 ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`w-6 h-6 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen6 ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
-          {isOpen5 && (
+          {isOpen6 && (
             <motion.div 
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
@@ -341,19 +441,19 @@ export default function Pertemuan5() {
             >
               <div className="p-6 md:p-8 pt-2 space-y-6 overflow-visible">
                 
-                {/* Definisi Akademik Compound & String */}
+                {/* Definisi Akademik Manipulasi String */}
                 <div className="p-5 md:p-6 bg-cyan-500/10 dark:bg-cyan-950/30 border-l-4 border-cyan-500 rounded-r-2xl shadow-sm space-y-3 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-cyan-400 bg-background/95 dark:bg-slate-950/95">
                   <div className="flex items-center gap-2 text-cyan-700 dark:text-cyan-400 font-bold text-xs uppercase tracking-wider font-mono">
                     <Sparkles className="w-4 h-4" />
                     <span>Definisi Akademik Resmi:</span>
                   </div>
                   <blockquote className="text-sm md:text-base text-slate-800 dark:text-slate-200 font-medium leading-relaxed">
-                    &ldquo;<strong className="text-cyan-600 dark:text-cyan-300 font-black text-base md:text-lg underline decoration-cyan-500/40">Compound Assignment</strong> adalah bentuk penulisan ringkas untuk memperbarui nilai variabel dengan melakukan operasi terhadap dirinya sendiri (<code className="font-bold">x += y</code> ekuivalen dengan <code className="font-bold">x = x + y</code>), sedangkan <strong className="text-emerald-700 dark:text-emerald-300 font-black bg-emerald-500/15 dark:bg-emerald-500/25 px-2 py-0.5 rounded-lg border border-emerald-500/40 inline-block my-0.5">String Interpolation</strong> (seperti <code className="font-bold">f-string</code> di Python atau <code className="font-bold">Template Literal</code> di JavaScript) memungkinkan penanaman nilai variabel langsung ke dalam teks secara dinamis dan efisien.&rdquo;
+                    &ldquo;<strong className="text-cyan-600 dark:text-cyan-300 font-black text-base md:text-lg underline decoration-cyan-500/40">Manipulasi String</strong> adalah serangkaian operasi komputasi untuk mengolah data teks terstruktur, meliputi penyambungan (<strong className="text-emerald-700 dark:text-emerald-300 font-black bg-emerald-500/15 dark:bg-emerald-500/25 px-2 py-0.5 rounded-lg border border-emerald-500/40 inline-block my-0.5">Concatenation +</strong>), penggandaan (<strong className="text-purple-700 dark:text-purple-300 font-black bg-purple-500/15 dark:bg-purple-500/25 px-2 py-0.5 rounded-lg border border-purple-500/40 inline-block my-0.5">Replication *</strong>), pengindeksan urutan karakter (<strong className="text-amber-700 dark:text-amber-300 font-black bg-amber-500/15 dark:bg-amber-500/25 px-2 py-0.5 rounded-lg border border-amber-500/40 inline-block my-0.5">Zero-Based Indexing</strong>), hingga penanaman nilai dinamis ke dalam badan teks menggunakan <strong className="text-blue-700 dark:text-blue-300 font-black bg-blue-500/15 dark:bg-blue-500/25 px-2 py-0.5 rounded-lg border border-blue-500/40 inline-block my-0.5">Modern String Interpolation</strong> (<code className="font-bold">f-string</code> di Python atau <code className="font-bold">Template Literal</code> di JavaScript).&rdquo;
                   </blockquote>
                 </div>
 
-                {/* Interactive Compound & String Lab */}
-                <CompoundStringLab />
+                {/* Interactive String Manipulation Lab */}
+                <StringManipulationLab />
 
               </div>
             </motion.div>

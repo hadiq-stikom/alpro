@@ -167,3 +167,44 @@ SELECT
 FROM public.meeting_grades mg
 JOIN public.classes c ON c.id = mg.class_id
 GROUP BY mg.class_id, c.name, mg.meeting_id;
+
+-- ----------------------------------------------------------------
+-- 7. Praktikum & Tanda Tangan Digital (Mata Kuliah Praktikum 1 SKS)
+-- ----------------------------------------------------------------
+ALTER TABLE public.users 
+ADD COLUMN IF NOT EXISTS stored_signature TEXT;
+
+COMMENT ON COLUMN public.users.stored_signature IS 'Data URL gambar tanda tangan digital yang tersimpan (PNG base64)';
+
+CREATE TABLE IF NOT EXISTS public.praktikum_submissions (
+  id                  UUID         PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id             UUID         NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  class_id            UUID         REFERENCES public.classes(id) ON DELETE SET NULL,
+  module_id           INTEGER      NOT NULL CHECK (module_id BETWEEN 1 AND 16),
+  student_name        TEXT,
+  student_nim         TEXT,
+  student_class       TEXT,
+  lab_date            TEXT,
+  observations        JSONB        NOT NULL DEFAULT '[]'::jsonb,
+  analisis_answers    JSONB        NOT NULL DEFAULT '[]'::jsonb,
+  kesimpulan_text     TEXT         NOT NULL DEFAULT '',
+  telemetry           JSONB        DEFAULT '{}'::jsonb, 
+  ai_evaluation       JSONB        DEFAULT '{}'::jsonb,
+  student_signature   TEXT,        
+  student_signed_at   TIMESTAMPTZ,
+  status              TEXT         NOT NULL DEFAULT 'draft' 
+                                   CHECK (status IN ('draft', 'diajukan', 'perlu_revisi', 'disetujui')),
+  lecturer_feedback   TEXT,
+  lecturer_score      NUMERIC(5,2) CHECK (lecturer_score IS NULL OR (lecturer_score BETWEEN 0 AND 100)),
+  lecturer_signature  TEXT,        
+  lecturer_signed_at  TIMESTAMPTZ,
+  created_at          TIMESTAMPTZ  NOT NULL DEFAULT now(),
+  updated_at          TIMESTAMPTZ  NOT NULL DEFAULT now(),
+  CONSTRAINT uq_praktikum_user_module UNIQUE (user_id, module_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_praktikum_submissions_user_id ON public.praktikum_submissions(user_id);
+CREATE INDEX IF NOT EXISTS idx_praktikum_submissions_module_id ON public.praktikum_submissions(module_id);
+CREATE INDEX IF NOT EXISTS idx_praktikum_submissions_status ON public.praktikum_submissions(status);
+CREATE INDEX IF NOT EXISTS idx_praktikum_submissions_class_id ON public.praktikum_submissions(class_id);
+

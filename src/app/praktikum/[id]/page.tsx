@@ -38,11 +38,22 @@ import {
 import { PRAKTIKUM_MODULES, ObservationRow } from "@/lib/praktikum-data";
 import { useAuth } from "@/context/AuthContext";
 import PraktikumWorkbench from "@/components/praktikum/PraktikumWorkbench";
+import PraktikumWarmupCard from "@/components/praktikum/PraktikumWarmupCard";
 
 export interface AiEvaluationResult {
   score: number;
   status: 'Memenuhi Standar' | 'Perlu Perbaikan';
   canPrint: boolean;
+  integrity?: {
+    authenticityScore: number;
+    isAuthentic: boolean;
+    stylometricNotes: string;
+    wpmComparison?: {
+      currentWpm: number;
+      baselineWpm: number;
+      ratio: number;
+    };
+  };
   summaryFeedback: string;
   feedbackAnalisis: {
     itemNo: number;
@@ -265,6 +276,30 @@ export default function PraktikumWorksheetPage({
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [evalError, setEvalError] = useState<string | null>(null);
 
+  // State Telemetri Ketikan & Keaslian (Forensik Stylometri)
+  const [keystrokesCount, setKeystrokesCount] = useState(0);
+  const [backspacesCount, setBackspacesCount] = useState(0);
+  const [burstAttemptsCount, setBurstAttemptsCount] = useState(0);
+  const [tabSwitchesCount, setTabSwitchesCount] = useState(0);
+  const [typingStartTime, setTypingStartTime] = useState<number | null>(null);
+
+  // State Tanda Tangan & Pengajuan Konsultasi ke Dosen
+  const [studentSignature, setStudentSignature] = useState<string | null>(null);
+  const [storedProfileSignature, setStoredProfileSignature] = useState<string | null>(null);
+  const [saveSigToProfile, setSaveSigToProfile] = useState<boolean>(true);
+  const [submissionStatus, setSubmissionStatus] = useState<'draft' | 'diajukan' | 'perlu_revisi' | 'disetujui'>('draft');
+  const [lecturerScore, setLecturerScore] = useState<number | null>(null);
+  const [lecturerFeedback, setLecturerFeedback] = useState<string | null>(null);
+  const [lecturerSignature, setLecturerSignature] = useState<string | null>(null);
+  const [lecturerSignedAt, setLecturerSignedAt] = useState<string | null>(null);
+  const [isSubmittingConsultation, setIsSubmittingConsultation] = useState(false);
+  const [consultationMessage, setConsultationMessage] = useState<string | null>(null);
+
+  // State Golden Baseline Keaslian Ketikan (Refleksi Pemanasan On-Demand)
+  const [hasBaseline, setHasBaseline] = useState<boolean>(true); // default true agar tidak flicker saat memuat
+  const [isBaselineLoading, setIsBaselineLoading] = useState<boolean>(true);
+  const [isWarmupCompletedInSession, setIsWarmupCompletedInSession] = useState<boolean>(false);
+
   // State UI & Validasi Anti Copy-Paste
   const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
   const [isTheoryOpen, setIsTheoryOpen] = useState(true);
@@ -277,12 +312,32 @@ export default function PraktikumWorksheetPage({
   const isAnalisisComplete = totalAnalisisPrompts > 0 && filledAnalisisCount === totalAnalisisPrompts;
   const isKesimpulanComplete = Boolean(kesimpulanText && kesimpulanText.trim().length > 0);
   
-  // Syarat tombol cetak aktif: Analisis & Kesimpulan lengkap DAN dinyatakan "Memenuhi Standar" oleh AI
-  const canPrint = Boolean(isAnalisisComplete && isKesimpulanComplete && aiEvaluation && aiEvaluation.canPrint);
+  // Akses formulir Analisis & Kesimpulan terbuka jika baseline sudah ada, atau baru diselesaikan di sesi ini, atau sudah disubmit/disetujui
+  const isFormUnlocked = hasBaseline || isWarmupCompletedInSession || submissionStatus === 'disetujui' || submissionStatus === 'diajukan';
 
-  // Handler anti copy-paste
+  // Syarat tombol cetak aktif: Analisis & Kesimpulan lengkap DAN dinyatakan "Memenuhi Standar" oleh AI
+  const canPrint = Boolean(
+    isAnalisisComplete && 
+    isKesimpulanComplete && 
+    ((aiEvaluation && aiEvaluation.canPrint) || submissionStatus === 'disetujui')
+  );
+
+  // Perekam telemetri ketukan tombol
+  const handleTrackKeyInput = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (!typingStartTime) {
+      setTypingStartTime(Date.now());
+    }
+    if (e.key === "Backspace" || e.key === "Delete") {
+      setBackspacesCount((prev) => prev + 1);
+    } else if (e.key.length === 1 || e.key === "Enter") {
+      setKeystrokesCount((prev) => prev + 1);
+    }
+  };
+
+  // Handler anti copy-paste & burst detection
   const handlePreventPaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
+    setBurstAttemptsCount((prev) => prev + 1);
     setPasteWarning("⚠️ Demi integritas akademik, Anda diwajibkan mengetik kata per kata secara mandiri. Fitur tempel (paste) dinonaktifkan!");
     setTimeout(() => {
       setPasteWarning(null);
@@ -296,6 +351,17 @@ export default function PraktikumWorksheetPage({
       setPasteWarning(null);
     }, 3000);
   };
+
+  // Pantau perpindahan tab window
+  useEffect(() => {
+    const handleVis = () => {
+      if (document.hidden) {
+        setTabSwitchesCount((prev) => prev + 1);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVis);
+    return () => document.removeEventListener("visibilitychange", handleVis);
+  }, []);
 
   // State Mini Simulator / Tester
   const [testCodeInput, setTestCodeInput] = useState("10 // 4");
@@ -343,6 +409,7 @@ export default function PraktikumWorksheetPage({
         if (parsed.studentName) setStudentName(parsed.studentName);
         if (parsed.studentNim) setStudentNim(parsed.studentNim);
         if (parsed.studentClass) setStudentClass(parsed.studentClass);
+        if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
         return;
       } catch (e) {
         console.error("Gagal membaca draf lokal:", e);
@@ -354,8 +421,55 @@ export default function PraktikumWorksheetPage({
     setAnalisisAnswers(Array(moduleData.analisisPrompts.length).fill(""));
   }, [moduleId, moduleData, profile]);
 
-  // Fungsi simpan draf ke LocalStorage
-  const handleSaveDraft = () => {
+  // Sinkronisasi data remote submission dan tanda tangan tersimpan
+  useEffect(() => {
+    if (!profile?.id) {
+      setIsBaselineLoading(false);
+      return;
+    }
+    fetch(`/api/praktikum/submission?userId=${profile.id}&moduleId=${moduleId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          if (data.storedSignature) {
+            setStoredProfileSignature(data.storedSignature);
+          }
+          if (data.hasBaseline !== undefined) {
+            setHasBaseline(Boolean(data.hasBaseline));
+          }
+          setIsBaselineLoading(false);
+          if (data.submission) {
+            const sub = data.submission;
+            setSubmissionStatus(sub.status || "draft");
+            if (sub.student_signature) {
+              setStudentSignature(sub.student_signature);
+            } else if (data.storedSignature) {
+              setStudentSignature(data.storedSignature);
+            }
+            if (sub.lecturer_score !== null && sub.lecturer_score !== undefined) {
+              setLecturerScore(Number(sub.lecturer_score));
+            }
+            if (sub.lecturer_feedback) setLecturerFeedback(sub.lecturer_feedback);
+            if (sub.lecturer_signature) setLecturerSignature(sub.lecturer_signature);
+            if (sub.lecturer_signed_at) setLecturerSignedAt(sub.lecturer_signed_at);
+            if (sub.ai_evaluation && Object.keys(sub.ai_evaluation).length > 0) {
+              setAiEvaluation(sub.ai_evaluation);
+            }
+          } else if (data.storedSignature) {
+            setStudentSignature(data.storedSignature);
+          }
+        } else {
+          setIsBaselineLoading(false);
+        }
+      })
+      .catch((err) => {
+        console.warn("Gagal memuat status pengajuan remote:", err);
+        setIsBaselineLoading(false);
+      });
+  }, [profile?.id, moduleId]);
+
+  // Fungsi simpan draf ke LocalStorage & Supabase
+  const handleSaveDraft = async () => {
     if (!moduleData) return;
     const nowStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
     const storageKey = `lkp_draft_m${moduleId}_${profile?.nim || "local"}`;
@@ -369,13 +483,42 @@ export default function PraktikumWorksheetPage({
       analisisAnswers,
       kesimpulanText,
       aiEvaluation,
+      studentSignature,
       savedAt: nowStr,
     };
     localStorage.setItem(storageKey, JSON.stringify(payload));
     setLastSavedTime(nowStr);
+
+    // Sinkronisasi draf ke database Supabase jika pengguna sudah login
+    if (profile?.id) {
+      try {
+        await fetch("/api/praktikum/submission", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: profile.id,
+            classId: profile.class_id,
+            moduleId,
+            studentName,
+            studentNim,
+            studentClass,
+            labDate,
+            observations,
+            analisisAnswers,
+            kesimpulanText,
+            aiEvaluation,
+            studentSignature,
+            action: "draft",
+            saveSignatureToProfile: false,
+          }),
+        });
+      } catch (err) {
+        console.warn("Gagal autosave draf remote:", err);
+      }
+    }
   };
 
-  // Evaluasi Analisis & Kesimpulan dengan AI Asisten Reviewer
+  // Evaluasi Analisis & Kesimpulan dengan AI Asisten Reviewer (Sokratik + Keaslian Ketikan)
   const handleEvaluateWithAI = async () => {
     if (!isAnalisisComplete || !isKesimpulanComplete) {
       alert("Harap lengkapi seluruh pertanyaan Analisis (Bagian D) dan Kesimpulan (Bagian E) sebelum meminta ulasan AI.");
@@ -384,6 +527,12 @@ export default function PraktikumWorksheetPage({
 
     setIsEvaluating(true);
     setEvalError(null);
+
+    // Hitung telemetri ketikan praktikum
+    const totalWords = (analisisAnswers.join(" ") + " " + kesimpulanText).trim().split(/\s+/).filter(Boolean).length;
+    const elapsedSeconds = typingStartTime ? Math.max(15, Math.floor((Date.now() - typingStartTime) / 1000)) : 60;
+    const calcWpm = Math.max(5, Math.round(totalWords / (elapsedSeconds / 60)));
+    const calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
 
     try {
       const res = await fetch("/api/grade-praktikum", {
@@ -394,6 +543,15 @@ export default function PraktikumWorksheetPage({
           observations,
           analisisAnswers,
           kesimpulanText,
+          userId: profile?.id,
+          telemetry: {
+            wpm: calcWpm,
+            backspaceRatio: calcBackspaceRatio,
+            burstAttempts: burstAttemptsCount,
+            keystrokes: keystrokesCount,
+            timeSpentSeconds: elapsedSeconds,
+            tabSwitches: tabSwitchesCount,
+          },
         }),
       });
 
@@ -423,6 +581,7 @@ export default function PraktikumWorksheetPage({
         studentName,
         studentNim,
         studentClass,
+        studentSignature,
         labDate,
         savedAt: nowStr
       }));
@@ -432,6 +591,89 @@ export default function PraktikumWorksheetPage({
       setEvalError(err?.message || "Terjadi kendala saat menghubungi asisten AI.");
     } finally {
       setIsEvaluating(false);
+    }
+  };
+
+  // Handler unggah file gambar tanda tangan mahasiswa
+  const handleSignatureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Format berkas harus berupa gambar (PNG, JPG, atau WebP).");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      setStudentSignature(dataUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Handler ajukan konsultasi ke dosen
+  const handleSubmitConsultation = async () => {
+    if (!studentSignature) {
+      alert("Harap bubuhkan tanda tangan mahasiswa terlebih dahulu sebelum mengajukan laporan ke Dosen.");
+      return;
+    }
+    if (!aiEvaluation || !aiEvaluation.canPrint) {
+      alert("Laporan praktikum harus diuji dan memenuhi standar ilmiah kelayakan AI (skor >= 60) sebelum dapat diajukan ke Dosen.");
+      return;
+    }
+
+    setIsSubmittingConsultation(true);
+    setConsultationMessage(null);
+
+    const totalWords = (analisisAnswers.join(" ") + " " + kesimpulanText).trim().split(/\s+/).filter(Boolean).length;
+    const elapsedSeconds = typingStartTime ? Math.max(15, Math.floor((Date.now() - typingStartTime) / 1000)) : 60;
+    const calcWpm = Math.max(5, Math.round(totalWords / (elapsedSeconds / 60)));
+    const calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
+
+    try {
+      const res = await fetch("/api/praktikum/submission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: profile?.id,
+          classId: profile?.class_id,
+          moduleId,
+          studentName,
+          studentNim,
+          studentClass,
+          labDate,
+          observations,
+          analisisAnswers,
+          kesimpulanText,
+          telemetry: {
+            wpm: calcWpm,
+            backspaceRatio: calcBackspaceRatio,
+            burstAttempts: burstAttemptsCount,
+            keystrokes: keystrokesCount,
+            timeSpentSeconds: elapsedSeconds,
+            tabSwitches: tabSwitchesCount,
+          },
+          aiEvaluation,
+          studentSignature,
+          action: "diajukan",
+          saveSignatureToProfile: saveSigToProfile,
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Gagal mengajukan laporan praktikum.");
+      }
+
+      setSubmissionStatus("diajukan");
+      setConsultationMessage("✓ Laporan praktikum berhasil diajukan untuk konsultasi ke Dosen Hadiq, ST, M.Kom! Silakan tunggu pemeriksaan dan pengesahan nilai.");
+      if (saveSigToProfile && studentSignature) {
+        setStoredProfileSignature(studentSignature);
+      }
+    } catch (err: any) {
+      console.error("Gagal mengajukan konsultasi:", err);
+      alert("Gagal mengajukan konsultasi: " + err.message);
+    } finally {
+      setIsSubmittingConsultation(false);
     }
   };
 
@@ -1497,6 +1739,22 @@ export default function PraktikumWorksheetPage({
       </div>
 
       {/* ========================================================================= */}
+      {/* REFLEKSI CEPAT WORKBENCH (GOLDEN BASELINE ON-DEMAND JIKA BELUM ADA)       */}
+      {/* ========================================================================= */}
+      {(!hasBaseline || isWarmupCompletedInSession) && !isBaselineLoading && submissionStatus !== 'disetujui' && (
+        <div id="praktikum-warmup-container" className="scroll-mt-24">
+          <PraktikumWarmupCard
+            moduleId={moduleId}
+            moduleTitle={`Modul 0${moduleId}: ${moduleData.title}`}
+            onWarmupComplete={() => {
+              setIsWarmupCompletedInSession(true);
+              setHasBaseline(true);
+            }}
+          />
+        </div>
+      )}
+
+      {/* ========================================================================= */}
       {/* BAGIAN D: ANALISIS & PEMBAHASAN                                           */}
       {/* ========================================================================= */}
       <div id="bagian-analisis-container" className="p-6 md:p-8 rounded-2xl bg-card border border-border/80 shadow-sm space-y-6 scroll-mt-24">
@@ -1514,6 +1772,23 @@ export default function PraktikumWorksheetPage({
           </div>
         </div>
 
+        {/* Banner Peringatan Kunci Jika Belum Ada Baseline */}
+        {!isFormUnlocked && !isBaselineLoading && (
+          <div className="p-4.5 rounded-2xl bg-amber-500/10 border-2 border-amber-500/30 text-amber-800 dark:text-amber-200 text-xs md:text-sm flex items-start gap-3.5 shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-500/40 font-bold">
+              <Lock className="w-5 h-5" />
+            </div>
+            <div className="space-y-1">
+              <p className="font-extrabold text-sm text-foreground">
+                Formulir Analisis Terkunci Sementara
+              </p>
+              <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+                Selesaikan <strong>Refleksi Cepat Uji Workbench</strong> di atas (1–2 menit) terlebih dahulu. Refleksi ini bertujuan mengaktifkan <em>Golden Baseline</em> ritme ketikan natural Anda agar sistem dapat memvalidasi keaslian laporan secara akurat.
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="space-y-5">
           {moduleData.analisisPrompts.map((prompt, idx) => (
             <div key={idx} className="p-5 rounded-xl bg-secondary/30 border border-border/80 space-y-2.5">
@@ -1525,9 +1800,19 @@ export default function PraktikumWorksheetPage({
                 rows={4}
                 value={analisisAnswers[idx] || ""}
                 onChange={(e) => handleAnalisisChange(idx, e.target.value)}
+                onKeyDown={handleTrackKeyInput}
                 onPaste={handlePreventPaste}
-                className="w-full p-3.5 rounded-xl bg-background border border-border/80 text-foreground font-sans text-sm md:text-base focus:ring-2 focus:ring-cyan-500/40 focus:outline-none leading-relaxed"
-                placeholder="Tuliskan analisis dan penjelasan ilmiah Anda di sini..."
+                disabled={!isFormUnlocked && !isBaselineLoading}
+                className={`w-full p-3.5 rounded-xl bg-background border border-border/80 text-foreground font-sans text-sm md:text-base focus:ring-2 focus:ring-cyan-500/40 focus:outline-none leading-relaxed transition-all ${
+                  !isFormUnlocked && !isBaselineLoading
+                    ? "opacity-50 cursor-not-allowed bg-secondary/40 select-none"
+                    : ""
+                }`}
+                placeholder={
+                  !isFormUnlocked && !isBaselineLoading
+                    ? "🔒 Selesaikan refleksi di atas terlebih dahulu untuk membuka formulir ini..."
+                    : "Tuliskan analisis dan penjelasan ilmiah Anda di sini..."
+                }
               />
             </div>
           ))}
@@ -1560,9 +1845,19 @@ export default function PraktikumWorksheetPage({
             rows={5}
             value={kesimpulanText}
             onChange={(e) => setKesimpulanText(e.target.value)}
+            onKeyDown={handleTrackKeyInput}
             onPaste={handlePreventPaste}
-            className="w-full p-4 rounded-xl bg-background border border-border/80 text-foreground font-sans text-sm md:text-base focus:ring-2 focus:ring-cyan-500/40 focus:outline-none leading-relaxed"
-            placeholder="Tuliskan kesimpulan akhir Anda berdasarkan bukti empiris yang didapat..."
+            disabled={!isFormUnlocked && !isBaselineLoading}
+            className={`w-full p-4 rounded-xl bg-background border border-border/80 text-foreground font-sans text-sm md:text-base focus:ring-2 focus:ring-cyan-500/40 focus:outline-none leading-relaxed transition-all ${
+              !isFormUnlocked && !isBaselineLoading
+                ? "opacity-50 cursor-not-allowed bg-secondary/40 select-none"
+                : ""
+            }`}
+            placeholder={
+              !isFormUnlocked && !isBaselineLoading
+                ? "🔒 Selesaikan refleksi di atas terlebih dahulu untuk membuka formulir ini..."
+                : "Tuliskan kesimpulan akhir Anda berdasarkan bukti empiris yang didapat..."
+            }
           />
         </div>
       </div>
@@ -1593,9 +1888,9 @@ export default function PraktikumWorksheetPage({
 
           <button
             onClick={handleEvaluateWithAI}
-            disabled={isEvaluating || !isAnalisisComplete || !isKesimpulanComplete}
+            disabled={isEvaluating || !isAnalisisComplete || !isKesimpulanComplete || (!isFormUnlocked && !isBaselineLoading)}
             className={`px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
-              isEvaluating || !isAnalisisComplete || !isKesimpulanComplete
+              isEvaluating || !isAnalisisComplete || !isKesimpulanComplete || (!isFormUnlocked && !isBaselineLoading)
                 ? "bg-secondary/80 text-muted-foreground border border-border cursor-not-allowed opacity-60"
                 : "bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-indigo-500/20"
             }`}
@@ -1677,6 +1972,58 @@ export default function PraktikumWorksheetPage({
               )}
             </div>
 
+            {/* Kartu Forensik Keaslian Ketikan & Integritas Ilmiah */}
+            {aiEvaluation.integrity && (
+              <div className="p-4 rounded-xl bg-secondary/50 border border-border/80 space-y-3">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/60 pb-2.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-purple-500" />
+                    Audit Forensik Keaslian Ketikan (vs Baseline Chat DB)
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-slate-500 font-medium">Indeks Keaslian:</span>
+                    <span className={`text-xs font-black px-2.5 py-0.5 rounded-full border ${
+                      (aiEvaluation.integrity.authenticityScore || 0) >= 80
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                        : (aiEvaluation.integrity.authenticityScore || 0) >= 65
+                        ? "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                        : "bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30"
+                    }`}>
+                      {aiEvaluation.integrity.authenticityScore}% {(aiEvaluation.integrity.authenticityScore || 0) >= 80 ? "Autentik Mahasiswa" : "Perlu Konfirmasi"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-medium">
+                  <div className="p-2.5 rounded-lg bg-background/80 border border-border/70 space-y-1">
+                    <span className="text-slate-500 block text-[11px]">Kecepatan Ketik Praktikum</span>
+                    <span className="font-mono font-bold text-foreground text-sm">
+                      {aiEvaluation.integrity.wpmComparison?.currentWpm || 12} WPM
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-background/80 border border-border/70 space-y-1">
+                    <span className="text-slate-500 block text-[11px]">Baseline Chat Pra-Ujian DB</span>
+                    <span className="font-mono font-bold text-cyan-600 dark:text-cyan-400 text-sm">
+                      {aiEvaluation.integrity.wpmComparison?.baselineWpm || 12} WPM
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-background/80 border border-border/70 space-y-1">
+                    <span className="text-slate-500 block text-[11px]">Rasio Laju / Pertumbuhan</span>
+                    <span className="font-mono font-bold text-foreground text-sm">
+                      {aiEvaluation.integrity.wpmComparison?.ratio || 1.0}x
+                      <span className="text-[10px] text-emerald-500 font-semibold ml-1">(Wajar Berlatih)</span>
+                    </span>
+                  </div>
+                </div>
+
+                {aiEvaluation.integrity.stylometricNotes && (
+                  <p className="text-xs text-slate-600 dark:text-slate-300 italic pt-1 leading-relaxed">
+                    💬 &ldquo;{aiEvaluation.integrity.stylometricNotes}&rdquo;
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* Ringkasan Ulasan AI */}
             <div className="p-4 rounded-xl bg-secondary/40 border border-border/80 space-y-1">
               <span className="text-xs font-bold uppercase tracking-wider text-cyan-600 dark:text-cyan-400 flex items-center gap-1.5">
@@ -1738,11 +2085,269 @@ export default function PraktikumWorksheetPage({
         )}
       </div>
 
+      {/* ========================================================================= */}
+      {/* BAGIAN F: PENGESAHAN TANDA TANGAN & PENGAJUAN KONSULTASI DOSEN             */}
+      {/* ========================================================================= */}
+      <div className="p-6 md:p-8 rounded-2xl bg-card border border-border/80 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/70 pb-4">
+          <div className="flex items-center gap-3.5">
+            <span className="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-500 dark:text-cyan-400 font-mono font-black text-base flex items-center justify-center border border-cyan-500/30 shadow-sm">
+              F
+            </span>
+            <div>
+              <h3 className="text-xl md:text-2xl font-extrabold text-foreground tracking-tight">
+                Pengesahan &amp; Konsultasi Laporan Praktikum
+              </h3>
+              <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">
+                Bubuhkan tanda tangan digital Anda dan ajukan laporan ke Dosen Pengampu untuk pemeriksaan akhir.
+              </p>
+            </div>
+          </div>
+
+          {/* Status Badge Submission */}
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-500 font-semibold">Status Laporan:</span>
+            <span className={`text-xs font-extrabold px-3 py-1 rounded-full border uppercase tracking-wider ${
+              submissionStatus === "disetujui"
+                ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/40"
+                : submissionStatus === "diajukan"
+                ? "bg-cyan-500/20 text-cyan-600 dark:text-cyan-400 border-cyan-500/40 animate-pulse"
+                : submissionStatus === "perlu_revisi"
+                ? "bg-rose-500/20 text-rose-600 dark:text-rose-400 border-rose-500/40"
+                : "bg-slate-500/20 text-slate-700 dark:text-slate-300 border-slate-500/30"
+            }`}>
+              {submissionStatus === "disetujui"
+                ? "✓ Disetujui Dosen"
+                : submissionStatus === "diajukan"
+                ? "⏳ Dalam Antrean Dosen"
+                : submissionStatus === "perlu_revisi"
+                ? "⚠️ Perlu Revisi"
+                : "Draf Mandiri"}
+            </span>
+          </div>
+        </div>
+
+        {/* Notifikasi / Catatan Dosen jika status perlu revisi atau disetujui */}
+        {submissionStatus === "perlu_revisi" && lecturerFeedback && (
+          <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 space-y-1.5">
+            <div className="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-bold text-sm">
+              <AlertCircle className="w-4 h-4" />
+              <span>Catatan Koreksi dari Dosen Hadiq, ST, M.Kom:</span>
+            </div>
+            <p className="text-xs md:text-sm text-slate-700 dark:text-slate-200 leading-relaxed pl-6">
+              {lecturerFeedback}
+            </p>
+          </div>
+        )}
+
+        {submissionStatus === "disetujui" && (
+          <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+                <span>Laporan Telah Disahkan Resmi oleh Dosen Hadiq, ST, M.Kom</span>
+              </div>
+              {lecturerScore !== null && (
+                <div className="px-3 py-1 rounded-lg bg-emerald-500/20 border border-emerald-500/40 font-mono font-black text-emerald-600 dark:text-emerald-300 text-sm">
+                  Nilai Resmi: {lecturerScore} / 100
+                </div>
+              )}
+            </div>
+            {lecturerFeedback && (
+              <p className="text-xs md:text-sm text-slate-700 dark:text-slate-200 leading-relaxed pl-7">
+                Catatan Dosen: &ldquo;{lecturerFeedback}&rdquo;
+              </p>
+            )}
+          </div>
+        )}
+
+        {consultationMessage && (
+          <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-700 dark:text-cyan-300 text-xs md:text-sm font-medium flex items-center gap-2.5">
+            <CheckCircle2 className="w-5 h-5 text-cyan-500 shrink-0" />
+            <span>{consultationMessage}</span>
+          </div>
+        )}
+
+        {/* Kotak Tanda Tangan Mahasiswa & Dosen */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          {/* Kolom Mahasiswa */}
+          <div className="p-5 rounded-2xl bg-secondary/30 border border-border/80 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-bold text-sm text-foreground">Tanda Tangan Praktikan</h4>
+                <p className="text-xs text-slate-500">Mahasiswa yang bersangkutan</p>
+              </div>
+              <span className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">
+                {studentNim || "NIM Mahasiswa"}
+              </span>
+            </div>
+
+            {/* Preview Box Tanda Tangan */}
+            <div className="h-36 rounded-xl bg-white dark:bg-slate-900 border-2 border-dashed border-border flex flex-col items-center justify-center p-2 relative overflow-hidden group">
+              {studentSignature ? (
+                <>
+                  <img
+                    src={studentSignature}
+                    alt="Tanda Tangan Mahasiswa"
+                    className="max-h-full max-w-full object-contain filter drop-shadow-sm"
+                  />
+                  <div className="absolute inset-0 bg-slate-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <label className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold cursor-pointer shadow">
+                      Ganti Gambar
+                      <input
+                        type="file"
+                        accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                        onChange={handleSignatureUpload}
+                        className="hidden"
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setStudentSignature(null)}
+                      className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold cursor-pointer shadow"
+                    >
+                      Hapus
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center space-y-2 p-4">
+                  <FileText className="w-8 h-8 text-slate-400 mx-auto" />
+                  <p className="text-xs text-slate-500 font-medium">
+                    Belum ada tanda tangan. Tempel gambar tanda tangan Anda di sini.
+                  </p>
+                  <label className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold cursor-pointer shadow transition-colors">
+                    <span>Unggah File Tanda Tangan</span>
+                    <input
+                      type="file"
+                      accept="image/png,image/jpeg,image/webp,image/svg+xml"
+                      onChange={handleSignatureUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+              )}
+            </div>
+
+            {/* Opsi Tanda Tangan Tersimpan & Simpan Profil */}
+            <div className="space-y-2 text-xs text-slate-600 dark:text-slate-300">
+              {storedProfileSignature && storedProfileSignature !== studentSignature && (
+                <button
+                  type="button"
+                  onClick={() => setStudentSignature(storedProfileSignature)}
+                  className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Gunakan Tanda Tangan yang Pernah Disimpan di Profil
+                </button>
+              )}
+
+              {studentSignature && (
+                <label className="flex items-center gap-2 cursor-pointer select-none font-medium">
+                  <input
+                    type="checkbox"
+                    checked={saveSigToProfile}
+                    onChange={(e) => setSaveSigToProfile(e.target.checked)}
+                    className="w-4 h-4 rounded text-cyan-600 focus:ring-cyan-500 border-border"
+                  />
+                  <span>Simpan tanda tangan ini di profil akun saya untuk seluruh praktikum</span>
+                </label>
+              )}
+            </div>
+
+            <div className="text-center pt-1 border-t border-border/60">
+              <span className="font-bold text-xs uppercase text-foreground">{studentName || "Nama Mahasiswa"}</span>
+            </div>
+          </div>
+
+          {/* Kolom Dosen Pengampu */}
+          <div className="p-5 rounded-2xl bg-secondary/30 border border-border/80 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-bold text-sm text-foreground">Pengesahan Dosen Pengampu</h4>
+                <p className="text-xs text-slate-500">Mata Kuliah Praktikum</p>
+              </div>
+              <span className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">
+                NIDN: 0701048602
+              </span>
+            </div>
+
+            {/* Preview Box Tanda Tangan Dosen */}
+            <div className="h-36 rounded-xl bg-white dark:bg-slate-900 border border-border/80 flex flex-col items-center justify-center p-2 relative overflow-hidden">
+              {lecturerSignature ? (
+                <div className="text-center space-y-1">
+                  <img
+                    src={lecturerSignature}
+                    alt="Tanda Tangan Dosen"
+                    className="max-h-24 max-w-full object-contain mx-auto filter drop-shadow-sm"
+                  />
+                  <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400 font-bold block">
+                    ✓ TERVERIFIKASI DIGITAL {lecturerSignedAt ? new Date(lecturerSignedAt).toLocaleDateString("id-ID") : ""}
+                  </span>
+                </div>
+              ) : (
+                <div className="text-center space-y-1.5 p-4">
+                  <Lock className="w-8 h-8 text-slate-400 mx-auto" />
+                  <p className="text-xs text-slate-500 font-medium">
+                    {submissionStatus === "diajukan"
+                      ? "Menunggu pengesahan dan pembubuhan tanda tangan dari Dosen Hadiq, ST, M.Kom"
+                      : "Tanda tangan resmi Dosen akan dibubuhkan setelah Anda mengajukan laporan ini"}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="space-y-1 text-center pt-3 border-t border-border/60">
+              <span className="font-bold text-xs text-foreground block">Hadiq, ST, M.Kom</span>
+              <span className="text-[11px] text-slate-500 block">Dosen Pengampu Laboratorium</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Tombol Aksi Pengajuan Konsultasi ke Dosen */}
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
+          <div className="text-xs text-slate-500 font-medium">
+            * Sebelum mengajukan, pastikan Analisis &amp; Kesimpulan telah lolos uji Sokratik AI dan tanda tangan telah ditempel.
+          </div>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={handleSubmitConsultation}
+              disabled={isSubmittingConsultation || !studentSignature || !canPrint}
+              className={`w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all ${
+                !studentSignature || !canPrint
+                  ? "bg-secondary text-muted-foreground cursor-not-allowed opacity-60"
+                  : "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white cursor-pointer shadow-emerald-500/20"
+              }`}
+            >
+              {isSubmittingConsultation ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  <span>Mengajukan Laporan...</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-4 h-4 text-white" />
+                  <span>{submissionStatus === "diajukan" ? "Perbarui Pengajuan ke Dosen" : "Ajukan Konsultasi ke Dosen"}</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Floating Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl bg-card/95 backdrop-blur border border-border/80 shadow-xl sticky bottom-4 z-30">
         <div className="text-sm text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2.5">
           <Save className="w-5 h-5 text-cyan-500 shrink-0" />
-          <span>Simpan secara berkala. Seluruh isian form ini akan terangkum pada dokumen resmi cetak A4.</span>
+          <span>
+            {submissionStatus === "disetujui"
+              ? "✓ Laporan telah disahkan resmi oleh Dosen. Anda dapat mencetak dokumen PDF kapan saja."
+              : submissionStatus === "diajukan"
+              ? "⏳ Laporan sedang ditinjau Dosen. Anda tetap dapat menyimpan perubahan atau mencetak draf."
+              : "Simpan secara berkala. Seluruh isian form ini akan terangkum pada dokumen resmi cetak A4."}
+          </span>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
@@ -1760,7 +2365,7 @@ export default function PraktikumWorksheetPage({
               className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
             >
               <Printer className="w-4 h-4" />
-              <span>Pratinjau &amp; Cetak PDF A4</span>
+              <span>{submissionStatus === "disetujui" ? "Cetak Laporan Resmi A4" : "Pratinjau & Cetak PDF A4"}</span>
             </Link>
           ) : (
             <div className="w-full sm:w-auto flex flex-col sm:flex-row items-center gap-2">

@@ -27,6 +27,13 @@ export default function PraktikumPrintPage({
   const [aiEvaluation, setAiEvaluation] = useState<any | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // State tanda tangan & pengesahan resmi dosen
+  const [studentSignature, setStudentSignature] = useState<string | null>(null);
+  const [lecturerSignature, setLecturerSignature] = useState<string | null>(null);
+  const [lecturerScore, setLecturerScore] = useState<number | null>(null);
+  const [lecturerSignedAt, setLecturerSignedAt] = useState<string | null>(null);
+  const [submissionStatus, setSubmissionStatus] = useState<string>("draft");
+
   useEffect(() => {
     // Tanggal default
     const today = new Date().toLocaleDateString("id-ID", {
@@ -60,15 +67,39 @@ export default function PraktikumPrintPage({
         if (parsed.studentNim) setStudentNim(parsed.studentNim);
         if (parsed.studentClass) setStudentClass(parsed.studentClass);
         if (parsed.labDate) setLabDate(parsed.labDate);
-        setIsLoaded(true);
-        return;
+        if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
       } catch (e) {
         console.error("Gagal membaca draf lokal:", e);
       }
     }
 
+    // Ambil data remote submission dari database jika ada
+    if (profile?.id) {
+      fetch(`/api/praktikum/submission?userId=${profile.id}&moduleId=${moduleId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && data.submission) {
+            const sub = data.submission;
+            if (sub.student_signature) setStudentSignature(sub.student_signature);
+            if (sub.lecturer_signature) setLecturerSignature(sub.lecturer_signature);
+            if (sub.lecturer_score !== null && sub.lecturer_score !== undefined) {
+              setLecturerScore(Number(sub.lecturer_score));
+            }
+            if (sub.lecturer_signed_at) setLecturerSignedAt(sub.lecturer_signed_at);
+            if (sub.status) setSubmissionStatus(sub.status);
+            if (sub.student_name) setStudentName(sub.student_name);
+            if (sub.student_nim) setStudentNim(sub.student_nim);
+            if (sub.student_class) setStudentClass(sub.student_class);
+            if (sub.lab_date) setLabDate(sub.lab_date);
+          }
+        })
+        .catch((err) => console.warn("Gagal memuat status pengesahan cetak remote:", err))
+        .finally(() => setIsLoaded(true));
+    } else {
+      setIsLoaded(true);
+    }
+
     setObservations(moduleData.defaultObservations);
-    setIsLoaded(true);
   }, [moduleId, moduleData, profile]);
 
   const handlePrint = () => {
@@ -412,39 +443,85 @@ export default function PraktikumPrintPage({
         {/* ========================================================================= */}
         {/* LEMBAR PENGESAHAN & PENILAIAN DOSEN                                       */}
         {/* ========================================================================= */}
-        <div className="border-2 border-black p-5 text-sm page-break-inside-avoid space-y-5 text-black">
+        <div className="border-2 border-black p-5 text-sm page-break-inside-avoid space-y-4 text-black">
           <div className="flex items-center justify-between border-b border-black pb-2.5">
-            <div className="font-bold text-sm uppercase tracking-wider text-black">
-              Lembar Penilaian &amp; Pengesahan Laboratorium
+            <div>
+              <div className="font-bold text-sm uppercase tracking-wider text-black">
+                Lembar Penilaian &amp; Pengesahan Laboratorium
+              </div>
+              <div className="text-[11px] font-mono text-slate-700">
+                Mata Kuliah Praktikum Algoritma &amp; Pemrograman (1 SKS)
+              </div>
             </div>
             <div className="flex items-center gap-2 font-mono font-bold text-black">
               <span>Nilai / Skor Akhir :</span>
-              <span className="border-2 border-black px-5 py-1 text-base inline-block min-w-[80px] text-center font-black">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; / 100
+              <span className="border-2 border-black px-4 py-1 text-base inline-block min-w-[90px] text-center font-black bg-slate-50">
+                {lecturerScore !== null
+                  ? `${lecturerScore} / 100`
+                  : aiEvaluation?.score
+                  ? `${aiEvaluation.score} / 100*`
+                  : "....... / 100"}
               </span>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 text-center pt-3 gap-8">
-            <div className="space-y-16">
-              <div className="space-y-1">
-                <p className="text-sm">Menyatakan Kebenaran Hasil Uji,</p>
+          <div className="grid grid-cols-2 text-center pt-2 gap-8">
+            {/* Kolom Mahasiswa Praktikan */}
+            <div className="space-y-2 flex flex-col justify-between h-44">
+              <div className="space-y-0.5">
+                <p className="text-xs">Menyatakan Kebenaran Hasil Uji,</p>
                 <p className="font-bold text-sm">Mahasiswa Praktikan,</p>
               </div>
+
+              <div className="h-20 flex items-center justify-center">
+                {studentSignature ? (
+                  <img
+                    src={studentSignature}
+                    alt="Tanda Tangan Mahasiswa"
+                    className="max-h-20 max-w-[200px] object-contain mx-auto filter drop-shadow-sm"
+                  />
+                ) : (
+                  <div className="border-b border-dashed border-slate-400 w-44 mx-auto mt-14" />
+                )}
+              </div>
+
               <div>
-                <p className="font-bold text-base uppercase underline text-black">{studentName || "( ..................................................... )"}</p>
-                <p className="font-mono text-xs font-semibold text-black mt-0.5">NIM. {studentNim || "......................................."}</p>
+                <p className="font-bold text-sm uppercase underline text-black">
+                  {studentName || "( ..................................................... )"}
+                </p>
+                <p className="font-mono text-xs font-semibold text-black mt-0.5">
+                  NIM. {studentNim || "......................................."}
+                </p>
               </div>
             </div>
 
-            <div className="space-y-16">
-              <div className="space-y-1">
-                <p className="text-sm">Menyetujui &amp; Mengesahkan,</p>
-                <p className="font-bold text-sm">Dosen Pengampu,</p>
+            {/* Kolom Dosen Pengampu */}
+            <div className="space-y-2 flex flex-col justify-between h-44">
+              <div className="space-y-0.5">
+                <p className="text-xs">Menyetujui &amp; Mengesahkan,</p>
+                <p className="font-bold text-sm">Dosen Pengampu Laboratorium,</p>
               </div>
+
+              <div className="h-20 flex items-center justify-center">
+                {lecturerSignature ? (
+                  <div className="text-center space-y-0.5">
+                    <img
+                      src={lecturerSignature}
+                      alt="Tanda Tangan Dosen"
+                      className="max-h-16 max-w-[220px] object-contain mx-auto filter drop-shadow-sm"
+                    />
+                    <span className="text-[9px] font-mono text-slate-600 block">
+                      Tanda Tangan Digital Sah • {lecturerSignedAt ? new Date(lecturerSignedAt).toLocaleDateString("id-ID") : labDate}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="border-b border-dashed border-slate-400 w-44 mx-auto mt-14" />
+                )}
+              </div>
+
               <div>
-                <p className="font-bold text-base underline text-black">Hadiq, ST, M.Kom</p>
-                <p className="text-xs font-semibold text-black mt-0.5">Dosen Pengampu Matakuliah</p>
+                <p className="font-bold text-sm underline text-black">Hadiq, ST, M.Kom</p>
+                <p className="text-xs font-semibold text-black mt-0.5">NIDN: 0701048602</p>
               </div>
             </div>
           </div>

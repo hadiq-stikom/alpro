@@ -329,6 +329,20 @@ export default function OperatorPrecedenceLab() {
               </tbody>
             </table>
           </div>
+
+          {/* Bridge Callout: Mengapa Assignment Berada di Prioritas 8 (Paling Terendah)? */}
+          <div className="p-4 rounded-2xl bg-amber-500/10 dark:bg-amber-950/20 border-2 border-amber-500/40 text-xs text-slate-800 dark:text-slate-100 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.9)] hover:border-amber-400">
+            <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold font-mono text-xs uppercase tracking-wider">
+              <Sparkles className="w-4 h-4" />
+              <span>Jembatan Pedagogis: Mengapa Operator Penugasan (=) Berada di Prioritas Terendah (Baris 8)?</span>
+            </div>
+            <p className="leading-relaxed font-medium">
+              Kompiler dan interpreter sengaja mendudukkan <strong>Operator Penugasan (Assignment <code className="font-bold text-amber-600 dark:text-amber-300">=</code>)</strong> di tingkat presedensi <strong>paling buncit (terendah)</strong>. Tujuannya adalah agar <em>seluruh ekspresi di sisi kanan (R-Value)</em>—baik penjumlahan, perkalian, perbandingan relasional, maupun logika boolean—<strong>SELESAI dihitung tuntas hingga menciut menjadi satu nilai tunggal</strong>, sebelum nilai tersebut disalin dan disimpan ke dalam alamat memori variabel penampung di sisi kiri (L-Value).
+            </p>
+            <div className="p-2.5 bg-card dark:bg-slate-900 rounded-xl border border-amber-400/40 font-mono text-[11px] text-slate-900 dark:text-slate-100">
+              Contoh: <code className="text-purple-600 dark:text-purple-400 font-bold">hasil</code> = <code className="text-cyan-600 dark:text-cyan-400">10 + 5 * 2</code> &rarr; Sisi kanan dihitung dulu (<code className="text-emerald-600 dark:text-emerald-400">5 * 2 = 10</code>, lalu <code className="text-emerald-600 dark:text-emerald-400">10 + 10 = 20</code>), baru kemudian angka <code className="text-amber-600 dark:text-amber-400 font-bold">20</code> ditugaskan ke variabel <code className="text-purple-600 dark:text-purple-400 font-bold">hasil</code>!
+            </div>
+          </div>
         </div>
 
       </div>

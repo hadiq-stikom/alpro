@@ -653,5 +653,64 @@ Sisi muka (*Front Face*) menyajikan intisari konsep esensial, sedangkan sisi bal
    - **Pekan 15**: Penanganan Galat & Teknik Debugging — Taksonomi 3 jenis galat (**Syntax Error**, **Runtime Error / Exception**, dan **Logical Error**), blok pertahanan `try - except - finally` / `try - catch`, analisis *Stack Trace*, dan penelusuran bug (*RAM State Tracing*).
    - **Pekan 16**: Evaluasi Akhir Semester (UAS) & Proyek Terapan — Ujian integrasi seluruh pilar dan perakitan aplikasi terapan modular bebas crash.
 
+---
+
+## 33. Implementasi Baku Pertemuan 9 (Dasar Perulangan: FOR & WHILE Loop — Verified & Active)
+1. **5 Sub-Materi Berstruktur Akordion Tertutup (*Collapsed by Default*)**:
+   - Sub-Materi 9.1: Taksonomi Perulangan: Definite vs Indefinite Iteration.
+   - Sub-Materi 9.2: Perulangan FOR & Anatomi Fungsi `range(start, stop, step)`.
+   - Sub-Materi 9.3: Perulangan WHILE, Nilai Sentinel, dan Penanganan Infinite Loop.
+   - Sub-Materi 9.4: Pola Akumulator Data (*Sum, Count, Min/Max Extreme Value*).
+   - Sub-Materi 9.5: Pengendali Aliran Loop: `break`, `continue`, dan Fitur Unik Python `loop else:`.
+2. **Modul Laboratorium Interaktif Dwibahasa (Python & JavaScript)**:
+   - Terintegrasi penuh dengan kartu flip 2D bebas buram (`AnimatedLoopDefinition.tsx`), stepper rentang nilai (`ForLoopStepperLab.tsx`), simulator kasir sentinel & infinite loop breaker (`WhileSentinelLab.tsx`), RAM accumulator (`LoopAccumulatorRamLab.tsx`), dan sirkuit interupsi alur loop (`BreakContinueLab.tsx`).
+3. **Asesmen Murni Esai AI Grader**:
+   - Bank 5 butir soal esai penalaran bergradasi (`m9-essay-1` s.d. `m9-essay-5`) dengan durasi 300 detik per butir dan rubrik analitik 0–100.
+4. **Integrasi Sistem**: Rute `/theory/9` aktif dengan status beranda dan dasbor mahasiswa `ready`.
+
+---
+
+## 34. Protokol Penanganan Modus Gawai Kedua (Second Device Transcription) & Dokumen Audit Resmi PDF
+1. **Pembedahan Forensik Modus Gawai Kedua**:
+   - Mahasiswa tidak melakukan tab switch pada peramban laptop ujian (`tab_switches = 0`), melainkan mengetikkan ulang hasil prompt AI dari layar smartphone di samping keyboard secara langsung.
+   - Terdeteksi melalui kecepatan ketik tinggi terus-menerus ($> 15 - 30$ WPM), ketiadaan salah ketik, struktur kalimat simetris formulaik AI, dan kemunculan leksikon teknis tingkat lanjut di luar materi pengantar.
+2. **Kebijakan Pembinaan Proporsional**:
+   - Mahasiswa yang terindikasi modus ini disesuaikan dan ditetapkan pada nilai batas kelulusan pembinaan **70.00 (Grade B / Kategori: Baik)** pada modul terkait:
+     * **Ahmad Umarul Faruq (1126102268)** pada Pertemuan 1.
+     * **Moh. Alvin Tauviqul Hikam (1126102264)** pada Pertemuan 2 (dan nilai M1 tetap di-reset karena plagiasi silang).
+3. **Standardisasi Tiga Format Dokumen Audit**:
+   - Berkas Markdown Utama: `LAPORAN_AUDIT_INTEGRITAS_ESAI.md` (Nomor Resmi: `042/ALPRO-TI/AUDIT-AI/X/2026`).
+   - Berkas Mandiri Standalone: `LAPORAN_AUDIT_INTEGRITAS_ESAI.html` (Base64 signature tersemat, Mermaid CDN).
+   - Rute Antarmuka Web Siap Cetak: `/lecturer/audit-report` dengan styling standar A4 dan tombol *Cetak / Simpan PDF*.
+
+---
+
+## 35. Standar Desain, Hierarki Visual & Interaktivitas Modul Praktikum Laboratorium (LKP)
+1. **Landasan Filosofis & Pembongkaran 2 Pilar Fundamental**:
+   - Dilarang menyajikan pengantar filosofis sebagai teks datar monokrom panjang. Wajib menggunakan kotak pengantar beraksen khusus (`p-4 rounded-xl bg-card border border-border/80 shadow-sm`) dengan *keyword highlighting* otomatis.
+   - Dua pilar fundamental yang dikendalikan oleh pemilihan tipe data **DILARANG disajikan mendatar inline `(1) ... serta (2) ...`**. Wajib disajikan dalam **2 Kartu Kolom Responsif (`grid-cols-1 md:grid-cols-2`)**:
+     * **Pilar #1 (Aksen Cyan)**: *Kapasitas Domain Nilai & Akurasi Presisi Komputasi* (Tag: `Domain & Presisi RAM`).
+     * **Pilar #2 (Aksen Indigo)**: *Keabsahan Operasi Matematika & Logika* (Tag: `Type Safety & Operasi`).
+2. **Kartu Dasar Teori 3-Level Visual Hierarchy (Bagian B)**:
+   - **Tingkat 1**: Banner Intisari Konsep (*Lead Concept Callout*) bergradien Cyan (`border-l-4 border-cyan-500`) dengan badge `✨ INTISARI KONSEP`.
+   - **Tingkat 2**: Kartu Rincian Kunci (*Structured Fact Cards*) berindikator *glowing dot*, judul tebal, uraian ringkas, dan badge/chip kode di sisi kanan (`int: 28B | float: 24B`, `PyObject`, `type() & sys.getsizeof()`).
+   - **Tingkat 3**: Akordion Naratif Lengkap (`<details>`) untuk membaca teks akademis panjang tanpa memicu *cognitive overload*.
+   - **Lab Insight**: Catatan analisis investigasi berlatar amber (`Lightbulb` icon).
+   - **Larangan Blok Konsol Hitam di Teori**: Blok terminal gelap *Parameter & Sintaks Uji* **DIHILANGKAN DARI KARTU TEORI** agar bebas dari *horizontal scrollbar*. Eksekusi pengujian dipusatkan ke Prosedur Kerja dan Terminal Helper.
+3. **Mesin Penekanan Tipografi Otomatis (`renderHighlightedText`)**:
+   - Metrik kapasitas (`28 byte`, `24 byte`, `52-bit`, `64-bit`) $\rightarrow$ Chip Amber kontras tinggi.
+   - Fungsi & identifier (`type()`, `sys.getsizeof()`, `PyObject`, `IEEE 754`, `ZeroDivisionError`, `10 // 4`, `0.1 + 0.2`) $\rightarrow$ Chip konsol Cyan.
+   - Nilai Boolean (`True`, `False`) $\rightarrow$ Badge Hijau Emerald.
+   - Konsep inti (`pointer ke alamat memori fisik RAM`, `integer truncation`, `String Concatenation`, `Explicit Type Casting`, `hardware trap`) $\rightarrow$ Teks tebal bergaris bawah aksen cyan.
+4. **Prosedur Langkah Kerja Berfase (Bagian C)**:
+   - Dilarang tag `<ol>` datar monokrom.
+   - Wajib menyertakan bilah pipeline alur 4 fase: `1. Persiapan` $\rightarrow$ `2. 5 Kasus Uji` $\rightarrow$ `3. Catat Tabel C` $\rightarrow$ `4. Sintesis D & E`.
+   - Kartu berfase dengan nomor badge tebal `#1`–`#8` berkode warna semantik per fase (Sky, Cyan, Amber, Purple).
+   - Tombol pintas interaktif langsung: `[▶ Uji di Simulator]` (*auto-fill input & smooth scroll*), `[✓ Ke Tabel Pengamatan]`, dan `[📝 Ke Bagian Analisis]`.
+5. **Standar Cetak Lembar Kerja Resmi A4 / PDF (`print/page.tsx`)**:
+   - Landasan filosofis dicetak dalam 2 kotak pilar mini berdampingan (*side-by-side*).
+   - Dasar teori disajikan dalam format daftar butir berpoin rapi (*bulleted list*) dengan tag kode tebal, tanpa blok konsol hitam.
+
+
 
 

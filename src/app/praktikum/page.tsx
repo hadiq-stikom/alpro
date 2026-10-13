@@ -103,15 +103,11 @@ export default function PraktikumIndexPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {PRAKTIKUM_MODULES.map((m) => {
-            const isReady = m.id === 1;
+            const isReady = Boolean(m.dasarTeori.points && m.dasarTeori.points.length > 0);
             return (
               <div
                 key={m.id}
-                className={`rounded-2xl border transition-all flex flex-col justify-between ${
-                  isReady 
-                    ? "bg-card border-cyan-500/40 shadow-md hover:border-cyan-500 hover:shadow-cyan-500/10" 
-                    : "bg-card/50 border-border/60 opacity-80"
-                }`}
+                className="rounded-2xl border transition-all flex flex-col justify-between bg-card border-cyan-500/40 shadow-md hover:border-cyan-500 hover:shadow-cyan-500/10"
               >
                 <div className="p-6 space-y-4">
                   {/* Header Card */}

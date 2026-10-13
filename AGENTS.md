@@ -286,4 +286,52 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
       - **Pekan 16**: Evaluasi Akhir Semester (UAS) & Proyek Terapan — Ujian integrasi seluruh pilar dan perakitan aplikasi terapan modular bebas crash.
     - Setiap pertemuan dirancang untuk durasi **4 SKS (200 Menit)** dengan siklus pedagogis lengkap: Analogi Teori (30-35') $\rightarrow$ Visualizer Lab (40-50') $\rightarrow$ Hands-on Coding Mandiri (35-45') $\rightarrow$ Asesmen Esai AI Bertingkat (35-40').
 
+35. **Implementasi Baku Pertemuan 9 (Dasar Perulangan: FOR & WHILE Loop — Verified & Active)**:
+    - Seluruh modul Pertemuan 9 telah selesai 100% dan berstatus baku (*Single Source of Truth*):
+      - 5 Sub-Materi Berstruktur Akordion Tertutup (*Collapsed by Default* `useState(false)`).
+      - 4 Modul Lab Interaktif Dwibahasa (Python & JavaScript): `AnimatedLoopDefinition.tsx`, `ForLoopStepperLab.tsx`, `WhileSentinelLab.tsx`, `LoopAccumulatorRamLab.tsx`, `BreakContinueLab.tsx`.
+      - Evaluasi Asesmen Murni Esai AI Grader: 5 butir soal penalaran bertingkat (`m9-essay-1` s.d. `m9-essay-5`, timer 300s, rubrik analitik 0–100, zero multiple choice).
+      - Rute `/theory/9` aktif dengan status beranda dan dasbor mahasiswa `ready`.
+
+36. **Protokol Penanganan Modus Gawai Kedua (Second Device Transcription) & Penerbitan Dokumen Audit Resmi PDF**:
+    - **Pembedahan Forensik Modus Gawai Kedua**:
+      - Terjadi ketika mahasiswa tidak berganti tab pada laptop ujian (`tab_switches = 0`), namun mengetikkan ulang hasil prompt AI dari layar smartphone di samping keyboard secara langsung.
+      - Terdeteksi melalui: kecepatan ketik tinggi terus-menerus ($> 15 - 30$ WPM), ketiadaan typo, struktur kalimat simetris formulaik AI, dan kemunculan leksikon teknis lanjut di luar silabus pengantar.
+    - **Kebijakan Pembinaan Proporsional**:
+      - Sesuai arahan Dosen Pengampu, mahasiswa yang terindikasi modus ini disesuaikan dan ditetapkan pada nilai batas kelulusan pembinaan **70.00 (Grade B / Kategori: Baik)** pada modul terkait:
+        * **Ahmad Umarul Faruq (1126102268)** pada Pertemuan 1.
+        * **Moh. Alvin Tauviqul Hikam (1126102264)** pada Pertemuan 2 (dan nilai M1 tetap di-reset karena plagiasi silang).
+    - **Standardisasi Tiga Format Dokumen Audit**:
+      1. Berkas Markdown Utama: `LAPORAN_AUDIT_INTEGRITAS_ESAI.md` (Nomor Resmi: `042/ALPRO-TI/AUDIT-AI/X/2026`).
+      2. Berkas Mandiri Standalone: `LAPORAN_AUDIT_INTEGRITAS_ESAI.html` (Base64 signature tersemat, Mermaid CDN).
+      3. Rute Antarmuka Web Siap Cetak: `/lecturer/audit-report` dengan styling standar A4 dan tombol *Cetak / Simpan PDF*.
+
+37. **Standar Desain, Hierarki Visual & Interaktivitas Modul Praktikum Laboratorium (LKP)**:
+    - Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di Bab 11 `konsep.md`, Bab 3–4 `PRAKTIKUM_SPEC.md`, dan Bagian 35 `pedagogy_conventions.md`:
+    - **Landasan Filosofis & 2 Pilar Fundamental Tipe Data**:
+      - DILARANG menyajikan pengantar filosofis sebagai teks datar monokrom panjang.
+      - Dua pilar fundamental yang dikendalikan oleh pemilihan tipe data **DILARANG disajikan mendatar inline `(1) ... serta (2) ...`**. Wajib disajikan dalam **2 Kartu Kolom Responsif (`grid-cols-1 md:grid-cols-2`)**:
+        * *Pilar #1 (Aksen Cyan)*: Kapasitas Domain Nilai & Akurasi Presisi Komputasi (Tag: `Domain & Presisi RAM`).
+        * *Pilar #2 (Aksen Indigo)*: Keabsahan Operasi Matematika & Logika (Tag: `Type Safety & Operasi`).
+    - **Kartu Dasar Teori 3-Level Visual Hierarchy (Bagian B)**:
+      - *Tingkat 1*: Banner Intisari Konsep (*Lead Concept Callout*) bergradien Cyan (`border-l-4 border-cyan-500`) dengan badge `✨ INTISARI KONSEP`.
+      - *Tingkat 2*: Kartu Rincian Kunci (*Structured Fact Cards*) berindikator *glowing dot*, judul tebal, uraian ringkas, dan badge/chip kode di sisi kanan (`int: 28B | float: 24B`, `PyObject`, `type() & sys.getsizeof()`).
+      - *Tingkat 3*: Akordion Naratif Lengkap (`<details>`) untuk membaca teks akademis panjang tanpa memicu *cognitive overload*.
+      - *Lab Insight*: Catatan analisis investigasi berlatar amber (`Lightbulb` icon).
+      - **Larangan Blok Konsol Hitam di Teori**: Blok terminal gelap *Parameter & Sintaks Uji* **DIHILANGKAN DARI KARTU TEORI** agar bebas dari *horizontal scrollbar*. Eksekusi pengujian dipusatkan ke Prosedur Kerja dan Terminal Helper.
+    - **Mesin Penekanan Tipografi Otomatis (`renderHighlightedText`)**:
+      - Metrik kapasitas (`28 byte`, `24 byte`, `52-bit`, `64-bit`) $\rightarrow$ Chip Amber kontras tinggi.
+      - Fungsi & identifier (`type()`, `sys.getsizeof()`, `PyObject`, `IEEE 754`, `ZeroDivisionError`, `10 // 4`, `0.1 + 0.2`) $\rightarrow$ Chip konsol Cyan.
+      - Nilai Boolean (`True`, `False`) $\rightarrow$ Badge Hijau Emerald.
+      - Konsep inti $\rightarrow$ Teks tebal bergaris bawah aksen cyan.
+    - **Prosedur Langkah Kerja Berfase (Bagian C)**:
+      - DILARANG menggunakan tag `<ol>` datar monokrom biasa.
+      - Wajib menyertakan bilah pipeline alur 4 fase: `1. Persiapan` $\rightarrow$ `2. 5 Kasus Uji` $\rightarrow$ `3. Catat Tabel C` $\rightarrow$ `4. Sintesis D & E`.
+      - Kartu berfase dengan nomor badge tebal `#1`–`#8` berkode warna semantik per fase (Sky, Cyan, Amber, Purple).
+      - Tombol pintas interaktif langsung: `[▶ Uji di Simulator]` (*auto-fill input & smooth scroll*), `[✓ Ke Tabel Pengamatan]`, dan `[📝 Ke Bagian Analisis]`.
+    - **Standar Cetak Lembar Kerja Resmi A4 / PDF (`print/page.tsx`)**:
+      - Landasan filosofis dicetak dalam 2 kotak pilar mini berdampingan (*side-by-side*).
+      - Dasar teori disajikan dalam format daftar butir berpoin rapi (*bulleted list*) dengan tag kode tebal, tanpa blok konsol hitam.
+
+
 

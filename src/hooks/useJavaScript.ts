@@ -1,15 +1,18 @@
 "use client";
 
 import { useState, useCallback } from 'react';
+import { VariableMeta } from './usePython';
 
 export function useJavaScript() {
   const [isLoading] = useState(false); // JS is native, no loading needed
   const [output, setOutput] = useState<string[]>([]);
   const [variables, setVariables] = useState<Record<string, any>>({});
+  const [variableDetails, setVariableDetails] = useState<Record<string, VariableMeta>>({});
 
   const runCode = useCallback(async (code: string) => {
     setOutput([]);
     setVariables({});
+    setVariableDetails({});
     
     const logs: string[] = [];
     
@@ -23,36 +26,61 @@ export function useJavaScript() {
     try {
       // Create a clean execution environment
       const func = new Function('console', `
-        ${code}
+        let __evalLast = undefined;
+        try {
+          __evalLast = eval(\`${code.replace(/`/g, '\\`')}\`);
+        } catch {
+          ${code}
+        }
         
         // Extract variables using a simple regex and eval
         const __extractedVars = {};
+        const __extractedMeta = {};
         const __codeStr = \`${code.replace(/`/g, '\\`')}\`;
         
-        // Very basic variable extraction for mock purposes
-        // Matches let/const/var variable_name = ...
         const varMatches = __codeStr.matchAll(/(?:let|const|var)\\s+([a-zA-Z_$][0-9a-zA-Z_$]*)\\s*=/g);
         for (const match of varMatches) {
            const varName = match[1];
            try {
-             // In new Function scope, variables declared with let/const aren't automatically in 'this' or an object
-             // We can use eval to get their current value at the end of the script
-             __extractedVars[varName] = eval(varName);
+             const val = eval(varName);
+             __extractedVars[varName] = val;
+             let tName = typeof val;
+             if (tName === 'number') {
+               tName = Number.isInteger(val) ? 'int' : 'float';
+             } else if (Array.isArray(val)) {
+               tName = 'list';
+             } else if (val === null) {
+               tName = 'null';
+             } else if (typeof val === 'object') {
+               tName = 'dict';
+             }
+             __extractedMeta[varName] = {
+               val: val,
+               type: tName,
+               repr: typeof val === 'object' ? JSON.stringify(val) : String(val),
+               size: null
+             };
            } catch(e) {}
         }
-        return __extractedVars;
+        return { vars: __extractedVars, meta: __extractedMeta, evalRes: __evalLast };
       `);
 
-      const extractedVars = func(mockConsole);
+      const res = func(mockConsole);
       
-      setVariables(extractedVars);
+      setVariables(res?.vars || {});
+      setVariableDetails(res?.meta || {});
+      
+      if (logs.length === 0 && res?.evalRes !== undefined && res?.evalRes !== null) {
+        logs.push(typeof res.evalRes === 'object' ? JSON.stringify(res.evalRes) : String(res.evalRes));
+      }
       setOutput(logs);
       
     } catch (err: any) {
       setOutput([...logs, err.toString()]);
       setVariables({});
+      setVariableDetails({});
     }
   }, []);
 
-  return { isLoading, output, variables, runCode, setOutput };
+  return { isLoading, output, variables, variableDetails, runCode, setOutput };
 }

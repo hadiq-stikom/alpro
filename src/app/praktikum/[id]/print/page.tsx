@@ -240,13 +240,74 @@ export default function PraktikumPrintPage({
         {/* ========================================================================= */}
         {/* BAGIAN B: DASAR TEORI                                                     */}
         {/* ========================================================================= */}
-        <div className="mb-6 space-y-2">
+        <div className="mb-6 space-y-2.5">
           <h3 className="text-sm font-black uppercase tracking-wider border-b-2 border-black pb-1 text-black">
-            B. Dasar Teori &amp; Hipotesis Uji
+            B. Dasar Teori &amp; Hipotesis Uji Laboratorium
           </h3>
           <p className="text-xs sm:text-sm text-justify text-black leading-relaxed font-normal">
-            {moduleData.dasarTeori.overview}
+            {moduleData.dasarTeori.leadParagraph || moduleData.dasarTeori.overview}
           </p>
+
+          {moduleData.dasarTeori.fundamentalPillars && moduleData.dasarTeori.fundamentalPillars.length > 0 && (
+            <div className="grid grid-cols-2 gap-2 text-xs pt-1">
+              {moduleData.dasarTeori.fundamentalPillars.map((fp) => (
+                <div key={fp.number} className="border border-black p-2 rounded bg-slate-50 space-y-0.5">
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-[10.5px] uppercase tracking-tight text-black">
+                      #{fp.number} {fp.title}
+                    </span>
+                    {fp.tag && (
+                      <span className="text-[9px] font-mono font-bold border border-black px-1 rounded">
+                        {fp.tag}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[10px] text-slate-800 leading-snug">
+                    {fp.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Rincian Pilar Dasar Teori & Parameter Uji */}
+          {moduleData.dasarTeori.points && moduleData.dasarTeori.points.length > 0 && (
+            <div className="mt-3 space-y-2 text-xs text-black border-t border-slate-300 pt-2.5">
+              {moduleData.dasarTeori.points.map((p, idx) => (
+                <div key={idx} className="border-l-2 border-slate-800 pl-3 py-0.5 space-y-1">
+                  <div className="flex items-center justify-between flex-wrap gap-1">
+                    <span className="font-bold text-xs uppercase tracking-tight text-black">
+                      {p.title}
+                    </span>
+                    {p.relatedScenarios && (
+                      <span className="text-[10px] font-semibold italic text-slate-700 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-300">
+                        {p.relatedScenarios}
+                      </span>
+                    )}
+                  </div>
+                  {p.leadSentence && (
+                    <p className="text-[11px] leading-relaxed text-black font-semibold">
+                      <span className="underline">Intisari:</span> {p.leadSentence}
+                    </p>
+                  )}
+                  {p.keyPoints && p.keyPoints.length > 0 ? (
+                    <ul className="text-[10.5px] text-slate-900 space-y-0.5 list-disc pl-4">
+                      {p.keyPoints.map((kp, kIdx) => (
+                        <li key={kIdx}>
+                          <span className="font-bold">{kp.label}:</span> {kp.detail}{" "}
+                          {kp.code && <span className="font-mono font-semibold">[{kp.code}]</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-[11px] leading-relaxed text-justify text-slate-900 font-normal">
+                      {p.desc}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ========================================================================= */}

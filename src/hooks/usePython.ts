@@ -99,6 +99,13 @@ builtins.input = custom_input
   return globalPyodidePromise;
 }
 
+export interface VariableMeta {
+  val: any;
+  type: string;
+  size?: number | null;
+  repr: string;
+}
+
 export function usePython() {
   const [pyodide, setPyodide] = useState<any>(() => {
     if (typeof window !== 'undefined') {
@@ -114,6 +121,7 @@ export function usePython() {
   });
   const [output, setOutput] = useState<string[]>([]);
   const [variables, setVariables] = useState<Record<string, any>>({});
+  const [variableDetails, setVariableDetails] = useState<Record<string, VariableMeta>>({});
   const isMountedRef = useRef(true);
 
   useEffect(() => {
@@ -172,54 +180,98 @@ export function usePython() {
 
     if (!py) return;
 
+    const outputBuffer: string[] = [];
+
     // Pasang listener output aktif ke state komponen saat ini
     activeOutputCallback = (msg: string) => {
+      outputBuffer.push(msg);
       if (isMountedRef.current) {
         setOutput(prev => [...prev, msg]);
       }
     };
 
     try {
-      // Reset Python global namespace agar variabel lama terhapus bersih
+      // 1. Reset Python global namespace agar variabel lama terhapus bersih
       await py.runPythonAsync(`
+import sys
 for __key in list(globals().keys()):
     if not __key.startswith("__") and __key not in ["sys", "os", "math", "random", "js", "builtins", "custom_input"]:
         del globals()[__key]
       `);
 
-      await py.runPythonAsync(code);
+      // 2. Jalankan kode pengguna & tangkap nilai kembalian ekspresi (gaya REPL)
+      const evalResult = await py.runPythonAsync(code);
 
-      // Ekstraksi variabel global untuk visualisasi RAM Live
-      const globals = py.globals;
-      const dict = globals.toJs();
+      // Jika tidak ada print() yang menghasilkan output stdout, dan kode mengembalikan nilai (seperti ekspresi '10 // 4' atau '0.1 + 0.2')
+      if (outputBuffer.length === 0 && evalResult !== undefined && evalResult !== null) {
+        let resultRepr = "";
+        try {
+          if (evalResult && typeof evalResult.toString === 'function') {
+            resultRepr = evalResult.toString();
+          } else {
+            resultRepr = String(evalResult);
+          }
+          if (evalResult && typeof evalResult.destroy === 'function') {
+            evalResult.destroy();
+          }
+        } catch {
+          resultRepr = String(evalResult);
+        }
 
-      const cleanVars: Record<string, any> = {};
-      const entries = dict instanceof Map ? dict.entries() : Object.entries(dict || {});
-
-      for (const [key, value] of entries) {
-        if (typeof key === 'string' && !key.startsWith('__') && key !== 'sys' && typeof value !== 'function') {
-          if (
-            typeof value === 'number' || 
-            typeof value === 'string' || 
-            typeof value === 'boolean' ||
-            Array.isArray(value) ||
-            value === null
-          ) {
-            cleanVars[key] = value;
+        if (resultRepr && resultRepr !== 'None' && resultRepr !== '[object Object]') {
+          outputBuffer.push(resultRepr);
+          if (isMountedRef.current) {
+            setOutput([resultRepr]);
           }
         }
       }
 
+      // 3. Ekstraksi variabel global dengan identifikasi tipe data Python murni (int vs float vs str vs bool dst)
+      const introspectionJson = await py.runPythonAsync(`
+import json, sys
+__var_meta = {}
+for __k, __v in list(globals().items()):
+    if not __k.startswith("__") and __k not in ["sys", "os", "math", "random", "js", "builtins", "custom_input", "_", "__key", "__var_meta"]:
+        try:
+            __t = type(__v).__name__
+            __sz = sys.getsizeof(__v)
+            __r = repr(__v)
+            __var_meta[__k] = {
+                "val": __v if __t in ["int", "float", "str", "bool"] else __r,
+                "type": __t,
+                "size": __sz,
+                "repr": __r
+            }
+        except Exception:
+            pass
+
+json.dumps(__var_meta)
+      `);
+
+      let parsedMeta: Record<string, VariableMeta> = {};
+      try {
+        parsedMeta = JSON.parse(introspectionJson || "{}");
+      } catch {
+        parsedMeta = {};
+      }
+
+      const cleanVars: Record<string, any> = {};
+      for (const [k, meta] of Object.entries(parsedMeta)) {
+        cleanVars[k] = meta.val;
+      }
+
       if (isMountedRef.current) {
         setVariables(cleanVars);
+        setVariableDetails(parsedMeta);
       }
     } catch (err: any) {
       if (isMountedRef.current) {
         setOutput(prev => [...prev, err.toString()]);
         setVariables({});
+        setVariableDetails({});
       }
     }
   }, [pyodide]);
 
-  return { isLoading, output, variables, runCode, setOutput };
+  return { isLoading, output, variables, variableDetails, runCode, setOutput };
 }

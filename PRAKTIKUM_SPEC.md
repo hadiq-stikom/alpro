@@ -55,11 +55,41 @@ Setiap Lembar Kerja Praktikum (baik tampilan formulir web maupun dokumen cetak P
 - Bersifat terukur dan mengarah pada keterampilan analisis/pengukuran.
 
 ### **B. Dasar Teori** *(Theoretical Framework)*
-- Landasan ilmiah ringkas yang mendasari eksperimen.
-- Memuat definisi penting, konsep kunci, atau rumus persamaan yang menjadi dasar hipotesis pengujian.
+- Landasan ilmiah ringkas yang mendasari eksperimen, tersusun atas **3 Tingkat Hierarki Visual**:
+  1. **Landasan Filosofis & 2 Pilar Fundamental Tipe Data**:
+     - Paragraf pengantar filosofis disajikan dalam kotak beraksen khusus (`p-4 rounded-xl bg-card border border-border/80 shadow-sm`) dengan *keyword highlighting* otomatis.
+     - 2 Pilar Fundamental yang dikendalikan oleh pemilihan tipe data **wajib disajikan dalam 2 kartu kolom terpisah (`grid-cols-1 md:grid-cols-2`)**:
+       - *Pilar #1*: Kapasitas Domain Nilai & Akurasi Presisi Komputasi (`Domain & Presisi RAM`).
+       - *Pilar #2*: Keabsahan Operasi Matematika & Logika (`Type Safety & Operasi`).
+  2. **Banner Intisari Konsep (*Lead Concept Callout*)**:
+     - Kotak sorotan gradien Cyan (`border-l-4 border-cyan-500`) yang merangkum proposisi esensial dalam 1 kalimat padat.
+  3. **Parameter & Rincian Kunci (*Structured Fact Cards*)**:
+     - Butir kartu berindikator *glowing dot*, judul tebal, uraian padat ber-chip kode, dan badge metrik di sisi kanan (`int: 28B | float: 24B`, `PyObject`, `type() & sys.getsizeof()`).
+  4. **Akordion Naratif Lengkap (*Collapsible Details*)**:
+     - Uraian teoritis lengkap dapat dilipat (`<details>`) agar layar tetap ringkas dan bebas *cognitive overload*.
+  5. **Catatan Analisis Laboratorium (*Lab Insight*)**:
+     - Kotak amber dengan ikon `Lightbulb` untuk panduan investigasi ilmiah di Bagian D.
+  6. **Pemisahan Peran Tegas**:
+     - **Blok konsol gelap *Parameter & Sintaks Uji* DIHILANGKAN DARI KARTU TEORI** untuk mencegah *horizontal scrollbar* dan tumpang tindih fungsi. Eksekusi pengujian dipusatkan sepenuhnya pada Prosedur Kerja dan Terminal Helper.
 
 ### **C. Praktikum** *(Experimental Procedures & Observation Table)*
-- **Prosedur / Langkah Kerja**: Instruksi langkah demi langkah pelaksanaan uji coba laboratorium.
+- **Prosedur / Langkah Kerja Berfase (*Phase Workflow Cards*)**:
+  - Dilarang disajikan sebagai daftar bernomor datar monokrom biasa (`<ol>`).
+  - Dilengkapi **Bilah Pipeline Alur 4 Fase**: `1. Persiapan` $\rightarrow$ `2. 5 Kasus Uji` $\rightarrow$ `3. Catat Tabel C` $\rightarrow$ `4. Sintesis D & E`.
+  - Kartu langkah kerja berbadge nomor tebal `#1` s.d. `#8` dengan warna semantik per fase (Sky untuk Persiapan, Cyan untuk Eksperimen, Amber untuk Pencatatan, Purple untuk Sintesis), tag skenario, judul tebal, dan instruksi ber-highlight kata kunci.
+  - **Tombol Pintas Aksi Langsung**:
+    - `[▶ Uji di Workbench]`: Memuat sintaks ke Workbench Laboratorium Terintegrasi & *smooth scroll*.
+    - `[✓ Ke Tabel Pengamatan]`: Meluncurkan layar ke `#tabel-pengamatan-container`.
+    - `[📝 Ke Bagian Analisis]`: Meluncurkan layar ke `#bagian-analisis-container`.
+- **Integrated Lab Workbench (Code Editor & Output Terminal Empiris)**:
+  - Disematkan tepat di Bagian C sebelum Tabel Pengamatan (menggantikan helper statis 1-baris).
+  - **Dual-Engine Eksekusi Asli**: Mendukung eksekusi Python sungguhan via Pyodide WASM (v0.25) dan JavaScript native di browser tanpa server backend.
+  - **Editor Multi-Baris**: Syntax highlighting Prism, gutter nomor baris 1:1 tanpa soft-wrapping, pintasan keyboard `Ctrl + Enter` untuk run.
+  - **Terminal Output IDE Modern**: Latar gelap pekat (`#0d1117`), luaran stdout/stderr asli, deteksi exception traceback, dan pengukur waktu eksekusi otomatis (`performance.now()` dalam milidetik).
+  - **Live RAM State Inspector**: Menampilkan variabel aktif di memori beserta tipe data dan nilainya.
+  - **Sinkronisasi Otomatis ke Tabel**: Tombol `[📋 Salin ke Tabel #X]` yang menyalin hasil aktual dan metrik ke baris tabel pengamatan terpilih secara presisi.
+  - **Mode Fokus / Maximize**: Fitur layar penuh untuk kenyamanan koding mahasiswa di lab.
+  - **Proteksi Cetak**: Menggunakan `print:hidden` sehingga tidak membebani lembar cetak laporan resmi PDF A4.
 - **Tabel Pengamatan & Pengukuran**:
   - Tabel terstruktur yang **wajib diisi oleh mahasiswa**.
   - Kolom standar meliputi:
@@ -87,8 +117,9 @@ Setiap Lembar Kerja Praktikum (baik tampilan formulir web maupun dokumen cetak P
    - Terkoneksi dengan akun mahasiswa (NIM) di Supabase.
    - Kolom Nama Mahasiswa, NIM, Kelas, dan Dosen Pengampu terkunci otomatis.
 2. **Penyajian Materi A & B**:
-   - Ditampilkan bersih dan elegan sebagai panduan belajar mahasiswa.
+   - Ditampilkan bersih, terstruktur, dan elegan sebagai panduan belajar mahasiswa dengan *3-Level Visual Hierarchy*, penekanan kata kunci tipografi (`renderHighlightedText`), dan kartu konsep bebas *horizontal scrollbar*.
 3. **Formulir Interaktif Bagian C, D, dan E**:
+   - Prosedur kerja terintegrasi dengan tombol pintas aksi simulator dan penelusuran tabel.
    - Tabel pengamatan interaktif yang responsif dan mudah diisi.
    - Area pengetikan analisis dan kesimpulan terstruktur.
    - Fitur **Penyimpanan Otomatis (*Auto-Save*)** ke local state agar mahasiswa tidak kehilangan data ketikan.
@@ -102,6 +133,8 @@ Dokumen yang diunduh mahasiswa adalah **Laporan Resmi Standar Akademik (Ukuran A
 2. **Blok Identitas Mahasiswa & Dosen**:
    - Nama Mahasiswa, NIM, Kelas, Tanggal Praktikum, dan Nama Dosen Pengampu (**Hadiq, ST, M.Kom**).
 3. **Isi Lengkap Bagian A s.d. E**:
+   - Landasan filosofis dicetak dalam 2 kotak pilar mini berdampingan (*side-by-side*).
+   - Dasar teori disajikan dalam format daftar butir berpoin rapi (*bulleted list*) dengan tag kode tebal, tanpa blok konsol hitam.
    - Tersusun proporsional tanpa pergeseran layout atau margin berantakan.
 4. **Blok Penilaian & Lembar Pengesahan (Signature Box)**:
    - Kotak Skor/Nilai Akhir: `[ ..... / 100 ]`.

@@ -28,10 +28,16 @@ import {
   Bot,
   ThumbsUp,
   ThumbsDown,
-  AlertCircle
+  AlertCircle,
+  Search,
+  Tag,
+  Lightbulb,
+  Filter,
+  Cpu
 } from "lucide-react";
 import { PRAKTIKUM_MODULES, ObservationRow } from "@/lib/praktikum-data";
 import { useAuth } from "@/context/AuthContext";
+import PraktikumWorkbench from "@/components/praktikum/PraktikumWorkbench";
 
 export interface AiEvaluationResult {
   score: number;
@@ -49,6 +55,184 @@ export interface AiEvaluationResult {
   };
   provider?: string;
   evaluatedAt?: string;
+}
+
+/**
+ * Helper untuk memberikan penekanan tipografi dan visual pada kata kunci teknis,
+ * simbol memori, kode fungsi, dan metrik kapasitas dalam uraian Dasar Teori.
+ */
+function renderHighlightedText(text: string) {
+  if (!text) return null;
+
+  // Regex pattern komprehensif untuk seluruh Modul Praktikum 1 s.d. 7
+  const regex = /(pointer ke alamat memori fisik RAM|pointer \(referensi alamat\)|Random Access Memory \(RAM\)|alokasi byte memori fisik|mantissa 52-bit|integer truncation|String Concatenation|Explicit Type Casting|Float Division|Floor Division|float division|integer division|hardware trap|defensive pre-condition check|defensive pre-condition|Data Dependency|Read-After-Write|Boundary Value Analysis|Boundary Value Coverage|Off-by-One|Dead Code|Short-Circuit Evaluation|Short-Circuit|Loop Invariant|Infinite Loop|Circuit Breaker|Single Responsibility|Scope Isolation|Call Stack|Stack Frame|Pure Function|Variable Shadowing|Mutable Default Argument|Dynamic Array|Over-allocation Buffer|Zero-Based Indexing|Aliasing Bug|Pointer Aliasing|Hash Table|Key-Value Pairs|Key Uniqueness|Hashability|Defensive Coding|Defensive Access|Amortized O\(1\)|Linear Search|Binary Search|ZeroDivisionError|IndexError|KeyError|NameError|TypeError|IEEE 754|PyObject|Program Counter|PEMDAS|sys\.getsizeof\(\)|type\(\)|input\(\)|int\(\)|float\(\)|math\.isclose\(\)|round\(\)|range\(\)|append\(\)|insert\(\)|\.copy\(\)|\.get\(\)|\.pop\(\)|hash\(\)|id\(\)|28 byte|24 byte|56 byte|88 byte|120 byte|52-bit|64-bit|100\.000|50\.000|10\.000|0\.30000000000000004|0\.1 \+ 0\.2|10 \/\/ 4|10 \/ 4|'75' \+ '25'|int\('75'\) \+ int\('25'\)|'50' \+ '25'|'5025'|x \/ 0|a, b = b, a|O\(1\)|O\(N\)|O\(N\^2\)|O\(N²\)|O\(log N\)|break|continue|return|NoneType|None|True|False|==|!=|\/\/|Tipe Data|ALU|Tabel Pengamatan Bagian C|Bagian D|Bagian E)/g;
+
+  const parts = text.split(regex);
+  return parts.map((part, i) => {
+    if (!part) return null;
+
+    // Metrik Memori & Kapasitas Byte / Skala (Warna Amber Kontras Tinggi)
+    if (
+      part === "28 byte" ||
+      part === "24 byte" ||
+      part === "56 byte" ||
+      part === "88 byte" ||
+      part === "120 byte" ||
+      part === "52-bit" ||
+      part === "64-bit" ||
+      part === "100.000" ||
+      part === "50.000" ||
+      part === "10.000"
+    ) {
+      return (
+        <span
+          key={i}
+          className="inline-block px-1.5 py-0.2 mx-0.5 rounded font-mono text-[11px] font-black bg-amber-500/15 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-500/30"
+        >
+          {part}
+        </span>
+      );
+    }
+
+    // Kode Fungsi, Identifier Teknis & Kompleksitas Algoritma (Warna Cyan / Blue Jewel)
+    if (
+      part === "type()" ||
+      part === "sys.getsizeof()" ||
+      part === "PyObject" ||
+      part === "Program Counter" ||
+      part === "PEMDAS" ||
+      part === "IEEE 754" ||
+      part === "ZeroDivisionError" ||
+      part === "IndexError" ||
+      part === "KeyError" ||
+      part === "NameError" ||
+      part === "TypeError" ||
+      part === "input()" ||
+      part === "int()" ||
+      part === "float()" ||
+      part === "math.isclose()" ||
+      part === "round()" ||
+      part === "range()" ||
+      part === "append()" ||
+      part === "insert()" ||
+      part === ".copy()" ||
+      part === ".get()" ||
+      part === ".pop()" ||
+      part === "hash()" ||
+      part === "id()" ||
+      part === "a, b = b, a" ||
+      part === "O(1)" ||
+      part === "O(N)" ||
+      part === "O(N^2)" ||
+      part === "O(N²)" ||
+      part === "O(log N)" ||
+      part === "break" ||
+      part === "continue" ||
+      part === "return" ||
+      part === "NoneType" ||
+      part === "None" ||
+      part === "0.30000000000000004" ||
+      part === "0.1 + 0.2" ||
+      part === "10 // 4" ||
+      part === "10 / 4" ||
+      part === "'75' + '25'" ||
+      part === "int('75') + int('25')" ||
+      part === "'50' + '25'" ||
+      part === "'5025'" ||
+      part === "x / 0" ||
+      part === "==" ||
+      part === "!=" ||
+      part === "//" ||
+      part === "ALU" ||
+      part === "mantissa 52-bit"
+    ) {
+      return (
+        <code
+          key={i}
+          className="px-1.5 py-0.2 mx-0.5 rounded font-mono text-[11px] font-bold bg-cyan-500/10 dark:bg-cyan-950/60 text-cyan-800 dark:text-cyan-300 border border-cyan-500/25"
+        >
+          {part}
+        </code>
+      );
+    }
+
+    // Nilai Boolean Status (Emerald)
+    if (part === "True" || part === "False") {
+      return (
+        <span
+          key={i}
+          className="inline-block px-1.5 py-0.2 mx-0.5 rounded font-mono text-[11px] font-black bg-emerald-500/15 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30"
+        >
+          {part}
+        </span>
+      );
+    }
+
+    // Konsep Inti Penting (Bold + Underline Aksen)
+    if (
+      part === "pointer ke alamat memori fisik RAM" ||
+      part === "pointer (referensi alamat)" ||
+      part === "Random Access Memory (RAM)" ||
+      part === "Tipe Data" ||
+      part === "alokasi byte memori fisik" ||
+      part === "integer truncation" ||
+      part === "String Concatenation" ||
+      part === "Explicit Type Casting" ||
+      part === "Float Division" ||
+      part === "Floor Division" ||
+      part === "float division" ||
+      part === "integer division" ||
+      part === "hardware trap" ||
+      part === "defensive pre-condition check" ||
+      part === "defensive pre-condition" ||
+      part === "Data Dependency" ||
+      part === "Read-After-Write" ||
+      part === "Boundary Value Analysis" ||
+      part === "Boundary Value Coverage" ||
+      part === "Off-by-One" ||
+      part === "Dead Code" ||
+      part === "Short-Circuit Evaluation" ||
+      part === "Short-Circuit" ||
+      part === "Loop Invariant" ||
+      part === "Infinite Loop" ||
+      part === "Circuit Breaker" ||
+      part === "Single Responsibility" ||
+      part === "Scope Isolation" ||
+      part === "Call Stack" ||
+      part === "Stack Frame" ||
+      part === "Pure Function" ||
+      part === "Variable Shadowing" ||
+      part === "Mutable Default Argument" ||
+      part === "Dynamic Array" ||
+      part === "Over-allocation Buffer" ||
+      part === "Zero-Based Indexing" ||
+      part === "Aliasing Bug" ||
+      part === "Pointer Aliasing" ||
+      part === "Hash Table" ||
+      part === "Key-Value Pairs" ||
+      part === "Key Uniqueness" ||
+      part === "Hashability" ||
+      part === "Defensive Coding" ||
+      part === "Defensive Access" ||
+      part === "Amortized O(1)" ||
+      part === "Linear Search" ||
+      part === "Binary Search" ||
+      part === "Tabel Pengamatan Bagian C" ||
+      part === "Bagian D" ||
+      part === "Bagian E"
+    ) {
+      return (
+        <strong
+          key={i}
+          className="font-extrabold text-slate-900 dark:text-white underline decoration-cyan-500/50 decoration-2 underline-offset-2"
+        >
+          {part}
+        </strong>
+      );
+    }
+
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
 }
 
 export default function PraktikumWorksheetPage({ 
@@ -116,6 +300,17 @@ export default function PraktikumWorksheetPage({
   // State Mini Simulator / Tester
   const [testCodeInput, setTestCodeInput] = useState("10 // 4");
   const [testCodeOutput, setTestCodeOutput] = useState<string | null>(null);
+
+  // State Terintegrasi Lab Workbench
+  const [workbenchCodeTrigger, setWorkbenchCodeTrigger] = useState<{
+    code: string;
+    timestamp: number;
+  } | null>(null);
+  const [activeTargetRow, setActiveTargetRow] = useState<number>(1);
+
+  // State Filter & Pencarian Dasar Teori
+  const [theoryCategoryFilter, setTheoryCategoryFilter] = useState<string>("Semua");
+  const [theorySearchQuery, setTheorySearchQuery] = useState<string>("");
 
   // Inisialisasi data profil dan draf tersimpan
   useEffect(() => {
@@ -264,29 +459,88 @@ export default function PraktikumWorksheetPage({
   };
 
   // Mini runner evaluator sederhana untuk demonstrasi interaktif
-  const handleRunMiniTest = () => {
+  const handleRunMiniTest = (overrideCode?: string) => {
     try {
-      const trimmed = testCodeInput.trim();
+      const codeToRun = (overrideCode !== undefined ? overrideCode : testCodeInput).trim();
+      if (overrideCode !== undefined) {
+        setTestCodeInput(overrideCode);
+      }
       let res = "";
-      if (trimmed === "10 // 4") {
-        res = "2 (tipe: integer) - 0.5 desimal terpotong!";
-      } else if (trimmed === "10 / 4") {
+      if (codeToRun === "10 // 4") {
+        res = "2 (tipe: integer) - 0.5 desimal terpotong (truncated)!";
+      } else if (codeToRun === "10 / 4") {
         res = "2.5 (tipe: float) - pembagian pecahan presisi";
-      } else if (trimmed === "'50' + '25'") {
-        res = "'5025' (tipe: string) - penggabungan teks";
-      } else if (trimmed === "int('50') + int('25')") {
-        res = "75 (tipe: integer) - kalkulasi numerik";
-      } else if (trimmed.includes("/ 0") || trimmed.includes("// 0")) {
-        res = "ZeroDivisionError: division by zero (Interupsi / Crash)";
-      } else if (trimmed === "0.1 + 0.2") {
-        res = "0.30000000000000004 (IEEE 754 floating point artifact)";
+      } else if (codeToRun === "'50' + '25'") {
+        res = "'5025' (tipe: string) - penggabungan teks (concatenation bug)";
+      } else if (codeToRun === "int('50') + int('25')") {
+        res = "75 (tipe: integer) - kalkulasi numerik setelah type casting";
+      } else if (codeToRun.includes("/ 0") || codeToRun.includes("// 0")) {
+        res = "ZeroDivisionError: division by zero (Interupsi Fatal / Crash)";
+      } else if (codeToRun === "0.1 + 0.2") {
+        res = "0.30000000000000004 (IEEE 754 floating point rounding artifact)";
+      } else if (codeToRun.includes("type(100)") || codeToRun.includes("a = 100")) {
+        res = "<class 'int'>, nilai: 100, alokasi memori fisik: 28 byte (PyObject)";
+      } else if (codeToRun.includes("type(100.5)") || codeToRun.includes("b = 100.5")) {
+        res = "<class 'float'>, nilai: 100.5, alokasi memori fisik: 24 byte (IEEE 754)";
+      } else if (codeToRun === "bool(1)" || codeToRun.includes("type(True)")) {
+        res = "<class 'bool'>, nilai: True, alokasi memori: 28 byte";
+      } else if (codeToRun.includes("0.1 + 0.2 == 0.3")) {
+        res = "False (Penyimpangan biner IEEE 754: 0.30000000000000004 != 0.3)";
       } else {
-        res = `Ekspresi '${trimmed}' berhasil diuji di memori.`;
+        res = `Ekspresi '${codeToRun}' berhasil diuji di memori.`;
       }
       setTestCodeOutput(res);
     } catch (e: any) {
       setTestCodeOutput(`Error: ${e.message}`);
     }
+  };
+
+  // Handler Salin Output Workbench ke Baris Tabel Pengamatan Terpilih
+  const handleApplyWorkbenchOutput = (
+    actualOutput: string,
+    measuredMetric: string,
+    targetRowNo: number
+  ) => {
+    const rowIdx = targetRowNo - 1;
+    if (rowIdx >= 0 && rowIdx < observations.length) {
+      setObservations((prev) => {
+        const next = [...prev];
+        const cur = next[rowIdx];
+        let newStatus = cur.validationStatus;
+        if (cur.expectedTheory && actualOutput) {
+          const cleanTheory = cur.expectedTheory.toLowerCase().replace(/[^a-z0-9]/g, "");
+          const cleanActual = actualOutput.toLowerCase().replace(/[^a-z0-9]/g, "");
+          if (cleanActual.includes(cleanTheory) || cleanTheory.includes(cleanActual)) {
+            newStatus = "Sesuai";
+          }
+        }
+        next[rowIdx] = {
+          ...cur,
+          actualOutput: actualOutput,
+          measuredMetric: measuredMetric || cur.measuredMetric,
+          validationStatus: newStatus,
+        };
+        return next;
+      });
+      setActiveTargetRow(targetRowNo);
+    }
+  };
+
+  // Fungsi pengiriman sintaks cepat langsung ke Workbench
+  const handleSendToWorkbench = (code: string, rowTarget?: number) => {
+    setWorkbenchCodeTrigger({ code, timestamp: Date.now() });
+    if (rowTarget) {
+      setActiveTargetRow(rowTarget);
+    }
+    const el = document.getElementById("praktikum-workbench-container");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  // Fungsi pengiriman sintaks cepat dari Dasar Teori langsung ke Simulator Helper
+  const handleSendToSimulator = (code: string) => {
+    handleSendToWorkbench(code);
   };
 
   if (!moduleData) {
@@ -299,6 +553,36 @@ export default function PraktikumWorksheetPage({
       </div>
     );
   }
+
+  // Filter dan Pencarian Poin Dasar Teori
+  const theoryPoints = moduleData.dasarTeori?.points || [];
+  const filteredTheoryPoints = theoryPoints.filter((p) => {
+    const matchesCategory =
+      theoryCategoryFilter === "Semua" || p.category === theoryCategoryFilter;
+    if (!matchesCategory) return false;
+
+    if (!theorySearchQuery.trim()) return true;
+    const q = theorySearchQuery.toLowerCase();
+    const titleMatch = p.title.toLowerCase().includes(q);
+    const descMatch = p.desc.toLowerCase().includes(q);
+    const syntaxMatch = p.syntaxExample?.toLowerCase().includes(q) || false;
+    const scenarioMatch = p.relatedScenarios?.toLowerCase().includes(q) || false;
+    const keyTermsMatch = p.keyTerms?.some((k) => k.toLowerCase().includes(q)) || false;
+    const leadMatch = p.leadSentence?.toLowerCase().includes(q) || false;
+    const keyPointsMatch = p.keyPoints?.some((kp) => kp.label.toLowerCase().includes(q) || kp.detail.toLowerCase().includes(q)) || false;
+    return titleMatch || descMatch || syntaxMatch || scenarioMatch || keyTermsMatch || leadMatch || keyPointsMatch;
+  });
+
+  const availableCategories = [
+    "Semua",
+    ...Array.from(
+      new Set(
+        theoryPoints
+          .map((p) => p.category)
+          .filter((c): c is string => Boolean(c))
+      )
+    ),
+  ];
 
   return (
     <div 
@@ -469,44 +753,397 @@ export default function PraktikumWorksheetPage({
       {/* ========================================================================= */}
       {/* BAGIAN B: DASAR TEORI                                                     */}
       {/* ========================================================================= */}
-      <div className="p-6 md:p-8 rounded-2xl bg-card border border-border/80 shadow-sm space-y-5">
-        <div className="flex items-center justify-between">
+      <div className="p-6 md:p-8 rounded-2xl bg-card border border-border/80 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-5">
           <div className="flex items-center gap-3.5">
-            <span className="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-500 dark:text-cyan-400 font-mono font-black text-base flex items-center justify-center border border-cyan-500/30 shadow-sm">
+            <span className="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 font-mono font-black text-base flex items-center justify-center border border-cyan-500/30 shadow-sm">
               B
             </span>
             <div>
-              <h3 className="text-xl md:text-2xl font-extrabold text-foreground tracking-tight">
-                Dasar Teori &amp; Parameter Uji
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-300 font-medium">
-                Landasan ilmiah yang mendasari hipotesis pengukuran di laboratorium.
+              <div className="flex items-center gap-2.5 flex-wrap">
+                <h3 className="text-xl md:text-2xl font-extrabold text-foreground tracking-tight">
+                  Dasar Teori &amp; Parameter Uji Laboratorium
+                </h3>
+                <span className="px-3 py-0.5 rounded-full text-xs font-bold bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border border-cyan-500/30 flex items-center gap-1.5 shadow-sm">
+                  <ShieldCheck className="w-3.5 h-3.5" />
+                  {theoryPoints.length} Pilar Teori Terpadu
+                </span>
+              </div>
+              <p className="text-sm text-slate-600 dark:text-slate-300 font-medium mt-0.5">
+                Landasan ilmiah pengujian hipotesis, pemetaan konsep kunci, dan parameter ukur empiris.
               </p>
             </div>
           </div>
-          <button
-            onClick={() => setIsTheoryOpen(!isTheoryOpen)}
-            className="p-2.5 text-slate-500 hover:text-foreground hover:bg-secondary rounded-xl transition-colors cursor-pointer"
-            title="Buka / Tutup Teori"
-          >
-            <ChevronDown className={`w-5 h-5 transition-transform ${isTheoryOpen ? "rotate-180" : ""}`} />
-          </button>
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <button
+              onClick={() => setIsTheoryOpen(!isTheoryOpen)}
+              className="px-3.5 py-2 rounded-xl bg-secondary hover:bg-secondary/80 text-xs md:text-sm font-bold text-slate-700 dark:text-slate-200 border border-border/70 flex items-center gap-1.5 transition-colors cursor-pointer"
+              title="Buka / Tutup Teori"
+            >
+              <span>{isTheoryOpen ? "Tutup Teori" : "Buka Teori"}</span>
+              <ChevronDown className={`w-4 h-4 transition-transform ${isTheoryOpen ? "rotate-180" : ""}`} />
+            </button>
+          </div>
         </div>
 
         {isTheoryOpen && (
-          <div className="space-y-4 pt-1">
-            <p className="p-5 rounded-xl bg-secondary/30 border border-border/80 text-sm md:text-base text-slate-800 dark:text-slate-100 leading-relaxed font-normal">
-              {moduleData.dasarTeori.overview}
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {moduleData.dasarTeori.points.map((p, idx) => (
-                <div key={idx} className="p-5 rounded-xl bg-secondary/40 border border-border/80 space-y-1.5">
-                  <div className="font-bold text-cyan-600 dark:text-cyan-400 text-sm md:text-base">{p.title}</div>
-                  <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-normal">{p.desc}</p>
+          <div className="space-y-6 pt-1">
+            {/* Kartu Ringkasan Teori & Peta Konsep Kunci */}
+            <div className="p-5 md:p-6 rounded-2xl bg-gradient-to-br from-secondary/40 via-card to-cyan-500/5 border border-cyan-500/20 shadow-sm space-y-4">
+              <div className="space-y-3.5">
+                <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-cyan-600 dark:text-cyan-400">
+                  <BookOpen className="w-4 h-4 text-cyan-500" />
+                  <span>Landasan Filosofis &amp; Hipotesis Pengukuran:</span>
                 </div>
-              ))}
+
+                {/* Paragraf Pengantar Beraksen (Bukan Flat Monokrom) */}
+                <div className="p-4 rounded-xl bg-card border border-border/80 text-sm md:text-[15px] text-slate-800 dark:text-slate-100 leading-relaxed font-medium shadow-sm">
+                  {renderHighlightedText(moduleData.dasarTeori.leadParagraph || moduleData.dasarTeori.overview)}
+                </div>
+
+                {/* 2 Pilar Fundamental yang Dikendalikan Pemilihan Tipe Data (Vertikal / 2 Kolom Terstruktur, Bukan Mendatar) */}
+                {moduleData.dasarTeori.fundamentalPillars && moduleData.dasarTeori.fundamentalPillars.length > 0 && (
+                  <div className="space-y-2.5 pt-1">
+                    <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      <Cpu className="w-4 h-4 text-cyan-500" />
+                      <span>2 Aspek Fundamental yang Dikendalikan Pemilihan Tipe Data:</span>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                      {moduleData.dasarTeori.fundamentalPillars.map((pillar) => {
+                        const isFirst = pillar.number === 1;
+                        const cardBorder = isFirst 
+                          ? "border-cyan-500/35 bg-gradient-to-br from-cyan-500/10 via-card to-background hover:border-cyan-500/60" 
+                          : "border-indigo-500/35 bg-gradient-to-br from-indigo-500/10 via-card to-background hover:border-indigo-500/60";
+                        const badgeStyle = isFirst
+                          ? "bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border-cyan-500/30"
+                          : "bg-indigo-500/15 text-indigo-800 dark:text-indigo-300 border-indigo-500/30";
+                        const tagStyle = isFirst
+                          ? "bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/25"
+                          : "bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border-indigo-500/25";
+
+                        return (
+                          <div
+                            key={pillar.number}
+                            className={`p-4 rounded-xl border-2 ${cardBorder} shadow-sm transition-all space-y-2.5 flex flex-col justify-between`}
+                          >
+                            <div className="space-y-2">
+                              <div className="flex items-center justify-between flex-wrap gap-2">
+                                <span className={`w-7 h-7 rounded-lg font-mono font-black text-xs flex items-center justify-center border ${badgeStyle}`}>
+                                  #{pillar.number}
+                                </span>
+                                {pillar.tag && (
+                                  <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold tracking-tight border ${tagStyle}`}>
+                                    {pillar.tag}
+                                  </span>
+                                )}
+                              </div>
+                              <h4 className="font-extrabold text-slate-900 dark:text-white text-sm md:text-base tracking-tight leading-snug">
+                                {pillar.title}
+                              </h4>
+                            </div>
+
+                            <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                              {renderHighlightedText(pillar.desc)}
+                            </p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Peta Konsep Kunci Cepat */}
+              {moduleData.dasarTeori.keyConceptsSummary && moduleData.dasarTeori.keyConceptsSummary.length > 0 && (
+                <div className="pt-2 border-t border-border/60 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400">
+                    <span className="flex items-center gap-1.5">
+                      <Tag className="w-3.5 h-3.5 text-cyan-500" />
+                      Peta Konsep Kunci Laboratorium (Klik untuk filter):
+                    </span>
+                    {theorySearchQuery && (
+                      <button
+                        onClick={() => setTheorySearchQuery("")}
+                        className="text-[11px] text-cyan-500 hover:underline cursor-pointer"
+                      >
+                        Reset Filter
+                      </button>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {moduleData.dasarTeori.keyConceptsSummary.map((concept, idx) => {
+                      const isActive = theorySearchQuery.toLowerCase() === concept.split(" ")[0].toLowerCase();
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            if (isActive) {
+                              setTheorySearchQuery("");
+                            } else {
+                              setTheorySearchQuery(concept.split(" ")[0]);
+                            }
+                          }}
+                          className={`px-3 py-1 rounded-lg text-xs font-mono font-bold tracking-tight border transition-all cursor-pointer flex items-center gap-1.5 ${
+                            isActive
+                              ? "bg-cyan-600 text-white border-cyan-600 shadow-md scale-105"
+                              : "bg-background hover:bg-cyan-500/10 text-cyan-700 dark:text-cyan-300 border-cyan-500/30 hover:border-cyan-500/50"
+                          }`}
+                        >
+                          <span>🏷️</span>
+                          <span>{concept}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Bilah Pencarian & Kategori Filter */}
+            <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 pt-1">
+              {/* Kategori Filter Pills */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 flex items-center gap-1 shrink-0 mr-1">
+                  <Filter className="w-3.5 h-3.5" /> Kategori:
+                </span>
+                {availableCategories.map((cat, idx) => {
+                  const isCatActive = theoryCategoryFilter === cat;
+                  const count = cat === "Semua" ? theoryPoints.length : theoryPoints.filter(p => p.category === cat).length;
+                  return (
+                    <button
+                      key={idx}
+                      onClick={() => setTheoryCategoryFilter(cat)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                        isCatActive
+                          ? "bg-cyan-600 text-white shadow-sm"
+                          : "bg-secondary/60 hover:bg-secondary text-slate-700 dark:text-slate-300 border border-border/70"
+                      }`}
+                    >
+                      <span>{cat}</span>
+                      <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${isCatActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"}`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Input Pencarian Kata Kunci */}
+              <div className="relative w-full md:w-72 shrink-0">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  value={theorySearchQuery}
+                  onChange={(e) => setTheorySearchQuery(e.target.value)}
+                  placeholder="Cari konsep, operator, sintaks..."
+                  className="w-full pl-9 pr-8 py-2 rounded-xl bg-background border border-border/80 text-foreground font-medium text-xs md:text-sm focus:outline-none focus:border-cyan-500 shadow-sm"
+                />
+                {theorySearchQuery && (
+                  <button
+                    onClick={() => setTheorySearchQuery("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-foreground text-xs font-bold px-1"
+                    title="Hapus pencarian"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Indikator Jumlah Hasil */}
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 px-1 font-medium">
+              <span>
+                Menampilkan <strong>{filteredTheoryPoints.length}</strong> dari <strong>{theoryPoints.length}</strong> pilar teori laboratorium
+              </span>
+              {(theoryCategoryFilter !== "Semua" || theorySearchQuery) && (
+                <button
+                  onClick={() => {
+                    setTheoryCategoryFilter("Semua");
+                    setTheorySearchQuery("");
+                  }}
+                  className="text-cyan-600 dark:text-cyan-400 hover:underline font-bold"
+                >
+                  Tampilkan Semua Konsep
+                </button>
+              )}
+            </div>
+
+            {/* Kartu-Kartu Poin Dasar Teori */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pt-1">
+              {filteredTheoryPoints.map((p, idx) => {
+                // Semantic accent color based on index or category
+                const accentColors = [
+                  "border-cyan-500/40 bg-cyan-500/5",
+                  "border-indigo-500/40 bg-indigo-500/5",
+                  "border-emerald-500/40 bg-emerald-500/5",
+                  "border-rose-500/40 bg-rose-500/5",
+                  "border-amber-500/40 bg-amber-500/5",
+                  "border-purple-500/40 bg-purple-500/5",
+                ];
+                const badgePillColors = [
+                  "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300 border-cyan-500/30",
+                  "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/30",
+                  "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+                  "bg-rose-500/15 text-rose-700 dark:text-rose-300 border-rose-500/30",
+                  "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/30",
+                  "bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
+                ];
+                const cardAccent = accentColors[idx % accentColors.length];
+                const badgeColor = badgePillColors[idx % badgePillColors.length];
+
+                return (
+                  <div
+                    key={idx}
+                    className={`p-6 rounded-2xl bg-card border-2 ${cardAccent} shadow-sm hover:shadow-md transition-all space-y-4 flex flex-col justify-between`}
+                  >
+                    <div className="space-y-3.5">
+                      {/* Top Bar Kartu: Nomor Pilar, Judul, Kategori & Tautan Skenario */}
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between flex-wrap gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-7 h-7 rounded-lg font-mono font-black text-xs flex items-center justify-center border ${badgeColor}`}>
+                              #{idx + 1}
+                            </span>
+                            {p.category && (
+                              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold tracking-tight bg-secondary border border-border text-slate-700 dark:text-slate-300">
+                                {p.category}
+                              </span>
+                            )}
+                          </div>
+                          {p.relatedScenarios && (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 text-xs font-bold">
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                              {p.relatedScenarios}
+                            </span>
+                          )}
+                        </div>
+
+                        <h4 className="font-extrabold text-foreground text-base md:text-lg tracking-tight leading-snug">
+                          {p.title}
+                        </h4>
+                      </div>
+
+                      {/* Chip Konsep Kunci */}
+                      {p.keyTerms && p.keyTerms.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 pt-0.5 pb-1">
+                          {p.keyTerms.map((term, tIdx) => (
+                            <span
+                              key={tIdx}
+                              onClick={() => setTheorySearchQuery(term.replace(/[^a-zA-Z0-9/]/g, ''))}
+                              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-cyan-500/10 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-500/25 font-mono text-[11px] font-bold tracking-tight hover:bg-cyan-500/20 cursor-pointer transition-colors"
+                              title="Klik untuk menyaring dengan kata kunci ini"
+                            >
+                              <Tag className="w-2.5 h-2.5 text-cyan-500" />
+                              {term}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* 1. Intisari Konsep (Lead Concept Callout) */}
+                      <div className="p-3.5 rounded-xl bg-gradient-to-r from-cyan-500/10 via-sky-500/5 to-transparent border-l-4 border-cyan-500 text-slate-800 dark:text-slate-100 text-xs sm:text-sm font-medium leading-relaxed shadow-sm">
+                        <div className="flex items-center gap-1.5 text-[11px] font-black text-cyan-800 dark:text-cyan-400 uppercase tracking-wider mb-1">
+                          <Sparkles className="w-3.5 h-3.5" /> Intisari Konsep:
+                        </div>
+                        <p className="leading-relaxed">
+                          {renderHighlightedText(p.leadSentence || p.desc)}
+                        </p>
+                      </div>
+
+                      {/* 2. Rincian Parameter & Poin Kunci (Structured Grid/Cards) */}
+                      {p.keyPoints && p.keyPoints.length > 0 && (
+                        <div className="space-y-2 pt-1">
+                          <div className="text-[11px] font-black uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                            <Layers className="w-3.5 h-3.5 text-cyan-500" /> Parameter &amp; Rincian Kunci:
+                          </div>
+                          <div className="grid grid-cols-1 gap-2">
+                            {p.keyPoints.map((kp, kpIdx) => (
+                              <div
+                                key={kpIdx}
+                                className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 transition-all hover:border-cyan-500/40 hover:bg-slate-100/80 dark:hover:bg-slate-900/90"
+                              >
+                                <span className="w-2 h-2 rounded-full bg-cyan-500 mt-1.5 shrink-0 shadow-[0_0_8px_rgba(6,182,212,0.6)]" />
+                                <div className="space-y-0.5 flex-1 min-w-0">
+                                  <div className="flex items-center justify-between flex-wrap gap-1.5">
+                                    <span className="font-bold text-slate-900 dark:text-white">
+                                      {kp.label}
+                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                      {kp.badge && (
+                                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30">
+                                          {kp.badge}
+                                        </span>
+                                      )}
+                                      {kp.code && (
+                                        <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-200/80 dark:bg-slate-800 text-cyan-800 dark:text-cyan-300 border border-slate-300/80 dark:border-slate-700">
+                                          {kp.code}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                                    {renderHighlightedText(kp.detail)}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 3. Uraian Naratif Lengkap (Collapsible Accordion jika ada keyPoints, atau direct paragraph jika tanpa keyPoints) */}
+                      {p.keyPoints && p.keyPoints.length > 0 ? (
+                        <details className="group pt-1">
+                          <summary className="text-[11px] font-bold text-slate-500 dark:text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 cursor-pointer flex items-center gap-1.5 select-none transition-colors">
+                            <ChevronDown className="w-3.5 h-3.5 transition-transform group-open:rotate-180" />
+                            <span>Lihat Uraian Teori Naratif Lengkap</span>
+                          </summary>
+                          <div className="mt-2 p-3.5 rounded-xl bg-secondary/50 border border-border text-xs leading-relaxed text-slate-700 dark:text-slate-300">
+                            {renderHighlightedText(p.desc)}
+                          </div>
+                        </details>
+                      ) : (
+                        <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200 font-normal">
+                          {renderHighlightedText(p.desc)}
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="space-y-3 pt-2">
+                      {/* Catatan Analisis Laboratorium */}
+                      {p.labInsight && (
+                        <div className="p-3.5 rounded-xl bg-amber-500/10 dark:bg-amber-950/30 border border-amber-500/30 text-xs text-amber-950 dark:text-amber-200 leading-relaxed flex items-start gap-2.5 font-medium">
+                          <Lightbulb className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                          <div>
+                            <span className="font-bold text-amber-700 dark:text-amber-300">Catatan Analisis Lab: </span>
+                            {p.labInsight}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Tampilan Jika Pencarian Kosong */}
+            {filteredTheoryPoints.length === 0 && (
+              <div className="p-8 rounded-2xl bg-secondary/30 border border-border text-center space-y-3">
+                <p className="text-sm text-muted-foreground font-medium">
+                  Tidak ada konsep teori yang sesuai dengan kriteria &quot;{theorySearchQuery}&quot; pada kategori &quot;{theoryCategoryFilter}&quot;.
+                </p>
+                <button
+                  onClick={() => {
+                    setTheorySearchQuery("");
+                    setTheoryCategoryFilter("Semua");
+                  }}
+                  className="px-4 py-2 rounded-xl bg-cyan-600 text-white font-bold text-xs hover:bg-cyan-500 transition-colors cursor-pointer"
+                >
+                  Reset Filter &amp; Tampilkan Semua Teori
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -514,7 +1151,7 @@ export default function PraktikumWorksheetPage({
       {/* ========================================================================= */}
       {/* BAGIAN C: PRAKTIKUM (PROSEDUR & TABEL PENGAMATAN)                          */}
       {/* ========================================================================= */}
-      <div className="p-6 md:p-8 rounded-2xl bg-card border border-cyan-500/40 shadow-md space-y-6">
+      <div id="tabel-pengamatan-container" className="p-6 md:p-8 rounded-2xl bg-card border border-cyan-500/40 shadow-md space-y-6 scroll-mt-24">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/60 pb-4">
           <div className="flex items-center gap-3.5">
             <span className="w-10 h-10 rounded-xl bg-cyan-600 text-white font-mono font-black text-base flex items-center justify-center shadow-md">
@@ -551,49 +1188,186 @@ export default function PraktikumWorksheetPage({
 
         {/* Prosedur Kerja Collapsible */}
         {isProcedureOpen && (
-          <div className="p-6 rounded-xl bg-secondary/30 border border-border/80 space-y-3">
-            <div className="font-bold text-foreground flex items-center gap-2 text-sm md:text-base">
-              <Clock className="w-5 h-5 text-cyan-500" />
-              Prosedur Langkah Kerja Praktikum:
+          <div className="p-5 md:p-6 rounded-2xl bg-gradient-to-br from-secondary/40 via-card to-cyan-500/5 border border-cyan-500/25 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border/70 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                  <Clock className="w-4 h-4" />
+                </div>
+                <div>
+                  <h4 className="font-extrabold text-foreground text-sm md:text-base tracking-tight leading-snug">
+                    Prosedur Langkah Kerja Praktikum:
+                  </h4>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
+                    Panduan operasional eksekusi eksperimen laboratorium secara terstruktur
+                  </p>
+                </div>
+              </div>
+
+              {/* Phase Pipeline Pills */}
+              <div className="flex items-center gap-1.5 flex-wrap text-[11px] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-sky-500/15 text-sky-800 dark:text-sky-300 border border-sky-500/30">
+                  1. Persiapan
+                </span>
+                <span className="text-slate-400">→</span>
+                <span className="px-2 py-0.5 rounded-full bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border border-cyan-500/30">
+                  2. 5 Kasus Uji
+                </span>
+                <span className="text-slate-400">→</span>
+                <span className="px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30">
+                  3. Catat Tabel C
+                </span>
+                <span className="text-slate-400">→</span>
+                <span className="px-2 py-0.5 rounded-full bg-purple-500/15 text-purple-800 dark:text-purple-300 border border-purple-500/30">
+                  4. Sintesis D &amp; E
+                </span>
+              </div>
             </div>
-            <ol className="list-decimal pl-6 space-y-2 text-sm md:text-base text-slate-700 dark:text-slate-200 leading-relaxed font-normal">
-              {moduleData.prosedurKerja.map((step, idx) => (
-                <li key={idx}>{step}</li>
-              ))}
-            </ol>
+
+            {/* List / Grid Langkah Kerja */}
+            <div className="space-y-3 pt-1">
+              {moduleData.prosedurSteps && moduleData.prosedurSteps.length > 0 ? (
+                moduleData.prosedurSteps.map((step) => {
+                  const phaseColors: Record<string, { badge: string; card: string }> = {
+                    Persiapan: {
+                      badge: "bg-sky-500/15 text-sky-800 dark:text-sky-300 border-sky-500/30",
+                      card: "border-sky-500/25 bg-gradient-to-r from-sky-500/5 via-card to-background hover:border-sky-500/40",
+                    },
+                    Eksperimen: {
+                      badge: "bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border-cyan-500/30",
+                      card: "border-cyan-500/25 bg-gradient-to-r from-cyan-500/5 via-card to-background hover:border-cyan-500/40",
+                    },
+                    Pencatatan: {
+                      badge: "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/30",
+                      card: "border-amber-500/25 bg-gradient-to-r from-amber-500/5 via-card to-background hover:border-amber-500/40",
+                    },
+                    Sintesis: {
+                      badge: "bg-purple-500/15 text-purple-800 dark:text-purple-300 border-purple-500/30",
+                      card: "border-purple-500/25 bg-gradient-to-r from-purple-500/5 via-card to-background hover:border-purple-500/40",
+                    },
+                  };
+                  const colorConfig = phaseColors[step.phase] || phaseColors.Eksperimen;
+
+                  return (
+                    <div
+                      key={step.no}
+                      className={`p-3.5 md:p-4 rounded-xl border-2 ${colorConfig.card} shadow-sm transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-3`}
+                    >
+                      <div className="flex items-start gap-3 flex-1 min-w-0">
+                        {/* Number Badge */}
+                        <span
+                          className={`w-8 h-8 rounded-xl font-mono font-black text-xs md:text-sm flex items-center justify-center shrink-0 border ${colorConfig.badge} shadow-xs`}
+                        >
+                          #{step.no}
+                        </span>
+
+                        <div className="space-y-1 flex-1 min-w-0">
+                          {/* Phase & Scenario Tag Header */}
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span
+                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${colorConfig.badge}`}
+                            >
+                              {step.phase}
+                            </span>
+                            {step.scenarioRef && (
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold font-mono bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/25">
+                                {step.scenarioRef}
+                              </span>
+                            )}
+                            {step.target && (
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-secondary text-slate-700 dark:text-slate-300 border border-border">
+                                {step.target}
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Step Title */}
+                          <h5 className="font-extrabold text-slate-900 dark:text-white text-sm md:text-[15px] leading-snug">
+                            {step.title}
+                          </h5>
+
+                          {/* Step Instruction */}
+                          <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+                            {renderHighlightedText(step.instruction)}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Action Shortcuts */}
+                      <div className="flex items-center gap-2 shrink-0 self-end md:self-center pt-2 md:pt-0">
+                        {step.codeSnippet && (
+                          <button
+                            onClick={() => {
+                              handleSendToWorkbench(
+                                step.codeSnippet!,
+                                step.no >= 2 && step.no <= observations.length + 1 ? step.no - 1 : undefined
+                              );
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
+                            title="Muat dan uji kode ini di Workbench Laboratorium"
+                          >
+                            <Play className="w-3 h-3 fill-current" />
+                            <span>Uji di Workbench</span>
+                          </button>
+                        )}
+                        {step.no === 7 && (
+                          <button
+                            onClick={() => {
+                              const el = document.getElementById("tabel-pengamatan-container");
+                              if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
+                          >
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Ke Tabel Pengamatan</span>
+                          </button>
+                        )}
+                        {step.no === 8 && (
+                          <button
+                            onClick={() => {
+                              const el = document.getElementById("bagian-analisis-container");
+                              if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs flex items-center gap-1.5 transition-colors shadow-sm cursor-pointer"
+                          >
+                            <FileText className="w-3.5 h-3.5" />
+                            <span>Ke Bagian Analisis</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                /* Fallback for other modules */
+                moduleData.prosedurKerja.map((step, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-xl border-2 border-cyan-500/20 bg-card hover:border-cyan-500/40 shadow-sm transition-all flex items-start gap-3"
+                  >
+                    <span className="w-7 h-7 rounded-lg font-mono font-black text-xs flex items-center justify-center shrink-0 border bg-cyan-500/15 text-cyan-800 dark:text-cyan-300 border-cyan-500/30">
+                      #{idx + 1}
+                    </span>
+                    <p className="text-xs md:text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-normal flex-1">
+                      {renderHighlightedText(step)}
+                    </p>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         )}
 
-        {/* Mini Simulator / Tester Helper */}
-        <div className="p-5 rounded-xl bg-slate-950 border border-slate-800 text-sm space-y-3.5">
-          <div className="flex items-center justify-between">
-            <span className="font-mono font-bold text-cyan-400 flex items-center gap-2 text-sm md:text-base">
-              <Terminal className="w-5 h-5" /> Simulator Pengujian Cepat (Helper Terminal)
-            </span>
-            <span className="text-xs text-slate-300 font-medium">Gunakan untuk menguji nilai sebelum mengisi tabel</span>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-2.5">
-            <input
-              type="text"
-              value={testCodeInput}
-              onChange={(e) => setTestCodeInput(e.target.value)}
-              className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-emerald-400 font-mono text-sm md:text-base font-semibold focus:outline-none focus:border-cyan-400"
-              placeholder="contoh: 10 // 4 atau '50' + '25'"
-            />
-            <button
-              onClick={handleRunMiniTest}
-              className="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm flex items-center justify-center gap-2 shrink-0 transition-colors shadow cursor-pointer"
-            >
-              <Play className="w-4 h-4" />
-              Jalankan Tes
-            </button>
-          </div>
-          {testCodeOutput && (
-            <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-800 font-mono text-sm text-cyan-300 font-medium leading-relaxed">
-              <span className="text-slate-500 mr-2 font-bold">&gt;&gt;&gt;</span>{testCodeOutput}
-            </div>
-          )}
-        </div>
+        {/* Integrated Lab Workbench (Dual Engine: Python Pyodide WASM & JavaScript) */}
+        <PraktikumWorkbench
+          moduleId={moduleId}
+          moduleTitle={moduleData.title}
+          prosedurSteps={moduleData.prosedurSteps}
+          onApplyOutputToTable={handleApplyWorkbenchOutput}
+          totalRows={observations.length}
+          selectedRowNo={activeTargetRow}
+          externalCodeTrigger={workbenchCodeTrigger}
+        />
 
         {/* Tabel Pengamatan & Pengukuran Utama */}
         <div className="space-y-2.5">
@@ -616,9 +1390,25 @@ export default function PraktikumWorksheetPage({
               </thead>
               <tbody className="divide-y divide-border/70 text-slate-700 dark:text-slate-200">
                 {observations.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-secondary/30 transition-colors">
-                    <td className="p-3 text-center align-top pt-4 font-mono font-bold text-cyan-500 text-sm">
-                      {row.no}
+                  <tr
+                    key={idx}
+                    className={`hover:bg-secondary/30 transition-colors ${
+                      row.no === activeTargetRow ? "bg-cyan-500/5 dark:bg-cyan-950/20" : ""
+                    }`}
+                  >
+                    <td
+                      onClick={() => setActiveTargetRow(row.no)}
+                      className="p-3 text-center align-top pt-3 font-mono font-bold text-cyan-500 text-sm cursor-pointer"
+                      title={`Klik untuk menetapkan Baris #${row.no} sebagai target salin Workbench`}
+                    >
+                      <div className="flex flex-col items-center gap-1">
+                        <span>{row.no}</span>
+                        {row.no === activeTargetRow && (
+                          <span className="text-[9px] px-1 py-0.2 rounded bg-cyan-500 text-slate-950 font-sans font-extrabold uppercase tracking-tight shadow-sm">
+                            Target
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="p-2 align-top">
                       <textarea
@@ -639,6 +1429,17 @@ export default function PraktikumWorksheetPage({
                         className="w-full px-2.5 py-2 rounded-lg bg-background border border-border/70 font-mono font-semibold text-emerald-600 dark:text-emerald-400 text-sm focus:outline-none focus:border-cyan-500 leading-snug resize-y min-h-[58px]"
                         placeholder="Masukan uji..."
                       />
+                      {row.testInput && (
+                        <button
+                          type="button"
+                          onClick={() => handleSendToWorkbench(row.testInput, row.no)}
+                          className="mt-1 text-[11px] text-cyan-600 dark:text-cyan-400 hover:text-cyan-500 font-mono font-bold flex items-center gap-1 hover:underline cursor-pointer"
+                          title={`Kirim kode masukan baris #${row.no} ke Workbench`}
+                        >
+                          <Play className="w-3 h-3 fill-current" />
+                          <span>Uji di Workbench</span>
+                        </button>
+                      )}
                     </td>
                     <td className="p-2 align-top">
                       <textarea
@@ -698,7 +1499,7 @@ export default function PraktikumWorksheetPage({
       {/* ========================================================================= */}
       {/* BAGIAN D: ANALISIS & PEMBAHASAN                                           */}
       {/* ========================================================================= */}
-      <div className="p-6 md:p-8 rounded-2xl bg-card border border-border/80 shadow-sm space-y-6">
+      <div id="bagian-analisis-container" className="p-6 md:p-8 rounded-2xl bg-card border border-border/80 shadow-sm space-y-6 scroll-mt-24">
         <div className="flex items-center gap-3.5">
           <span className="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-500 dark:text-cyan-400 font-mono font-black text-base flex items-center justify-center border border-cyan-500/30 shadow-sm">
             D

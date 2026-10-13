@@ -174,3 +174,111 @@ Berdasarkan telaah empiris pedagogis dan keselarasan teknologi rekayasa perangka
   - Toolkit debugging: Membaca *Stack Trace*, *Print/Logging Debugging*, *RAM State Tracing*, dan *Rubber Duck Debugging*.
 - **Pertemuan 16**: Evaluasi Akhir Semester (UAS) & Proyek Terapan —
   - Ujian komprehensif integrasi seluruh pilar dan perakitan proyek aplikasi terapan mandiri yang modular dan kokoh bebas crash.
+
+---
+
+## 9. Status Materi Pertemuan 9: Dasar Perulangan (FOR & WHILE Loop) — SELESAI 100% & AKTIF
+Modul Pertemuan 9 telah selesai dibangun secara utuh dan aktif di platform:
+1. **5 Sub-Materi Berstruktur Akordion Tertutup (*Collapsed by Default*)**:
+   - Sub-Materi 9.1: Taksonomi Perulangan: Definite vs Indefinite Iteration.
+   - Sub-Materi 9.2: Perulangan FOR & Anatomi Fungsi `range(start, stop, step)`.
+   - Sub-Materi 9.3: Perulangan WHILE, Nilai Sentinel, dan Penanganan Infinite Loop.
+   - Sub-Materi 9.4: Pola Akumulator Data (*Sum, Count, Min/Max Extreme Value*).
+   - Sub-Materi 9.5: Pengendali Aliran Loop: `break`, `continue`, dan Fitur Unik Python `loop else:`.
+2. **4 Modul Laboratorium Interaktif Dwibahasa (Python & JavaScript)**:
+   - `AnimatedLoopDefinition.tsx`: Kartu Definisi Flip 2D bebas buram (analogi pelari orbit & kincir air).
+   - `ForLoopStepperLab.tsx`: Stepper dinamis rentang nilai, garis bilangan, dan kalkulator langkah.
+   - `WhileSentinelLab.tsx`: Simulator kasir interaktif dengan perangkap nilai sentinel dan penguji *Infinite Loop Breaker*.
+   - `LoopAccumulatorRamLab.tsx`: Simulator RAM penempatan akumulator di luar vs dalam loop dan pencari nilai ekstrem.
+   - `BreakContinueLab.tsx`: Simulator sirkuit interupsi alur perulangan dan pencarian *Linear Search* dengan `for...else`.
+3. **Asesmen Murni Esai AI Grader**:
+   - Disematkan 5 butir soal esai penalaran bertingkat (`m9-essay-1` s.d. `m9-essay-5`) dengan batas waktu 300 detik per butir dan rubrik analitik 0–100.
+4. **Perutean & Status Akses**:
+   - Aktif di `/theory/9` dengan bilah navigasi menempel dan tombol pintas *🏆 Uji Pemahaman*.
+   - Status di beranda (`src/app/page.tsx`) dan dasbor mahasiswa (`/student/dashboard`) telah berstatus `ready`.
+
+---
+
+## 10. Audit Forensik Digital Integritas Esai & Penanganan Kasus Gawai Kedua (Second Device)
+1. **Hasil Audit Populasi Penuh 51 Submission (16 Mahasiswa)**:
+   - *Kasus 1 (Injeksi Bot)*: Ilham Rasit Tamimi (104.5 WPM, kebocoran persona bot *Hydra/Tuan*) $\rightarrow$ **Nilai M1, M2, M3 di-reset total**.
+   - *Kasus 2 (ChatGPT Spurt)*: Oky Hadi Prasetya (Lonjakan 1.248 kata, 78.6 WPM di M2) $\rightarrow$ **Nilai M2 di-reset** (M1 tetap sah: 94).
+   - *Kasus 3 (Plagiasi Silang)*: Moh. Alvin, Moh. Irfan, Dimas Dwi (Kemiripan kalimat 55%–65% di M1) $\rightarrow$ **Nilai M1 ketiganya di-reset**.
+   - *Kasus 4 (Pelanggaran Tab)*: El Tajznieam (19x tab switch) $\rightarrow$ **Nilai M1 ditetapkan 0.00**.
+   - *Kelompok Integritas Sah*: Chelsea Fransisca (94 & 88), Dendy (90), Ivan (95), Naksatra (91), Rodeon (85), Dian (87), Faridz (80), Ariel (60), Riski (70) **ditetapkan 100% sah dan valid**.
+2. **Penanganan Kasus Transkripsi Gawai Kedua (*Second Device Transcription*)**:
+   - Mahasiswa tidak melakukan tab switch pada laptop ujian (`tab_switches = 0`), melainkan mengetikkan ulang hasil prompt AI dari layar ponsel di samping keyboard.
+   - Terbukti pada:
+     - **Ahmad Umarul Faruq (1126102268) pada M1**: Skor awal 98 disesuaikan dan ditetapkan menjadi **70.00 (Grade B / Kategori: Baik)**.
+     - **Moh. Alvin Tauviqul Hikam (1126102264) pada M2**: Mengetik 472 kata teknis dalam 16.1 menit (29.3 WPM) memuat istilah arsitektur lanjut di luar silabus pengantar. Skor awal 98 disesuaikan dan ditetapkan menjadi **70.00 (Grade B / Kategori: Baik)**.
+3. **Dokumentasi Resmi Laporan Audit & Fasilitas Cetak PDF**:
+   - Dokumen resmi: [`LAPORAN_AUDIT_INTEGRITAS_ESAI.md`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/LAPORAN_AUDIT_INTEGRITAS_ESAI.md) (Nomor: `042/ALPRO-TI/AUDIT-AI/X/2026`).
+   - Berkas mandiri siap cetak: [`LAPORAN_AUDIT_INTEGRITAS_ESAI.html`](file:///home/hadiq/Documents/0-workDir/0-TriDharma/kuliah/alpro/web-alpro/LAPORAN_AUDIT_INTEGRITAS_ESAI.html).
+   - Antarmuka siap cetak web: `/lecturer/audit-report` dengan styling standar kertas A4, kop surat resmi, dan sematan tanda tangan digital resmi dosen pengampu.
+
+---
+
+## 11. Standar Desain, Hierarki Visual & Pedagogi Modul Praktikum Laboratorium Sains Komputasi (LKP)
+
+Praktikum Algoritma & Pemrograman menganut standar visual, tipografi, dan interaktivitas baku agar mahasiswa dapat membedah konsep empiris dengan mudah, cepat dipindai (*scannable*), dan bebas dari *cognitive overload*:
+
+### 11.1 Landasan Filosofis & 2 Pilar Fundamental Tipe Data
+1. **Larangan Paragraf Datar Monokrom (*Anti-Wall of Text*)**:
+   - Landasan filosofis tidak boleh disajikan sebagai paragraf panjang tanpa pemisah visual.
+   - Paragraf pengantar filosofis disajikan dalam kotak pengantar beraksen khusus (`p-4 rounded-xl bg-card border border-border/80 shadow-sm`) dengan *keyword highlighting* otomatis.
+2. **Pembongkaran 2 Pilar Fundamental (Dilarang Menyajikan Mendatar)**:
+   - Kalimat mendatar `(1) kapasitas domain nilai ... serta (2) keabsahan operasi ...` **DIBONGKAR TOTAL** menjadi **2 Kartu Kolom Responsif (`grid-cols-1 md:grid-cols-2`)**:
+     - **Pilar #1 (Aksen Cyan)**: *Kapasitas Domain Nilai & Akurasi Presisi Komputasi* (Tag: `Domain & Presisi RAM`).
+     - **Pilar #2 (Aksen Indigo)**: *Keabsahan Operasi Matematika & Logika* (Tag: `Type Safety & Operasi`).
+
+### 11.2 Standar Tiga Tingkat Hierarki Kartu Dasar Teori (Bagian B)
+Setiap kartu pilar teori wajib memiliki tingkatan penyajian:
+1. **💡 Banner Intisari Konsep (*Lead Concept Callout*)**:
+   - Kotak bergradien Cyan (`border-l-4 border-cyan-500`) di bagian atas yang merangkum inti hukum komputasi dalam 1 kalimat padat bertekanan kata kunci.
+2. **🗂️ Parameter & Rincian Kunci (*Structured Fact Cards*)**:
+   - Daftar butir kartu berindikator titik bercahaya (*glowing dot indicator*), judul tebal, uraian ringkas ber-chip kode, dan badge metrik di sisi kanan (contoh: `int: 28B | float: 24B`, `PyObject`, `type() & sys.getsizeof()`).
+3. **📂 Akordion Naratif Lengkap (*Collapsible Details*)**:
+   - Uraian akademis teoritis lengkap disimpan di dalam elemen lipat `<details>` berlabel *"Lihat Uraian Teori Naratif Lengkap"* agar layar tetap ringkas dan bebas sesak.
+4. **💡 Catatan Analisis Laboratorium (*Lab Insight*)**:
+   - Kotak amber dengan ikon `Lightbulb` yang mengarahkan fokus investigasi ilmiah saat mahasiswa menyusun analisis di Bagian D.
+5. **Pemisahan Peran Tegas (Teori Murni vs Eksekusi Praktik)**:
+   - **Blok konsol gelap *Parameter & Sintaks Uji* DIHILANGKAN DARI KARTU TEORI**: Menghilangkan bilah *horizontal scrollbar* yang tidak rapi. Kartu teori difokuskan murni pada pemahaman konseptual. Eksekusi pengujian sepenuhnya dipusatkan pada Prosedur Kerja dan Terminal Helper.
+6. **Mesin Penekanan Tipografi Otomatis (`renderHighlightedText`)**:
+   - Metrik kapasitas (`28 byte`, `24 byte`, `52-bit`, `64-bit`) $\rightarrow$ Chip Amber kontras tinggi.
+   - Fungsi & identifier (`type()`, `sys.getsizeof()`, `PyObject`, `IEEE 754`, `ZeroDivisionError`, `10 // 4`, `0.1 + 0.2`) $\rightarrow$ Chip konsol Cyan.
+   - Nilai Boolean (`True`, `False`) $\rightarrow$ Badge Hijau Emerald.
+   - Konsep inti (`pointer ke alamat memori fisik RAM`, `integer truncation`, `String Concatenation`, `Explicit Type Casting`, `hardware trap`) $\rightarrow$ Teks tebal bergaris bawah aksen cyan.
+
+### 11.3 Standar Prosedur Langkah Kerja Praktikum (Bagian C: Prosedur Kerja)
+1. **Larangan List Datar Monokrom (`<ol>`)**:
+   - Prosedur kerja tidak boleh disajikan sebagai daftar bernomor statis biasa.
+2. **Bilah Pipeline Alur 4 Fase (*Phase Workflow Pipeline*)**:
+   - Menyajikan tahapan eksperimen secara visual di header:  
+     `1. Persiapan` $\rightarrow$ `2. 5 Kasus Uji` $\rightarrow$ `3. Catat Tabel C` $\rightarrow$ `4. Sintesis D & E`.
+3. **Kartu Langkah Kerja Berfase (*Phase Workflow Cards*)**:
+   - Nomor langkah berformat badge kotak tebal `#1` s.d. `#8` dengan pewarnaan semantik per fase (Sky untuk Persiapan, Cyan untuk Eksperimen, Amber untuk Pencatatan, Purple untuk Sintesis).
+   - Memuat tag fase, tag referensi skenario uji (`Skenario #1 & #2`, `Skenario #3 & #4`, dst.), judul langkah tebal, dan instruksi ber-highlight kata kunci.
+4. **Tombol Pintas Aksi Langsung (*Interactive Action Shortcuts*)**:
+   - Tombol **`▶ Uji di Simulator`** pada langkah uji coba: otomatis memuat sintaks uji ke input simulator dan melakukan *smooth scroll* ke helper terminal.
+   - Tombol **`✓ Ke Tabel Pengamatan`** pada langkah pencatatan: meluncurkan layar langsung ke `#tabel-pengamatan-container`.
+   - Tombol **`📝 Ke Bagian Analisis`** pada langkah perumusan: meluncurkan layar langsung ke `#bagian-analisis-container`.
+
+### 11.4 Integrated Lab Workbench & Live Execution Engine (Bagian C: Workbench Empiris)
+1. **Penyatuan Workbench IDE Langsung di Dokumen LKP**:
+   - Menggantikan helper 1-baris statis dengan **Integrated Lab Workbench** 2-kolom (Editor di kiri, Terminal di kanan).
+2. **Dual-Engine Eksekusi Asli**:
+   - Menjalankan interpreter **Python murni via Pyodide (WASM v0.25)** di sisi client (browser) tanpa backend, serta JavaScript native.
+3. **Editor Kode Berstandar IDE**:
+   - Menggunakan `react-simple-code-editor` + Prism syntax highlighting dengan gutter nomor baris 1:1, nonaktif soft-wrapping (`white-space: pre !important;`), dan pintasan eksekusi `Ctrl + Enter`.
+4. **Terminal Output & Pengukuran Empiris**:
+   - Konsol hitam bergaya IDE modern (`#0d1117`), menampilkan luaran stdout/stderr asli dan exception traceback, dilengkapi pengukur waktu eksekusi (`performance.now()` dalam ms) dan **RAM State Inspector** (menampilkan variabel aktif di memori beserta tipe data dan ukurannya).
+5. **Konektivitas Cerdas ke Tabel Pengamatan**:
+   - Tombol **`[📋 Salin ke Tabel #X]`** memindahkan hasil aktual mesin dan metrik terukur ke baris tabel pengamatan terpilih dalam 1 kali klik.
+   - Di setiap baris tabel, tombol **`[▶ Uji di Workbench]`** memungkinkan mahasiswa mengirim masukan baris tersebut ke workbench untuk pengujian ulang.
+6. **Proteksi Dokumen Cetak (`print:hidden`)**:
+   - Workbench disembunyikan otomatis pada saat cetak/ekspor PDF A4 sehingga hasil cetak tetap berupa dokumen akademik formal yang bersih.
+
+### 11.5 Sinkronisasi Lembar Kerja Cetak Resmi A4 / PDF (`print/page.tsx`)
+1. **Landasan Filosofis**: Dicetak rapi dalam 2 kotak pilar mini berdampingan (*side-by-side*).
+2. **Dasar Teori**: Dicetak dalam format daftar butir berpoin (*bulleted list*) dengan tag kode tebal.
+3. **Pembersihan Konsol Uji**: Menghilangkan baris sintaks konsol hitam dari dokumen cetak teori agar format fisik bersih dan memenuhi standar dokumen resmi akademik.

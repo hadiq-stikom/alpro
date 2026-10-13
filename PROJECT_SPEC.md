@@ -58,6 +58,7 @@ Platform pembelajaran interaktif mata kuliah **Algoritma & Pemrograman (TI-101, 
 | **Fase 5** | **Dashboard Dosen** | ✅ **Selesai** | Rute `/lecturer/dashboard` (analitik kelas, filter pencarian mahasiswa) & `/lecturer/student/[id]` (detail rapor, detektor anti-cheat, ulasan AI grader). |
 | **Pilar 2 (Bagian 2)** | **Struktur Percabangan Statemen Tunggal & Ganda (Minggu 6)** | ✅ **Selesai 100%** | Teori 4 Representasi Terpadu (`Pertemuan6.tsx`), 4 Lab Interaktif (Anatomi Kondisi, IF Tunggal, IF-ELSE Ganda, 3 Kasus Nyata Terpadu), Mode Proyektor Fullscreen, dan **5 Misi Coding Percabangan di Workspace Studio** (`/workspace?chapter=6`). |
 | **Pilar 2 (Bagian 3)** | **Percabangan Majemuk & Bersarang (Minggu 7)** | ✅ **Selesai 100%** | Teori 4 Representasi Terpadu (`Pertemuan7.tsx`), 4 Lab Interaktif (Cascading IF-ELIF Grade, Skrining Donor Darah Nested IF, Selector ATM Switch/Match-case, Studi Kasus Kasir Restoran Terpadu), 5 Soal MCQ Kuis, 5 Soal Esai Evaluasi AI, dan **5 Misi Coding Percabangan Majemuk di Workspace Studio** (`/workspace?chapter=7`). |
+| **Pilar 3 (Bagian 1)** | **Dasar Perulangan: FOR & WHILE Loop (Minggu 9)** | ✅ **Selesai 100%** | Teori 5 Sub-Materi Terlipat Default (`Pertemuan9.tsx`), 4 Lab Interaktif Dwibahasa (`AnimatedLoopDefinition`, `ForLoopStepperLab`, `WhileSentinelLab`, `LoopAccumulatorRamLab`, `BreakContinueLab`), Bank 5 Esai AI Grader, dan Rute Cetak Laporan Audit Forensik `/lecturer/audit-report`. |
 
 ---
 
@@ -72,7 +73,14 @@ src/
 │   ├── (auth)/
 │   │   └── login/page.tsx             <- Halaman Login NIM / Email
 │   ├── theory/
-│   │   └── [id]/page.tsx              <- Materi perkuliahan interaktif per minggu (Minggu 1 s.d. 7 aktif)
+│   │   └── [id]/page.tsx              <- Materi perkuliahan interaktif per minggu (Minggu 1 s.d. 7 & 9 aktif)
+│   ├── student/
+│   │   ├── dashboard/page.tsx         <- Dasbor Mahasiswa (16 Kartu Pekan, Status Selesai/Tersedia/Gembok)
+│   │   └── meeting/[id]/page.tsx      <- Rapor nilai capaian individual per pertemuan
+│   ├── lecturer/
+│   │   ├── dashboard/page.tsx         <- Dasbor Dosen (Analitik kelas, reset password NIM, audit esai)
+│   │   ├── audit-report/page.tsx      <- Halaman cetak laporan resmi forensik integritas PDF A4
+│   │   └── student/[id]/page.tsx      <- Detail performa per mahasiswa & detektor anti-cheat
 │   ├── workspace/
 │   │   └── page.tsx                   <- Studio Praktikum (Editor, Flowchart, Pseudocode, RAM)
 │   ├── student/                       <- [Fase 4]
@@ -534,7 +542,49 @@ Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu da
    - **Pertemuan 16: Evaluasi Akhir Semester (UAS) & Proyek Terapan**:
      - Evaluasi komprehensif integrasi seluruh pilar dan perakitan proyek aplikasi terapan mandiri yang modular dan kokoh bebas crash.
 
+### 6.27 Implementasi Baku Pertemuan 9 (Dasar Perulangan: FOR & WHILE Loop — 100% Selesai & Aktif)
+1. **5 Sub-Materi Berstruktur Akordion Tertutup (*Collapsed by Default*)**:
+   - Sub-Materi 9.1: Taksonomi Perulangan: Definite vs Indefinite Iteration.
+   - Sub-Materi 9.2: Perulangan FOR & Anatomi Fungsi `range(start, stop, step)`.
+   - Sub-Materi 9.3: Perulangan WHILE, Nilai Sentinel, dan Penanganan Infinite Loop.
+   - Sub-Materi 9.4: Pola Akumulator Data (*Sum, Count, Min/Max Extreme Value*).
+   - Sub-Materi 9.5: Pengendali Aliran Loop: `break`, `continue`, dan Fitur Unik Python `loop else:`.
+2. **Modul Laboratorium Interaktif Dwibahasa (Python & JavaScript)**:
+   - Terintegrasi penuh dengan kartu flip 2D bebas buram (`AnimatedLoopDefinition.tsx`), stepper rentang nilai (`ForLoopStepperLab.tsx`), simulator kasir sentinel & infinite loop breaker (`WhileSentinelLab.tsx`), RAM accumulator (`LoopAccumulatorRamLab.tsx`), dan sirkuit interupsi alur loop (`BreakContinueLab.tsx`).
+3. **Asesmen Murni Esai AI Grader**:
+   - Bank 5 butir soal esai penalaran bergradasi (`m9-essay-1` s.d. `m9-essay-5`) dengan durasi 300 detik per butir dan rubrik analitik 0–100.
+4. **Integrasi Sistem**: Rute `/theory/9` aktif dengan status beranda dan dasbor mahasiswa `ready`.
+
+### 6.28 Audit Forensik Integritas Esai, Penanganan Kasus Gawai Kedua & Laporan Resmi PDF
+1. **Audit Populasi Penuh 51 Submission (16 Mahasiswa)**:
+   - Evaluasi menyeluruh membuktikan integritas tinggi pada 11 mahasiswa (Chelsea Fransisca, Dendy, Ivan, Naksatra, Rodeon, Dian, Faridz, Ariel, Riski, Irfan M2, Dimas M2).
+   - Tindakan tegas: Reset total M1–M3 untuk injeksi bot Hydra (Ilham), reset M2 untuk ChatGPT spurt (Oky), reset M1 untuk plagiasi silang (Alvin, Irfan, Dimas), dan diskualifikasi skor 0 untuk 19x tab switch (El Tajznieam).
+2. **Penanganan Kasus Transkripsi Gawai Kedua (*Second Device Transcription*)**:
+   - Modus transkripsi langsung dari layar ponsel di samping keyboard tanpa tab switch (`tab_switches = 0`).
+   - Sanksi pembinaan proporsional: Skor disesuaikan dan ditetapkan menjadi **70.00 (Grade B / Baik)** untuk **Ahmad Umarul Faruq (M1)** dan **Moh. Alvin Tauviqul Hikam (M2)**.
+3. **Standardisasi Dokumen Audit Siap Cetak**:
+   - Dokumen resmi: `LAPORAN_AUDIT_INTEGRITAS_ESAI.md` (Nomor: 042/ALPRO-TI/AUDIT-AI/X/2026).
+   - Berkas mandiri HTML: `LAPORAN_AUDIT_INTEGRITAS_ESAI.html`.
+   - Rute cetak resmi: `/lecturer/audit-report` dengan styling cetak kertas A4, kop surat institusi, dan tanda tangan digital.
+
+### 6.29 Standar Desain, Hierarki Visual & Interaktivitas Modul Praktikum Laboratorium (LKP)
+1. **Landasan Filosofis & Pembongkaran 2 Pilar Fundamental**:
+   - Dilarang menyajikan pengantar filosofis sebagai teks datar monokrom panjang. Wajib menggunakan kotak pengantar beraksen khusus (`p-4 rounded-xl bg-card border border-border/80 shadow-sm`) dengan *keyword highlighting* otomatis.
+   - Dua pilar fundamental tipe data wajib disajikan dalam **2 Kartu Kolom Responsif (`grid-cols-1 md:grid-cols-2`)**: Pilar #1 (*Kapasitas Domain Nilai & Akurasi Presisi Komputasi*) dan Pilar #2 (*Keabsahan Operasi Matematika & Logika*).
+2. **Kartu Dasar Teori 3-Level Visual Hierarchy (Bagian B)**:
+   - *Tingkat 1*: Banner Intisari Konsep (*Lead Concept Callout*) bergradien Cyan (`border-l-4 border-cyan-500`) dengan badge `✨ INTISARI KONSEP`.
+   - *Tingkat 2*: Kartu Rincian Kunci (*Structured Fact Cards*) berindikator *glowing dot*, judul tebal, uraian ringkas, dan badge kode di sisi kanan (`int: 28B | float: 24B`, `PyObject`, `type() & sys.getsizeof()`).
+   - *Tingkat 3*: Akordion Naratif Lengkap (`<details>`) untuk membaca teks akademis panjang tanpa memicu *cognitive overload*.
+   - *Pembersihan Konsol Teori*: Blok terminal gelap *Parameter & Sintaks Uji* **dihilangkan dari kartu teori** untuk menghapus *horizontal scrollbar*. Eksekusi pengujian dipusatkan ke Prosedur Kerja dan Terminal Helper.
+3. **Prosedur Langkah Kerja Berfase (Bagian C)**:
+   - Dilarang tag `<ol>` datar monokrom. Dilengkapi **Bilah Pipeline Alur 4 Fase** (`Persiapan` $\rightarrow$ `Eksperimen` $\rightarrow$ `Pencatatan` $\rightarrow$ `Sintesis`).
+   - Kartu berfase berbadge nomor tebal `#1`–`#8` dengan warna semantik per fase dan tombol pintas aksi langsung (`[▶ Uji di Simulator]`, `[✓ Ke Tabel Pengamatan]`, `[📝 Ke Bagian Analisis]`).
+4. **Standar Cetak Lembar Kerja Resmi A4 / PDF (`print/page.tsx`)**:
+   - Landasan filosofis dicetak dalam 2 kotak pilar berdampingan (*side-by-side*).
+   - Dasar teori disajikan dalam format daftar butir berpoin rapi (*bulleted list*) dengan tag kode tebal, tanpa blok konsol hitam.
+
 ---
 
-*Dokumen ini terakhir diperbarui: 11 Oktober 2026 (Versi 2.8)*  
+*Dokumen ini terakhir diperbarui: 11 Oktober 2026 (Versi 3.0)*  
 *Disusun dan disepakati oleh: Hadiq, ST, M.Kom bersama Antigravity AI*
+

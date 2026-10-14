@@ -8,9 +8,9 @@
 ## 1. VISI, PARADIGMA & FILOSOFI PRAKTIKUM
 
 ### 1.1 Identitas Mata Kuliah
-- **Mata Kuliah Teori**: Algoritma & Pemrograman (TI-101, 3 SKS)
-- **Mata Kuliah Pasangan**: **Praktikum Algoritma & Pemrograman (1 SKS)**
-- **Dosen Pengampu**: **Hadiq, ST, M.Kom**
+- **Mata Kuliah Teori**: Dasar Algoritma & Pemrograman (PP112601, 3 SKS)
+- **Mata Kuliah Praktikum**: **Praktikum Algoritma & Pemrograman (KK112601, 1 SKS)**
+- **Dosen Pengampu**: **Hadiq, ST, M.Kom** (NIDN: 0713077804)
 
 ### 1.2 Pergeseran Paradigma: Dari "Praktek Koding" ke "Pengukuran & Validasi"
 Praktikum ini **BUKAN LAGI** sekadar sesi mengetik sintaks atau menyalin kode dari modul ke komputer (*coding-first*). 

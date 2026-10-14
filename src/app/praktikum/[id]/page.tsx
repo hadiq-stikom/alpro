@@ -2268,7 +2268,7 @@ export default function PraktikumWorksheetPage({
                 <p className="text-xs text-slate-500">Mata Kuliah Praktikum</p>
               </div>
               <span className="text-xs font-mono font-bold text-slate-600 dark:text-slate-400">
-                NIDN: 0701048602
+                NIDN: 0713077804
               </span>
             </div>
 

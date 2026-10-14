@@ -512,7 +512,7 @@ const fullHtml = `<!DOCTYPE html>
       <div class="kop-logo">WEB-ALPRO</div>
       <div class="kop-instansi">
         <strong>PROGRAM STUDI TEKNIK INFORMATIKA</strong>
-        Mata Kuliah Algoritma & Pemrograman (TI-101)<br/>
+        Mata Kuliah Dasar Algoritma & Pemrograman (PP112601)<br/>
         Tahun Akademik 2026/2027 — Semester Ganjil
       </div>
     </div>

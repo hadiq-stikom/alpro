@@ -1,7 +1,7 @@
 -- ================================================================
 -- TABEL & SKEMA: PRAKTIKUM SUBMISSIONS & DIGITAL SIGNATURE
--- Mata Kuliah: Praktikum Algoritma & Pemrograman (1 SKS)
--- Terpisah secara independen dari Mata Kuliah Teori/Proyek (3 SKS)
+-- Mata Kuliah: Praktikum Algoritma & Pemrograman (KK112601 • 1 SKS)
+-- Terpisah secara independen dari Mata Kuliah Teori: Dasar Algoritma & Pemrograman (PP112601 • 3 SKS)
 --
 -- CARA MENJALANKAN:
 -- 1. Buka https://app.supabase.com → Project Anda

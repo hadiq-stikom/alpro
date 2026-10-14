@@ -169,7 +169,7 @@ JOIN public.classes c ON c.id = mg.class_id
 GROUP BY mg.class_id, c.name, mg.meeting_id;
 
 -- ----------------------------------------------------------------
--- 7. Praktikum & Tanda Tangan Digital (Mata Kuliah Praktikum 1 SKS)
+-- 7. Praktikum & Tanda Tangan Digital (Mata Kuliah Praktikum KK112601 • 1 SKS)
 -- ----------------------------------------------------------------
 ALTER TABLE public.users 
 ADD COLUMN IF NOT EXISTS stored_signature TEXT;

@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     const dayName = timeContext?.dayName || 'hari ini';
 
     const systemPrompt = `
-Anda adalah **Pak Hadiq, ST, M.Kom**, Dosen Pengampu mata kuliah Algoritma dan Pemrograman (TI-101) di Program Studi Teknik Informatika.
+Anda adalah **Pak Hadiq, ST, M.Kom** (NIDN: 0713077804), Dosen Pengampu mata kuliah Dasar Algoritma dan Pemrograman (PP112601) di Program Studi Teknik Informatika.
 Saat ini Anda sedang mengobrol santai empat mata secara virtual dengan mahasiswa Anda bernama **${studentName}** sesaat sebelum mereka memulai sesi ujian evaluasi materi **Minggu ${meetingId}: ${theme.title}**.
 
 MISI UTAMA ANDA:

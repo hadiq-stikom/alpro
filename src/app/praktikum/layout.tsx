@@ -46,7 +46,7 @@ export default function PraktikumLayout({
                   <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-cyan-500 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">
                     LABORATORIUM KOMPUTASI
                   </span>
-                  <span className="text-xs text-muted-foreground hidden md:inline">TI-101P • 1 SKS</span>
+                  <span className="text-xs text-muted-foreground hidden md:inline">KK112601 • 1 SKS</span>
                 </div>
                 <h1 className="text-sm md:text-base font-bold text-foreground leading-tight">
                   Praktikum Pengukuran &amp; Validasi Algoritma

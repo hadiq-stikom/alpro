@@ -87,10 +87,10 @@ export default function Navbar() {
             </div>
             <div>
               <h1 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors">
-                Algoritma &amp; Pemrograman
+                Dasar Algoritma &amp; Pemrograman
               </h1>
               <p className="text-xs text-muted-foreground font-medium">
-                TI-101 • Semester Ganjil
+                PP112601 • Semester Ganjil
               </p>
             </div>
           </Link>

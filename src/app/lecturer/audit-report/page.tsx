@@ -75,7 +75,7 @@ export default function AuditReportPage() {
             <strong className="text-sm font-bold text-slate-900 block">
               PROGRAM STUDI S1 TEKNIK INFORMATIKA
             </strong>
-            Mata Kuliah: Algoritma & Pemrograman (TI-101) — 4 SKS<br />
+            Mata Kuliah: Dasar Algoritma &amp; Pemrograman (PP112601) — 3 SKS<br />
             Tahun Akademik 2026/2027 — Semester Ganjil
           </div>
         </div>
@@ -86,10 +86,10 @@ export default function AuditReportPage() {
             Laporan Audit Forensik Digital Integritas Akademik
           </h1>
           <h2 className="text-sm sm:text-base font-bold text-sky-700">
-            Evaluasi Sistem Asesmen Esai Berbasis AI — Kelas TI-101
+            Evaluasi Sistem Asesmen Esai Berbasis AI — Kelas PP112601
           </h2>
           <div className="text-xs text-slate-500 pt-1">
-            Dosen Pengampu: <strong>Hadiq, ST, M.Kom</strong> (NIDN: 0701048602) • Tanggal Rilis: <strong>11 Oktober 2026</strong>
+            Dosen Pengampu: <strong>Hadiq, ST, M.Kom</strong> (NIDN: 0713077804) • Tanggal Rilis: <strong>11 Oktober 2026</strong>
           </div>
         </div>
 
@@ -361,7 +361,7 @@ export default function AuditReportPage() {
                 />
               </div>
               <div className="text-sm font-black text-slate-900">Hadiq, ST, M.Kom</div>
-              <div className="text-xs text-slate-600">NIDN: 0701048602</div>
+              <div className="text-xs text-slate-600">NIDN: 0713077804</div>
             </div>
           </section>
 

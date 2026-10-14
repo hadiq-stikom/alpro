@@ -539,7 +539,7 @@ export default function Home() {
               
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 text-xs font-mono font-bold shadow-xs">
                 <GraduationCap className="w-3.5 h-3.5" />
-                <span>Mata Kuliah: Algoritma &amp; Pemrograman (TI-101 • 3 SKS)</span>
+                <span>Mata Kuliah: Dasar Algoritma &amp; Pemrograman (PP112601 • 3 SKS)</span>
               </div>
 
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground leading-[1.18]">

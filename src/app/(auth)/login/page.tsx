@@ -149,7 +149,7 @@ function LoginForm() {
               </div>
               <h1 className="text-2xl font-bold text-white mb-1">Selamat Datang</h1>
               <p className="text-sm text-white/50">
-                Algoritma &amp; Pemrograman &mdash; TI-101
+                Dasar Algoritma &amp; Pemrograman &mdash; PP112601
               </p>
             </motion.div>
 
@@ -277,7 +277,7 @@ function LoginForm() {
               <Code2 className="h-3.5 w-3.5" />
               <span className="text-xs">Hadiq, ST, M.Kom</span>
             </div>
-            <span className="text-xs text-white/20">TI-101 • Semester Ganjil</span>
+            <span className="text-xs text-white/20">PP112601 • Semester Ganjil</span>
           </div>
         </div>
       </motion.div>

@@ -7,7 +7,7 @@
 
 ## 1. VISI & TUJUAN PRODUK
 
-Platform pembelajaran interaktif mata kuliah **Algoritma & Pemrograman (TI-101, 3 SKS)** yang dirancang untuk:
+Platform pembelajaran interaktif mata kuliah **Dasar Algoritma & Pemrograman (PP112601, 3 SKS)** yang dirancang untuk:
 
 1. **Meningkatkan minat belajar mahasiswa** melalui visualisasi dan animasi interaktif yang dinamis, modern, dan pedagogis.
 2. **Menambah semangat mahasiswa** untuk mendapatkan capaian terbaik melalui **gamifikasi**.
@@ -18,6 +18,7 @@ Platform pembelajaran interaktif mata kuliah **Algoritma & Pemrograman (TI-101, 
 
 ### Dosen Pengampu
 - **Nama**: Hadiq, ST, M.Kom
+- **NIDN**: 0713077804
 - **Foto**: `/public/dosen.png`
 
 ---

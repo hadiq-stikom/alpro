@@ -1,7 +1,7 @@
 # 📑 LAPORAN AUDIT FORENSIK DIGITAL INTEGRITAS AKADEMIK
-### EVALUASI SISTEM ASESMEN ESAI BERBASIS AI — MATA KULIAH ALGORITMA & PEMROGRAMAN (TI-101)
+### EVALUASI SISTEM ASESMEN ESAI BERBASIS AI — MATA KULIAH DASAR ALGORITMA & PEMROGRAMAN (PP112601)
 **Program Studi S1 Teknik Informatika — Tahun Akademik 2026/2027**  
-*Dosen Pengampu: Hadiq, ST, M.Kom (NIDN: 0701048602)*  
+*Dosen Pengampu: Hadiq, ST, M.Kom (NIDN: 0713077804)*  
 *Dokumen Resmi Nomor: 042/ALPRO-TI/AUDIT-AI/X/2026*  
 *Status Pembaruan: Edisi Revisi Mutakhir — Banyuwangi, 11 Oktober 2026*
 
@@ -195,7 +195,7 @@ Pada modus ini, mahasiswa tidak berpindah tab di laptop (**`tab_switches: 0`**),
 
 ## 5. ANALISIS KELOMPOK MAHASISWA BERINTEGRITAS TINGGI (NILAI SAH)
 
-Investigasi forensik membuktikan bahwa sebagian besar mahasiswa di kelas TI-101 menjunjung tinggi kejujuran akademik. Jawaban mereka mencerminkan dinamika kognitif manusiawi sejati:
+Investigasi forensik membuktikan bahwa sebagian besar mahasiswa di kelas PP112601 menjunjung tinggi kejujuran akademik. Jawaban mereka mencerminkan dinamika kognitif manusiawi sejati:
 
 1. **CHELSEA FRANSISCA LAURENT (NIM: 1126102242) — Teladan Ketekunan Akademik:**
    * **Pertemuan 1 (Skor 94):** 36,3 menit, 376 kata, 10,4 WPM.
@@ -265,7 +265,7 @@ Untuk menutup celah penyalinan gawai kedua dan injeksi skrip pada pertemuan sela
 Laporan ini disusun dengan integritas ilmiah tertinggi, berbasis data rekaman server yang dapat diuji silang, serta berkekuatan hukum akademis sebagai landasan pembinaan evaluasi perkuliahan semester berjalan.
 
 Banyuwangi, 11 Oktober 2026  
-**Dosen Pengampu Mata Kuliah Algoritma & Pemrograman,**
+**Dosen Pengampu Mata Kuliah Dasar Algoritma & Pemrograman,**
 
 <br/>
 
@@ -274,5 +274,5 @@ Banyuwangi, 11 Oktober 2026
 <br/>
 
 **Hadiq, ST, M.Kom**  
-NIDN: **0701048602**  
+NIDN: **0713077804**  
 *Program Studi S1 Teknik Informatika*

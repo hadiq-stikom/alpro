@@ -44,7 +44,7 @@ interface MeetingInfo {
   status: 'ready' | 'upcoming';
 }
 
-// Daftar 16 Pertemuan Silabus Semester TI-101
+// Daftar 16 Pertemuan Silabus Semester PP112601
 const ALL_MEETINGS: MeetingInfo[] = [
   { id: 1, title: "Pengenalan Komputer & Pemrograman", subtitle: "Evolusi komputasi, bahasa pemrograman & siklus eksekusi", status: 'ready' },
   { id: 2, title: "Arsitektur Komputer & Sistem Bilangan", subtitle: "Radiks biner, heksadesimal & alokasi memori fisik", status: 'ready' },
@@ -226,7 +226,7 @@ export default function StudentDashboardPage() {
               <p className="text-xs md:text-sm text-muted-foreground mt-0.5 flex flex-wrap items-center gap-x-2">
                 <span className="font-mono font-semibold text-foreground/80">NIM: {profile?.nim ?? "–"}</span>
                 <span>•</span>
-                <span>TI-101 Algoritma &amp; Pemrograman</span>
+                <span>PP112601 Dasar Algoritma &amp; Pemrograman</span>
                 <span>•</span>
                 <span className="text-primary font-medium">Semester Ganjil</span>
               </p>

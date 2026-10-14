@@ -256,7 +256,7 @@ export default function LecturerPraktikumPage() {
                 </h1>
               </div>
               <p className="text-xs text-slate-500 font-medium">
-                Mata Kuliah Praktikum Algoritma &amp; Pemrograman (1 SKS) • Dosen: Hadiq, ST, M.Kom
+                Mata Kuliah Praktikum Algoritma &amp; Pemrograman (KK112601 • 1 SKS) • Dosen: Hadiq, ST, M.Kom (NIDN: 0713077804)
               </p>
             </div>
           </div>

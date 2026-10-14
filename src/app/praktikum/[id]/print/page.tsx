@@ -210,7 +210,7 @@ export default function PraktikumPrintPage({
             Program Studi Teknik Informatika
           </h1>
           <p className="text-sm font-medium text-black">
-            Mata Kuliah: Praktikum Algoritma &amp; Pemrograman (TI-101P) • Semester Ganjil 2024/2025
+            Mata Kuliah: Praktikum Algoritma &amp; Pemrograman (KK112601) • Semester Ganjil 2024/2025
           </p>
           <div className="pt-2">
             <span className="inline-block px-5 py-1 text-sm font-black uppercase tracking-wider border-2 border-black bg-white">
@@ -521,7 +521,7 @@ export default function PraktikumPrintPage({
 
               <div>
                 <p className="font-bold text-sm underline text-black">Hadiq, ST, M.Kom</p>
-                <p className="text-xs font-semibold text-black mt-0.5">NIDN: 0701048602</p>
+                <p className="text-xs font-semibold text-black mt-0.5">NIDN: 0713077804</p>
               </div>
             </div>
           </div>

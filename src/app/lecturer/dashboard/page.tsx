@@ -237,7 +237,7 @@ export default function LecturerDashboardPage() {
                 Selamat datang, {profile?.full_name ?? "Dosen"} 👋
               </h1>
               <p className="text-sm text-muted-foreground">
-                Dashboard Dosen — TI-101 Algoritma &amp; Pemrograman
+                Dashboard Dosen — PP112601 Dasar Algoritma &amp; Pemrograman
               </p>
             </div>
           </div>

@@ -16,14 +16,19 @@ import {
   Zap, 
   RefreshCw, 
   CheckCircle2, 
-  TrendingUp, 
+  TrendingUp,
   RotateCcw,
-  Lock
+  Lock,
+  FlaskConical,
+  AlertCircle,
+  FileSpreadsheet,
+  Printer
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabase";
 import { getBadgeFromScore, BADGE_CONFIGS, type BadgeConfig } from "@/lib/badges";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
+import { PRAKTIKUM_MODULES } from "@/lib/praktikum-data";
 import Link from "next/link";
 
 interface OverallGrade {
@@ -72,6 +77,14 @@ export default function StudentDashboardPage() {
   const [meetingGrades, setMeetingGrades] = useState<MeetingGradeItem[]>([]);
   const [stats, setStats] = useState({ totalCompleted: 0, totalBadges: 0, totalHours: 0 });
   const [filterTab, setFilterTab] = useState<'all' | 'uncompleted' | 'completed'>('all');
+  const [praktikumStats, setPraktikumStats] = useState<{
+    totalModules: number;
+    approvedCount: number;
+    pendingCount: number;
+    revisionCount: number;
+    avgScore: number | null;
+    moduleStatuses: Record<number, { status: string; score: number | null }>;
+  } | null>(null);
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -158,6 +171,46 @@ export default function StudentDashboardPage() {
           totalBadges: uniqueMeetingGrades.length,
           totalHours: Number((totalSeconds / 3600).toFixed(1))
         });
+
+        // 5. Ambil data pengesahan praktikum (1 SKS) secara terpisah
+        try {
+          const resPrak = await fetch(`/api/praktikum/submission?userId=${profile.id}`);
+          const dataPrak = await resPrak.json();
+          if (dataPrak.success && Array.isArray(dataPrak.submissions)) {
+            const subs = dataPrak.submissions;
+            const approved = subs.filter((s: any) => s.status === 'disetujui');
+            const pending = subs.filter((s: any) => s.status === 'diajukan');
+            const revision = subs.filter((s: any) => s.status === 'perlu_revisi');
+
+            const scores = approved
+              .map((s: any) => Number(s.lecturer_score))
+              .filter((sc: number) => !isNaN(sc) && sc !== null && sc !== undefined);
+
+            const pAvg = scores.length > 0 ? Number((scores.reduce((a: number, b: number) => a + b, 0) / scores.length).toFixed(1)) : null;
+
+            const modMap: Record<number, { status: string; score: number | null }> = {};
+            subs.forEach((s: any) => {
+              const mId = Number(s.module_id);
+              if (mId) {
+                modMap[mId] = {
+                  status: s.status,
+                  score: s.lecturer_score !== null && s.lecturer_score !== undefined ? Number(s.lecturer_score) : null
+                };
+              }
+            });
+
+            setPraktikumStats({
+              totalModules: 7,
+              approvedCount: approved.length,
+              pendingCount: pending.length,
+              revisionCount: revision.length,
+              avgScore: pAvg,
+              moduleStatuses: modMap
+            });
+          }
+        } catch (pErr) {
+          console.warn("Gagal mengambil data praktikum di dashboard mahasiswa:", pErr);
+        }
       } catch (error) {
         console.error("Gagal mengambil data dashboard mahasiswa", error);
       } finally {
@@ -541,6 +594,121 @@ export default function StudentDashboardPage() {
               </div>
               <span className="font-mono font-black text-sm px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/30">E s.d CD</span>
             </div>
+          </div>
+        </motion.div>
+
+        {/* WIDGET STATUS LABORATORIUM PRAKTIKUM (1 SKS) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-10 bg-card border border-cyan-500/30 rounded-3xl p-6 sm:p-7 shadow-sm overflow-hidden bg-gradient-to-br from-cyan-500/5 via-background to-teal-500/5"
+        >
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-6 pb-5 border-b border-border/60">
+            <div className="flex items-center gap-3.5">
+              <div className="p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 shrink-0">
+                <FlaskConical className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30">
+                    Mata Kuliah Praktikum (1 SKS)
+                  </span>
+                  <span className="text-xs text-muted-foreground hidden sm:inline">• Terpisah dari Teori (3 SKS)</span>
+                </div>
+                <h3 className="text-xl font-bold text-foreground mt-0.5">
+                  Laboratorium Pengukuran &amp; Validasi Algoritma
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  Pantau progres pengerjaan 7 modul pengujian empiris dan pengesahan resmi dosen
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
+              {/* Badge Ringkasan */}
+              <div className="flex items-center gap-2 text-xs font-bold">
+                <span className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                  {praktikumStats ? `${praktikumStats.approvedCount}/7 Disahkan` : "0/7 Disahkan"}
+                </span>
+
+                {praktikumStats && praktikumStats.pendingCount > 0 && (
+                  <span className="px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 flex items-center gap-1.5 animate-pulse">
+                    <Clock className="w-4 h-4" />
+                    {praktikumStats.pendingCount} Menunggu Dosen
+                  </span>
+                )}
+
+                {praktikumStats && praktikumStats.revisionCount > 0 && (
+                  <span className="px-3 py-1.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+                    <AlertCircle className="w-4 h-4" />
+                    {praktikumStats.revisionCount} Perlu Revisi
+                  </span>
+                )}
+              </div>
+
+              <Link
+                href="/praktikum"
+                className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-sm cursor-pointer ml-auto lg:ml-2"
+              >
+                <span>Buka Portal Praktikum</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Grid 7 Modul Mini-Card */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+            {PRAKTIKUM_MODULES.map((m) => {
+              const statusInfo = praktikumStats?.moduleStatuses[m.id];
+              const statusKey = statusInfo?.status || 'belum_mulai';
+              const score = statusInfo?.score;
+
+              let cardBg = "bg-secondary/40 border-border/70 hover:border-cyan-500/50";
+              let badgeColor = "text-muted-foreground bg-secondary";
+              let badgeText = "Belum Diisi";
+
+              if (statusKey === 'disetujui') {
+                cardBg = "bg-emerald-500/10 border-emerald-500/40 hover:border-emerald-500";
+                badgeColor = "text-emerald-600 dark:text-emerald-400 bg-emerald-500/20";
+                badgeText = score !== null && score !== undefined ? `Nilai: ${score}` : "Disahkan";
+              } else if (statusKey === 'diajukan') {
+                cardBg = "bg-cyan-500/10 border-cyan-500/40 hover:border-cyan-500";
+                badgeColor = "text-cyan-600 dark:text-cyan-400 bg-cyan-500/20 animate-pulse";
+                badgeText = "Antrean";
+              } else if (statusKey === 'perlu_revisi') {
+                cardBg = "bg-rose-500/10 border-rose-500/40 hover:border-rose-500";
+                badgeColor = "text-rose-600 dark:text-rose-400 bg-rose-500/20";
+                badgeText = "Revisi";
+              } else if (statusKey === 'draft') {
+                cardBg = "bg-amber-500/10 border-amber-500/30 hover:border-amber-500";
+                badgeColor = "text-amber-600 dark:text-amber-400 bg-amber-500/20";
+                badgeText = "Draf";
+              }
+
+              return (
+                <Link
+                  key={m.id}
+                  href={`/praktikum/${m.id}`}
+                  className={`p-3 rounded-2xl border transition-all flex flex-col justify-between gap-2.5 cursor-pointer hover:scale-[1.02] ${cardBg}`}
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between text-[10px] font-mono font-bold">
+                      <span className="text-cyan-600 dark:text-cyan-400">MODUL 0{m.id}</span>
+                      {statusKey === 'disetujui' && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
+                    </div>
+                    <div className="text-xs font-bold text-foreground line-clamp-1" title={m.title}>
+                      {m.title}
+                    </div>
+                  </div>
+
+                  <div className={`text-[10px] font-bold px-2 py-0.5 rounded-md text-center ${badgeColor}`}>
+                    {badgeText}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </motion.div>
 

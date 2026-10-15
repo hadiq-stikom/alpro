@@ -53,44 +53,120 @@ export default function PraktikumPrintPage({
       return;
     }
 
-    const storageKey = `lkp_draft_m${moduleId}_${profile?.nim || "local"}`;
-    const savedDraft = localStorage.getItem(storageKey);
+    const specificKey = profile?.nim ? `lkp_draft_m${moduleId}_${profile.nim}` : null;
+    const fallbackKey = `lkp_draft_m${moduleId}_local`;
+    let parsed: any = null;
 
-    if (savedDraft) {
+    if (specificKey) {
       try {
-        const parsed = JSON.parse(savedDraft);
-        setObservations(parsed.observations || moduleData.defaultObservations);
-        setAnalisisAnswers(parsed.analisisAnswers || []);
-        setKesimpulanText(parsed.kesimpulanText || "");
-        if (parsed.aiEvaluation) setAiEvaluation(parsed.aiEvaluation);
-        if (parsed.studentName) setStudentName(parsed.studentName);
-        if (parsed.studentNim) setStudentNim(parsed.studentNim);
-        if (parsed.studentClass) setStudentClass(parsed.studentClass);
-        if (parsed.labDate) setLabDate(parsed.labDate);
-        if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
+        const item = localStorage.getItem(specificKey);
+        if (item) parsed = JSON.parse(item);
       } catch (e) {
-        console.error("Gagal membaca draf lokal:", e);
+        console.error("Gagal membaca specificKey:", e);
+      }
+    }
+    if (!parsed) {
+      try {
+        const item = localStorage.getItem(fallbackKey);
+        if (item) parsed = JSON.parse(item);
+      } catch (e) {
+        console.error("Gagal membaca fallbackKey:", e);
+      }
+    }
+    // Scan alternatif jika ada key draf untuk modul ini
+    if (!parsed && typeof window !== "undefined") {
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(`lkp_draft_m${moduleId}_`)) {
+            const raw = localStorage.getItem(k);
+            if (raw) {
+              parsed = JSON.parse(raw);
+              break;
+            }
+          }
+        }
+      } catch (scanErr) {
+        // ignore
       }
     }
 
-    // Ambil data remote submission dari database jika ada
-    if (profile?.id) {
-      fetch(`/api/praktikum/submission?userId=${profile.id}&moduleId=${moduleId}`)
+    if (parsed) {
+      if (Array.isArray(parsed.observations) && parsed.observations.length > 0) {
+        setObservations(parsed.observations);
+      } else {
+        setObservations(moduleData.defaultObservations);
+      }
+      if (Array.isArray(parsed.analisisAnswers)) {
+        setAnalisisAnswers(parsed.analisisAnswers);
+      }
+      if (parsed.kesimpulanText) {
+        setKesimpulanText(parsed.kesimpulanText);
+      }
+      if (parsed.aiEvaluation) setAiEvaluation(parsed.aiEvaluation);
+      if (parsed.studentName) setStudentName(parsed.studentName);
+      if (parsed.studentNim) setStudentNim(parsed.studentNim);
+      if (parsed.studentClass) setStudentClass(parsed.studentClass);
+      if (parsed.labDate) setLabDate(parsed.labDate);
+      if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
+    } else {
+      setObservations(moduleData.defaultObservations);
+    }
+
+    // Ambil data remote submission dari database jika ada (bisa dari userId di searchParams atau profile)
+    const targetUserId = (typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("userId") : null) || profile?.id;
+
+    if (targetUserId) {
+      fetch(`/api/praktikum/submission?userId=${targetUserId}&moduleId=${moduleId}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success && data.submission) {
             const sub = data.submission;
-            if (sub.student_signature) setStudentSignature(sub.student_signature);
+
+            // Pulihkan hasil pengamatan hanya jika DB memiliki data kustom
+            if (Array.isArray(sub.observations) && sub.observations.length > 0) {
+              setObservations((prev) => {
+                const hasLocalData =
+                  prev &&
+                  prev.some(
+                    (row) =>
+                      (row.actualOutput && row.actualOutput.trim().length > 0) ||
+                      (row.validationStatus && row.validationStatus !== "Belum Diuji")
+                  );
+                return hasLocalData ? prev : sub.observations;
+              });
+            }
+
+            // Pulihkan analisis hanya jika DB memiliki jawaban non-kosong
+            if (
+              Array.isArray(sub.analisis_answers) &&
+              sub.analisis_answers.some((a: string) => typeof a === "string" && a.trim().length > 0)
+            ) {
+              setAnalisisAnswers((prev) => {
+                const hasLocalAnswers = prev && prev.some((a: string) => typeof a === "string" && a.trim().length > 0);
+                return hasLocalAnswers ? prev : sub.analisis_answers;
+              });
+            }
+
+            // Pulihkan kesimpulan hanya jika DB memiliki teks non-kosong
+            if (sub.kesimpulan_text && sub.kesimpulan_text.trim().length > 0) {
+              setKesimpulanText((prev) => (prev && prev.trim().length > 0 ? prev : sub.kesimpulan_text));
+            }
+
+            if (sub.ai_evaluation && Object.keys(sub.ai_evaluation).length > 0) {
+              setAiEvaluation((prev: any) => prev || sub.ai_evaluation);
+            }
+            if (sub.student_signature) setStudentSignature((prev) => prev || sub.student_signature);
             if (sub.lecturer_signature) setLecturerSignature(sub.lecturer_signature);
             if (sub.lecturer_score !== null && sub.lecturer_score !== undefined) {
               setLecturerScore(Number(sub.lecturer_score));
             }
             if (sub.lecturer_signed_at) setLecturerSignedAt(sub.lecturer_signed_at);
             if (sub.status) setSubmissionStatus(sub.status);
-            if (sub.student_name) setStudentName(sub.student_name);
-            if (sub.student_nim) setStudentNim(sub.student_nim);
-            if (sub.student_class) setStudentClass(sub.student_class);
-            if (sub.lab_date) setLabDate(sub.lab_date);
+            if (sub.student_name) setStudentName((prev) => prev || sub.student_name);
+            if (sub.student_nim) setStudentNim((prev) => prev || sub.student_nim);
+            if (sub.student_class) setStudentClass((prev) => prev || sub.student_class);
+            if (sub.lab_date) setLabDate((prev) => prev || sub.lab_date);
           }
         })
         .catch((err) => console.warn("Gagal memuat status pengesahan cetak remote:", err))
@@ -98,8 +174,6 @@ export default function PraktikumPrintPage({
     } else {
       setIsLoaded(true);
     }
-
-    setObservations(moduleData.defaultObservations);
   }, [moduleId, moduleData, profile]);
 
   const handlePrint = () => {

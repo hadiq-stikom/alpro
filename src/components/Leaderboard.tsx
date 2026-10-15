@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
 import { getBadgeFromScore } from '@/lib/badges';
 import { motion } from 'framer-motion';
 import { Trophy, Medal, Award, Star } from 'lucide-react';
@@ -15,47 +14,25 @@ export function Leaderboard() {
     async function fetchLeaderboard() {
       try {
         setLoading(true);
-        
-        // Ambil mahasiswa
-        const { data: usersData, error: userErr } = await supabase
-          .from('users')
-          .select('id, full_name, nim')
-          .eq('role', 'mahasiswa');
-          
-        if (userErr) throw userErr;
-        
-        // Ambil nilai
-        const { data: overallData, error: overallErr } = await supabase
-          .from('overall_grades')
-          .select('*');
-          
-        if (overallErr) throw overallErr;
-        
-        // Gabungkan, urutkan, ambil 5 teratas
-        const studentsList = (usersData || []) as any[];
-        const gradesList = (overallData || []) as any[];
-        
-        const merged = studentsList.map(student => {
-          const grade = gradesList.find(g => g.user_id === student.id);
-          const score = grade?.total_avg_score || 0;
-          return {
+        const res = await fetch('/api/leaderboard');
+        if (!res.ok) {
+          throw new Error(`Gagal memuat leaderboard (status: ${res.status})`);
+        }
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          const withBadges = json.data.map((student: any) => ({
             ...student,
-            avg_score: score,
-            badge: getBadgeFromScore(score)
-          };
-        })
-        .filter(s => s.avg_score > 0) // Hanya tampilkan yang sudah punya nilai
-        .sort((a, b) => b.avg_score - a.avg_score)
-        .slice(0, 5); // Ambil Top 5
-        
-        setTopStudents(merged);
+            badge: getBadgeFromScore(student.avg_score || 0),
+          }));
+          setTopStudents(withBadges);
+        }
       } catch (error) {
         console.error("Gagal mengambil data leaderboard", error);
       } finally {
         setLoading(false);
       }
     }
-    
+
     fetchLeaderboard();
   }, []);
 

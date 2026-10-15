@@ -49,7 +49,8 @@ export default function LecturerDashboardPage() {
     totalStudents: 0, 
     classAverage: 0, 
     goldBadges: 0, 
-    submissionsToday: 0 
+    submissionsToday: 0,
+    pendingPraktikum: 0,
   });
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -143,12 +144,25 @@ export default function LecturerDashboardPage() {
         const totalScore = mergedStudents.reduce((acc, curr) => acc + curr.avg_score, 0);
         const avg = mergedStudents.length > 0 ? (totalScore / mergedStudents.length) : 0;
         const golds = mergedStudents.filter(s => s.badge.level === 'A').length;
-        
+
+        // 4. Ambil jumlah antrean praktikum yang berstatus 'diajukan'
+        let pendingPrakCount = 0;
+        try {
+          const resPrak = await fetch("/api/lecturer/praktikum?status=diajukan");
+          const dataPrak = await resPrak.json();
+          if (dataPrak.success && Array.isArray(dataPrak.submissions)) {
+            pendingPrakCount = dataPrak.submissions.length;
+          }
+        } catch (pErr) {
+          console.warn("Gagal mengambil antrean praktikum:", pErr);
+        }
+
         setStats({
           totalStudents: usersData?.length || 0,
           classAverage: Number(avg.toFixed(1)),
           goldBadges: golds,
-          submissionsToday: submissionCount || 0
+          submissionsToday: submissionCount || 0,
+          pendingPraktikum: pendingPrakCount,
         });
 
       } catch (error) {
@@ -245,21 +259,34 @@ export default function LecturerDashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/lecturer/praktikum"
-              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/20 transition-all cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-sm flex items-center gap-2.5 shadow-lg shadow-cyan-500/20 transition-all cursor-pointer relative"
             >
               <FlaskConical className="w-4 h-4" />
               <span>Pemeriksaan Praktikum (1 SKS)</span>
+              {stats.pendingPraktikum > 0 && (
+                <span className="px-2 py-0.5 rounded-full bg-rose-500 text-white text-xs font-black animate-pulse shadow-sm">
+                  {stats.pendingPraktikum} Menunggu
+                </span>
+              )}
             </Link>
           </div>
         </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
           {[
             { icon: Users, label: "Total Mahasiswa", value: loading ? "..." : stats.totalStudents, color: "text-violet-500", bg: "bg-violet-500/10", border: "border-violet-500/20" },
             { icon: BarChart3, label: "Rata-Rata Kelas", value: loading ? "..." : stats.classAverage, color: "text-indigo-500", bg: "bg-indigo-500/10", border: "border-indigo-500/20" },
             { icon: Award, label: "Peraih Lencana Emas", value: loading ? "..." : stats.goldBadges, color: "text-yellow-500", bg: "bg-yellow-500/10", border: "border-yellow-500/20" },
             { icon: TrendingUp, label: "Submission Hari Ini", value: loading ? "..." : stats.submissionsToday, color: "text-emerald-500", bg: "bg-emerald-500/10", border: "border-emerald-500/20" },
+            { 
+              icon: FlaskConical, 
+              label: "Antrean Praktikum", 
+              value: loading ? "..." : stats.pendingPraktikum > 0 ? `${stats.pendingPraktikum} Menunggu` : "Semua Dinilai", 
+              color: stats.pendingPraktikum > 0 ? "text-rose-500" : "text-cyan-500", 
+              bg: stats.pendingPraktikum > 0 ? "bg-rose-500/10" : "bg-cyan-500/10", 
+              border: stats.pendingPraktikum > 0 ? "border-rose-500/30" : "border-cyan-500/20" 
+            },
           ].map(({ icon: Icon, label, value, color, bg, border }, i) => (
             <motion.div
               key={label}

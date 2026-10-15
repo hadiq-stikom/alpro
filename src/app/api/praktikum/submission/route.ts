@@ -29,8 +29,10 @@ export async function GET(req: NextRequest) {
       console.warn('[praktikum/submission GET] Gagal membaca user.stored_signature:', uErr);
     }
 
-    // 2. Ambil data submission jika moduleId disertakan
+    // 2. Ambil data submission jika moduleId disertakan, atau seluruh submissions user jika tidak ada moduleId
     let submission: any = null;
+    let submissions: any[] = [];
+
     if (moduleId) {
       try {
         const { data: subData, error: subErr } = await (supabaseAdmin
@@ -45,6 +47,20 @@ export async function GET(req: NextRequest) {
         }
       } catch (subErr) {
         console.warn('[praktikum/submission GET] Tabel praktikum_submissions mungkin belum siap:', subErr);
+      }
+    } else {
+      try {
+        const { data: allSubs, error: allErr } = await (supabaseAdmin
+          .from('praktikum_submissions' as any) as any)
+          .select('id, module_id, status, lecturer_score, lecturer_feedback, lecturer_signed_at, updated_at, created_at')
+          .eq('user_id', userId)
+          .order('module_id', { ascending: true });
+
+        if (!allErr && allSubs) {
+          submissions = allSubs;
+        }
+      } catch (allErr) {
+        console.warn('[praktikum/submission GET] Gagal mengambil list submissions:', allErr);
       }
     }
 
@@ -71,6 +87,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       submission,
+      submissions,
       storedSignature,
       hasBaseline,
       latestBaseline
@@ -158,9 +175,16 @@ export async function POST(req: NextRequest) {
     let resultData: any = null;
 
     if (existing) {
-      // Pertahankan skor & feedback dosen jika sudah disetujui sebelumnya
+      // Pertahankan skor, feedback, dan status jika sudah disetujui / diajukan
+      const effectiveStatus = action === 'diajukan'
+        ? 'diajukan'
+        : (existing.status === 'disetujui' || existing.status === 'diajukan'
+            ? existing.status
+            : 'draft');
+
       const updatePayload: any = {
         ...payload,
+        status: effectiveStatus,
       };
 
       // Jika sebelumnya disetujui, dan mahasiswa mengajukan ulang, status beralih ke diajukan

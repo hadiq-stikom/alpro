@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect, useRef, use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
@@ -256,7 +256,7 @@ export default function PraktikumWorksheetPage({
   const moduleId = parseInt(unwrappedParams.id, 10);
   const moduleData = PRAKTIKUM_MODULES.find((m) => m.id === moduleId);
 
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
 
   // State Identitas
   const [studentName, setStudentName] = useState("");
@@ -299,6 +299,12 @@ export default function PraktikumWorksheetPage({
   const [hasBaseline, setHasBaseline] = useState<boolean>(true); // default true agar tidak flicker saat memuat
   const [isBaselineLoading, setIsBaselineLoading] = useState<boolean>(true);
   const [isWarmupCompletedInSession, setIsWarmupCompletedInSession] = useState<boolean>(false);
+
+  // State Simpan Draf & Feedback Interaktif
+  const [isSavingDraft, setIsSavingDraft] = useState(false);
+  const [saveDraftFeedback, setSaveDraftFeedback] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const hasInitializedDraft = useRef(false);
+  const hasLoadedRemoteSubmission = useRef(false);
 
   // State UI & Validasi Anti Copy-Paste
   const [lastSavedTime, setLastSavedTime] = useState<string | null>(null);
@@ -386,48 +392,85 @@ export default function PraktikumWorksheetPage({
       month: "long",
       year: "numeric",
     });
-    setLabDate(today);
+    setLabDate((prev) => prev || today);
 
     if (profile) {
-      setStudentName(profile.full_name || "");
-      setStudentNim(profile.nim || "");
+      if (profile.full_name) setStudentName((prev) => prev || profile.full_name || "");
+      if (profile.nim) setStudentNim((prev) => prev || profile.nim || "");
     }
 
     if (!moduleData) return;
 
-    const storageKey = `lkp_draft_m${moduleId}_${profile?.nim || "local"}`;
-    const savedDraft = localStorage.getItem(storageKey);
+    // Coba baca draf dari localStorage (berdasarkan NIM atau fallback lokal)
+    let savedDraft: string | null = null;
+    if (profile?.nim) {
+      savedDraft = localStorage.getItem(`lkp_draft_m${moduleId}_${profile.nim}`);
+    }
+    if (!savedDraft) {
+      savedDraft = localStorage.getItem(`lkp_draft_m${moduleId}_local`);
+    }
+    if (!savedDraft && typeof window !== "undefined") {
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (k && k.startsWith(`lkp_draft_m${moduleId}_`)) {
+            savedDraft = localStorage.getItem(k);
+            if (savedDraft) break;
+          }
+        }
+      } catch (scanErr) {
+        // ignore
+      }
+    }
 
     if (savedDraft) {
       try {
         const parsed = JSON.parse(savedDraft);
-        setObservations(parsed.observations || moduleData.defaultObservations);
-        setAnalisisAnswers(parsed.analisisAnswers || Array(moduleData.analisisPrompts.length).fill(""));
-        setKesimpulanText(parsed.kesimpulanText || "");
-        if (parsed.aiEvaluation) setAiEvaluation(parsed.aiEvaluation);
-        setLastSavedTime(parsed.savedAt || null);
-        if (parsed.studentName) setStudentName(parsed.studentName);
-        if (parsed.studentNim) setStudentNim(parsed.studentNim);
-        if (parsed.studentClass) setStudentClass(parsed.studentClass);
-        if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
-        return;
+        // Izinkan inisialisasi jika belum pernah diinisialisasi
+        // atau jika state in-memory saat ini masih sepenuhnya kosong
+        const isCurrentEmpty =
+          analisisAnswers.every((a) => !a || a.trim().length === 0) &&
+          (!kesimpulanText || kesimpulanText.trim().length === 0);
+
+        if (!hasInitializedDraft.current || isCurrentEmpty) {
+          setObservations(parsed.observations || moduleData.defaultObservations);
+          setAnalisisAnswers(parsed.analisisAnswers || Array(moduleData.analisisPrompts.length).fill(""));
+          setKesimpulanText(parsed.kesimpulanText || "");
+          if (parsed.aiEvaluation) setAiEvaluation(parsed.aiEvaluation);
+          setLastSavedTime(parsed.savedAt || null);
+          if (parsed.studentName) setStudentName(parsed.studentName);
+          if (parsed.studentNim) setStudentNim(parsed.studentNim);
+          if (parsed.studentClass) setStudentClass(parsed.studentClass);
+          if (parsed.labDate) setLabDate(parsed.labDate);
+          if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
+          hasInitializedDraft.current = true;
+          return;
+        }
       } catch (e) {
         console.error("Gagal membaca draf lokal:", e);
       }
     }
 
-    // Default jika belum ada draf
-    setObservations(moduleData.defaultObservations);
-    setAnalisisAnswers(Array(moduleData.analisisPrompts.length).fill(""));
+    if (!hasInitializedDraft.current) {
+      // Default jika belum ada draf sama sekali
+      setObservations(moduleData.defaultObservations);
+      setAnalisisAnswers(Array(moduleData.analisisPrompts.length).fill(""));
+      hasInitializedDraft.current = true;
+    }
   }, [moduleId, moduleData, profile]);
 
   // Sinkronisasi data remote submission dan tanda tangan tersimpan
   useEffect(() => {
-    if (!profile?.id) {
+    const currentUserId = profile?.id || user?.id;
+    if (!currentUserId) {
       setIsBaselineLoading(false);
       return;
     }
-    fetch(`/api/praktikum/submission?userId=${profile.id}&moduleId=${moduleId}`)
+    // Jika remote submission sudah pernah dimuat di sesi ini, jangan fetch ulang dan jangan timpa state aktif mahasiswa
+    if (hasLoadedRemoteSubmission.current) return;
+    hasLoadedRemoteSubmission.current = true;
+
+    fetch(`/api/praktikum/submission?userId=${currentUserId}&moduleId=${moduleId}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -441,10 +484,45 @@ export default function PraktikumWorksheetPage({
           if (data.submission) {
             const sub = data.submission;
             setSubmissionStatus(sub.status || "draft");
+
+            // Pulihkan hasil pengamatan Tabel C HANYA JIKA lokal belum dimodifikasi
+            if (Array.isArray(sub.observations) && sub.observations.length > 0) {
+              setObservations((prev) => {
+                const hasLocalData =
+                  prev &&
+                  prev.some(
+                    (row) =>
+                      (row.actualOutput && row.actualOutput.trim().length > 0) ||
+                      (row.validationStatus && row.validationStatus !== "Belum Diuji")
+                  );
+                return hasLocalData ? prev : sub.observations;
+              });
+            }
+            // Pulihkan jawaban Analisis Bagian D HANYA JIKA sub memiliki jawaban non-kosong dan lokal kosong
+            if (
+              Array.isArray(sub.analisis_answers) &&
+              sub.analisis_answers.some((a: string) => typeof a === "string" && a.trim().length > 0)
+            ) {
+              setAnalisisAnswers((prev) => {
+                const hasLocalAnswers = prev && prev.some((a: string) => typeof a === "string" && a.trim().length > 0);
+                return hasLocalAnswers ? prev : sub.analisis_answers;
+              });
+            }
+            // Pulihkan Kesimpulan Bagian E HANYA JIKA sub memiliki teks non-kosong dan lokal kosong
+            if (sub.kesimpulan_text && sub.kesimpulan_text.trim().length > 0) {
+              setKesimpulanText((prev) => (prev && prev.trim().length > 0 ? prev : sub.kesimpulan_text));
+            }
+            // Pulihkan identitas & tanggal lab dari database jika belum diisi
+            if (sub.student_name) setStudentName((prev) => prev || sub.student_name);
+            if (sub.student_nim) setStudentNim((prev) => prev || sub.student_nim);
+            if (sub.student_class) setStudentClass((prev) => prev || sub.student_class);
+            if (sub.lab_date) setLabDate((prev) => prev || sub.lab_date);
+
+            // Pulihkan tanda tangan & feedback dosen
             if (sub.student_signature) {
-              setStudentSignature(sub.student_signature);
+              setStudentSignature((prev) => prev || sub.student_signature);
             } else if (data.storedSignature) {
-              setStudentSignature(data.storedSignature);
+              setStudentSignature((prev) => prev || data.storedSignature);
             }
             if (sub.lecturer_score !== null && sub.lecturer_score !== undefined) {
               setLecturerScore(Number(sub.lecturer_score));
@@ -453,10 +531,51 @@ export default function PraktikumWorksheetPage({
             if (sub.lecturer_signature) setLecturerSignature(sub.lecturer_signature);
             if (sub.lecturer_signed_at) setLecturerSignedAt(sub.lecturer_signed_at);
             if (sub.ai_evaluation && Object.keys(sub.ai_evaluation).length > 0) {
-              setAiEvaluation(sub.ai_evaluation);
+              setAiEvaluation((prev) => prev || sub.ai_evaluation);
+            }
+
+            // Pulihkan waktu simpan terakhir dari database jika ada
+            if (sub.updated_at) {
+              const formattedTime = new Date(sub.updated_at).toLocaleTimeString("id-ID", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+              setLastSavedTime((prev) => prev || formattedTime);
+            }
+
+            // Sinkronkan kembali ke localStorage HANYA JIKA sub memiliki data bermakna
+            try {
+              const hasSubContent =
+                (Array.isArray(sub.analisis_answers) &&
+                  sub.analisis_answers.some((a: string) => typeof a === "string" && a.trim().length > 0)) ||
+                (sub.kesimpulan_text && sub.kesimpulan_text.trim().length > 0);
+
+              if (hasSubContent) {
+                const payloadToSync = {
+                  moduleId,
+                  studentName: sub.student_name || profile?.full_name || "",
+                  studentNim: sub.student_nim || profile?.nim || "",
+                  studentClass: sub.student_class || "TI-SP1",
+                  labDate: sub.lab_date || "",
+                  observations: sub.observations || [],
+                  analisisAnswers: sub.analisis_answers || [],
+                  kesimpulanText: sub.kesimpulan_text || "",
+                  aiEvaluation: sub.ai_evaluation || null,
+                  studentSignature: sub.student_signature || null,
+                  savedAt: sub.updated_at
+                    ? new Date(sub.updated_at).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })
+                    : null,
+                };
+                if (profile?.nim) {
+                  localStorage.setItem(`lkp_draft_m${moduleId}_${profile.nim}`, JSON.stringify(payloadToSync));
+                }
+                localStorage.setItem(`lkp_draft_m${moduleId}_local`, JSON.stringify(payloadToSync));
+              }
+            } catch (syncErr) {
+              console.warn("Gagal menyinkronkan draf remote ke localStorage:", syncErr);
             }
           } else if (data.storedSignature) {
-            setStudentSignature(data.storedSignature);
+            setStudentSignature((prev) => prev || data.storedSignature);
           }
         } else {
           setIsBaselineLoading(false);
@@ -466,42 +585,166 @@ export default function PraktikumWorksheetPage({
         console.warn("Gagal memuat status pengajuan remote:", err);
         setIsBaselineLoading(false);
       });
-  }, [profile?.id, moduleId]);
+  }, [profile?.id, user?.id, moduleId]);
 
-  // Fungsi simpan draf ke LocalStorage & Supabase
-  const handleSaveDraft = async () => {
+  // Auto-save kontinu ke localStorage saat mahasiswa mengetik (debounced 300ms)
+  useEffect(() => {
+    if (!hasInitializedDraft.current) return;
+
+    const timer = setTimeout(() => {
+      const currentNim = profile?.nim || studentNim || "local";
+      const shortTimeStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+      const payload = {
+        moduleId,
+        studentName: studentName || profile?.full_name || "",
+        studentNim: studentNim || profile?.nim || "",
+        studentClass: studentClass || "TI-SP1",
+        labDate: labDate || "",
+        observations,
+        analisisAnswers,
+        kesimpulanText,
+        aiEvaluation,
+        studentSignature,
+        savedAt: shortTimeStr,
+      };
+
+      try {
+        if (profile?.nim) {
+          localStorage.setItem(`lkp_draft_m${moduleId}_${profile.nim}`, JSON.stringify(payload));
+        }
+        if (studentNim && studentNim !== profile?.nim) {
+          localStorage.setItem(`lkp_draft_m${moduleId}_${studentNim}`, JSON.stringify(payload));
+        }
+        localStorage.setItem(`lkp_draft_m${moduleId}_local`, JSON.stringify(payload));
+        setLastSavedTime(shortTimeStr);
+      } catch (err) {
+        console.warn("Gagal auto-save kontinu ke localStorage:", err);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [
+    observations,
+    analisisAnswers,
+    kesimpulanText,
+    studentName,
+    studentNim,
+    studentClass,
+    labDate,
+    aiEvaluation,
+    studentSignature,
+    moduleId,
+    profile?.nim,
+    profile?.full_name,
+  ]);
+
+  // Flush sinkron draf ke localStorage & background sync sebelum pratinjau PDF dibuka
+  const handlePreparePrintPreview = () => {
     if (!moduleData) return;
-    const nowStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
-    const storageKey = `lkp_draft_m${moduleId}_${profile?.nim || "local"}`;
+    const currentNim = profile?.nim || studentNim || "local";
+    const shortTimeStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+
     const payload = {
       moduleId,
-      studentName,
-      studentNim,
-      studentClass,
+      studentName: studentName || profile?.full_name || "",
+      studentNim: studentNim || profile?.nim || "",
+      studentClass: studentClass || "TI-SP1",
+      labDate: labDate || "",
+      observations,
+      analisisAnswers,
+      kesimpulanText,
+      aiEvaluation,
+      studentSignature,
+      savedAt: shortTimeStr,
+    };
+
+    try {
+      if (profile?.nim) {
+        localStorage.setItem(`lkp_draft_m${moduleId}_${profile.nim}`, JSON.stringify(payload));
+      }
+      if (studentNim && studentNim !== profile?.nim) {
+        localStorage.setItem(`lkp_draft_m${moduleId}_${studentNim}`, JSON.stringify(payload));
+      }
+      localStorage.setItem(`lkp_draft_m${moduleId}_local`, JSON.stringify(payload));
+      setLastSavedTime(shortTimeStr);
+    } catch (err) {
+      console.warn("Gagal sinkronisasi draf sebelum pratinjau cetak:", err);
+    }
+
+    // Background sync ke Supabase jika user terdaftar
+    const currentUserId = profile?.id || user?.id;
+    if (currentUserId) {
+      fetch("/api/praktikum/submission", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: currentUserId,
+          classId: profile?.class_id || null,
+          moduleId,
+          studentName: payload.studentName,
+          studentNim: payload.studentNim,
+          studentClass: payload.studentClass,
+          labDate: payload.labDate,
+          observations: payload.observations,
+          analisisAnswers: payload.analisisAnswers,
+          kesimpulanText: payload.kesimpulanText,
+          aiEvaluation: payload.aiEvaluation,
+          studentSignature: payload.studentSignature,
+          action: "draft",
+          saveSignatureToProfile: false,
+        }),
+      }).catch((err) => console.warn("Background auto-save draft failed:", err));
+    }
+  };
+
+  // Fungsi simpan draf ke LocalStorage & Supabase dengan feedback interaktif
+  const handleSaveDraft = async () => {
+    if (!moduleData) return;
+    setIsSavingDraft(true);
+    const shortTimeStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+
+    const currentNim = profile?.nim || studentNim || "local";
+    const storageKey = `lkp_draft_m${moduleId}_${currentNim}`;
+    const fallbackKey = `lkp_draft_m${moduleId}_local`;
+
+    const payload = {
+      moduleId,
+      studentName: studentName || profile?.full_name || "",
+      studentNim: studentNim || profile?.nim || "",
+      studentClass: studentClass || "TI-SP1",
       labDate,
       observations,
       analisisAnswers,
       kesimpulanText,
       aiEvaluation,
       studentSignature,
-      savedAt: nowStr,
+      savedAt: shortTimeStr,
     };
-    localStorage.setItem(storageKey, JSON.stringify(payload));
-    setLastSavedTime(nowStr);
 
-    // Sinkronisasi draf ke database Supabase jika pengguna sudah login
-    if (profile?.id) {
+    // 1. Simpan seketika ke LocalStorage (Offline-First Cache)
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(payload));
+      localStorage.setItem(fallbackKey, JSON.stringify(payload));
+    } catch (lsErr) {
+      console.warn("Gagal menyimpan ke localStorage:", lsErr);
+    }
+    setLastSavedTime(shortTimeStr);
+
+    const effectiveUserId = profile?.id || user?.id;
+
+    // 2. Sinkronisasi draf ke database Supabase jika pengguna sudah terautentikasi
+    if (effectiveUserId) {
       try {
-        await fetch("/api/praktikum/submission", {
+        const res = await fetch("/api/praktikum/submission", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            userId: profile.id,
-            classId: profile.class_id,
+            userId: effectiveUserId,
+            classId: profile?.class_id || null,
             moduleId,
-            studentName,
-            studentNim,
-            studentClass,
+            studentName: studentName || profile?.full_name || "",
+            studentNim: studentNim || profile?.nim || "",
+            studentClass: studentClass || "TI-SP1",
             labDate,
             observations,
             analisisAnswers,
@@ -512,9 +755,42 @@ export default function PraktikumWorksheetPage({
             saveSignatureToProfile: false,
           }),
         });
-      } catch (err) {
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          setSaveDraftFeedback({
+            message: `Draf praktikum berhasil disimpan ke database & lokal (${shortTimeStr})`,
+            type: "success",
+          });
+        } else {
+          setSaveDraftFeedback({
+            message: `Draf tersimpan di lokal (${shortTimeStr}). Sinkronisasi database: ${data?.error || "Gagal"}`,
+            type: "error",
+          });
+        }
+      } catch (err: any) {
         console.warn("Gagal autosave draf remote:", err);
+        setSaveDraftFeedback({
+          message: `Draf tersimpan di memori browser lokal (${shortTimeStr}). Koneksi server terputus.`,
+          type: "error",
+        });
+      } finally {
+        setIsSavingDraft(false);
+        setTimeout(() => {
+          setSaveDraftFeedback(null);
+        }, 4000);
       }
+    } else {
+      // Pengguna belum login
+      setIsSavingDraft(false);
+      setSaveDraftFeedback({
+        message: `Draf tersimpan di memori browser lokal (${shortTimeStr}). Silakan login agar tersinkron ke server dosen.`,
+        type: "success",
+      });
+      setTimeout(() => {
+        setSaveDraftFeedback(null);
+      }, 4000);
     }
   };
 
@@ -568,23 +844,29 @@ export default function PraktikumWorksheetPage({
 
       setAiEvaluation(resultWithTime);
 
-      // Simpan juga ke localStorage
-      const storageKey = `lkp_draft_m${moduleId}_${profile?.nim || "local"}`;
-      const existing = localStorage.getItem(storageKey);
-      const base = existing ? JSON.parse(existing) : {};
-      localStorage.setItem(storageKey, JSON.stringify({
-        ...base,
-        aiEvaluation: resultWithTime,
+      // Simpan juga ke localStorage (baik specific NIM maupun fallback lokal)
+      const currentNim = profile?.nim || studentNim || "local";
+      const fallbackKey = `lkp_draft_m${moduleId}_local`;
+      const evalPayload = {
+        moduleId,
+        studentName: studentName || profile?.full_name || "",
+        studentNim: studentNim || profile?.nim || "",
+        studentClass: studentClass || "TI-SP1",
+        labDate: labDate || "",
         observations,
         analisisAnswers,
         kesimpulanText,
-        studentName,
-        studentNim,
-        studentClass,
+        aiEvaluation: resultWithTime,
         studentSignature,
-        labDate,
-        savedAt: nowStr
-      }));
+        savedAt: nowStr,
+      };
+      if (profile?.nim) {
+        localStorage.setItem(`lkp_draft_m${moduleId}_${profile.nim}`, JSON.stringify(evalPayload));
+      }
+      if (studentNim && studentNim !== profile?.nim) {
+        localStorage.setItem(`lkp_draft_m${moduleId}_${studentNim}`, JSON.stringify(evalPayload));
+      }
+      localStorage.setItem(fallbackKey, JSON.stringify(evalPayload));
       setLastSavedTime(nowStr);
     } catch (err: any) {
       console.error("AI Evaluation error:", err);
@@ -869,17 +1151,39 @@ export default function PraktikumWorksheetPage({
 
         <div className="flex items-center gap-2.5 shrink-0">
           <button
+            type="button"
             onClick={handleSaveDraft}
-            className="px-4 py-2.5 rounded-xl bg-secondary hover:bg-secondary/80 text-foreground font-bold text-sm flex items-center gap-2 border border-border/70 transition-colors cursor-pointer shadow-sm"
+            disabled={isSavingDraft}
+            className={`px-4 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2 border transition-all shadow-sm cursor-pointer ${
+              saveDraftFeedback?.type === "success"
+                ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                : "bg-secondary hover:bg-secondary/80 text-foreground border-border/70"
+            } ${isSavingDraft ? "opacity-75 cursor-wait" : ""}`}
+            title="Simpan draf isian ke penyimpanan lokal dan database"
           >
-            <Save className="w-4 h-4 text-cyan-500" />
-            <span>Simpan Draf</span>
+            {isSavingDraft ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-cyan-500" />
+                <span>Menyimpan...</span>
+              </>
+            ) : saveDraftFeedback?.type === "success" ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>Draf Tersimpan!</span>
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 text-cyan-500" />
+                <span>Simpan Draf</span>
+              </>
+            )}
           </button>
 
           {canPrint ? (
             <Link
               href={`/praktikum/${moduleData.id}/print`}
               target="_blank"
+              onClick={handlePreparePrintPreview}
               className="px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm flex items-center gap-2 shadow-md transition-all hover:gap-2.5 cursor-pointer"
             >
               <Printer className="w-4 h-4" />
@@ -2352,16 +2656,39 @@ export default function PraktikumWorksheetPage({
 
         <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
           <button
+            type="button"
             onClick={handleSaveDraft}
-            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-secondary hover:bg-secondary/80 text-foreground font-bold text-sm transition-colors border border-border/70 cursor-pointer shadow-sm"
+            disabled={isSavingDraft}
+            className={`w-full sm:w-auto px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all border shadow-sm cursor-pointer ${
+              saveDraftFeedback?.type === "success"
+                ? "bg-emerald-500/15 border-emerald-500/40 text-emerald-600 dark:text-emerald-400"
+                : "bg-secondary hover:bg-secondary/80 text-foreground border-border/70"
+            } ${isSavingDraft ? "opacity-75 cursor-wait" : ""}`}
+            title="Simpan draf isian ke penyimpanan lokal dan database"
           >
-            Simpan Draf
+            {isSavingDraft ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-cyan-500" />
+                <span>Menyimpan Draf...</span>
+              </>
+            ) : saveDraftFeedback?.type === "success" ? (
+              <>
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <span>Draf Berhasil Tersimpan!</span>
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4 text-cyan-500" />
+                <span>Simpan Draf</span>
+              </>
+            )}
           </button>
 
           {canPrint ? (
             <Link
               href={`/praktikum/${moduleData.id}/print`}
               target="_blank"
+              onClick={handlePreparePrintPreview}
               className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
             >
               <Printer className="w-4 h-4" />
@@ -2388,6 +2715,18 @@ export default function PraktikumWorksheetPage({
           )}
         </div>
       </div>
+
+      {/* Toast Notifikasi Status Simpan Draf */}
+      {saveDraftFeedback && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-slate-900/95 text-white dark:bg-slate-100/95 dark:text-slate-900 shadow-2xl border border-slate-700 dark:border-slate-300 backdrop-blur-md animate-in fade-in slide-in-from-bottom-5 duration-200">
+          {saveDraftFeedback.type === "success" ? (
+            <CheckCircle2 className="w-5 h-5 text-emerald-400 dark:text-emerald-600 shrink-0" />
+          ) : (
+            <AlertTriangle className="w-5 h-5 text-amber-400 dark:text-amber-600 shrink-0" />
+          )}
+          <span className="text-xs md:text-sm font-semibold">{saveDraftFeedback.message}</span>
+        </div>
+      )}
     </div>
   );
 }

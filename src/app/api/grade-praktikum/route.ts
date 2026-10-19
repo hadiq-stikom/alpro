@@ -130,15 +130,20 @@ export async function POST(req: Request) {
       `Pertanyaan Analisis ${idx + 1}: "${prompt}"\nJawaban Mahasiswa: "${analisisAnswers[idx] || '(Kosong)'}"`
     ).join('\n\n');
 
-    // Siapkan metrik telemetri ketikan praktikum saat ini
-    const currentWpm = telemetry?.wpm || 0;
-    const currentBackspaceRatio = telemetry?.backspaceRatio || 0.1;
+    // Siapkan metrik telemetri ketikan praktikum saat ini dengan sanitasi artefak reload
+    let currentWpm = telemetry?.wpm || 18;
+    const currentKeystrokes = telemetry?.keystrokes || 0;
+    // Jika WPM > 45 padahal ketukan tombol sedikit/nol, ini adalah reviu draf tersimpan (bukan pengetikan instan bot)
+    if (currentWpm > 45 && currentKeystrokes < 30) {
+      currentWpm = 18;
+    }
+
+    const currentBackspaceRatio = telemetry?.backspaceRatio || 0.11;
     const burstAttempts = telemetry?.burstAttempts || 0;
     const tabSwitches = telemetry?.tabSwitches || 0;
-    const currentKeystrokes = telemetry?.keystrokes || 0;
 
-    const baselineWpm = baselineProfile?.baselineWpm || 12;
-    const wpmRatio = (baselineWpm > 0 && currentWpm > 0) ? Number((currentWpm / baselineWpm).toFixed(2)) : 1.0;
+    const baselineWpm = baselineProfile?.baselineWpm || 14;
+    const wpmRatio = (baselineWpm > 0 && currentWpm > 0) ? Number((currentWpm / baselineWpm).toFixed(2)) : 1.25;
 
     const baselineInstruction = baselineProfile ? `
       VERIFIKASI INTEGRITAS, KEASLIAN KETIKAN & KONSISTENSI STILOMETRI (BASELINE CHAT PRA-UJIAN TERSIMPAN):

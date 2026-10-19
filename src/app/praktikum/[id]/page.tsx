@@ -283,6 +283,7 @@ export default function PraktikumWorksheetPage({
   const [burstAttemptsCount, setBurstAttemptsCount] = useState(0);
   const [tabSwitchesCount, setTabSwitchesCount] = useState(0);
   const [typingStartTime, setTypingStartTime] = useState<number | null>(null);
+  const [savedTelemetry, setSavedTelemetry] = useState<any>(null);
 
   // State Tanda Tangan & Pengajuan Konsultasi ke Dosen
   const [studentSignature, setStudentSignature] = useState<string | null>(null);
@@ -547,6 +548,9 @@ export default function PraktikumWorksheetPage({
             if (sub.lecturer_signed_at) setLecturerSignedAt(sub.lecturer_signed_at);
             if (sub.ai_evaluation && Object.keys(sub.ai_evaluation).length > 0) {
               setAiEvaluation(sub.ai_evaluation);
+            }
+            if (sub.telemetry && Object.keys(sub.telemetry).length > 0) {
+              setSavedTelemetry(sub.telemetry);
             }
 
             // Pulihkan waktu simpan terakhir dari database jika ada
@@ -826,11 +830,29 @@ export default function PraktikumWorksheetPage({
     setIsEvaluating(true);
     setEvalError(null);
 
-    // Hitung telemetri ketikan praktikum
+    // Hitung telemetri ketikan praktikum secara adaptif:
+    // Jika mahasiswa sedang mengetik aktif di sesi ini (keystrokes > 30), gunakan metrik sesi aktif.
+    // Jika sedang mereviu teks tersimpan (misal setelah refresh), gunakan telemetri tersimpan atau estimasi normal (~18 WPM),
+    // BUKAN membagi seluruh ratusan kata dengan default 60 detik (yang memicu deteksi WPM palsu 300+ WPM).
     const totalWords = (analisisAnswers.join(" ") + " " + kesimpulanText).trim().split(/\s+/).filter(Boolean).length;
-    const elapsedSeconds = typingStartTime ? Math.max(15, Math.floor((Date.now() - typingStartTime) / 1000)) : 60;
-    const calcWpm = Math.max(5, Math.round(totalWords / (elapsedSeconds / 60)));
-    const calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
+    const isActivelyTyping = keystrokesCount > 30 && typingStartTime !== null;
+
+    let calcWpm = 18;
+    let calcBackspaceRatio = 0.11;
+    let elapsedSeconds = Math.max(60, Math.round((totalWords / 18) * 60));
+
+    if (isActivelyTyping) {
+      elapsedSeconds = Math.max(15, Math.floor((Date.now() - typingStartTime!) / 1000));
+      calcWpm = Math.max(5, Math.min(65, Math.round(totalWords / (elapsedSeconds / 60))));
+      calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
+    } else if (savedTelemetry?.wpm) {
+      calcWpm = savedTelemetry.wpm;
+      calcBackspaceRatio = savedTelemetry.backspaceRatio || 0.11;
+      elapsedSeconds = savedTelemetry.timeSpentSeconds || elapsedSeconds;
+    } else if (aiEvaluation?.integrity?.wpmComparison?.currentWpm) {
+      calcWpm = aiEvaluation.integrity.wpmComparison.currentWpm;
+      calcBackspaceRatio = 0.11;
+    }
 
     try {
       const res = await fetch("/api/grade-praktikum", {
@@ -2212,27 +2234,34 @@ export default function PraktikumWorksheetPage({
             </div>
           </div>
 
-          <button
-            onClick={handleEvaluateWithAI}
-            disabled={isEvaluating || !isAnalisisComplete || !isKesimpulanComplete || (!isFormUnlocked && !isBaselineLoading)}
-            className={`px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
-              isEvaluating || !isAnalisisComplete || !isKesimpulanComplete || (!isFormUnlocked && !isBaselineLoading)
-                ? "bg-secondary/80 text-muted-foreground border border-border cursor-not-allowed opacity-60"
-                : "bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-indigo-500/20"
-            }`}
-          >
-            {isEvaluating ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin text-white" />
-                <span>Menganalisis Jawaban...</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4 text-cyan-200" />
-                <span>{aiEvaluation ? "Uji Ulang Kualitas dengan AI" : "Uji Kualitas Analisis & Kesimpulan"}</span>
-              </>
-            )}
-          </button>
+          {submissionStatus === 'disetujui' ? (
+            <div className="px-4 py-2 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold text-xs flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+              <span>Telah Disahkan Dosen (Evaluasi AI Final)</span>
+            </div>
+          ) : (
+            <button
+              onClick={handleEvaluateWithAI}
+              disabled={isEvaluating || !isAnalisisComplete || !isKesimpulanComplete || (!isFormUnlocked && !isBaselineLoading)}
+              className={`px-5 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
+                isEvaluating || !isAnalisisComplete || !isKesimpulanComplete || (!isFormUnlocked && !isBaselineLoading)
+                  ? "bg-secondary/80 text-muted-foreground border border-border cursor-not-allowed opacity-60"
+                  : "bg-gradient-to-r from-indigo-600 to-cyan-600 hover:from-indigo-500 hover:to-cyan-500 text-white shadow-indigo-500/20"
+              }`}
+            >
+              {isEvaluating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-white" />
+                  <span>Menganalisis Jawaban...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4 text-cyan-200" />
+                  <span>{aiEvaluation ? "Uji Ulang Kualitas dengan AI" : "Uji Kualitas Analisis & Kesimpulan"}</span>
+                </>
+              )}
+            </button>
+          )}
         </div>
 
         {/* Informasi Jika Analisis/Kesimpulan Belum Lengkap */}
@@ -2273,18 +2302,22 @@ export default function PraktikumWorksheetPage({
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-base md:text-lg text-foreground">
-                      Skor Kelayakan Ilmiah: {aiEvaluation.score} / 100
+                      {submissionStatus === "disetujui"
+                        ? `Skor Verifikasi AI: ${aiEvaluation.score} / 100`
+                        : `Skor Kelayakan Ilmiah: ${aiEvaluation.score} / 100`}
                     </span>
                     <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full border ${
                       aiEvaluation.canPrint
                         ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
                         : "bg-amber-500/20 text-amber-400 border-amber-500/40"
                     }`}>
-                      {aiEvaluation.status}
+                      {submissionStatus === "disetujui" ? "Disahkan Dosen" : aiEvaluation.status}
                     </span>
                   </div>
                   <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5 font-medium">
-                    {aiEvaluation.canPrint
+                    {submissionStatus === "disetujui"
+                      ? `✓ Laporan telah disahkan resmi oleh Dosen Pengampu dengan Nilai Akhir: ${lecturerScore ?? 85} / 100.`
+                      : aiEvaluation.canPrint
                       ? "✓ Analisis telah memenuhi standar ilmiah. Tombol Cetak PDF A4 telah dibuka!"
                       : "⚠️ Analisis belum memenuhi ambang batas kelayakan minimal (60/100). Perbaiki telaah Anda sebelum mencetak."}
                   </p>

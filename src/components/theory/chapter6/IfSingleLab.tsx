@@ -30,15 +30,15 @@ const SCENARIOS: Scenario[] = [
     title: 'Cek Bilangan Ganjil',
     variable: 'angka',
     unit: '',
-    condition: 'angka % 2 != 0',
-    conditionLabel: 'angka % 2 ≠ 0?',
+    condition: 'angka mod 2 != 0',
+    conditionLabel: 'angka mod 2 ≠ 0?',
     trueAction: 'output("Bilangan Ganjil")',
     falseSkip: '(tidak ada aksi — blok IF dilewati)',
     min: 1,
     max: 20,
     defaultVal: 7,
     narrative: `1. Masukkan nilai angka.
-2. Jika angka % 2 != 0 maka:
+2. Jika angka mod 2 != 0 maka:
       Tampilkan "Bilangan Ganjil" ke layar.
 3. Tampilkan hasil selesai ke layar.`,
     pseudocode: `PROGRAM CekBilanganGanjil
@@ -49,7 +49,7 @@ KAMUS:
 
 ALGORITMA:
   input(angka)
-  if angka % 2 != 0 then
+  if angka mod 2 != 0 then
     output("Bilangan Ganjil")
   endif`,
     pythonCode: (val) => `# Python — Percabangan Statemen Tunggal (IF)
@@ -640,14 +640,14 @@ export default function IfSingleLab() {
             {/* Key Difference */}
             <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-700/50 rounded-2xl shadow-xs">
               <p className="text-xs font-black text-amber-950 dark:text-amber-300 mb-2">⚡ Perbedaan Sintaks Utama:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-blue-200 dark:border-blue-900/40">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-2">
+                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-blue-200 dark:border-blue-900/40 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-left">
                   <p className="text-xs font-black text-blue-900 dark:text-blue-300 mb-1">🐍 Python</p>
                   <code className="text-xs text-slate-800 dark:text-slate-200 block font-mono">if kondisi:</code>
                   <code className="text-xs text-slate-600 dark:text-slate-400 block pl-4 font-mono">instruksi  # indent 4 spasi</code>
                   <code className="text-xs text-rose-700 dark:text-rose-400 block font-mono font-bold"># Tidak ada &apos;endif&apos;!</code>
                 </div>
-                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-amber-200 dark:border-amber-900/40">
+                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-amber-200 dark:border-amber-900/40 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-right">
                   <p className="text-xs font-black text-amber-900 dark:text-yellow-300 mb-1">⚡ JavaScript</p>
                   <code className="text-xs text-slate-800 dark:text-slate-200 block font-mono">if (kondisi) {'{'}</code>
                   <code className="text-xs text-slate-600 dark:text-slate-400 block pl-4 font-mono">instruksi;</code>

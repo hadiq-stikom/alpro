@@ -136,7 +136,7 @@ const OPERATORS_DATA: OperatorData[] = [
     mathSymbol: '=',
     name: 'Sama Dengan (Kesamaan)',
     type: 'kesamaan',
-    pseudo: 'angka % 2 == 0',
+    pseudo: 'angka mod 2 == 0',
     python: 'angka % 2 == 0',
     js: 'angka % 2 === 0',
     meaning: 'Memeriksa apakah kedua nilai bernilai IDENTIK/SAMA PERSIS.',
@@ -243,11 +243,11 @@ const BUILDER_SCENARIOS: BuilderScenario[] = [
     id: 'ganjil',
     title: 'Pendeteksian Bilangan Ganjil',
     category: 'Matematika',
-    story: 'Sebuah bilangan bulat `angka` adalah bilangan GANJIL jika hasil sisa bagi dengan 2 (`angka % 2`) tidak bernilai nol (menghasilkan 1).',
-    optionsLeft: ['angka % 2', 'angka / 2', 'angka'],
+    story: 'Sebuah bilangan bulat `angka` adalah bilangan GANJIL jika hasil sisa bagi dengan 2 (`angka mod 2`) tidak bernilai nol (menghasilkan 1).',
+    optionsLeft: ['angka mod 2', 'angka / 2', 'angka'],
     optionsOp: ['!=', '==', '>', '<'],
     optionsRight: ['0', '1', '2'],
-    correctLeft: 'angka % 2',
+    correctLeft: 'angka mod 2',
     correctOp: '!=',
     correctRight: '0',
     testVarName: 'angka',
@@ -257,7 +257,7 @@ const BUILDER_SCENARIOS: BuilderScenario[] = [
     testDefault: 7,
     testUnit: '',
     evalTarget: v => v % 2 !== 0,
-    explanation: 'Operan kiri adalah ekspresi modulo `angka % 2`, dan kita menguji apakah hasilnya tidak sama dengan 0 (`!= 0`) atau sama dengan 1 (`== 1`).',
+    explanation: 'Operan kiri adalah ekspresi modulo algoritma `angka mod 2` (diimplementasikan sebagai `angka % 2` pada Python/JS), dan kita menguji apakah hasilnya tidak sama dengan 0 (`!= 0`) atau sama dengan 1 (`== 1`).',
   },
 ];
 
@@ -419,23 +419,23 @@ export default function ConditionMasteryLab() {
         {activeTab === 'anatomy' && (
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
             
-            <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs">
+            <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
               <p className="text-amber-950 dark:text-amber-100 text-xs md:text-sm leading-relaxed font-medium">
                 💡 <strong className="text-amber-900 dark:text-amber-300 font-black">Prinsip Utama:</strong> Sebuah kondisi <em>bukan kalimat biasa</em>, melainkan sebuah <strong>ekspresi relasional</strong> yang membandingkan dua nilai dan <strong>pasti menghasilkan jawaban benar (True) atau salah (False)</strong>.
               </p>
             </div>
 
             {/* Diagram Anatomi 3 Komponen */}
-            <div className="space-y-3">
+            <div className="space-y-3 overflow-visible">
               <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 font-mono flex items-center gap-2">
                 <Layers className="w-4 h-4 text-amber-500" />
                 <span>Struktur 3 Unsur Pembentuk Kondisi:</span>
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 overflow-visible py-2">
                 
                 {/* Blok 1: Operan Kiri */}
-                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-sky-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
+                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-sky-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-500">
                   <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-sky-500/20 text-sky-800 dark:text-sky-300 border-b border-l border-sky-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
                     UNSUR 1
                   </div>
@@ -449,14 +449,14 @@ export default function ConditionMasteryLab() {
                     <span className="text-[11px] text-slate-600 dark:text-slate-400 block font-semibold">Contoh bentuk:</span>
                     <div className="bg-slate-100 dark:bg-slate-950 p-2.5 rounded-lg text-sky-950 dark:text-sky-300 border border-sky-200 dark:border-sky-900/50 space-y-0.5">
                       <div>• <code className="font-bold">nilai</code> (Variabel tunggal)</div>
-                      <div>• <code className="font-bold">angka % 2</code> (Ekspresi sisa bagi)</div>
+                      <div>• <code className="font-bold">angka mod 2</code> (Ekspresi sisa bagi)</div>
                       <div>• <code className="font-bold">saldo</code> (Data akun pengguna)</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Blok 2: Operator Relasional */}
-                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-amber-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
+                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-amber-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500">
                   <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-amber-500/20 text-amber-800 dark:text-amber-300 border-b border-l border-amber-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
                     UNSUR 2
                   </div>
@@ -480,7 +480,7 @@ export default function ConditionMasteryLab() {
                 </div>
 
                 {/* Blok 3: Operan Kanan */}
-                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-purple-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg">
+                <div className="p-5 bg-card dark:bg-slate-900 border-2 border-purple-500/40 rounded-2xl space-y-2 relative overflow-hidden shadow-lg z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-500">
                   <div className="absolute top-0 right-0 px-2.5 py-0.5 bg-purple-500/20 text-purple-800 dark:text-purple-300 border-b border-l border-purple-500/40 rounded-bl-xl text-[10px] font-mono font-bold">
                     UNSUR 3
                   </div>
@@ -523,12 +523,12 @@ export default function ConditionMasteryLab() {
             </div>
 
             {/* Galeri 4 Pola Hubungan Operan */}
-            <div className="space-y-3 pt-2">
+            <div className="space-y-3 pt-2 overflow-visible">
               <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 font-mono">
                 🔍 4 Pola Pasangan Operan yang Sering Digunakan:
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-2">
                 {[
                   {
                     title: '1. Variabel vs Konstanta Angka',
@@ -544,8 +544,8 @@ export default function ConditionMasteryLab() {
                   },
                   {
                     title: '3. Ekspresi Aritmatika vs Angka',
-                    formula: 'angka % 2 != 0',
-                    desc: 'Operan kiri dihitung terlebih dahulu secara matematika sebelum dibandingkan (contoh: operasi modulo untuk cek ganjil/genap).',
+                    formula: 'angka mod 2 != 0',
+                    desc: 'Operan kiri dihitung terlebih dahulu secara matematika sebelum dibandingkan (contoh: operasi modulo angka mod 2 untuk cek ganjil/genap).',
                     badge: 'Komputasi',
                   },
                   {
@@ -555,7 +555,7 @@ export default function ConditionMasteryLab() {
                     badge: 'Karakter/Teks',
                   },
                 ].map(item => (
-                  <div key={item.title} className="p-4 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 rounded-2xl space-y-2 hover:border-slate-400 dark:hover:border-slate-700 transition-all shadow-xs">
+                  <div key={item.title} className="p-4 bg-card dark:bg-slate-900 border border-border/70 dark:border-slate-800 rounded-2xl space-y-2 hover:border-amber-500 dark:hover:border-amber-400 shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{item.title}</span>
                       <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-amber-950 dark:text-amber-300 border border-slate-300 dark:border-slate-700">
@@ -744,18 +744,18 @@ export default function ConditionMasteryLab() {
               </div>
 
               {/* Komparasi Sintaks 3 Bahasa */}
-              <div className="space-y-2">
+              <div className="space-y-2 overflow-visible">
                 <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">Cara Penulisan di Berbagai Bahasa:</span>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
-                  <div className="p-3 bg-card dark:bg-slate-950 border border-purple-300 dark:border-purple-900/40 rounded-xl shadow-xs">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs overflow-visible py-2">
+                  <div className="p-3 bg-card dark:bg-slate-950 border border-purple-300 dark:border-purple-900/40 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-500">
                     <span className="text-[10px] text-purple-700 dark:text-purple-400 font-black block mb-1">📋 PSEUDOCODE</span>
                     <code className="text-purple-950 dark:text-purple-200 font-bold">{selectedOp.pseudo}</code>
                   </div>
-                  <div className="p-3 bg-card dark:bg-slate-950 border border-sky-300 dark:border-sky-900/40 rounded-xl shadow-xs">
+                  <div className="p-3 bg-card dark:bg-slate-950 border border-sky-300 dark:border-sky-900/40 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-500">
                     <span className="text-[10px] text-sky-700 dark:text-sky-400 font-black block mb-1">🐍 PYTHON</span>
                     <code className="text-sky-950 dark:text-sky-200 font-bold">{selectedOp.python}</code>
                   </div>
-                  <div className="p-3 bg-card dark:bg-slate-950 border border-amber-300 dark:border-yellow-900/40 rounded-xl shadow-xs">
+                  <div className="p-3 bg-card dark:bg-slate-950 border border-amber-300 dark:border-yellow-900/40 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-500">
                     <span className="text-[10px] text-amber-700 dark:text-yellow-400 font-black block mb-1">⚡ JAVASCRIPT</span>
                     <code className="text-amber-950 dark:text-yellow-200 font-bold">{selectedOp.js}</code>
                   </div>
@@ -763,14 +763,14 @@ export default function ConditionMasteryLab() {
               </div>
 
               {/* Best Practice & Pitfall Note */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
-                <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/30 rounded-xl space-y-1">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 overflow-visible py-2">
+                <div className="p-3.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-300 dark:border-emerald-600/30 rounded-xl space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-400">
                   <p className="text-xs font-bold text-emerald-950 dark:text-emerald-300 flex items-center gap-1.5 font-mono">
                     <ShieldCheck className="w-3.5 h-3.5" /> Best Practice:
                   </p>
                   <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">{selectedOp.bestPractice}</p>
                 </div>
-                <div className="p-3.5 bg-rose-50 dark:bg-rose-950/30 border border-rose-300 dark:border-rose-600/30 rounded-xl space-y-1">
+                <div className="p-3.5 bg-rose-50 dark:bg-rose-950/30 border border-rose-300 dark:border-rose-600/30 rounded-xl space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-rose-400">
                   <p className="text-xs font-bold text-rose-950 dark:text-rose-300 flex items-center gap-1.5 font-mono">
                     <AlertTriangle className="w-3.5 h-3.5" /> Jebakan yang Harus Dihindari:
                   </p>
@@ -1026,8 +1026,8 @@ export default function ConditionMasteryLab() {
                   </p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs">
-                  <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-300 dark:border-rose-600/40 rounded-2xl space-y-1.5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 font-mono text-xs overflow-visible py-2">
+                  <div className="p-4 bg-rose-50 dark:bg-rose-950/40 border-2 border-rose-300 dark:border-rose-600/40 rounded-2xl space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-left hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-rose-500">
                     <span className="text-[11px] font-black text-rose-700 dark:text-rose-400 flex items-center gap-1.5 font-mono">
                       <XCircle className="w-4 h-4 text-rose-600 shrink-0" /> KODE AWAL (MENGANDUNG BUG):
                     </span>
@@ -1037,7 +1037,7 @@ export default function ConditionMasteryLab() {
                     <p className="text-[11px] text-rose-900 dark:text-rose-300/90 pt-1 font-sans font-medium">{activeQuiz.problemSummary}</p>
                   </div>
 
-                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-600/40 rounded-2xl space-y-1.5">
+                  <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 border-2 border-emerald-300 dark:border-emerald-600/40 rounded-2xl space-y-1.5 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center sm:origin-right hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-emerald-500">
                     <span className="text-[11px] font-black text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5 font-mono">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" /> KODE SETELAH DIPERBAIKI (BENAR):
                     </span>

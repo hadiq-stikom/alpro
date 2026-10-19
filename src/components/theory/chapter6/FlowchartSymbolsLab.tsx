@@ -276,14 +276,20 @@ export default function FlowchartSymbolsLab() {
       {activeTab === 'gallery' && (
         <div className="p-4 md:p-6 space-y-5">
           {/* Symbol Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {SYMBOLS.map(sym => (
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 overflow-visible py-3">
+            {SYMBOLS.map((sym, idx) => (
               <button
                 key={sym.id}
                 onClick={() => setSelectedSymbol(sym.id)}
-                className={`p-3 rounded-2xl border-2 transition-all cursor-pointer flex flex-col items-center gap-2 ${
+                className={`p-3 rounded-2xl border-2 transition-transform duration-300 ease-out cursor-pointer flex flex-col items-center gap-2 relative z-0 hover:z-50 hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
+                  idx === 0
+                    ? 'origin-center md:origin-left'
+                    : idx === SYMBOLS.length - 1
+                    ? 'origin-center md:origin-right'
+                    : 'origin-center'
+                } ${
                   selectedSymbol === sym.id
-                    ? `${sym.borderColor} bg-slate-100 dark:bg-slate-800 shadow-lg scale-105 ring-2 ring-sky-500/30`
+                    ? `${sym.borderColor} bg-slate-100 dark:bg-slate-800 shadow-lg ring-2 ring-sky-500/30`
                     : 'border-border/70 dark:border-slate-700 bg-card dark:bg-slate-900 hover:border-slate-400 dark:hover:border-slate-600'
                 }`}
               >
@@ -430,7 +436,7 @@ export default function FlowchartSymbolsLab() {
       {/* ── TAB: BUILDER / POLA IF-ELSE ────────────────────────────────────────── */}
       {activeTab === 'builder' && (
         <div className="p-4 md:p-6 space-y-5">
-          <div className="p-3.5 bg-sky-50 dark:bg-sky-950/40 border-2 border-sky-300 dark:border-sky-600/50 rounded-2xl shadow-xs">
+          <div className="p-3.5 bg-sky-50 dark:bg-sky-950/40 border-2 border-sky-300 dark:border-sky-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-400">
             <p className="text-sky-950 dark:text-sky-100 text-xs font-medium leading-relaxed">
               💡 <strong className="text-sky-900 dark:text-sky-300 font-black">Cara membaca:</strong> Ikuti arah panah dari atas ke bawah. Di titik Diamond, program memilih satu dari dua jalur. Kedua jalur akhirnya bertemu kembali di titik penyatuan.
             </p>

@@ -206,10 +206,12 @@ export default function Pertemuan6() {
                           </div>
                         ),
                       },
-                    ].map(item => (
+                    ].map((item, idx) => (
                       <div
                         key={item.lang}
-                        className={`rounded-2xl border ${item.borderColor} bg-card dark:bg-slate-900 shadow-md overflow-hidden transition-transform duration-300 ease-out origin-center relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]`}
+                        className={`rounded-2xl border ${item.borderColor} bg-card dark:bg-slate-900 shadow-md overflow-hidden transition-transform duration-300 ease-out relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
+                          idx === 0 ? 'origin-center md:origin-left' : idx === 2 ? 'origin-center md:origin-right' : 'origin-center'
+                        }`}
                       >
                         <div className="px-3.5 py-2 bg-slate-100/90 dark:bg-slate-950 border-b border-border/70 dark:border-slate-800 flex items-center justify-between">
                           <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold font-mono border ${item.badgeColor}`}>
@@ -321,10 +323,12 @@ export default function Pertemuan6() {
                           </div>
                         ),
                       },
-                    ].map(item => (
+                    ].map((item, idx) => (
                       <div
                         key={item.lang}
-                        className={`rounded-2xl border ${item.borderColor} bg-card dark:bg-slate-900 shadow-md overflow-hidden transition-transform duration-300 ease-out origin-center relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]`}
+                        className={`rounded-2xl border ${item.borderColor} bg-card dark:bg-slate-900 shadow-md overflow-hidden transition-transform duration-300 ease-out relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
+                          idx === 0 ? 'origin-center md:origin-left' : idx === 2 ? 'origin-center md:origin-right' : 'origin-center'
+                        }`}
                       >
                         <div className="px-3.5 py-2 bg-slate-100/90 dark:bg-slate-950 border-b border-border/70 dark:border-slate-800 flex items-center justify-between">
                           <span className={`px-2 py-0.5 rounded-md text-[11px] font-bold font-mono border ${item.badgeColor}`}>

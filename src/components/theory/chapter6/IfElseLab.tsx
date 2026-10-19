@@ -736,18 +736,18 @@ export default function IfElseLab() {
             </pre>
 
             {/* Perbandingan IF vs IF-ELSE */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="p-3 bg-card dark:bg-slate-900 border border-emerald-500/30 rounded-xl shadow-xs">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-2">
+              <div className="p-3 bg-card dark:bg-slate-900 border border-emerald-500/30 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-left">
                 <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-2">✅ IF Statemen Tunggal</p>
-                <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside">
+                <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside font-medium">
                   <li>Hanya satu jalur aksi (True)</li>
                   <li>Jika False → tidak ada aksi</li>
                   <li>Cocok untuk: "jika syarat terpenuhi, lakukan X"</li>
                 </ul>
               </div>
-              <div className="p-3 bg-card dark:bg-slate-900 border border-amber-500/30 rounded-xl shadow-xs">
+              <div className="p-3 bg-card dark:bg-slate-900 border border-amber-500/30 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-right">
                 <p className="text-xs font-bold text-amber-700 dark:text-amber-400 mb-2">✅ IF-ELSE (Statemen Ganda)</p>
-                <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside">
+                <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside font-medium">
                   <li>DUA jalur aksi (True + False)</li>
                   <li>Selalu ada aksi untuk setiap kondisi</li>
                   <li>Cocok untuk: "pilih antara A atau B"</li>
@@ -778,7 +778,7 @@ export default function IfElseLab() {
               <div className="lg:col-span-6 flex flex-col justify-between gap-3">
                 
                 {/* Petunjuk */}
-                <div className="p-3.5 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs">
+                <div className="p-3.5 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
                   <p className="text-amber-950 dark:text-amber-100 text-xs font-medium leading-relaxed">
                     🔷 <strong className="text-amber-900 dark:text-amber-300 font-black">Flowchart IF-ELSE:</strong> Atur nilai dengan <em>slider</em>. Jalur <span className="text-emerald-950 dark:text-emerald-200 font-black">hijau = True (Ya)</span>, jalur <span className="text-rose-950 dark:text-rose-200 font-black">merah = False (Tidak)</span>. Kedua cabang selalu bertemu kembali sebelum SELESAI.
                   </p>

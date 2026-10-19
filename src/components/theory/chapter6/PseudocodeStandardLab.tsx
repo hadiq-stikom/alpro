@@ -165,7 +165,7 @@ KAMUS:
 
 ALGORITMA:
   input(angka)
-  if angka % 2 != 0 then
+  if angka mod 2 != 0 then
     output("Ganjil")
   endif`,
     correct: `PROGRAM CekGanjil
@@ -176,7 +176,7 @@ KAMUS:
 
 ALGORITMA:
   input(angka)
-  if angka % 2 != 0 then
+  if angka mod 2 != 0 then
     output("Ganjil")
   endif`,
     errorType: 'Variabel Tidak Dideklarasikan',
@@ -383,13 +383,13 @@ ALGORITMA:
         {/* ── TAB 1: 6 ATURAN BAKU ─────────────────────────────────────────────── */}
         {activeTab === 'aturan' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3.5 bg-purple-950/40 border border-purple-700/50 rounded-xl">
-              <p className="text-purple-300 text-xs font-medium leading-relaxed">
-                ⚖️ <strong>Standar Pseudocode Semester 1:</strong> Wajib mematuhi struktur 3 blok baku (PROGRAM, KAMUS:, ALGORITMA:) yang diajarkan pada Bab 3 sebagai jembatan berpikir logis sebelum implementasi bahasa pemrograman.
+            <div className="p-3.5 bg-purple-50 dark:bg-purple-950/40 border-2 border-purple-300 dark:border-purple-700/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-400">
+              <p className="text-purple-950 dark:text-purple-100 text-xs font-medium leading-relaxed">
+                ⚖️ <strong className="text-purple-900 dark:text-purple-300 font-black">Standar Pseudocode Semester 1:</strong> Wajib mematuhi struktur 3 blok baku (PROGRAM, KAMUS:, ALGORITMA:) yang diajarkan pada Bab 3 sebagai jembatan berpikir logis sebelum implementasi bahasa pemrograman.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-3">
               {[
                 { no: '1', title: 'Struktur 3 Blok Baku', desc: 'Wajib memuat blok PROGRAM (identitas), KAMUS: (deklarasi variabel & tipe), dan ALGORITMA: (urutan aksi).', badge: 'Wajib' },
                 { no: '2', title: 'Nama Variabel Deskriptif', desc: 'DILARANG menggunakan variabel 1 huruf (a, b, x, n). Gunakan nama bermakna: nilaiUjian, totalBelanja, usia.', badge: 'Kritis' },
@@ -397,20 +397,25 @@ ALGORITMA:
                 { no: '4', title: 'Instruksi I/O Universal', desc: 'Gunakan input(namaVariabel) untuk menerima masukan data dan output(nilai/teks) untuk mencetak hasil.', badge: 'Standar' },
                 { no: '5', title: 'Blok IF Wajib Ditutup endif', desc: 'Setiap struktur percabangan IF (termasuk yang memiliki ELSE) WAJIB diakhiri dengan kata kunci endif.', badge: 'Kritis' },
                 { no: '6', title: 'Kapitalisasi Kata Kunci', desc: 'Kata kunci struktur ditulis kapital: PROGRAM, KAMUS:, ALGORITMA:. Keyword logika: if, then, else, endif.', badge: 'Konvensi' },
-              ].map(r => (
-                <div key={r.no} className="p-4 bg-slate-900/80 rounded-2xl border border-slate-800 space-y-1.5 shadow-sm">
+              ].map((r, idx) => (
+                <div
+                  key={r.no}
+                  className={`p-4 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/80 dark:border-slate-800 space-y-1.5 shadow-sm relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out ${
+                    idx % 2 === 0 ? 'origin-center md:origin-left' : 'origin-center md:origin-right'
+                  }`}
+                >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span className="w-5 h-5 rounded-full bg-purple-600/30 text-purple-300 text-xs font-bold flex items-center justify-center">
+                      <span className="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-600/30 text-purple-900 dark:text-purple-300 text-xs font-bold flex items-center justify-center">
                         {r.no}
                       </span>
-                      <h4 className="font-bold text-xs text-white">{r.title}</h4>
+                      <h4 className="font-bold text-xs text-slate-900 dark:text-white">{r.title}</h4>
                     </div>
-                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-purple-300 border border-purple-500/30">
+                    <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-purple-900 dark:text-purple-300 border border-purple-300 dark:border-purple-500/30">
                       {r.badge}
                     </span>
                   </div>
-                  <p className="text-xs text-slate-400 leading-relaxed pl-7">{r.desc}</p>
+                  <p className="text-xs text-slate-700 dark:text-slate-400 leading-relaxed pl-7 font-medium">{r.desc}</p>
                 </div>
               ))}
             </div>
@@ -428,7 +433,7 @@ ALGORITMA:
                   className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
                     selectedMistake === i
                       ? 'bg-purple-600 text-white shadow-md'
-                      : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'
+                      : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-border dark:border-slate-800'
                   }`}
                 >
                   Kasus {i + 1}: {m.title}
@@ -436,11 +441,11 @@ ALGORITMA:
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-visible py-3">
               {/* Sisi Salah */}
-              <div className="bg-red-950/20 border-2 border-red-500/40 rounded-2xl p-4 space-y-2">
-                <div className="flex items-center gap-2 text-red-400 font-bold text-xs">
-                  <XCircle className="w-4 h-4" />
+              <div className="bg-rose-50 dark:bg-red-950/20 border-2 border-rose-300 dark:border-red-500/40 rounded-2xl p-4 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center lg:origin-left">
+                <div className="flex items-center gap-2 text-rose-900 dark:text-red-400 font-bold text-xs">
+                  <XCircle className="w-4 h-4 text-rose-600 dark:text-red-400" />
                   <span>CONTOH KELIRU (DILARANG)</span>
                 </div>
                 <pre className="p-3 bg-slate-950 rounded-xl text-xs font-mono text-red-200 overflow-x-auto leading-relaxed border border-red-500/20">
@@ -449,9 +454,9 @@ ALGORITMA:
               </div>
 
               {/* Sisi Benar */}
-              <div className="bg-emerald-950/20 border-2 border-emerald-500/40 rounded-2xl p-4 space-y-2">
-                <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
-                  <CheckCircle2 className="w-4 h-4" />
+              <div className="bg-emerald-50 dark:bg-emerald-950/20 border-2 border-emerald-300 dark:border-emerald-500/40 rounded-2xl p-4 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center lg:origin-right">
+                <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-400 font-bold text-xs">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>CONTOH STANDAR BAKU BAB 3 (BENAR)</span>
                 </div>
                 <pre className="p-3 bg-slate-950 rounded-xl text-xs font-mono text-emerald-200 overflow-x-auto leading-relaxed border border-emerald-500/20">
@@ -461,12 +466,12 @@ ALGORITMA:
             </div>
 
             {/* Penjelasan */}
-            <div className="p-4 bg-slate-900 rounded-2xl border border-slate-800 space-y-1">
-              <div className="flex items-center gap-2 text-amber-400 text-xs font-bold">
-                <AlertTriangle className="w-3.5 h-3.5" />
+            <div className="p-4 bg-amber-50/70 dark:bg-slate-900 rounded-2xl border border-amber-200 dark:border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
+              <div className="flex items-center gap-2 text-amber-900 dark:text-amber-400 text-xs font-bold">
+                <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>Analisis Kesalahan: {MISTAKES[selectedMistake].errorType}</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">
+              <p className="text-xs text-slate-800 dark:text-slate-300 leading-relaxed font-medium">
                 {MISTAKES[selectedMistake].explanation}
               </p>
             </div>

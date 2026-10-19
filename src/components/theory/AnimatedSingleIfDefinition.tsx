@@ -598,10 +598,10 @@ export default function AnimatedSingleIfDefinition() {
               </div>
 
               {/* 2. Banner Keputusan Ringkas */}
-              <div className={`p-2.5 rounded-xl border-2 font-mono text-xs font-bold flex items-center justify-between gap-2 shadow-xs ${
+              <div className={`p-2.5 rounded-xl border-2 font-mono text-xs font-bold flex items-center justify-between gap-2 shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
                 isTrue
-                  ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-500 text-emerald-950 dark:text-emerald-100'
-                  : 'bg-slate-100 dark:bg-slate-900 border-slate-400 dark:border-slate-700 text-slate-800 dark:text-slate-200'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-500 text-emerald-950 dark:text-emerald-100 hover:border-emerald-400'
+                  : 'bg-slate-100 dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:border-slate-400'
               }`}>
                 <div className="flex items-center gap-1.5 truncate">
                   <span className="text-sm">{isTrue ? '✅' : '⏭️'}</span>
@@ -617,9 +617,9 @@ export default function AnimatedSingleIfDefinition() {
               </div>
 
               {/* 3. Tiga Pilar Pemetaan Konsep Percabangan Statemen Tunggal */}
-              <div className="flex flex-col gap-2 flex-1 justify-between">
+              <div className="flex flex-col gap-2 flex-1 justify-between overflow-visible py-1">
                 {/* Pilar 1 */}
-                <div className="p-2.5 rounded-xl border-2 border-amber-300 dark:border-amber-700/80 bg-amber-50/90 dark:bg-amber-950/50 space-y-0.5 shadow-2xs">
+                <div className="p-2.5 rounded-xl border-2 border-amber-300 dark:border-amber-700/80 bg-amber-50/90 dark:bg-amber-950/50 space-y-0.5 shadow-2xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
                   <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-amber-900 dark:text-amber-300">
                     <span>①</span>
                     <span>Kondisi Boolean</span>
@@ -630,10 +630,10 @@ export default function AnimatedSingleIfDefinition() {
                 </div>
 
                 {/* Pilar 2 */}
-                <div className={`p-2.5 rounded-xl border-2 space-y-0.5 shadow-2xs ${
+                <div className={`p-2.5 rounded-xl border-2 space-y-0.5 shadow-2xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
                   isTrue
-                    ? 'border-emerald-400 dark:border-emerald-700/80 bg-emerald-50/90 dark:bg-emerald-950/50'
-                    : 'border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 opacity-60'
+                    ? 'border-emerald-400 dark:border-emerald-700/80 bg-emerald-50/90 dark:bg-emerald-950/50 hover:border-emerald-500'
+                    : 'border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 opacity-60 hover:opacity-100'
                 }`}>
                   <div className={`flex items-center gap-1.5 text-[10px] font-mono font-black uppercase ${
                     isTrue ? 'text-emerald-900 dark:text-emerald-300' : 'text-slate-600 dark:text-slate-400'
@@ -649,7 +649,7 @@ export default function AnimatedSingleIfDefinition() {
                 </div>
 
                 {/* Pilar 3 */}
-                <div className="p-2.5 rounded-xl border-2 border-sky-300 dark:border-sky-700/80 bg-sky-50/90 dark:bg-sky-950/50 space-y-0.5 shadow-2xs">
+                <div className="p-2.5 rounded-xl border-2 border-sky-300 dark:border-sky-700/80 bg-sky-50/90 dark:bg-sky-950/50 space-y-0.5 shadow-2xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-400">
                   <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-sky-900 dark:text-sky-300">
                     <span>③</span>
                     <span>Alur Melanjutkan Perjalanan</span>

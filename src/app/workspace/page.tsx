@@ -154,8 +154,8 @@ const missions: Mission[] = [
     codeNum: '6.3',
     title: 'Misi 6.3: Paritas Bilangan Ganjil/Genap (IF-ELSE)',
     category: 'Statemen Ganda (IF-ELSE)',
-    description: 'Sistem tilang elektronik memeriksa plat nomor kendaraan. Uji apakah angka plat adalah bilangan GENAP atau GANJIL menggunakan operator modulo (%).',
-    formula: 'if angka % 2 == 0 then "GENAP" else "GANJIL"',
+    description: 'Sistem tilang elektronik memeriksa plat nomor kendaraan. Uji apakah angka plat adalah bilangan GENAP atau GANJIL menggunakan operator modulo (mod / %).',
+    formula: 'if angka mod 2 == 0 then "GENAP" else "GANJIL"',
     pyCode: `angka = 48\n\nif angka % 2 == 0:\n    print(f"Angka {angka} adalah: BILANGAN GENAP")\nelse:\n    print(f"Angka {angka} adalah: BILANGAN GANJIL")\n\nprint("Analisis plat nomor selesai.")`,
     jsCode: `let angka = 48;\n\nif (angka % 2 === 0) {\n    console.log(\`Angka \${angka} adalah: BILANGAN GENAP\`);\n} else {\n    console.log(\`Angka \${angka} adalah: BILANGAN GANJIL\`);\n}\n\nconsole.log("Analisis plat nomor selesai.");`,
     theoryDesc: 'Percabangan Statemen Ganda (IF-ELSE) menyediakan tepat dua cabang tindakan saling eksklusif. Salah satu cabang pasti dieksekusi.'

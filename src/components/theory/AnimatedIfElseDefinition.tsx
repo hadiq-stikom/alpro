@@ -693,10 +693,10 @@ export default function AnimatedIfElseDefinition() {
               </div>
 
               {/* 2. Banner Keputusan Ringkas */}
-              <div className={`p-2.5 rounded-xl border-2 font-mono text-xs font-bold flex items-center justify-between gap-2 shadow-xs ${
+              <div className={`p-2.5 rounded-xl border-2 font-mono text-xs font-bold flex items-center justify-between gap-2 shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
                 isTrue
-                  ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-500 text-emerald-950 dark:text-emerald-100'
-                  : 'bg-rose-50 dark:bg-rose-950/70 border-rose-500 text-rose-950 dark:text-rose-100'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-500 text-emerald-950 dark:text-emerald-100 hover:border-emerald-400'
+                  : 'bg-rose-50 dark:bg-rose-950/70 border-rose-500 text-rose-950 dark:text-rose-100 hover:border-rose-400'
               }`}>
                 <div className="flex items-center gap-1.5 truncate">
                   <span className="text-sm">{isTrue ? '✅' : '❌'}</span>
@@ -712,9 +712,9 @@ export default function AnimatedIfElseDefinition() {
               </div>
 
               {/* 3. Tiga Pilar Pemetaan Konsep Percabangan Statemen Ganda */}
-              <div className="flex flex-col gap-2 flex-1 justify-between">
+              <div className="flex flex-col gap-2 flex-1 justify-between overflow-visible py-1">
                 {/* Pilar 1 */}
-                <div className="p-2.5 rounded-xl border-2 border-amber-300 dark:border-amber-700/80 bg-amber-50/90 dark:bg-amber-950/50 space-y-0.5 shadow-2xs">
+                <div className="p-2.5 rounded-xl border-2 border-amber-300 dark:border-amber-700/80 bg-amber-50/90 dark:bg-amber-950/50 space-y-0.5 shadow-2xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
                   <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-amber-900 dark:text-amber-300">
                     <span>①</span>
                     <span>Kondisi Boolean pada Diamond</span>
@@ -725,10 +725,10 @@ export default function AnimatedIfElseDefinition() {
                 </div>
 
                 {/* Pilar 2 */}
-                <div className={`p-2.5 rounded-xl border-2 space-y-0.5 shadow-2xs ${
+                <div className={`p-2.5 rounded-xl border-2 space-y-0.5 shadow-2xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] ${
                   isTrue
-                    ? 'border-emerald-400 dark:border-emerald-700/80 bg-emerald-50/90 dark:bg-emerald-950/50'
-                    : 'border-rose-400 dark:border-rose-700/80 bg-rose-50/90 dark:bg-rose-950/50'
+                    ? 'border-emerald-400 dark:border-emerald-700/80 bg-emerald-50/90 dark:bg-emerald-950/50 hover:border-emerald-500'
+                    : 'border-rose-400 dark:border-rose-700/80 bg-rose-50/90 dark:bg-rose-950/50 hover:border-rose-500'
                 }`}>
                   <div className={`flex items-center gap-1.5 text-[10px] font-mono font-black uppercase ${
                     isTrue ? 'text-emerald-900 dark:text-emerald-300' : 'text-rose-900 dark:text-rose-300'
@@ -746,7 +746,7 @@ export default function AnimatedIfElseDefinition() {
                 </div>
 
                 {/* Pilar 3 */}
-                <div className="p-2.5 rounded-xl border-2 border-sky-300 dark:border-sky-700/80 bg-sky-50/90 dark:bg-sky-950/50 space-y-0.5 shadow-2xs">
+                <div className="p-2.5 rounded-xl border-2 border-sky-300 dark:border-sky-700/80 bg-sky-50/90 dark:bg-sky-950/50 space-y-0.5 shadow-2xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-1 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-400">
                   <div className="flex items-center gap-1.5 text-[10px] font-mono font-black uppercase text-sky-900 dark:text-sky-300">
                     <span>③</span>
                     <span>Penyatuan Alur (Merge Point)</span>

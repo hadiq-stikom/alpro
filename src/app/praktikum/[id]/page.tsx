@@ -257,6 +257,7 @@ export default function PraktikumWorksheetPage({
   const moduleData = PRAKTIKUM_MODULES.find((m) => m.id === moduleId);
 
   const { profile, user } = useAuth();
+  const currentUserId = profile?.id || user?.id;
 
   // State Identitas
   const [studentName, setStudentName] = useState("");
@@ -321,11 +322,16 @@ export default function PraktikumWorksheetPage({
   // Akses formulir Analisis & Kesimpulan terbuka jika baseline sudah ada, atau baru diselesaikan di sesi ini, atau sudah disubmit/disetujui
   const isFormUnlocked = hasBaseline || isWarmupCompletedInSession || submissionStatus === 'disetujui' || submissionStatus === 'diajukan';
 
-  // Syarat tombol cetak aktif: Analisis & Kesimpulan lengkap DAN dinyatakan "Memenuhi Standar" oleh AI
+  // Syarat tombol cetak aktif: Analisis & Kesimpulan lengkap DAN dinyatakan "Memenuhi Standar" oleh AI, ATAU telah disahkan resmi oleh Dosen
+  const isApprovedByLecturer =
+    submissionStatus === "disetujui" ||
+    Boolean(lecturerSignature) ||
+    (lecturerScore !== null && lecturerScore !== undefined);
+
   const canPrint = Boolean(
     isAnalisisComplete && 
     isKesimpulanComplete && 
-    ((aiEvaluation && aiEvaluation.canPrint) || submissionStatus === 'disetujui')
+    ((aiEvaluation && aiEvaluation.canPrint) || isApprovedByLecturer)
   );
 
   // Perekam telemetri ketukan tombol
@@ -401,25 +407,23 @@ export default function PraktikumWorksheetPage({
 
     if (!moduleData) return;
 
-    // Coba baca draf dari localStorage (berdasarkan NIM atau fallback lokal)
+    // Coba baca draf dari localStorage (HANYA jika cocok dengan NIM mahasiswa yang aktif)
     let savedDraft: string | null = null;
     if (profile?.nim) {
       savedDraft = localStorage.getItem(`lkp_draft_m${moduleId}_${profile.nim}`);
     }
     if (!savedDraft) {
-      savedDraft = localStorage.getItem(`lkp_draft_m${moduleId}_local`);
-    }
-    if (!savedDraft && typeof window !== "undefined") {
-      try {
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k && k.startsWith(`lkp_draft_m${moduleId}_`)) {
-            savedDraft = localStorage.getItem(k);
-            if (savedDraft) break;
+      const fallback = localStorage.getItem(`lkp_draft_m${moduleId}_local`);
+      if (fallback) {
+        try {
+          const parsedFallback = JSON.parse(fallback);
+          // Cegah kontaminasi: Hanya pakai draf local jika NIM-nya cocok atau profil belum ada
+          if (!profile?.nim || !parsedFallback.studentNim || parsedFallback.studentNim === profile.nim) {
+            savedDraft = fallback;
           }
+        } catch {
+          // ignore
         }
-      } catch (scanErr) {
-        // ignore
       }
     }
 
@@ -485,9 +489,17 @@ export default function PraktikumWorksheetPage({
             const sub = data.submission;
             setSubmissionStatus(sub.status || "draft");
 
-            // Pulihkan hasil pengamatan Tabel C HANYA JIKA lokal belum dimodifikasi
-            if (Array.isArray(sub.observations) && sub.observations.length > 0) {
+            const isOfficial = sub.status === "submitted" || sub.status === "disetujui" || sub.status === "graded";
+            const remoteHasObs = Array.isArray(sub.observations) && sub.observations.length > 0;
+            const remoteHasAnalysis =
+              Array.isArray(sub.analisis_answers) &&
+              sub.analisis_answers.some((a: string) => typeof a === "string" && a.trim().length > 0);
+            const remoteHasKesimpulan = Boolean(sub.kesimpulan_text && sub.kesimpulan_text.trim().length > 0);
+
+            // Pulihkan hasil pengamatan Tabel C: jika official selalu gunakan DB; jika draft utamakan data lokal hanya jika lokal sudah diedit
+            if (remoteHasObs) {
               setObservations((prev) => {
+                if (isOfficial) return sub.observations;
                 const hasLocalData =
                   prev &&
                   prev.some(
@@ -498,19 +510,22 @@ export default function PraktikumWorksheetPage({
                 return hasLocalData ? prev : sub.observations;
               });
             }
-            // Pulihkan jawaban Analisis Bagian D HANYA JIKA sub memiliki jawaban non-kosong dan lokal kosong
-            if (
-              Array.isArray(sub.analisis_answers) &&
-              sub.analisis_answers.some((a: string) => typeof a === "string" && a.trim().length > 0)
-            ) {
+
+            // Pulihkan jawaban Analisis Bagian D: jika official selalu gunakan DB
+            if (remoteHasAnalysis) {
               setAnalisisAnswers((prev) => {
+                if (isOfficial) return sub.analisis_answers;
                 const hasLocalAnswers = prev && prev.some((a: string) => typeof a === "string" && a.trim().length > 0);
                 return hasLocalAnswers ? prev : sub.analisis_answers;
               });
             }
-            // Pulihkan Kesimpulan Bagian E HANYA JIKA sub memiliki teks non-kosong dan lokal kosong
-            if (sub.kesimpulan_text && sub.kesimpulan_text.trim().length > 0) {
-              setKesimpulanText((prev) => (prev && prev.trim().length > 0 ? prev : sub.kesimpulan_text));
+
+            // Pulihkan Kesimpulan Bagian E: jika official selalu gunakan DB
+            if (remoteHasKesimpulan) {
+              setKesimpulanText((prev) => {
+                if (isOfficial) return sub.kesimpulan_text;
+                return prev && prev.trim().length > 0 ? prev : sub.kesimpulan_text;
+              });
             }
             // Pulihkan identitas & tanggal lab dari database jika belum diisi
             if (sub.student_name) setStudentName((prev) => prev || sub.student_name);
@@ -531,7 +546,7 @@ export default function PraktikumWorksheetPage({
             if (sub.lecturer_signature) setLecturerSignature(sub.lecturer_signature);
             if (sub.lecturer_signed_at) setLecturerSignedAt(sub.lecturer_signed_at);
             if (sub.ai_evaluation && Object.keys(sub.ai_evaluation).length > 0) {
-              setAiEvaluation((prev) => prev || sub.ai_evaluation);
+              setAiEvaluation(sub.ai_evaluation);
             }
 
             // Pulihkan waktu simpan terakhir dari database jika ada
@@ -562,6 +577,10 @@ export default function PraktikumWorksheetPage({
                   kesimpulanText: sub.kesimpulan_text || "",
                   aiEvaluation: sub.ai_evaluation || null,
                   studentSignature: sub.student_signature || null,
+                  lecturerSignature: sub.lecturer_signature || null,
+                  lecturerScore: sub.lecturer_score !== null && sub.lecturer_score !== undefined ? Number(sub.lecturer_score) : null,
+                  lecturerSignedAt: sub.lecturer_signed_at || null,
+                  submissionStatus: sub.status || "draft",
                   savedAt: sub.updated_at
                     ? new Date(sub.updated_at).toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })
                     : null,
@@ -655,6 +674,10 @@ export default function PraktikumWorksheetPage({
       kesimpulanText,
       aiEvaluation,
       studentSignature,
+      lecturerSignature: lecturerSignature || null,
+      lecturerScore: lecturerScore !== null ? lecturerScore : null,
+      lecturerSignedAt: lecturerSignedAt || null,
+      submissionStatus: submissionStatus || "draft",
       savedAt: shortTimeStr,
     };
 
@@ -671,9 +694,8 @@ export default function PraktikumWorksheetPage({
       console.warn("Gagal sinkronisasi draf sebelum pratinjau cetak:", err);
     }
 
-    // Background sync ke Supabase jika user terdaftar
-    const currentUserId = profile?.id || user?.id;
-    if (currentUserId) {
+    // Background sync ke Supabase jika user terdaftar dan laporan belum berstatus disetujui resmi
+    if (currentUserId && submissionStatus !== "disetujui") {
       fetch("/api/praktikum/submission", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -2611,32 +2633,54 @@ export default function PraktikumWorksheetPage({
         {/* Tombol Aksi Pengajuan Konsultasi ke Dosen */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border/60">
           <div className="text-xs text-slate-500 font-medium">
-            * Sebelum mengajukan, pastikan Analisis &amp; Kesimpulan telah lolos uji Sokratik AI dan tanda tangan telah ditempel.
+            {submissionStatus === "disetujui"
+              ? "✓ Laporan telah disahkan resmi oleh Dosen Pengampu Laboratorium. Nilai dan tanda tangan digital telah terekam permanen."
+              : submissionStatus === "diajukan"
+              ? "⏳ Laporan praktikum sedang dalam antrean pemeriksaan oleh Dosen Hadiq, ST, M.Kom."
+              : "* Sebelum mengajukan, pastikan Analisis & Kesimpulan telah lengkap dan tanda tangan mahasiswa telah ditempel."}
           </div>
 
           <div className="flex items-center gap-3 w-full sm:w-auto">
-            <button
-              type="button"
-              onClick={handleSubmitConsultation}
-              disabled={isSubmittingConsultation || !studentSignature || !canPrint}
-              className={`w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all ${
-                !studentSignature || !canPrint
-                  ? "bg-secondary text-muted-foreground cursor-not-allowed opacity-60"
-                  : "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white cursor-pointer shadow-emerald-500/20"
-              }`}
-            >
-              {isSubmittingConsultation ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin text-white" />
-                  <span>Mengajukan Laporan...</span>
-                </>
-              ) : (
-                <>
-                  <CheckCircle2 className="w-4 h-4 text-white" />
-                  <span>{submissionStatus === "diajukan" ? "Perbarui Pengajuan ke Dosen" : "Ajukan Konsultasi ke Dosen"}</span>
-                </>
-              )}
-            </button>
+            {submissionStatus === "disetujui" ? (
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                <div className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold text-sm flex items-center justify-center gap-2 shadow-sm">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Disahkan Dosen (Nilai: {lecturerScore ?? 85}/100)</span>
+                </div>
+                <Link
+                  href={`/praktikum/${moduleData.id}/print?userId=${currentUserId || ''}`}
+                  target="_blank"
+                  onClick={handlePreparePrintPreview}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"
+                >
+                  <Printer className="w-4 h-4" />
+                  <span>Cetak Laporan Resmi A4</span>
+                </Link>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={handleSubmitConsultation}
+                disabled={isSubmittingConsultation || !studentSignature || !canPrint}
+                className={`w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all ${
+                  !studentSignature || !canPrint
+                    ? "bg-secondary text-muted-foreground cursor-not-allowed opacity-60"
+                    : "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white cursor-pointer shadow-emerald-500/20"
+                }`}
+              >
+                {isSubmittingConsultation ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    <span>Mengajukan Laporan...</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 text-white" />
+                    <span>{submissionStatus === "diajukan" ? "Perbarui Pengajuan ke Dosen" : "Ajukan Konsultasi ke Dosen"}</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -2686,7 +2730,7 @@ export default function PraktikumWorksheetPage({
 
           {canPrint ? (
             <Link
-              href={`/praktikum/${moduleData.id}/print`}
+              href={`/praktikum/${moduleData.id}/print?userId=${currentUserId || ''}`}
               target="_blank"
               onClick={handlePreparePrintPreview}
               className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer"

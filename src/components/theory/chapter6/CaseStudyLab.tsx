@@ -721,9 +721,9 @@ export default function CaseStudyLab() {
   }, []);
 
   return (
-    <div className="border border-border/70 dark:border-slate-800 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl">
+    <div className="border border-border/70 dark:border-slate-800 rounded-3xl !overflow-visible bg-card dark:bg-slate-950 shadow-2xl">
       {/* ── 1. HEADER UTAMA: Judul, Selector Kasus, & Mode Switcher ───────────── */}
-      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-3">
           <span className="text-2xl">🔬</span>
           <div>

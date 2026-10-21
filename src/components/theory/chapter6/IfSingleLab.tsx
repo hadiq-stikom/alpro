@@ -337,9 +337,9 @@ export default function IfSingleLab() {
   ] as const;
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl">
+    <div className="border border-border/60 rounded-3xl !overflow-visible bg-card dark:bg-slate-950 shadow-2xl">
       {/* Header */}
-      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">1️⃣</span>
           <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
@@ -373,7 +373,7 @@ export default function IfSingleLab() {
         ))}
       </div>
 
-      <div className="p-4 md:p-6">
+      <div className="p-4 md:p-6 !overflow-visible">
         {/* ── NARATIF ────────────────────────────────────────────────────────────── */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
@@ -638,16 +638,16 @@ export default function IfSingleLab() {
             </div>
 
             {/* Key Difference */}
-            <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-700/50 rounded-2xl shadow-xs">
+            <div className="p-4 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-700/50 rounded-2xl shadow-xs !overflow-visible">
               <p className="text-xs font-black text-amber-950 dark:text-amber-300 mb-2">⚡ Perbedaan Sintaks Utama:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-2">
-                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-blue-200 dark:border-blue-900/40 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-left">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 !overflow-visible py-6 px-2">
+                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-blue-200 dark:border-blue-900/40 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-left !overflow-visible">
                   <p className="text-xs font-black text-blue-900 dark:text-blue-300 mb-1">🐍 Python</p>
                   <code className="text-xs text-slate-800 dark:text-slate-200 block font-mono">if kondisi:</code>
                   <code className="text-xs text-slate-600 dark:text-slate-400 block pl-4 font-mono">instruksi  # indent 4 spasi</code>
                   <code className="text-xs text-rose-700 dark:text-rose-400 block font-mono font-bold"># Tidak ada &apos;endif&apos;!</code>
                 </div>
-                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-amber-200 dark:border-amber-900/40 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-right">
+                <div className="p-3 bg-white/70 dark:bg-slate-900/70 rounded-xl border border-amber-200 dark:border-amber-900/40 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-right !overflow-visible">
                   <p className="text-xs font-black text-amber-900 dark:text-yellow-300 mb-1">⚡ JavaScript</p>
                   <code className="text-xs text-slate-800 dark:text-slate-200 block font-mono">if (kondisi) {'{'}</code>
                   <code className="text-xs text-slate-600 dark:text-slate-400 block pl-4 font-mono">instruksi;</code>

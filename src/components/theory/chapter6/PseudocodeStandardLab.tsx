@@ -341,9 +341,9 @@ ALGORITMA:
   };
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-hidden bg-slate-950 shadow-2xl">
+    <div className="border border-border/60 rounded-3xl !overflow-visible bg-slate-950 shadow-2xl">
       {/* Header */}
-      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-900/90 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">📋</span>
           <div>
@@ -379,17 +379,17 @@ ALGORITMA:
         </div>
       </div>
 
-      <div className="p-4 md:p-6">
+      <div className="p-4 md:p-6 !overflow-visible">
         {/* ── TAB 1: 6 ATURAN BAKU ─────────────────────────────────────────────── */}
         {activeTab === 'aturan' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="p-3.5 bg-purple-50 dark:bg-purple-950/40 border-2 border-purple-300 dark:border-purple-700/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-400">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 !overflow-visible">
+            <div className="p-3.5 my-2 bg-purple-50 dark:bg-purple-950/40 border-2 border-purple-300 dark:border-purple-700/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-purple-400 !overflow-visible">
               <p className="text-purple-950 dark:text-purple-100 text-xs font-medium leading-relaxed">
                 ⚖️ <strong className="text-purple-900 dark:text-purple-300 font-black">Standar Pseudocode Semester 1:</strong> Wajib mematuhi struktur 3 blok baku (PROGRAM, KAMUS:, ALGORITMA:) yang diajarkan pada Bab 3 sebagai jembatan berpikir logis sebelum implementasi bahasa pemrograman.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 !overflow-visible py-6 px-2">
               {[
                 { no: '1', title: 'Struktur 3 Blok Baku', desc: 'Wajib memuat blok PROGRAM (identitas), KAMUS: (deklarasi variabel & tipe), dan ALGORITMA: (urutan aksi).', badge: 'Wajib' },
                 { no: '2', title: 'Nama Variabel Deskriptif', desc: 'DILARANG menggunakan variabel 1 huruf (a, b, x, n). Gunakan nama bermakna: nilaiUjian, totalBelanja, usia.', badge: 'Kritis' },
@@ -400,7 +400,7 @@ ALGORITMA:
               ].map((r, idx) => (
                 <div
                   key={r.no}
-                  className={`p-4 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/80 dark:border-slate-800 space-y-1.5 shadow-sm relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out ${
+                  className={`p-4 bg-card dark:bg-slate-900/90 rounded-2xl border border-border/80 dark:border-slate-800 space-y-1.5 shadow-sm relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out !overflow-visible ${
                     idx % 2 === 0 ? 'origin-center md:origin-left' : 'origin-center md:origin-right'
                   }`}
                 >
@@ -424,7 +424,7 @@ ALGORITMA:
 
         {/* ── TAB 2: SALAH VS BENAR ───────────────────────────────────────────── */}
         {activeTab === 'salah_vs_benar' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 !overflow-visible">
             <div className="flex gap-2 overflow-x-auto pb-1">
               {MISTAKES.map((m, i) => (
                 <button
@@ -441,9 +441,9 @@ ALGORITMA:
               ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-visible py-3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 !overflow-visible py-6 px-2">
               {/* Sisi Salah */}
-              <div className="bg-rose-50 dark:bg-red-950/20 border-2 border-rose-300 dark:border-red-500/40 rounded-2xl p-4 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center lg:origin-left">
+              <div className="bg-rose-50 dark:bg-red-950/20 border-2 border-rose-300 dark:border-red-500/40 rounded-2xl p-4 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center lg:origin-left !overflow-visible">
                 <div className="flex items-center gap-2 text-rose-900 dark:text-red-400 font-bold text-xs">
                   <XCircle className="w-4 h-4 text-rose-600 dark:text-red-400" />
                   <span>CONTOH KELIRU (DILARANG)</span>
@@ -454,7 +454,7 @@ ALGORITMA:
               </div>
 
               {/* Sisi Benar */}
-              <div className="bg-emerald-50 dark:bg-emerald-950/20 border-2 border-emerald-300 dark:border-emerald-500/40 rounded-2xl p-4 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center lg:origin-right">
+              <div className="bg-emerald-50 dark:bg-emerald-950/20 border-2 border-emerald-300 dark:border-emerald-500/40 rounded-2xl p-4 space-y-2 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center lg:origin-right !overflow-visible">
                 <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-400 font-bold text-xs">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   <span>CONTOH STANDAR BAKU BAB 3 (BENAR)</span>
@@ -466,7 +466,7 @@ ALGORITMA:
             </div>
 
             {/* Penjelasan */}
-            <div className="p-4 bg-amber-50/70 dark:bg-slate-900 rounded-2xl border border-amber-200 dark:border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
+            <div className="p-4 my-2 bg-amber-50/70 dark:bg-slate-900 rounded-2xl border border-amber-200 dark:border-slate-800 space-y-1 relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400 !overflow-visible">
               <div className="flex items-center gap-2 text-amber-900 dark:text-amber-400 text-xs font-bold">
                 <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>Analisis Kesalahan: {MISTAKES[selectedMistake].errorType}</span>

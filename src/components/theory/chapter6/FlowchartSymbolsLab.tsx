@@ -248,9 +248,9 @@ export default function FlowchartSymbolsLab() {
   ] as const;
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl">
+    <div className="border border-border/60 rounded-3xl !overflow-visible bg-card dark:bg-slate-950 shadow-2xl">
       {/* Header */}
-      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
           <span className="text-2xl">🔷</span>
           <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
@@ -274,9 +274,9 @@ export default function FlowchartSymbolsLab() {
 
       {/* ── TAB: GALERI ────────────────────────────────────────────────────────── */}
       {activeTab === 'gallery' && (
-        <div className="p-4 md:p-6 space-y-5">
+        <div className="p-4 md:p-6 space-y-5 !overflow-visible">
           {/* Symbol Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 overflow-visible py-3">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3 !overflow-visible py-6 px-2">
             {SYMBOLS.map((sym, idx) => (
               <button
                 key={sym.id}
@@ -435,8 +435,8 @@ export default function FlowchartSymbolsLab() {
 
       {/* ── TAB: BUILDER / POLA IF-ELSE ────────────────────────────────────────── */}
       {activeTab === 'builder' && (
-        <div className="p-4 md:p-6 space-y-5">
-          <div className="p-3.5 bg-sky-50 dark:bg-sky-950/40 border-2 border-sky-300 dark:border-sky-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-400">
+        <div className="p-4 md:p-6 space-y-5 !overflow-visible">
+          <div className="p-3.5 my-2 bg-sky-50 dark:bg-sky-950/40 border-2 border-sky-300 dark:border-sky-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-sky-400 !overflow-visible">
             <p className="text-sky-950 dark:text-sky-100 text-xs font-medium leading-relaxed">
               💡 <strong className="text-sky-900 dark:text-sky-300 font-black">Cara membaca:</strong> Ikuti arah panah dari atas ke bawah. Di titik Diamond, program memilih satu dari dua jalur. Kedua jalur akhirnya bertemu kembali di titik penyatuan.
             </p>

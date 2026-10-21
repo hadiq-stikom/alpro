@@ -677,9 +677,9 @@ export default function IfElseLab() {
   ] as const;
 
   return (
-    <div className="border border-border/60 rounded-3xl overflow-hidden bg-card dark:bg-slate-950 shadow-2xl">
+    <div className="border border-border/60 rounded-3xl !overflow-visible bg-card dark:bg-slate-950 shadow-2xl">
       {/* Header */}
-      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 md:px-6 bg-slate-100/90 dark:bg-slate-900/90 border-b border-border/70 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 rounded-t-3xl">
         <div className="flex items-center gap-2.5">
           <span className="text-xl">2️⃣</span>
           <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-slate-100">
@@ -712,7 +712,7 @@ export default function IfElseLab() {
         ))}
       </div>
 
-      <div className="p-4 md:p-6">
+      <div className="p-4 md:p-6 !overflow-visible">
         {/* ── NARATIF ─────────────────────────────────────────────────────────────── */}
         {activeTab === 'naratif' && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
@@ -736,8 +736,8 @@ export default function IfElseLab() {
             </pre>
 
             {/* Perbandingan IF vs IF-ELSE */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-visible py-2">
-              <div className="p-3 bg-card dark:bg-slate-900 border border-emerald-500/30 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-left">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 !overflow-visible py-6 px-2">
+              <div className="p-3 bg-card dark:bg-slate-900 border border-emerald-500/30 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-left !overflow-visible">
                 <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-2">✅ IF Statemen Tunggal</p>
                 <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside font-medium">
                   <li>Hanya satu jalur aksi (True)</li>
@@ -745,7 +745,7 @@ export default function IfElseLab() {
                   <li>Cocok untuk: "jika syarat terpenuhi, lakukan X"</li>
                 </ul>
               </div>
-              <div className="p-3 bg-card dark:bg-slate-900 border border-amber-500/30 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-right">
+              <div className="p-3 bg-card dark:bg-slate-900 border border-amber-500/30 rounded-xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] transition-transform duration-300 ease-out origin-center md:origin-right !overflow-visible">
                 <p className="text-xs font-bold text-amber-700 dark:text-amber-400 mb-2">✅ IF-ELSE (Statemen Ganda)</p>
                 <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc list-inside font-medium">
                   <li>DUA jalur aksi (True + False)</li>
@@ -759,8 +759,8 @@ export default function IfElseLab() {
 
         {/* ── FLOWCHART (2-COLUMN SPLIT DASHBOARD) ─────────────────────────────── */}
         {activeTab === 'flowchart' && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4 !overflow-visible">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch !overflow-visible">
               
               {/* KOLOM KIRI: Canvas Flowchart Lengkap */}
               <div className="lg:col-span-6 flex flex-col items-center justify-center p-3 md:p-4 bg-slate-50 dark:bg-slate-900/80 rounded-2xl border border-border/70 dark:border-slate-800 shadow-inner">
@@ -775,10 +775,10 @@ export default function IfElseLab() {
               </div>
 
               {/* KOLOM KANAN: Panel Kontrol, Slider, & Status */}
-              <div className="lg:col-span-6 flex flex-col justify-between gap-3">
+              <div className="lg:col-span-6 flex flex-col justify-between gap-3 !overflow-visible">
                 
                 {/* Petunjuk */}
-                <div className="p-3.5 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400">
+                <div className="p-3.5 my-2 bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-600/50 rounded-2xl shadow-xs relative z-0 hover:z-50 cursor-pointer hover:scale-[1.2] hover:-translate-y-2 transition-transform duration-300 ease-out origin-center hover:shadow-2xl dark:hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)] hover:border-amber-400 !overflow-visible">
                   <p className="text-amber-950 dark:text-amber-100 text-xs font-medium leading-relaxed">
                     🔷 <strong className="text-amber-900 dark:text-amber-300 font-black">Flowchart IF-ELSE:</strong> Atur nilai dengan <em>slider</em>. Jalur <span className="text-emerald-950 dark:text-emerald-200 font-black">hijau = True (Ya)</span>, jalur <span className="text-rose-950 dark:text-rose-200 font-black">merah = False (Tidak)</span>. Kedua cabang selalu bertemu kembali sebelum SELESAI.
                   </p>

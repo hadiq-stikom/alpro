@@ -278,7 +278,8 @@ export default function PraktikumPrintPage({
           margin: 12mm 15mm 12mm 15mm;
         }
         @media print {
-          html, body {
+          html, body, .print-container {
+            font-family: var(--font-nunito), 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
             background: #ffffff !important;
             color: #000000 !important;
             margin: 0 !important;
@@ -339,9 +340,9 @@ export default function PraktikumPrintPage({
       </div>
 
       {/* ========================================================================= */}
-      {/* LEMBAR KERJA PRAKTIKUM A4 RESMI (PRINT CONTAINER)                        */}
+      {/* LEMBAR KERJA PRAKTIKUM A4 RESMI (PRINT CONTAINER DENGAN FONT NUNITO)      */}
       {/* ========================================================================= */}
-      <div className="max-w-4xl mx-auto bg-white p-8 sm:p-12 shadow-xl print:shadow-none print:p-0 print:max-w-none text-black font-sans leading-normal border border-slate-300 print:border-none">
+      <div className="print-container max-w-4xl mx-auto bg-white p-8 sm:p-12 shadow-xl print:shadow-none print:p-0 print:max-w-none text-black font-nunito leading-normal border border-slate-300 print:border-none">
         
         {/* ========================================================================= */}
         {/* BAGIAN I: KOP KAMPUS, IDENTITAS, CAPAIAN, & DASAR TEORI (HALAMAN 1 TUNTAS) */}

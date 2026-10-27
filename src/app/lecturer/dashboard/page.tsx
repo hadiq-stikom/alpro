@@ -23,6 +23,11 @@ import { supabase } from "@/lib/supabase";
 import { getBadgeFromScore, type BadgeConfig } from "@/lib/badges";
 import Link from "next/link";
 
+interface CompletedMeetingInfo {
+  meetingId: number;
+  score: number;
+}
+
 interface StudentItem {
   id: string;
   email: string | null;
@@ -33,6 +38,8 @@ interface StudentItem {
   password_changed: boolean;
   avg_score: number;
   badge: BadgeConfig;
+  completedMeetings: CompletedMeetingInfo[];
+  completedCount: number;
 }
 
 interface OverallGradeItem {
@@ -77,6 +84,11 @@ export default function LecturerDashboardPage() {
           .from('overall_grades')
           .select('*');
 
+        // 2a. Ambil data kuis mingguan per mahasiswa dari view meeting_grades
+        const { data: meetingGradesData } = await supabase
+          .from('meeting_grades')
+          .select('user_id, meeting_id, avg_score');
+
         // 2b. Fallback langsung: ambil semua submissions untuk melengkapi data yang belum teragregasi view
         const { data: allSubmissionsData } = await supabase
           .from('quiz_submissions')
@@ -88,6 +100,19 @@ export default function LecturerDashboardPage() {
         const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
 
         const userMeetingScores = new Map<string, Map<number, number>>();
+
+        const meetingGrades = (meetingGradesData || []) as { user_id?: string; meeting_id?: number; avg_score?: number | null }[];
+
+        // Isi dari view meeting_grades terlebih dahulu
+        for (const row of meetingGrades) {
+          if (!row.user_id || row.meeting_id === undefined || !row.avg_score || row.avg_score <= 0) continue;
+          if (!userMeetingScores.has(row.user_id)) {
+            userMeetingScores.set(row.user_id, new Map<number, number>());
+          }
+          userMeetingScores.get(row.user_id)!.set(row.meeting_id, row.avg_score);
+        }
+
+        // Lengkapi dengan data langsung dari quiz_submissions (misal nilai yang baru dikoreksi)
         for (const sub of allSubmissions) {
           if (
             !sub.user_id ||
@@ -115,26 +140,36 @@ export default function LecturerDashboardPage() {
           .select('*', { count: 'exact', head: true })
           .gte('submitted_at', today.toISOString());
 
-        // Gabungkan data user dengan nilainya
+        // Gabungkan data user dengan kuis mingguan dan rata-ratanya
         const studentsList = (usersData || []) as StudentItem[];
         const gradesList = (overallData || []) as OverallGradeItem[];
         
         const mergedStudents: StudentItem[] = studentsList.map(student => {
-          const grade = gradesList.find(g => g.user_id === student.id);
-          let score = grade?.total_avg_score || 0;
-          
-          if (score === 0 && userMeetingScores.has(student.id)) {
-            const m = userMeetingScores.get(student.id)!;
-            const scores = Array.from(m.values());
-            if (scores.length > 0) {
-              score = Number((scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2));
+          const m = userMeetingScores.get(student.id) || new Map<number, number>();
+          const completedMeetings: CompletedMeetingInfo[] = Array.from(m.entries())
+            .map(([meetingId, score]) => ({ meetingId, score }))
+            .sort((a, b) => a.meetingId - b.meetingId);
+
+          const completedCount = completedMeetings.length;
+
+          // Hitung rata-rata murni dari kuis mingguan yang diselesaikan
+          let score = 0;
+          if (completedCount > 0) {
+            const sum = completedMeetings.reduce((acc, curr) => acc + curr.score, 0);
+            score = Number((sum / completedCount).toFixed(1));
+          } else {
+            const grade = gradesList.find(g => g.user_id === student.id);
+            if (grade?.total_avg_score) {
+              score = Number(grade.total_avg_score.toFixed(1));
             }
           }
 
           return {
             ...student,
             avg_score: score,
-            badge: getBadgeFromScore(score)
+            badge: getBadgeFromScore(score),
+            completedMeetings,
+            completedCount
           };
         }).sort((a, b) => b.avg_score - a.avg_score);
         
@@ -365,7 +400,8 @@ export default function LecturerDashboardPage() {
               <thead>
                 <tr className="bg-secondary/30">
                   <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground min-w-[200px]">Mahasiswa</th>
-                  <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground min-w-[100px]">Rata-Rata</th>
+                  <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground min-w-[240px]">Kuis Mingguan Selesai</th>
+                  <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground min-w-[120px]">Rata-Rata</th>
                   <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground min-w-[150px]">Lencana</th>
                   <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground min-w-[200px]">Reset Password</th>
                   <th className="p-4 font-bold text-xs uppercase tracking-wider text-muted-foreground text-right min-w-[100px]">Aksi</th>
@@ -374,7 +410,7 @@ export default function LecturerDashboardPage() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                    <td colSpan={6} className="p-8 text-center text-muted-foreground">
                       <div className="flex justify-center mb-2">
                         <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                       </div>
@@ -383,7 +419,7 @@ export default function LecturerDashboardPage() {
                   </tr>
                 ) : filteredStudents.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-8 text-center text-muted-foreground">
+                    <td colSpan={6} className="p-8 text-center text-muted-foreground">
                       Tidak ada data mahasiswa yang cocok dengan pencarian.
                     </td>
                   </tr>
@@ -395,8 +431,47 @@ export default function LecturerDashboardPage() {
                         <div className="text-xs font-mono text-muted-foreground">{student.nim || 'NIM Tidak Ada'}</div>
                       </td>
                       <td className="p-4">
-                        <div className="text-lg font-mono font-bold" style={{ color: student.badge.hexColor }}>
+                        {student.completedCount > 0 ? (
+                          <div>
+                            <div className="flex items-center gap-1.5 mb-1.5">
+                              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[11px] border border-primary/20">
+                                <CheckCircle2 className="w-3 h-3 text-primary" />
+                                {student.completedCount} Kuis Selesai
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap items-center gap-1.5">
+                              {student.completedMeetings.map(m => {
+                                const mBadge = getBadgeFromScore(m.score);
+                                return (
+                                  <span
+                                    key={m.meetingId}
+                                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold border transition-transform hover:scale-105"
+                                    style={{
+                                      backgroundColor: `${mBadge.hexColor}15`,
+                                      borderColor: `${mBadge.hexColor}40`,
+                                      color: mBadge.hexColor
+                                    }}
+                                    title={`Kuis Minggu ${m.meetingId}: Nilai ${m.score}`}
+                                  >
+                                    <span>M{m.meetingId}:</span>
+                                    <span className="font-mono">{m.score}</span>
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-secondary text-xs text-muted-foreground font-medium">
+                            Belum ada kuis
+                          </span>
+                        )}
+                      </td>
+                      <td className="p-4">
+                        <div className="text-xl font-mono font-black" style={{ color: student.badge.hexColor }}>
                           {student.avg_score.toFixed(1)}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
+                          {student.completedCount > 0 ? `Rerata ${student.completedCount} Kuis` : 'Belum Ada Nilai'}
                         </div>
                       </td>
                       <td className="p-4">

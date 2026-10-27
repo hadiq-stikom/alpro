@@ -6,8 +6,9 @@ import { supabase } from "@/lib/supabase";
 import { getBadgeFromScore } from "@/lib/badges";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
 import { motion } from "framer-motion";
-import { ArrowLeft, Target, AlertTriangle, FileText, Bot, User } from "lucide-react";
+import { ArrowLeft, Target, AlertTriangle, FileText, Bot, User, Filter } from "lucide-react";
 import Link from "next/link";
+import { SubmissionDetailCard } from "@/components/lecturer/SubmissionDetailCard";
 
 export default function LecturerStudentDetailPage() {
   const params = useParams();
@@ -22,6 +23,57 @@ export default function LecturerStudentDetailPage() {
   
   // Filter state
   const [activeTab, setActiveTab] = useState<'overview' | 'submissions'>('overview');
+  const [selectedMeetingFilter, setSelectedMeetingFilter] = useState<number | 'all'>('all');
+
+  // Callback saat dosen mengoreksi nilai submission secara real-time
+  const handleScoreUpdated = (subId: string, newScore: number, feedback: string) => {
+    setSubmissions(prev => {
+      const nextSubs = prev.map(sub => sub.id === subId ? { ...sub, score: newScore, ai_feedback: feedback } : sub);
+
+      // Hitung ulang capaian per pertemuan dan rata-rata total
+      const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
+      const gradeMap = new Map<number, number>();
+      for (const sub of nextSubs) {
+        if (
+          sub.meeting_id !== undefined &&
+          sub.score !== undefined &&
+          sub.score > 0 &&
+          GRADABLE_TYPES.includes(sub.quiz_type)
+        ) {
+          const cur = gradeMap.get(sub.meeting_id);
+          if (cur === undefined || sub.score > cur) {
+            gradeMap.set(sub.meeting_id, sub.score);
+          }
+        }
+      }
+
+      const synthesized = Array.from(gradeMap.entries()).map(([mid, score]) => {
+        const b = getBadgeFromScore(score);
+        return {
+          meeting_id: mid,
+          avg_score: score,
+          grade_letter: b.level,
+          grade_category: b.category,
+          user_id: studentId
+        };
+      }).sort((a, b) => a.meeting_id - b.meeting_id);
+
+      setMeetingGrades(synthesized);
+
+      if (synthesized.length > 0) {
+        const avg = synthesized.reduce((acc, curr) => acc + curr.avg_score, 0) / synthesized.length;
+        const b = getBadgeFromScore(avg);
+        setOverallGrade({
+          user_id: studentId,
+          total_avg_score: Number(avg.toFixed(2)),
+          overall_grade_letter: b.level,
+          overall_grade_category: b.category
+        });
+      }
+
+      return nextSubs;
+    });
+  };
 
   useEffect(() => {
     async function fetchStudentData() {
@@ -232,79 +284,62 @@ export default function LecturerStudentDetailPage() {
 
         {activeTab === 'submissions' && (
           <div className="space-y-6">
+            {/* Filter Pertemuan & Jumlah Submisi */}
+            {submissions.length > 0 && (
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-card border border-border p-4 rounded-2xl mb-6">
+                <div className="flex items-center gap-2 text-sm font-bold text-foreground">
+                  <Filter className="w-4 h-4 text-primary" />
+                  <span>Filter Berdasarkan Pertemuan:</span>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    onClick={() => setSelectedMeetingFilter('all')}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                      selectedMeetingFilter === 'all'
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'bg-secondary/70 text-secondary-foreground hover:bg-secondary'
+                    }`}
+                  >
+                    Semua ({submissions.length})
+                  </button>
+                  {Array.from(new Set(submissions.map(s => s.meeting_id)))
+                    .filter(Boolean)
+                    .sort((a, b) => a - b)
+                    .map(mId => {
+                      const count = submissions.filter(s => s.meeting_id === mId).length;
+                      return (
+                        <button
+                          key={mId}
+                          onClick={() => setSelectedMeetingFilter(mId)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                            selectedMeetingFilter === mId
+                              ? 'bg-primary text-primary-foreground shadow-sm'
+                              : 'bg-secondary/70 text-secondary-foreground hover:bg-secondary'
+                          }`}
+                        >
+                          Minggu {mId} ({count})
+                        </button>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+
             {submissions.length === 0 ? (
-              <div className="text-center p-12 text-muted-foreground">Belum ada submission kuis/esai.</div>
+              <div className="text-center p-16 bg-card border border-border rounded-2xl text-muted-foreground">
+                <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
+                <p className="font-bold">Belum ada riwayat pengerjaan kuis/esai untuk mahasiswa ini.</p>
+              </div>
             ) : (
-              submissions.map((sub, i) => (
-                <motion.div 
-                  key={sub.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="bg-card border border-border rounded-2xl overflow-hidden shadow-sm p-6"
-                >
-                  <div className="flex justify-between items-start mb-4 border-b border-border/50 pb-4">
-                    <div>
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 border border-border text-xs font-bold uppercase tracking-wider mb-2">
-                        {sub.quiz_type === 'essay' ? <FileText className="w-3 h-3" /> : <Target className="w-3 h-3" />}
-                        M{sub.meeting_id} - {sub.quiz_type}
-                      </div>
-                      <h3 className="text-lg font-bold">Modul: {sub.quiz_key}</h3>
-                      <div className="text-xs text-muted-foreground mt-1">
-                        Disubmit: {new Date(sub.submitted_at).toLocaleString('id-ID')}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-black" style={{ color: getBadgeFromScore(sub.score).hexColor }}>
-                        {sub.score}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="bg-background rounded-xl p-3 border border-border/50 text-center">
-                      <div className="text-lg font-bold text-sky-400">{sub.time_spent_seconds}s</div>
-                      <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-bold">Waktu Pengerjaan</div>
-                    </div>
-                    
-                    {sub.tab_switches > 0 && (
-                      <div className="bg-red-500/10 rounded-xl p-3 border border-red-500/30 text-center col-span-2 md:col-span-3 flex items-center justify-center gap-3">
-                        <AlertTriangle className="w-5 h-5 text-red-500" />
-                        <div className="text-left text-red-500">
-                          <div className="text-sm font-bold">Mahasiswa keluar dari jendela ujian {sub.tab_switches} kali!</div>
-                          <div className="text-[10px] uppercase tracking-wider">Potensi Kecurangan (Copy-Paste / Browsing)</div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {(sub.quiz_type === 'essay' || sub.quiz_type === 'exam') && (
-                    <div className="mt-4 border-t border-border/50 pt-4">
-                      {/* Tampilkan Jawaban Mahasiswa */}
-                      <div className="mb-4 bg-background/50 p-4 rounded-xl border border-border/50">
-                        <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">Jawaban Mahasiswa:</div>
-                        <p className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
-                          {typeof sub.answers_json === 'string' 
-                            ? sub.answers_json.replace(/^"|"$/g, '') 
-                            : (sub.answers_json?.student_answer || JSON.stringify(sub.answers_json, null, 2))}
-                        </p>
-                      </div>
-
-                      {/* Tampilkan Ulasan AI */}
-                      {(sub.ai_feedback || sub.answers_json?.ai_feedback) && (
-                        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-                          <h4 className="text-sm font-bold text-primary mb-2 flex items-center gap-2">
-                            <Bot className="w-4 h-4" /> Analisis Otomatis AI (Rubrik):
-                          </h4>
-                          <p className="text-sm leading-relaxed text-slate-800 dark:text-slate-300 italic">
-                            "{sub.ai_feedback || sub.answers_json?.ai_feedback}"
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </motion.div>
-              ))
+              submissions
+                .filter(sub => selectedMeetingFilter === 'all' || sub.meeting_id === selectedMeetingFilter)
+                .map(sub => (
+                  <SubmissionDetailCard 
+                    key={sub.id} 
+                    submission={sub} 
+                    onScoreUpdated={handleScoreUpdated} 
+                  />
+                ))
             )}
           </div>
         )}

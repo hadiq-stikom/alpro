@@ -331,7 +331,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm6-essay-1',
     meetingId: 6,
     text: 'Jelaskan dengan kata-kata Anda sendiri apa yang dimaksud dengan "Struktur Percabangan" dalam algoritma pemrograman! Mengapa sebuah algoritma memerlukan kemampuan untuk "memilih jalur"? Berikan minimal 2 (dua) contoh situasi kehidupan sehari-hari yang dapat dimodelkan sebagai percabangan (IF-ELSE), dan jelaskan mana yang menjadi kondisi, aksi jika True, dan aksi jika False pada masing-masing contoh.',
-    timeLimit: 300,
+    timeLimit: 420,
     rubric: `
       Kriteria Penilaian (0-100):
       1. Definisi Percabangan (25 poin): Harus menjelaskan bahwa percabangan adalah struktur kontrol yang memungkinkan program mengevaluasi kondisi boolean dan memilih jalur eksekusi yang berbeda berdasarkan hasil evaluasi (True/False).
@@ -345,7 +345,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm6-essay-2',
     meetingId: 6,
     text: 'Buatlah algoritma lengkap untuk program "Cek Bilangan Positif atau Negatif" menggunakan TIGA representasi berikut:\n\n(A) ALGORITMA NARATIF: Tuliskan langkah-langkah dalam bahasa Indonesia alami.\n(B) PSEUDOCODE STANDAR: Tuliskan dalam format PROGRAM/KAMUS/ALGORITMA yang sesuai standar mata kuliah (variabel deskriptif, operator "=", input(), output(), diakhiri endif).\n(C) KODE PYTHON: Implementasikan dalam bahasa Python dengan sintaks yang benar.\n\nCatatan: Program menerima sebuah bilangan dari pengguna. Jika bilangan > 0, tampilkan "Bilangan Positif"; jika bilangan < 0, tampilkan "Bilangan Negatif"; jika bilangan == 0, tampilkan "Nol". (Gunakan IF statemen tunggal terpisah atau IF-ELSE sederhana untuk dua kondisi utama.)',
-    timeLimit: 300,
+    timeLimit: 600,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Algoritma Naratif (30 poin):
@@ -367,7 +367,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm6-essay-3',
     meetingId: 6,
     text: 'Jelaskan perbedaan mendasar antara struktur IF statemen tunggal dan struktur IF-ELSE (statemen ganda) dalam algoritma! Kemudian, buatlah PSEUDOCODE STANDAR lengkap untuk program "Penentu Status Kelulusan" dengan kriteria berikut:\n- Input: nilai ujian mahasiswa (0–100)\n- Jika nilai >= 75: tampilkan "LULUS" dan "Selamat, pertahankan prestasi Anda!"\n- Jika nilai < 75: tampilkan "TIDAK LULUS" dan "Anda wajib mengikuti ujian remedial."\n\nJelaskan juga mengapa kasus ini lebih tepat menggunakan IF-ELSE dibandingkan IF statemen tunggal!',
-    timeLimit: 300,
+    timeLimit: 420,
     rubric: `
       Kriteria Penilaian (0-100):
       1. Penjelasan Perbedaan IF vs IF-ELSE (25 poin):
@@ -391,7 +391,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm6-essay-4',
     meetingId: 6,
     text: 'Ini adalah soal terpadu 4 representasi! Buatlah algoritma lengkap untuk program "Kalkulator Tarif Listrik Sederhana" dengan ketentuan:\n- Pemakaian <= 100 kWh: tarif = Rp500/kWh (pelanggan daya rendah)\n- Pemakaian > 100 kWh: tarif = Rp1.500/kWh (pelanggan daya tinggi)\n- Total tagihan = pemakaian x tarif\n\nSajikan algoritma dalam KEEMPAT representasi berikut:\n(A) NARATIF: Uraian langkah dalam bahasa Indonesia.\n(B) FLOWCHART: Deskripsi tekstual simbol-simbol flowchart yang digunakan (Oval untuk Start/End, Diamond untuk kondisi, dst).\n(C) PSEUDOCODE STANDAR: Format baku PROGRAM/KAMUS/ALGORITMA.\n(D) KODE PYTHON: Implementasi lengkap dengan print output yang informatif.',
-    timeLimit: 300,
+    timeLimit: 600,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Naratif (20 poin):
@@ -420,7 +420,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm6-essay-5',
     meetingId: 6,
     text: 'Berikut adalah sebuah pseudocode yang mengandung BEBERAPA kesalahan sesuai standar mata kuliah:\n\nKAMUS\n   n : integer\n\nALGORITMA\n   input(n)\n   if n > 0\n      output("Positif")\n   else\n      output("Tidak Positif")\n   end\n\nTugasnya:\n(A) Identifikasi SEMUA kesalahan yang ada dalam pseudocode tersebut (sebutkan minimal 4 kesalahan).\n(B) Tulis ulang pseudocode yang BENAR sesuai standar resmi mata kuliah.\n(C) Jelaskan apa tujuan dan manfaat mengikuti standar penulisan pseudocode yang konsisten dalam tim pengembang.',
-    timeLimit: 300,
+    timeLimit: 420,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Identifikasi Kesalahan (40 poin — 10 poin per kesalahan, minimal 4):
@@ -456,7 +456,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm7-essay-1',
     meetingId: 7,
     text: 'Seorang mahasiswa membuat program penentu kelayakan beasiswa dengan kode Python berikut:\n\nipk = 3.85\nif ipk >= 2.75:\n    status = "Beasiswa Cukup (Perunggu)"\nelif ipk >= 3.25:\n    status = "Beasiswa Prestasi (Perak)"\nelif ipk >= 3.75:\n    status = "Beasiswa Utama (Emas)"\nelse:\n    status = "Tidak Mendapatkan Beasiswa"\n\nTugas Anda:\n(A) Tentukan apa output nilai variabel status jika ipk = 3.85, dan jelaskan secara teknis mengapa komputer menghasilkan output tersebut.\n(B) Jelaskan prinsip dasar Order of Evaluation (urutan evaluasi) dan mekanisme short-circuit pada struktur if - elif - else.\n(C) Tuliskan perbaikan kode Python yang benar agar mahasiswa dengan IPK 3.85 mendapatkan predikat yang adil dan tepat.',
-    timeLimit: 300,
+    timeLimit: 420,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Analisis Output & Akar Masalah (35 poin):
@@ -476,7 +476,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm7-essay-2',
     meetingId: 7,
     text: 'Sebuah klinik kesehatan menghitung Body Mass Index (BMI) dengan rumus: BMI = berat / (tinggi * tinggi). Ketentuannya:\n- BMI < 18.5: "Kurus"\n- 18.5 <= BMI < 25.0: "Normal"\n- 25.0 <= BMI < 30.0: "Kelebihan Berat Badan"\n- BMI >= 30.0: "Obesitas"\n\nTugas Anda:\n(A) Tuliskan Algoritma Naratif lengkap untuk menentukan kategori BMI tersebut.\nPERHATIKAN ATURAN PEDAGOGIS:\n1. Seluruh klausa "Jika ...", "Selain itu, jika ...", dan "Selain itu:" WAJIB berada di dalam SATU NOMOR URUT yang sama.\n2. Baris penutup "Selesai" DILARANG memiliki nomor urut.\n(B) Jelaskan mengapa secara logika klausa "Selain itu:" dan "Selain itu, jika:" tidak boleh diberi nomor baru dalam algoritma naratif.',
-    timeLimit: 300,
+    timeLimit: 420,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Algoritma Naratif Sesuai Standar Baku (60 poin):
@@ -498,7 +498,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm7-essay-3',
     meetingId: 7,
     text: 'Wahana ekstrem "Roller Coaster Halilintar" menerapkan syarat keamanan bertingkat (Nested IF):\n1. Pengunjung harus memiliki tinggiBadan >= 140 cm.\n2. Jika tinggi lolos, pengunjung harus berusia >= 12 tahun.\n3. Jika usia lolos, pengunjung tidak boleh memiliki riwayat penyakit jantung (adaRiwayatJantung == false).\nJika lolos ketiga syarat, tampilkan "Silakan Masuk: Memenuhi Syarat Wahana". Jika salah satu syarat gagal, tampilkan alasan penolakan spesifik sesuai gerbang kegagalan.\n\nTugas Anda:\n(A) Tuliskan Pseudocode 3 Blok Baku (PROGRAM, KAMUS, ALGORITMA) menggunakan struktur Nested IF.\n(B) Pastikan mematuhi standar CLRS: nama variabel deskriptif, operator kesamaan ==, operator penugasan =, dan setiap if ditutup dengan endif sejajar.',
-    timeLimit: 300,
+    timeLimit: 600,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Struktur 3 Blok Baku (30 poin):
@@ -521,7 +521,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm7-essay-4',
     meetingId: 7,
     text: 'Perhatikan program perhitungan diskon kasir berikut:\n\nmember = "REGULER"\nbelanja = 220000\ndiskon = 0\n\nif member == "VIP":\n    diskon = 20\n    if belanja >= 250000:\n        diskon += 5\nelif member == "REGULER":\n    diskon = 10\n    if belanja >= 200000:\n        diskon += 5\nelse:\n    if belanja >= 300000:\n        diskon = 5\n\ntotal_bayar = belanja - (belanja * diskon / 100)\n\nTugas Anda:\n(A) Buatlah tabel penelusuran (trace table) memori RAM baris per baris yang mencatat perubahan nilai variabel member, belanja, diskon, dan total_bayar.\n(B) Berapakah nilai akhir diskon (dalam %) dan total_bayar (dalam Rupiah)? Tunjukkan langkah perhitungannya secara rinci.',
-    timeLimit: 300,
+    timeLimit: 480,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Tabel Penelusuran Memori RAM (50 poin):
@@ -539,7 +539,7 @@ export const ESSAY_BANK: EssayQuestion[] = [
     id: 'm7-essay-5',
     meetingId: 7,
     text: 'Dalam pengembangan perangkat lunak modern, pengembang dapat memilih antara menggunakan percabangan majemuk if - elif - else atau pernyataan pemilihan diskrit switch - case (JavaScript) / match - case (Python 3.10+).\n\nTugas Anda:\n(A) Uraikan perbedaan mendasar antara kedua struktur tersebut dari aspek jenis kondisi dan tipe data yang dapat diuji.\n(B) Berikan 2 contoh kasus nyata di mana match/switch-case JAUH LEBIH TEPAT digunakan dibanding if-elif.\n(C) Jelaskan apa yang dimaksud dengan efek "fall-through" pada switch JavaScript, mengapa efek ini berbahaya jika tidak disengaja, dan bagaimana cara mencegahnya.',
-    timeLimit: 300,
+    timeLimit: 420,
     rubric: `
       Kriteria Penilaian (0-100):
       A. Perbedaan Mendasar (35 poin):

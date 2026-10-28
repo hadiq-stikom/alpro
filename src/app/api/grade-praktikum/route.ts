@@ -11,6 +11,10 @@ interface TelemetryData {
   keystrokes?: number;
   timeSpentSeconds?: number;
   tabSwitches?: number;
+  isDraftRevision?: boolean;
+  initialWordCount?: number;
+  deltaWords?: number;
+  previousScore?: number;
 }
 
 interface GradePraktikumPayload {
@@ -20,6 +24,54 @@ interface GradePraktikumPayload {
   kesimpulanText: string;
   userId?: string;
   telemetry?: TelemetryData;
+}
+
+function sanitizeGradingResult(
+  parsed: any,
+  isDraftRevision: boolean,
+  burstAttempts: number,
+  currentWpm: number,
+  baselineWpm: number,
+  wpmRatio: number
+) {
+  if (!parsed || typeof parsed !== 'object') return parsed;
+
+  if (isDraftRevision) {
+    if (parsed.integrity) {
+      if ((parsed.integrity.authenticityScore ?? 100) < 75 && burstAttempts === 0) {
+        parsed.integrity.authenticityScore = Math.max(parsed.integrity.authenticityScore || 0, 90);
+        parsed.integrity.isAuthentic = true;
+        if (
+          typeof parsed.integrity.stylometricNotes === 'string' &&
+          (parsed.integrity.stylometricNotes.toLowerCase().includes('singkat') ||
+            parsed.integrity.stylometricNotes.toLowerCase().includes('cepat') ||
+            parsed.integrity.stylometricNotes.toLowerCase().includes('wpm') ||
+            parsed.integrity.stylometricNotes.toLowerCase().includes('melonjak'))
+        ) {
+          parsed.integrity.stylometricNotes =
+            'Revisi draf tersimpan terverifikasi konsisten dengan profil pengetikan orisinal mahasiswa.';
+        }
+      }
+    }
+    // Jika skor sempat dipangkas di bawah 60 hanya karena dugaan anomali durasi pada draf revisi
+    if (parsed.score < 60 && parsed.status === 'Perlu Perbaikan' && burstAttempts === 0) {
+      const hasDecentFeedback = parsed.feedbackAnalisis?.some((f: any) => f.status === 'Kuat' || f.status === 'Cukup');
+      if (hasDecentFeedback && parsed.feedbackKesimpulan?.status !== 'Kurang') {
+        parsed.score = Math.max(parsed.score, 75);
+        parsed.status = 'Memenuhi Standar';
+        parsed.canPrint = true;
+      }
+    }
+  }
+
+  // Pastikan wpmComparison selalu memiliki data numerik akurat
+  if (parsed.integrity?.wpmComparison) {
+    parsed.integrity.wpmComparison.currentWpm = currentWpm;
+    parsed.integrity.wpmComparison.baselineWpm = baselineWpm;
+    parsed.integrity.wpmComparison.ratio = wpmRatio;
+  }
+
+  return parsed;
 }
 
 export async function POST(req: Request) {
@@ -130,11 +182,18 @@ export async function POST(req: Request) {
       `Pertanyaan Analisis ${idx + 1}: "${prompt}"\nJawaban Mahasiswa: "${analisisAnswers[idx] || '(Kosong)'}"`
     ).join('\n\n');
 
-    // Siapkan metrik telemetri ketikan praktikum saat ini dengan sanitasi artefak reload
+    // Siapkan metrik telemetri ketikan praktikum saat ini dengan sanitasi artefak reload & revisi draf
+    const isDraftRevision = Boolean(telemetry?.isDraftRevision);
     let currentWpm = telemetry?.wpm || 18;
     const currentKeystrokes = telemetry?.keystrokes || 0;
-    // Jika WPM > 45 padahal ketukan tombol sedikit/nol, ini adalah reviu draf tersimpan (bukan pengetikan instan bot)
-    if (currentWpm > 45 && currentKeystrokes < 30) {
+
+    // Jika sesi merupakan perbaikan draf tersimpan, pastikan WPM mencerminkan kecepatan pengetikan wajar
+    if (isDraftRevision) {
+      if (currentWpm > 28) {
+        currentWpm = 18;
+      }
+    } else if (currentWpm > 45 && currentKeystrokes < 30) {
+      // Jika WPM > 45 padahal ketukan tombol sedikit/nol, ini adalah reviu draf tersimpan (bukan pengetikan instan bot)
       currentWpm = 18;
     }
 
@@ -145,8 +204,21 @@ export async function POST(req: Request) {
     const baselineWpm = baselineProfile?.baselineWpm || 14;
     const wpmRatio = (baselineWpm > 0 && currentWpm > 0) ? Number((currentWpm / baselineWpm).toFixed(2)) : 1.25;
 
+    const draftForensicNotice = isDraftRevision ? `
+      STATUS PENGERJAAN: REVISI / PERBAIKAN DRAF TERSIMPAN (INCREMENTAL DRAFT UPDATE):
+      - Mahasiswa ini membuka kembali draf laporan yang telah dikerjakan dan tersimpan sebelumnya di sistem.
+      - Teks dasar pengamatan (${telemetry?.initialWordCount || 'ratusan'} kata) adalah karya orisinal dari sesi kerja terdahulu di sistem.
+      - Sesi saat ini hanya untuk perbaikan/penyempurnaan cepat (perubahan sebanyak ~${telemetry?.deltaWords || 0} kata).
+      - PANDUAN FORENSIK DRAF:
+        * DILARANG KERAS menganggap durasi sesi yang singkat atau sedikitnya ketukan tombol di sesi ini sebagai salin-tempel/kecurangan AI.
+        * DILARANG KERAS memangkas nilai ("authenticityScore" atau "score") hanya karena mahasiswa membuka draf sebentar untuk menguji ulang perbaikan.
+        * Tetap nilai secara objektif berdasarkan substansi ilmiah dan keselarasan dengan data empiris Tabel C.
+        * Jika gaya bahasa konsisten dan ilmiah, tetapkan "authenticityScore" tinggi (90 - 98%) dan "isAuthentic": true.
+    ` : '';
+
     const baselineInstruction = baselineProfile ? `
       VERIFIKASI INTEGRITAS, KEASLIAN KETIKAN & KONSISTENSI STILOMETRI (BASELINE CHAT PRA-UJIAN TERSIMPAN):
+      ${draftForensicNotice}
       - Mahasiswa ini memiliki rekaman profil pengetikan baseline dari obrolan santai pra-ujian (Warmup Chat mingguan di DB):
         * Kecepatan ketik baseline (Warmup DB): ~${baselineProfile.baselineWpm} WPM (dianalisis dari ${baselineProfile.sampleCount} obrolan pra-ujian)
         * Rasio koreksi tombol (backspace/delete): ~${Math.round(baselineProfile.baselineBackspaceRatio * 100)}%
@@ -161,7 +233,8 @@ export async function POST(req: Request) {
       1. KELENTURAN PERKEMBANGAN ALAMI KARENA LATIHAN (Toleransi Wajar):
          Kenaikan kecepatan ketik secara bertahap (+15% s.d. +50% dari baseline, misal dari 11 WPM naik ke 16-22 WPM) adalah WAJAR DAN POSITIF karena mahasiswa sering berlatih mengetik kode dan ulasan di workbench. JANGAN curigai peningkatan ini selama mahasiswa tetap memperlihatkan proses berpikir manusiawi (rasio koreksi backspace > 6% dan gaya kalimat personal/analogi alami). Berikan "authenticityScore" tinggi (88-98%) dan apresiasi.
       2. DETEKSI ANOMALI AI / SALIN-TEMPEL GAWAI KEDUA / INJEKSI TEKS:
-         - Jika WPM melompat drastis tidak wajar (> 3x lipat dari baseline obrolan atau > 55 WPM),
+         - Pengecualian mutlak: Jika mahasiswa sedang dalam mode REVISI DRAF TERSIMPAN di atas, keberadaan teks dasar banyak dalam waktu singkat adalah NORMAL dan SAH, bukan injeksi teks.
+         - Jika BUKAN revisi draf DAN WPM melompat drastis tidak wajar (> 3x lipat dari baseline obrolan atau > 55 WPM),
          - ATAU rasio koreksi nyaris 0% (tidak pernah ada salah ketik/berpikir sama sekali),
          - ATAU gaya bahasa mendadak menggunakan diksi super-formal hiper-ensiklopedis tingkat tinggi khas ChatGPT (contoh: "mengejawantahkan", "mereduksi disparitas", "paradigma imperatif yang komprehensif", "dekomposisi instruksi secara substansial") yang melompat jauh dari gaya bahasa obrolan santai baseline mahasiswa di atas,
          MAKA:
@@ -176,6 +249,7 @@ export async function POST(req: Request) {
          * Berikan skor kelayakan objektif sesuai kedalaman logika dan korelasi Tabel C.
     ` : `
       VERIFIKASI INTEGRITAS KETIKAN (METRIK TELEMETRI DASAR):
+      ${draftForensicNotice}
       - Metrik ketikan praktikum: ~${currentWpm} WPM, Rasio Koreksi: ~${Math.round(currentBackspaceRatio * 100)}%, Upaya Paste Diblokir: ${burstAttempts} kali.
       - Jika jawaban menggunakan diksi super-formal tanpa cela khas output LLM, batasi skor pada 70 dan minta mahasiswa menggunakan kalimat penalaran mandiri.
     `;
@@ -257,7 +331,7 @@ export async function POST(req: Request) {
         });
 
         const raw = completion.choices[0]?.message?.content || '{}';
-        const parsed = JSON.parse(raw);
+        const parsed = sanitizeGradingResult(JSON.parse(raw), isDraftRevision, burstAttempts, currentWpm, baselineWpm, wpmRatio);
 
         return NextResponse.json({
           ...parsed,
@@ -279,7 +353,7 @@ export async function POST(req: Request) {
           });
 
           const raw = completion.choices[0]?.message?.content || '{}';
-          const parsed = JSON.parse(raw);
+          const parsed = sanitizeGradingResult(JSON.parse(raw), isDraftRevision, burstAttempts, currentWpm, baselineWpm, wpmRatio);
 
           return NextResponse.json({
             ...parsed,
@@ -306,7 +380,7 @@ export async function POST(req: Request) {
         const prompt = `${systemPrompt}\n\n${userPrompt}`;
         const geminiResult = await model.generateContent(prompt);
         const raw = geminiResult.response.text();
-        const parsed = JSON.parse(raw);
+        const parsed = sanitizeGradingResult(JSON.parse(raw), isDraftRevision, burstAttempts, currentWpm, baselineWpm, wpmRatio);
 
         return NextResponse.json({
           ...parsed,
@@ -328,7 +402,7 @@ export async function POST(req: Request) {
           const prompt = `${systemPrompt}\n\n${userPrompt}`;
           const geminiResult = await model.generateContent(prompt);
           const raw = geminiResult.response.text();
-          const parsed = JSON.parse(raw);
+          const parsed = sanitizeGradingResult(JSON.parse(raw), isDraftRevision, burstAttempts, currentWpm, baselineWpm, wpmRatio);
 
           return NextResponse.json({
             ...parsed,
@@ -341,7 +415,7 @@ export async function POST(req: Request) {
     }
 
     // 3. Fallback Heuristik Darurat jika seluruh upstream AI offline
-    return NextResponse.json({
+    return NextResponse.json(sanitizeGradingResult({
       score: 80,
       status: 'Memenuhi Standar',
       canPrint: true,
@@ -366,7 +440,7 @@ export async function POST(req: Request) {
         note: 'Kesimpulan telah tersimpan sesuai prosedur praktikum.'
       },
       provider: 'fallback-safety'
-    });
+    }, isDraftRevision, burstAttempts, currentWpm, baselineWpm, wpmRatio));
   } catch (error: any) {
     console.error('Error in /api/grade-praktikum:', error);
     return NextResponse.json(

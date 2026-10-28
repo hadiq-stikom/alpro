@@ -284,6 +284,8 @@ export default function PraktikumWorksheetPage({
   const [tabSwitchesCount, setTabSwitchesCount] = useState(0);
   const [typingStartTime, setTypingStartTime] = useState<number | null>(null);
   const [savedTelemetry, setSavedTelemetry] = useState<any>(null);
+  const [accumulatedTime, setAccumulatedTime] = useState<number>(0);
+  const [initialDraftWordCount, setInitialDraftWordCount] = useState<number>(0);
 
   // State Tanda Tangan & Pengajuan Konsultasi ke Dosen
   const [studentSignature, setStudentSignature] = useState<string | null>(null);
@@ -334,6 +336,61 @@ export default function PraktikumWorksheetPage({
     isKesimpulanComplete && 
     ((aiEvaluation && aiEvaluation.canPrint) || isApprovedByLecturer)
   );
+
+  // Helper penghitung telemetri adaptif (melindungi mahasiswa saat revisi draf tersimpan)
+  const getAdaptiveTelemetry = () => {
+    const totalWords = (analisisAnswers.join(" ") + " " + kesimpulanText).trim().split(/\s+/).filter(Boolean).length;
+    const sessionSeconds = typingStartTime ? Math.max(15, Math.floor((Date.now() - typingStartTime) / 1000)) : 0;
+    const isDraftRevision = initialDraftWordCount > 25;
+    const deltaWords = isDraftRevision ? Math.abs(totalWords - initialDraftWordCount) : totalWords;
+
+    // Total waktu akumulatif lintas sesi: sesi-sesi sebelumnya + durasi buka sesi saat ini
+    const totalTimeSpentSeconds = Math.max(
+      isDraftRevision ? (accumulatedTime + sessionSeconds) : 600,
+      Math.round((totalWords / 18) * 60)
+    );
+
+    let calcWpm = 18;
+    let calcBackspaceRatio = 0.11;
+
+    if (isDraftRevision) {
+      if (deltaWords <= 15) {
+        // Hanya perbaikan kecil / typo / formatting: Pertahankan WPM stabil wajar
+        calcWpm = savedTelemetry?.wpm || 18;
+        calcBackspaceRatio = keystrokesCount > 0
+          ? Number((backspacesCount / keystrokesCount).toFixed(3))
+          : (savedTelemetry?.backspaceRatio || 0.11);
+      } else {
+        // Menambah teks baru: Hitung WPM HANYA dari pertambahan kata baru terhadap durasi sesi
+        const deltaWpm = Math.round(deltaWords / (Math.max(30, sessionSeconds) / 60));
+        calcWpm = Math.max(8, Math.min(28, deltaWpm));
+        calcBackspaceRatio = keystrokesCount > 0
+          ? Number((backspacesCount / keystrokesCount).toFixed(3))
+          : 0.11;
+      }
+    } else {
+      const isActivelyTyping = keystrokesCount > 30 && typingStartTime !== null;
+      if (isActivelyTyping) {
+        calcWpm = Math.max(5, Math.min(32, Math.round(totalWords / (sessionSeconds / 60))));
+        calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
+      } else if (savedTelemetry?.wpm) {
+        calcWpm = savedTelemetry.wpm;
+        calcBackspaceRatio = savedTelemetry.backspaceRatio || 0.11;
+      }
+    }
+
+    return {
+      wpm: calcWpm,
+      backspaceRatio: calcBackspaceRatio,
+      burstAttempts: burstAttemptsCount,
+      keystrokes: keystrokesCount,
+      timeSpentSeconds: totalTimeSpentSeconds,
+      tabSwitches: tabSwitchesCount,
+      isDraftRevision,
+      initialWordCount: initialDraftWordCount,
+      deltaWords,
+    };
+  };
 
   // Perekam telemetri ketukan tombol
   const handleTrackKeyInput = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -448,6 +505,18 @@ export default function PraktikumWorksheetPage({
           if (parsed.studentClass) setStudentClass(parsed.studentClass);
           if (parsed.labDate) setLabDate(parsed.labDate);
           if (parsed.studentSignature) setStudentSignature(parsed.studentSignature);
+          if (parsed.telemetry?.timeSpentSeconds) {
+            setAccumulatedTime(Number(parsed.telemetry.timeSpentSeconds));
+          }
+          if (parsed.telemetry) {
+            setSavedTelemetry(parsed.telemetry);
+          }
+          const loadedWords = (
+            (parsed.analisisAnswers || []).join(" ") + " " + (parsed.kesimpulanText || "")
+          ).trim().split(/\s+/).filter(Boolean).length;
+          if (loadedWords > 0) {
+            setInitialDraftWordCount(loadedWords);
+          }
           hasInitializedDraft.current = true;
           return;
         }
@@ -551,6 +620,15 @@ export default function PraktikumWorksheetPage({
             }
             if (sub.telemetry && Object.keys(sub.telemetry).length > 0) {
               setSavedTelemetry(sub.telemetry);
+              if (sub.telemetry.timeSpentSeconds) {
+                setAccumulatedTime((prev) => Math.max(prev, Number(sub.telemetry.timeSpentSeconds)));
+              }
+            }
+            const remoteWords = (
+              (sub.analisis_answers || []).join(" ") + " " + (sub.kesimpulan_text || "")
+            ).trim().split(/\s+/).filter(Boolean).length;
+            if (remoteWords > 0) {
+              setInitialDraftWordCount((prev) => (prev > 0 ? prev : remoteWords));
             }
 
             // Pulihkan waktu simpan terakhir dari database jika ada
@@ -617,6 +695,7 @@ export default function PraktikumWorksheetPage({
     const timer = setTimeout(() => {
       const currentNim = profile?.nim || studentNim || "local";
       const shortTimeStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+      const currentTelemetry = getAdaptiveTelemetry();
       const payload = {
         moduleId,
         studentName: studentName || profile?.full_name || "",
@@ -628,6 +707,7 @@ export default function PraktikumWorksheetPage({
         kesimpulanText,
         aiEvaluation,
         studentSignature,
+        telemetry: currentTelemetry,
         savedAt: shortTimeStr,
       };
 
@@ -666,6 +746,7 @@ export default function PraktikumWorksheetPage({
     if (!moduleData) return;
     const currentNim = profile?.nim || studentNim || "local";
     const shortTimeStr = new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" });
+    const currentTelemetry = getAdaptiveTelemetry();
 
     const payload = {
       moduleId,
@@ -682,6 +763,7 @@ export default function PraktikumWorksheetPage({
       lecturerScore: lecturerScore !== null ? lecturerScore : null,
       lecturerSignedAt: lecturerSignedAt || null,
       submissionStatus: submissionStatus || "draft",
+      telemetry: currentTelemetry,
       savedAt: shortTimeStr,
     };
 
@@ -716,6 +798,7 @@ export default function PraktikumWorksheetPage({
           kesimpulanText: payload.kesimpulanText,
           aiEvaluation: payload.aiEvaluation,
           studentSignature: payload.studentSignature,
+          telemetry: currentTelemetry,
           action: "draft",
           saveSignatureToProfile: false,
         }),
@@ -732,6 +815,7 @@ export default function PraktikumWorksheetPage({
     const currentNim = profile?.nim || studentNim || "local";
     const storageKey = `lkp_draft_m${moduleId}_${currentNim}`;
     const fallbackKey = `lkp_draft_m${moduleId}_local`;
+    const currentTelemetry = getAdaptiveTelemetry();
 
     const payload = {
       moduleId,
@@ -744,6 +828,7 @@ export default function PraktikumWorksheetPage({
       kesimpulanText,
       aiEvaluation,
       studentSignature,
+      telemetry: currentTelemetry,
       savedAt: shortTimeStr,
     };
 
@@ -777,6 +862,7 @@ export default function PraktikumWorksheetPage({
             kesimpulanText,
             aiEvaluation,
             studentSignature,
+            telemetry: currentTelemetry,
             action: "draft",
             saveSignatureToProfile: false,
           }),
@@ -830,29 +916,7 @@ export default function PraktikumWorksheetPage({
     setIsEvaluating(true);
     setEvalError(null);
 
-    // Hitung telemetri ketikan praktikum secara adaptif:
-    // Jika mahasiswa sedang mengetik aktif di sesi ini (keystrokes > 30), gunakan metrik sesi aktif.
-    // Jika sedang mereviu teks tersimpan (misal setelah refresh), gunakan telemetri tersimpan atau estimasi normal (~18 WPM),
-    // BUKAN membagi seluruh ratusan kata dengan default 60 detik (yang memicu deteksi WPM palsu 300+ WPM).
-    const totalWords = (analisisAnswers.join(" ") + " " + kesimpulanText).trim().split(/\s+/).filter(Boolean).length;
-    const isActivelyTyping = keystrokesCount > 30 && typingStartTime !== null;
-
-    let calcWpm = 18;
-    let calcBackspaceRatio = 0.11;
-    let elapsedSeconds = Math.max(60, Math.round((totalWords / 18) * 60));
-
-    if (isActivelyTyping) {
-      elapsedSeconds = Math.max(15, Math.floor((Date.now() - typingStartTime!) / 1000));
-      calcWpm = Math.max(5, Math.min(65, Math.round(totalWords / (elapsedSeconds / 60))));
-      calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
-    } else if (savedTelemetry?.wpm) {
-      calcWpm = savedTelemetry.wpm;
-      calcBackspaceRatio = savedTelemetry.backspaceRatio || 0.11;
-      elapsedSeconds = savedTelemetry.timeSpentSeconds || elapsedSeconds;
-    } else if (aiEvaluation?.integrity?.wpmComparison?.currentWpm) {
-      calcWpm = aiEvaluation.integrity.wpmComparison.currentWpm;
-      calcBackspaceRatio = 0.11;
-    }
+    const currentTelemetry = getAdaptiveTelemetry();
 
     try {
       const res = await fetch("/api/grade-praktikum", {
@@ -864,14 +928,7 @@ export default function PraktikumWorksheetPage({
           analisisAnswers,
           kesimpulanText,
           userId: profile?.id,
-          telemetry: {
-            wpm: calcWpm,
-            backspaceRatio: calcBackspaceRatio,
-            burstAttempts: burstAttemptsCount,
-            keystrokes: keystrokesCount,
-            timeSpentSeconds: elapsedSeconds,
-            tabSwitches: tabSwitchesCount,
-          },
+          telemetry: currentTelemetry,
         }),
       });
 
@@ -887,6 +944,8 @@ export default function PraktikumWorksheetPage({
       };
 
       setAiEvaluation(resultWithTime);
+      setSavedTelemetry(currentTelemetry);
+      setAccumulatedTime(currentTelemetry.timeSpentSeconds);
 
       // Simpan juga ke localStorage (baik specific NIM maupun fallback lokal)
       const currentNim = profile?.nim || studentNim || "local";
@@ -902,6 +961,7 @@ export default function PraktikumWorksheetPage({
         kesimpulanText,
         aiEvaluation: resultWithTime,
         studentSignature,
+        telemetry: currentTelemetry,
         savedAt: nowStr,
       };
       if (profile?.nim) {
@@ -950,10 +1010,7 @@ export default function PraktikumWorksheetPage({
     setIsSubmittingConsultation(true);
     setConsultationMessage(null);
 
-    const totalWords = (analisisAnswers.join(" ") + " " + kesimpulanText).trim().split(/\s+/).filter(Boolean).length;
-    const elapsedSeconds = typingStartTime ? Math.max(15, Math.floor((Date.now() - typingStartTime) / 1000)) : 60;
-    const calcWpm = Math.max(5, Math.round(totalWords / (elapsedSeconds / 60)));
-    const calcBackspaceRatio = keystrokesCount > 0 ? Number((backspacesCount / keystrokesCount).toFixed(3)) : 0.12;
+    const currentTelemetry = getAdaptiveTelemetry();
 
     try {
       const res = await fetch("/api/praktikum/submission", {
@@ -970,14 +1027,7 @@ export default function PraktikumWorksheetPage({
           observations,
           analisisAnswers,
           kesimpulanText,
-          telemetry: {
-            wpm: calcWpm,
-            backspaceRatio: calcBackspaceRatio,
-            burstAttempts: burstAttemptsCount,
-            keystrokes: keystrokesCount,
-            timeSpentSeconds: elapsedSeconds,
-            tabSwitches: tabSwitchesCount,
-          },
+          telemetry: currentTelemetry,
           aiEvaluation,
           studentSignature,
           action: "diajukan",

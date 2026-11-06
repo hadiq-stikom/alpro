@@ -8,7 +8,7 @@ import { getBadgeFromScore } from "@/lib/badges";
 import { BadgeDisplay } from "@/components/BadgeDisplay";
 import { TheoryAssessment } from "@/components/assessment/TheoryAssessment";
 import { motion } from "framer-motion";
-import { ArrowLeft, Clock, Target, AlertTriangle, FileText, Bot, BrainCircuit } from "lucide-react";
+import { ArrowLeft, Clock, Target, AlertTriangle, FileText, Bot, BrainCircuit, Award } from "lucide-react";
 import Link from "next/link";
 
 export default function MeetingDetailDashboard() {
@@ -222,6 +222,75 @@ export default function MeetingDetailDashboard() {
                   </div>
                 </div>
               </div>
+
+              {/* Rincian 5 Aspek Penilaian Ujian (UTS / UAS) */}
+              {sub.answers_json?.aspect_scores && (
+                <div className="mt-4 p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-foreground flex items-center gap-2">
+                      <Award className="w-4 h-4 text-amber-500" />
+                      Rincian 5 Aspek Penilaian {sub.answers_json?.exam_type || "Ujian"}:
+                    </h4>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                    {[
+                      {
+                        key: "penyerapan_materi",
+                        label: "Penyerapan Materi",
+                        weight: sub.answers_json?.weights?.penyerapan_materi ?? 20,
+                        score: sub.answers_json?.aspect_scores?.penyerapan_materi,
+                      },
+                      {
+                        key: "pemahaman_konsep",
+                        label: "Pemahaman Konsep",
+                        weight: sub.answers_json?.weights?.pemahaman_konsep ?? 20,
+                        score: sub.answers_json?.aspect_scores?.pemahaman_konsep,
+                      },
+                      {
+                        key: "kemampuan_menjelaskan",
+                        label: "Kemampuan Menjelaskan",
+                        weight: sub.answers_json?.weights?.kemampuan_menjelaskan ?? 20,
+                        score: sub.answers_json?.aspect_scores?.kemampuan_menjelaskan,
+                      },
+                      {
+                        key: "implementasi_algoritma",
+                        label: "Implementasi Algoritma",
+                        weight: sub.answers_json?.weights?.implementasi_algoritma ?? 20,
+                        score: sub.answers_json?.aspect_scores?.implementasi_algoritma,
+                      },
+                      {
+                        key: "implementasi_kode",
+                        label: "Implementasi Kode",
+                        weight: sub.answers_json?.weights?.implementasi_kode ?? 20,
+                        score: sub.answers_json?.aspect_scores?.implementasi_kode,
+                      },
+                    ].map((asp) => (
+                      <div
+                        key={asp.key}
+                        className="p-2.5 rounded-lg border border-border/80 bg-background text-center space-y-1"
+                      >
+                        <div className="text-[10px] text-muted-foreground font-semibold truncate" title={asp.label}>
+                          {asp.label}
+                        </div>
+                        <div className="text-base font-black font-mono text-foreground">
+                          {asp.score ?? "-"}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground font-mono">
+                          Bobot: {asp.weight}%
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {sub.answers_json?.notes && (
+                    <div className="pt-2 border-t border-border/40 text-xs text-muted-foreground italic">
+                      <span className="font-bold text-foreground not-italic">Catatan Dosen Pengampu: </span>
+                      &quot;{sub.answers_json.notes}&quot;
+                    </div>
+                  )}
+                </div>
+              )}
 
               {(sub.ai_feedback || sub.answers_json?.ai_feedback) && (
                 <div className="mt-4 bg-primary/5 border border-primary/20 rounded-xl p-5 relative overflow-hidden">

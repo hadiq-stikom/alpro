@@ -14,11 +14,10 @@ export const BADGE_CONFIGS: BadgeConfig[] = [
   { level: 'A', minScore: 90, maxScore: 100, name: 'Emas (Gold)', hexColor: '#F59E0B', category: 'Sempurna' },
   { level: 'AB', minScore: 80, maxScore: 89.99, name: 'Biru Safir (Sapphire)', hexColor: '#3B82F6', category: 'Baik' },
   { level: 'B', minScore: 70, maxScore: 79.99, name: 'Hijau Zamrud (Emerald)', hexColor: '#10B981', category: 'Baik' },
-  { level: 'BC', minScore: 65, maxScore: 69.99, name: 'Biru Langit (Sky)', hexColor: '#0EA5E9', category: 'Cukup' },
-  { level: 'C', minScore: 55, maxScore: 64.99, name: 'Kuning (Amber)', hexColor: '#FBBF24', category: 'Cukup' },
-  { level: 'CD', minScore: 50, maxScore: 54.99, name: 'Oranye (Orange)', hexColor: '#F97316', category: 'Kurang' },
-  { level: 'D', minScore: 40, maxScore: 49.99, name: 'Merah Bata (Rose)', hexColor: '#F43F5E', category: 'Kurang' },
-  { level: 'DE', minScore: 30, maxScore: 39.99, name: 'Merah (Red)', hexColor: '#EF4444', category: 'Kurang' },
+  { level: 'BC', minScore: 60, maxScore: 69.99, name: 'Biru Langit (Sky)', hexColor: '#0EA5E9', category: 'Cukup' },
+  { level: 'C', minScore: 50, maxScore: 59.99, name: 'Kuning (Amber)', hexColor: '#FBBF24', category: 'Cukup' },
+  { level: 'CD', minScore: 40, maxScore: 49.99, name: 'Oranye (Orange)', hexColor: '#F97316', category: 'Kurang' },
+  { level: 'D', minScore: 30, maxScore: 39.99, name: 'Merah Bata (Rose)', hexColor: '#F43F5E', category: 'Kurang' },
   { level: 'E', minScore: 0, maxScore: 29.99, name: 'Abu Gelap (Slate)', hexColor: '#64748B', category: 'Kurang' },
 ];
 
@@ -28,7 +27,7 @@ export const BADGE_CONFIGS: BadgeConfig[] = [
  */
 export function getBadgeFromScore(score: number): BadgeConfig {
   const safeScore = Math.max(0, Math.min(100, score));
-  return BADGE_CONFIGS.find((config) => safeScore >= config.minScore && safeScore <= config.maxScore) || BADGE_CONFIGS[8];
+  return BADGE_CONFIGS.find((config) => safeScore >= config.minScore && safeScore <= config.maxScore) || BADGE_CONFIGS[BADGE_CONFIGS.length - 1];
 }
 
 export interface ScoreCalculation {

@@ -13,6 +13,7 @@ import {
   ShieldCheck,
   Check, 
   AlertCircle, 
+  AlertTriangle,
   Lock, 
   Unlock, 
   RotateCcw, 
@@ -88,6 +89,7 @@ export function EssayContainer({ questions, userId, baselineProfile, onComplete 
   const [startTime] = useState(Date.now());
   const [showWarning, setShowWarning] = useState(false);
   const [burstAlert, setBurstAlert] = useState(false);
+  const [showEarlySubmitModal, setShowEarlySubmitModal] = useState(false);
 
   // Hook Anti-Cheat Lini 1 (akan mematikan klik kanan, copy-paste, drag-drop, dan rekam telemetri)
   const { 
@@ -250,32 +252,42 @@ export function EssayContainer({ questions, userId, baselineProfile, onComplete 
   };
 
   // Kumpulkan seluruh ujian esai
-  // Hanya soal yang SUDAH DIJAWAB DAN DINILAI yang masuk ke hasil akhir
+  // Seluruh butir soal (5 soal) WAJIB dimasukkan ke hasil akhir.
+  // Soal yang belum dijawab / belum dinilai sebelum waktu habis diberi skor 0.
   const handleFinalSubmit = () => {
     const timeSpent = Math.floor((Date.now() - startTime) / 1000);
     
-    // Filter: hanya soal yang benar-benar sudah dinilai AI (ada result-nya)
-    const answeredQuestions = questions.filter(q => results[q.id]?.score !== undefined);
-    
-    if (answeredQuestions.length === 0) {
-      // Tidak ada soal yang selesai sama sekali — tidak perlu submit
-      return;
-    }
-
-    const formattedResults: EssayItemResult[] = answeredQuestions.map(q => {
+    // Petakan seluruh butir soal (wajib konsisten 5 soal)
+    const formattedResults: EssayItemResult[] = questions.map(q => {
       const res = results[q.id];
+      const hasAnswer = Boolean(answers[q.id] && answers[q.id].trim().length > 0);
+      
+      if (res && res.score !== undefined && res.score !== null) {
+        return {
+          id: q.id,
+          question: q.text,
+          answer: answers[q.id] || res.submittedAnswer || '',
+          score: res.score,
+          feedback: res.feedback || 'Evaluasi selesai.',
+          provider: res.provider || 'groq',
+          attempts: res.attempts || 1
+        };
+      }
+      
       return {
         id: q.id,
         question: q.text,
         answer: answers[q.id] || '',
-        score: res?.score || 0,
-        feedback: res?.feedback || 'Tidak ada evaluasi.',
-        provider: res?.provider || 'groq',
-        attempts: res?.attempts || 1
+        score: 0,
+        feedback: hasAnswer 
+          ? 'Jawaban belum sempat dinilai sebelum waktu pengerjaan habis (skor: 0).' 
+          : 'Soal tidak dijawab (skor: 0).',
+        provider: 'system',
+        attempts: 0
       };
     });
 
-    const totalWords = answeredQuestions.reduce((acc, q) => acc + (answers[q.id] || '').trim().split(/\s+/).filter(w => w.length > 0).length, 0);
+    const totalWords = questions.reduce((acc, q) => acc + (answers[q.id] || '').trim().split(/\s+/).filter(w => w.length > 0).length, 0);
     const finalWpm = Math.round(totalWords / Math.max(0.5, timeSpent / 60));
     const finalBackspaceRatio = keystrokeCount > 0 ? Number((backspaceCount / keystrokeCount).toFixed(3)) : 0.1;
 
@@ -410,16 +422,31 @@ export function EssayContainer({ questions, userId, baselineProfile, onComplete 
             </span>
           </div>
           
-          {/* Timer Display */}
-          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all ${
-            isTimeCritical 
-              ? 'bg-red-500/10 border-red-500/40 text-red-600 dark:text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' 
-              : 'bg-slate-100 dark:bg-slate-800/90 border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-200 shadow-sm'
-          }`}>
-            <Clock className={`w-3.5 h-3.5 ${isTimeCritical ? 'text-red-500 dark:text-red-400' : 'text-primary'}`} />
-            <div className="flex flex-col items-end leading-none">
-              <span className="text-[8px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Total Waktu</span>
-              <span className="font-mono font-black text-xs sm:text-sm tabular-nums">{formatTime(timeLeft)}</span>
+          {/* Right Header: Tombol Akhiri & Timer */}
+          <div className="flex items-center gap-2">
+            {/* Tombol Kumpulkan Lebih Awal jika mahasiswa menyerah/ingin selesai */}
+            {passedCount > 0 && passedCount < questions.length && (
+              <button
+                type="button"
+                onClick={() => setShowEarlySubmitModal(true)}
+                className="px-2.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 hover:border-amber-500 text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 text-[11px] font-bold transition-all cursor-pointer hidden xs:flex items-center gap-1"
+                title="Kumpulkan ujian sekarang (soal yang belum selesai dinilai 0)"
+              >
+                <span>Akhiri Ujian</span>
+              </button>
+            )}
+
+            {/* Timer Display */}
+            <div className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition-all ${
+              isTimeCritical 
+                ? 'bg-red-500/10 border-red-500/40 text-red-600 dark:text-red-400 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.2)]' 
+                : 'bg-slate-100 dark:bg-slate-800/90 border-slate-200 dark:border-slate-700/80 text-slate-800 dark:text-slate-200 shadow-sm'
+            }`}>
+              <Clock className={`w-3.5 h-3.5 ${isTimeCritical ? 'text-red-500 dark:text-red-400' : 'text-primary'}`} />
+              <div className="flex flex-col items-end leading-none">
+                <span className="text-[8px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold">Total Waktu</span>
+                <span className="font-mono font-black text-xs sm:text-sm tabular-nums">{formatTime(timeLeft)}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -744,6 +771,57 @@ export function EssayContainer({ questions, userId, baselineProfile, onComplete 
 
         </div>
       </div>
+
+      {/* MODAL KONFIRMASI AKHIRI UJIAN LEBIH AWAL */}
+      <AnimatePresence>
+        {showEarlySubmitModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-card border border-border p-6 rounded-2xl max-w-md w-full shadow-2xl space-y-4"
+            >
+              <div className="flex items-center gap-3 text-amber-500">
+                <AlertTriangle className="w-6 h-6 shrink-0" />
+                <h3 className="text-base sm:text-lg font-bold text-foreground">Konfirmasi Selesai Lebih Awal</h3>
+              </div>
+              
+              <div className="text-xs sm:text-sm text-muted-foreground leading-relaxed space-y-2">
+                <p>
+                  Anda baru menyelesaikan <strong>{passedCount} dari {questions.length}</strong> butir soal esai.
+                </p>
+                <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-800 dark:text-amber-300 text-xs font-medium">
+                  ⚠️ Soal yang belum diselesaikan (<strong>{questions.length - passedCount} soal tersisa</strong>) akan secara otomatis dihitung dengan nilai <strong>0</strong>. Nilai akhir Anda adalah rata-rata dari seluruh <strong>{questions.length} butir soal</strong>.
+                </div>
+                <p>
+                  Apakah Anda yakin ingin mengumpulkan lembar ujian sekarang?
+                </p>
+              </div>
+
+              <div className="flex justify-end gap-2.5 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowEarlySubmitModal(false)}
+                  className="px-4 py-2.5 rounded-xl bg-secondary text-secondary-foreground text-xs font-bold hover:bg-secondary/80 transition-all cursor-pointer"
+                >
+                  Lanjut Mengerjakan
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowEarlySubmitModal(false);
+                    handleFinalSubmit();
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-extrabold transition-all shadow-md cursor-pointer"
+                >
+                  Tetap Kumpulkan Sekarang
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

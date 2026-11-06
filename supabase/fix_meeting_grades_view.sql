@@ -14,17 +14,16 @@ SELECT
     WHEN MAX(qs.score) >= 90 THEN 'A'
     WHEN MAX(qs.score) >= 80 THEN 'AB'
     WHEN MAX(qs.score) >= 70 THEN 'B'
-    WHEN MAX(qs.score) >= 65 THEN 'BC'
-    WHEN MAX(qs.score) >= 55 THEN 'C'
-    WHEN MAX(qs.score) >= 50 THEN 'CD'
-    WHEN MAX(qs.score) >= 40 THEN 'D'
-    WHEN MAX(qs.score) >= 30 THEN 'DE'
+    WHEN MAX(qs.score) >= 60 THEN 'BC'
+    WHEN MAX(qs.score) >= 50 THEN 'C'
+    WHEN MAX(qs.score) >= 40 THEN 'CD'
+    WHEN MAX(qs.score) >= 30 THEN 'D'
     ELSE 'E'
   END AS grade_letter,
   CASE
     WHEN MAX(qs.score) >= 90 THEN 'Sempurna'
     WHEN MAX(qs.score) >= 70 THEN 'Baik'
-    WHEN MAX(qs.score) >= 55 THEN 'Cukup'
+    WHEN MAX(qs.score) >= 50 THEN 'Cukup'
     ELSE 'Kurang'
   END AS grade_category
 FROM public.quiz_submissions qs
@@ -42,17 +41,16 @@ SELECT
     WHEN AVG(avg_score) >= 90 THEN 'A'
     WHEN AVG(avg_score) >= 80 THEN 'AB'
     WHEN AVG(avg_score) >= 70 THEN 'B'
-    WHEN AVG(avg_score) >= 65 THEN 'BC'
-    WHEN AVG(avg_score) >= 55 THEN 'C'
-    WHEN AVG(avg_score) >= 50 THEN 'CD'
-    WHEN AVG(avg_score) >= 40 THEN 'D'
-    WHEN AVG(avg_score) >= 30 THEN 'DE'
+    WHEN AVG(avg_score) >= 60 THEN 'BC'
+    WHEN AVG(avg_score) >= 50 THEN 'C'
+    WHEN AVG(avg_score) >= 40 THEN 'CD'
+    WHEN AVG(avg_score) >= 30 THEN 'D'
     ELSE 'E'
   END AS overall_grade_letter,
   CASE
     WHEN AVG(avg_score) >= 90 THEN 'Sempurna'
     WHEN AVG(avg_score) >= 70 THEN 'Baik'
-    WHEN AVG(avg_score) >= 55 THEN 'Cukup'
+    WHEN AVG(avg_score) >= 50 THEN 'Cukup'
     ELSE 'Kurang'
   END AS overall_grade_category
 FROM public.meeting_grades
@@ -70,11 +68,10 @@ SELECT
     WHEN AVG(mg.avg_score) >= 90 THEN 'A'
     WHEN AVG(mg.avg_score) >= 80 THEN 'AB'
     WHEN AVG(mg.avg_score) >= 70 THEN 'B'
-    WHEN AVG(mg.avg_score) >= 65 THEN 'BC'
-    WHEN AVG(mg.avg_score) >= 55 THEN 'C'
-    WHEN AVG(mg.avg_score) >= 50 THEN 'CD'
-    WHEN AVG(mg.avg_score) >= 40 THEN 'D'
-    WHEN AVG(mg.avg_score) >= 30 THEN 'DE'
+    WHEN AVG(mg.avg_score) >= 60 THEN 'BC'
+    WHEN AVG(mg.avg_score) >= 50 THEN 'C'
+    WHEN AVG(mg.avg_score) >= 40 THEN 'CD'
+    WHEN AVG(mg.avg_score) >= 30 THEN 'D'
     ELSE 'E'
   END AS class_grade_letter
 FROM public.meeting_grades mg

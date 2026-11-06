@@ -26,6 +26,8 @@ import Link from "next/link";
 interface CompletedMeetingInfo {
   meetingId: number;
   score: number;
+  isIncomplete?: boolean;
+  answeredCount?: number;
 }
 
 interface StudentItem {
@@ -92,14 +94,23 @@ export default function LecturerDashboardPage() {
         // 2b. Fallback langsung: ambil semua submissions untuk melengkapi data yang belum teragregasi view
         const { data: allSubmissionsData } = await supabase
           .from('quiz_submissions')
-          .select('user_id, meeting_id, score, quiz_type');
+          .select('id, user_id, meeting_id, score, quiz_type, ai_feedback, submitted_at')
+          .order('submitted_at', { ascending: true });
 
-        const allSubmissions = (allSubmissionsData || []) as { user_id?: string; meeting_id?: number; score?: number; quiz_type?: string }[];
+        const allSubmissions = (allSubmissionsData || []) as { 
+          id: string;
+          user_id?: string; 
+          meeting_id?: number; 
+          score?: number; 
+          quiz_type?: string;
+          ai_feedback?: string | null;
+          submitted_at?: string;
+        }[];
 
         // Aturan pedagogi: hanya essay/exam/lab yang jadi sumber nilai. MCQ (quiz) hanya syarat masuk.
         const GRADABLE_TYPES = ['essay', 'exam', 'lab', 'challenge'];
 
-        const userMeetingScores = new Map<string, Map<number, number>>();
+        const userMeetingScores = new Map<string, Map<number, { score: number; isIncomplete?: boolean; answeredCount?: number }>>();
 
         const meetingGrades = (meetingGradesData || []) as { user_id?: string; meeting_id?: number; avg_score?: number | null }[];
 
@@ -107,12 +118,21 @@ export default function LecturerDashboardPage() {
         for (const row of meetingGrades) {
           if (!row.user_id || row.meeting_id === undefined || !row.avg_score || row.avg_score <= 0) continue;
           if (!userMeetingScores.has(row.user_id)) {
-            userMeetingScores.set(row.user_id, new Map<number, number>());
+            userMeetingScores.set(row.user_id, new Map());
           }
-          userMeetingScores.get(row.user_id)!.set(row.meeting_id, row.avg_score);
+          userMeetingScores.get(row.user_id)!.set(row.meeting_id, { score: row.avg_score });
         }
 
-        // Lengkapi dengan data langsung dari quiz_submissions (misal nilai yang baru dikoreksi)
+        // Tentukan submission TERBAIK (winning submission) per (user_id, meeting_id)
+        // PENTING: Status isIncomplete WAJIB hanya dievaluasi dari submission terbaik yang menentukan nilai akhir,
+        // BUKAN dari percobaan lama yang sudah diperbaiki/diulang mahasiswa.
+        const winningSubmissions = new Map<string, Map<number, {
+          score: number;
+          submitted_at?: string;
+          isIncomplete: boolean;
+          answeredCount?: number;
+        }>>();
+
         for (const sub of allSubmissions) {
           if (
             !sub.user_id ||
@@ -121,13 +141,51 @@ export default function LecturerDashboardPage() {
             sub.score <= 0 ||                              // abaikan skor 0 (tidak selesai)
             !GRADABLE_TYPES.includes(sub.quiz_type || '') // hanya esai/exam/lab
           ) continue;
-          if (!userMeetingScores.has(sub.user_id)) {
-            userMeetingScores.set(sub.user_id, new Map<number, number>());
+
+          if (!winningSubmissions.has(sub.user_id)) {
+            winningSubmissions.set(sub.user_id, new Map());
           }
-          const m = userMeetingScores.get(sub.user_id)!;
-          const cur = m.get(sub.meeting_id) || 0;
-          if (sub.score > cur) {
-            m.set(sub.meeting_id, sub.score);
+          const m = winningSubmissions.get(sub.user_id)!;
+          const cur = m.get(sub.meeting_id);
+
+          const hasIncompleteNote = Boolean(sub.ai_feedback && sub.ai_feedback.includes('Koreksi Proporsionalitas'));
+          let answeredCount: number | undefined;
+          if (hasIncompleteNote && sub.ai_feedback) {
+            const match = sub.ai_feedback.match(/\((\d+)\/5 terjawab\)/);
+            if (match) answeredCount = parseInt(match[1], 10);
+          }
+
+          // Menang jika skor lebih tinggi, atau jika skor sama maka ambil yang paling mutakhir
+          if (
+            !cur || 
+            sub.score > cur.score || 
+            (sub.score === cur.score && (sub.submitted_at || '') >= (cur.submitted_at || ''))
+          ) {
+            m.set(sub.meeting_id, {
+              score: sub.score,
+              submitted_at: sub.submitted_at,
+              isIncomplete: hasIncompleteNote,
+              answeredCount
+            });
+          }
+        }
+
+        // Sinkronisasikan status winning submission ke dalam userMeetingScores
+        for (const [userId, meetings] of winningSubmissions.entries()) {
+          if (!userMeetingScores.has(userId)) {
+            userMeetingScores.set(userId, new Map());
+          }
+          const targetMap = userMeetingScores.get(userId)!;
+          for (const [meetingId, winInfo] of meetings.entries()) {
+            const existing = targetMap.get(meetingId);
+            const finalScore = existing ? Math.max(existing.score, winInfo.score) : winInfo.score;
+            // Hanya tandai incomplete jika submission terbaik tersebut memang belum menjawab 5 butir soal penuh
+            const isIncomplete = winInfo.isIncomplete && (winInfo.score >= finalScore);
+            targetMap.set(meetingId, {
+              score: finalScore,
+              isIncomplete,
+              answeredCount: isIncomplete ? winInfo.answeredCount : undefined
+            });
           }
         }
         
@@ -145,9 +203,14 @@ export default function LecturerDashboardPage() {
         const gradesList = (overallData || []) as OverallGradeItem[];
         
         const mergedStudents: StudentItem[] = studentsList.map(student => {
-          const m = userMeetingScores.get(student.id) || new Map<number, number>();
+          const m = userMeetingScores.get(student.id) || new Map<number, { score: number; isIncomplete?: boolean; answeredCount?: number }>();
           const completedMeetings: CompletedMeetingInfo[] = Array.from(m.entries())
-            .map(([meetingId, score]) => ({ meetingId, score }))
+            .map(([meetingId, info]) => ({
+              meetingId,
+              score: info.score,
+              isIncomplete: info.isIncomplete,
+              answeredCount: info.answeredCount
+            }))
             .sort((a, b) => a.meetingId - b.meetingId);
 
           const completedCount = completedMeetings.length;
@@ -291,7 +354,15 @@ export default function LecturerDashboardPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href="/lecturer/exam-grades"
+              className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white font-bold text-sm flex items-center gap-2.5 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+            >
+              <Award className="w-4 h-4" />
+              <span>Input Nilai UTS &amp; UAS</span>
+            </Link>
+
             <Link
               href="/lecturer/praktikum"
               className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white font-bold text-sm flex items-center gap-2.5 shadow-lg shadow-cyan-500/20 transition-all cursor-pointer relative"
@@ -445,16 +516,29 @@ export default function LecturerDashboardPage() {
                                 return (
                                   <span
                                     key={m.meetingId}
-                                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold border transition-transform hover:scale-105"
-                                    style={{
+                                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold border transition-transform hover:scale-105 ${
+                                      m.isIncomplete 
+                                        ? 'border-dashed border-rose-500/70 bg-rose-500/10 text-rose-600 dark:text-rose-400' 
+                                        : ''
+                                    }`}
+                                    style={!m.isIncomplete ? {
                                       backgroundColor: `${mBadge.hexColor}15`,
                                       borderColor: `${mBadge.hexColor}40`,
                                       color: mBadge.hexColor
-                                    }}
-                                    title={`Kuis Minggu ${m.meetingId}: Nilai ${m.score}`}
+                                    } : undefined}
+                                    title={
+                                      m.isIncomplete 
+                                        ? `Kuis Minggu ${m.meetingId}: Nilai ${m.score} (Peringatan: hanya ${m.answeredCount || 1} dari 5 butir soal terjawab)`
+                                        : `Kuis Minggu ${m.meetingId}: Nilai ${m.score}`
+                                    }
                                   >
                                     <span>M{m.meetingId}:</span>
                                     <span className="font-mono">{m.score}</span>
+                                    {m.isIncomplete && (
+                                      <span className="text-[10px] text-rose-500 font-black" title="Hanya menjawab sebagian butir soal">
+                                        ⚠️
+                                      </span>
+                                    )}
                                   </span>
                                 );
                               })}

@@ -313,13 +313,13 @@ Untuk memastikan diagram alir tidak sekadar statis, tetapi hidup dan merefleksik
 ---
 
 ## 9. Sistem Gamifikasi & Lencana Capaian (Badge System)
-1. **Skala 9 Tingkat Capaian**:
-   - `E`, `DE`, `D`, `CD`, `C`, `BC`, `B`, `AB`, `A` dengan pembeda warna visual spesifik untuk setiap tingkat capaian.
+1. **Skala 8 Tingkat Capaian**:
+   - `E` (0–29), `D` (30–39), `CD` (40–49), `C` (50–59), `BC` (60–69), `B` (70–79), `AB` (80–89), `A` (90–100) dengan pembeda warna visual spesifik untuk setiap tingkat capaian.
 2. **4 Klaster Capaian Akademik**:
-   - **Kurang**: `E`, `DE`, `D`, `CD`
-   - **Cukup**: `C`, `BC`
-   - **Baik**: `B`, `AB`
-   - **Sempurna**: `A`
+   - **Kurang**: `E`, `D`, `CD` (Skor 0–49)
+   - **Cukup**: `C`, `BC` (Skor 50–69)
+   - **Baik**: `B`, `AB` (Skor 70–89)
+   - **Sempurna**: `A` (Skor 90–100)
 3. **Integrasi Halaman**:
    - **Halaman Mahasiswa**: Menampilkan lencana rata-rata capaian seluruh materi dan lencana capaian spesifik per pertemuan.
    - **Halaman Dosen**: Menampilkan rekap agregat capaian kelas dan rincian performa per mahasiswa baik secara umum maupun per pertemuan.

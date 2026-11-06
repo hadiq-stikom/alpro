@@ -6,7 +6,7 @@ import Link from "next/link";
 import {
   Flame, Code2, Menu, Moon, Sun, GraduationCap,
   LogOut, ChevronDown, User, LayoutDashboard, ShieldCheck,
-  FlaskConical, BookOpen
+  FlaskConical, BookOpen, Award
 } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 import { useLanguage } from "@/context/LanguageContext";
@@ -235,14 +235,24 @@ export default function Navbar() {
                           </button>
 
                           {profile.role === "dosen" && (
-                            <button
-                              onClick={() => { setDropdownOpen(false); router.push("/lecturer/dashboard"); }}
-                              className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors"
-                              role="menuitem"
-                            >
-                              <ShieldCheck className="h-4 w-4 text-muted-foreground" />
-                              Panel Dosen
-                            </button>
+                            <>
+                              <button
+                                onClick={() => { setDropdownOpen(false); router.push("/lecturer/dashboard"); }}
+                                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors"
+                                role="menuitem"
+                              >
+                                <ShieldCheck className="h-4 w-4 text-muted-foreground" />
+                                Panel Dosen
+                              </button>
+                              <button
+                                onClick={() => { setDropdownOpen(false); router.push("/lecturer/exam-grades"); }}
+                                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-foreground hover:bg-secondary transition-colors"
+                                role="menuitem"
+                              >
+                                <Award className="h-4 w-4 text-amber-500" />
+                                Nilai UTS &amp; UAS
+                              </button>
+                            </>
                           )}
                         </div>
 

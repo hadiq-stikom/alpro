@@ -152,7 +152,13 @@ export default function StudentDashboardPage() {
           .maybeSingle();
 
         if (overallData) {
-          setOverallGrade(overallData as OverallGrade);
+          const od = overallData as unknown as OverallGrade;
+          const badgeCfg = getBadgeFromScore(od.total_avg_score);
+          setOverallGrade({
+            ...od,
+            overall_grade_letter: badgeCfg.level,
+            overall_grade_category: badgeCfg.category,
+          });
         } else if (uniqueMeetingGrades.length > 0) {
           const totalAvg = uniqueMeetingGrades.reduce((acc, curr) => acc + curr.avg_score, 0) / uniqueMeetingGrades.length;
           const badgeCfg = getBadgeFromScore(totalAvg);
@@ -519,8 +525,8 @@ export default function StudentDashboardPage() {
             </div>
           </div>
 
-          {/* Visual Tangga 9 Lencana */}
-          <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2.5 mb-5">
+          {/* Visual Tangga 8 Lencana */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2.5 mb-5">
             {BADGE_CONFIGS.map((badge) => {
               const isCurrentLevel = overallGrade && currentBadge.level === badge.level;
               return (
@@ -580,7 +586,7 @@ export default function StudentDashboardPage() {
                 <div className="font-bold flex items-center gap-1.5">
                   <span>⚡ Cukup</span>
                 </div>
-                <div className="text-[11px] opacity-80">Skor 55–69</div>
+                <div className="text-[11px] opacity-80">Skor 50–69</div>
               </div>
               <span className="font-mono font-black text-sm px-2 py-0.5 rounded bg-sky-500/20 border border-sky-500/30">C • BC</span>
             </div>
@@ -590,7 +596,7 @@ export default function StudentDashboardPage() {
                 <div className="font-bold flex items-center gap-1.5">
                   <span>🌱 Area Perbaikan</span>
                 </div>
-                <div className="text-[11px] opacity-80">Skor 0–54 (Remedial)</div>
+                <div className="text-[11px] opacity-80">Skor 0–49 (Remedial)</div>
               </div>
               <span className="font-mono font-black text-sm px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/30">E s.d CD</span>
             </div>

@@ -44,8 +44,8 @@ export default function SandboxEssayPage() {
     setStage('result');
     
     try {
-      const totalScore = completedResults.reduce((acc, curr) => acc + curr.score, 0);
-      const rawScore = Math.round(totalScore / (completedResults.length || 1));
+      const totalScore = completedResults.reduce((acc, curr) => acc + (Number(curr.score) || 0), 0);
+      const rawScore = Math.round(totalScore / (questions.length || 5));
       const penalty = tabSwitches * 10;
       const finalCalculated = Math.max(0, rawScore - penalty);
       

@@ -212,15 +212,35 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
     setStage('result');
     
     try {
-      const answeredResults = completedResults.filter(r => r.score !== undefined && r.score !== null);
-      if (answeredResults.length === 0) return;
-      
-      const totalScore = answeredResults.reduce((acc, curr) => acc + curr.score, 0);
-      const rawScore = Math.round(totalScore / answeredResults.length);
+      const totalQuestions = essayQuestions.length || 5;
+
+      // Susun breakdown utuh untuk SEMUA butir soal di bank soal (wajib 5 butir soal)
+      const fullBreakdown = essayQuestions.map((q, idx) => {
+        const found = completedResults.find(r => r.id === q.id);
+        if (found && found.score !== undefined && found.score !== null) {
+          return found;
+        }
+        const hasDraft = Boolean(answers[q.id] && answers[q.id].trim().length > 0);
+        return {
+          id: q.id,
+          question: q.text,
+          answer: answers[q.id] || '',
+          score: 0,
+          feedback: hasDraft 
+            ? 'Jawaban belum sempat dinilai sebelum batas waktu pengerjaan habis (skor: 0).' 
+            : 'Soal tidak dijawab (skor: 0).',
+          provider: 'system',
+          attempts: 0
+        };
+      });
+
+      // Hitung total skor dari seluruh butir soal lalu bagi rata dengan total soal ujian (5)
+      const totalScore = fullBreakdown.reduce((acc, curr) => acc + (Number(curr.score) || 0), 0);
+      const rawScore = Math.round(totalScore / totalQuestions);
       const penalty = tabSwitches * 5;
       const finalCalculated = Math.max(0, rawScore - penalty);
       
-      const feedbackSummary = completedResults
+      const feedbackSummary = fullBreakdown
         .map((r, idx) => `Soal #${idx + 1} (Skor ${r.score}): ${r.feedback}`)
         .join('\n\n');
 
@@ -229,10 +249,17 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
         feedback: feedbackSummary,
         aiProvider: completedResults[0]?.provider || 'groq',
         finalScore: finalCalculated,
-        breakdown: completedResults
+        breakdown: fullBreakdown
       });
       
       // Simpan Esai Result ke database dengan telemetri & baseline profile
+      const fullAnswers: Record<string, any> = { ...answers };
+      essayQuestions.forEach(q => {
+        if (!fullAnswers[q.id]) {
+          fullAnswers[q.id] = answers[q.id] || '(Tidak dijawab / waktu pengerjaan habis)';
+        }
+      });
+
       await saveSubmissionToDB(
         'essay', 
         `m${meetingId}-essay`, 
@@ -240,7 +267,7 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
         timeSpent, 
         tabSwitches, 
         {
-          ...answers,
+          ...fullAnswers,
           telemetry: telemetry || null,
           baseline_wpm: baselineProfile?.wpm || null,
           baseline_backspace_ratio: baselineProfile?.backspaceRatio || null
@@ -370,9 +397,9 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
           {isGrading ? (
             <div className="bg-card p-12 rounded-3xl border border-border flex flex-col items-center justify-center text-center shadow-2xl">
               <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-6"></div>
-              <h2 className="text-2xl font-bold mb-2">Menyimpan Rapor Belajar Tuntas...</h2>
+              <h2 className="text-2xl font-bold mb-2">Menyimpan Rapor Ujian...</h2>
               <p className="text-muted-foreground max-w-md">
-                Selamat! Seluruh 5 soal esai telah berhasil Anda selesaikan dengan nilai di atas standar kelulusan (≥80).
+                Hasil evaluasi seluruh butir soal esai sedang dihitung dan disimpan ke buku nilai.
               </p>
             </div>
           ) : essayResult ? (
@@ -384,10 +411,12 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
                 <div className="text-center md:text-left">
                   <div className="flex items-center justify-center md:justify-start gap-2 text-emerald-500 mb-2">
                     <CheckCircle2 className="w-8 h-8" />
-                    <h2 className="text-2xl md:text-3xl font-black">Misi Belajar Tuntas Selesai</h2>
+                    <h2 className="text-2xl md:text-3xl font-black">
+                      {essayResult.finalScore >= 80 ? 'Misi Belajar Tuntas Selesai' : 'Evaluasi Ujian Selesai'}
+                    </h2>
                   </div>
                   <p className="text-muted-foreground text-sm">
-                    Engine AI: <span className="uppercase font-bold text-foreground">{essayResult.aiProvider} API</span> • Seluruh 5 Soal Lolos Standar (≥80)
+                    Engine AI: <span className="uppercase font-bold text-foreground">{essayResult.aiProvider} API</span> • {essayResult.breakdown?.filter(b => b.score >= 80).length || 0} dari {essayQuestions.length} Soal Lolos Standar (≥80)
                   </p>
                 </div>
                 
@@ -417,21 +446,35 @@ export function TheoryAssessment({ meetingId }: TheoryAssessmentProps) {
 
                 {essayQuestions.map((q, idx) => {
                   const itemResult: any = essayResult.breakdown?.find(r => r.id === q.id) || {
-                    score: essayResult.score,
-                    feedback: 'Telah dievaluasi oleh Dosen AI.',
+                    score: 0,
+                    feedback: 'Soal tidak dijawab.',
                     answer: ''
                   };
+                  const isPassed = (itemResult.score || 0) >= 80;
+                  const isUnanswered = (itemResult.score || 0) === 0 && (!itemResult.answer || itemResult.answer === '(Tidak dijawab / waktu pengerjaan habis)');
 
                   return (
                     <div key={q.id} className="bg-slate-50 dark:bg-slate-900/60 p-4 sm:p-5 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-3.5 shadow-2xs">
                       <div className="flex items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800/80 pb-2.5">
                         <span className="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
-                          <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[11px] font-black flex items-center justify-center">
-                            ✓
+                          <span className={`w-5 h-5 rounded-full text-[11px] font-black flex items-center justify-center ${
+                            isPassed 
+                              ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400' 
+                              : isUnanswered 
+                                ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400' 
+                                : 'bg-amber-500/20 text-amber-600 dark:text-amber-400'
+                          }`}>
+                            {isPassed ? '✓' : isUnanswered ? '✗' : '!'}
                           </span>
                           Soal #{idx + 1}
                         </span>
-                        <span className="font-bold text-xs sm:text-sm px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
+                        <span className={`font-bold text-xs sm:text-sm px-2.5 py-0.5 rounded-full border ${
+                          isPassed 
+                            ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/30' 
+                            : isUnanswered 
+                              ? 'bg-rose-500/10 text-rose-700 dark:text-rose-300 border-rose-500/30' 
+                              : 'bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/30'
+                        }`}>
                           Skor: {itemResult.score}/100
                         </span>
                       </div>

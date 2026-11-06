@@ -158,6 +158,12 @@ export function SubmissionDetailCard({ submission, onScoreUpdated }: SubmissionD
     .filter(([key]) => !NON_QUESTION_KEYS.has(key))
     .sort(([a], [b]) => a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }));
 
+  const answeredCount = questionEntries.filter(([_, ans]) => {
+    const text = typeof ans === "string" ? ans.trim() : JSON.stringify(ans || "");
+    return text.length > 0 && !text.includes("Tidak dijawab");
+  }).length;
+  const unansweredCount = questionEntries.length - answeredCount;
+
   // Kasus fallback jika hanya ada student_answer tunggal
   const singleAnswer = parsedAnswers.student_answer;
   const isWarmup = submission.quiz_key?.includes("warmup") || parsedAnswers.sampleText;
@@ -423,13 +429,24 @@ export function SubmissionDetailCard({ submission, onScoreUpdated }: SubmissionD
             <FileText className="w-4 h-4 text-primary" />
             Lembar Jawaban Mahasiswa:
           </h4>
-          <span className="text-xs text-muted-foreground">
-            {questionEntries.length > 0 
-              ? `${questionEntries.length} Butir Soal Terjawab`
-              : isWarmup 
-              ? "Sesi Obrolan Baseline" 
-              : "1 Jawaban"}
-          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            {questionEntries.length > 0 ? (
+              <>
+                <span className="text-xs text-muted-foreground font-semibold">
+                  {answeredCount} dari {questionEntries.length} Butir Soal Terjawab
+                </span>
+                {unansweredCount > 0 && (
+                  <span className="text-[11px] font-bold text-rose-600 dark:text-rose-400 bg-rose-500/10 px-2.5 py-0.5 rounded-full border border-rose-500/30">
+                    ⚠️ {unansweredCount} Soal Tidak Dijawab (Skor 0)
+                  </span>
+                )}
+              </>
+            ) : isWarmup ? (
+              <span className="text-xs text-muted-foreground">Sesi Obrolan Baseline</span>
+            ) : (
+              <span className="text-xs text-muted-foreground">1 Jawaban</span>
+            )}
+          </div>
         </div>
 
         {/* KASUS A: Obrolan Pra-Ujian (Warmup Baseline) */}
@@ -455,24 +472,39 @@ export function SubmissionDetailCard({ submission, onScoreUpdated }: SubmissionD
               const qNum = idx + 1;
               const qAiFeedback = aiFeedbackMap[qNum];
               const isRubricOpen = !!openRubrics[qKey];
+              const isUnanswered = wordCount === 0 || answerText.includes("Tidak dijawab") || (qAiFeedback && qAiFeedback.score === 0 && wordCount < 5);
 
               return (
                 <div 
                   key={qKey} 
-                  className="bg-background rounded-xl border border-border/80 overflow-hidden shadow-sm"
+                  className={`bg-background rounded-xl border overflow-hidden shadow-sm transition-all ${
+                    isUnanswered ? 'border-rose-500/30 bg-rose-500/[0.02]' : 'border-border/80'
+                  }`}
                 >
                   {/* Header Butir Soal */}
-                  <div className="p-4 bg-muted/30 border-b border-border/70 flex flex-wrap items-center justify-between gap-3">
+                  <div className={`p-4 border-b flex flex-wrap items-center justify-between gap-3 ${
+                    isUnanswered ? 'bg-rose-500/10 border-rose-500/20' : 'bg-muted/30 border-border/70'
+                  }`}>
                     <div className="flex items-center gap-2">
-                      <span className="w-7 h-7 rounded-lg bg-primary text-primary-foreground font-black text-xs flex items-center justify-center">
+                      <span className={`w-7 h-7 rounded-lg font-black text-xs flex items-center justify-center ${
+                        isUnanswered 
+                          ? 'bg-rose-500/20 text-rose-600 dark:text-rose-400' 
+                          : 'bg-primary text-primary-foreground'
+                      }`}>
                         #{qNum}
                       </span>
                       <div>
-                        <div className="text-sm font-bold text-foreground">
-                          Soal #{qNum} <span className="text-xs font-mono font-normal text-muted-foreground">({qKey})</span>
+                        <div className="text-sm font-bold text-foreground flex items-center gap-2">
+                          <span>Soal #{qNum}</span>
+                          <span className="text-xs font-mono font-normal text-muted-foreground">({qKey})</span>
+                          {isUnanswered && (
+                            <span className="px-2 py-0.5 rounded-full bg-rose-500/15 text-rose-600 dark:text-rose-400 font-extrabold text-[10px] border border-rose-500/30">
+                              ❌ Tidak Dijawab (Skor 0)
+                            </span>
+                          )}
                         </div>
                         <div className="text-[11px] text-muted-foreground">
-                          {wordCount} kata • {charCount} karakter
+                          {isUnanswered ? "Tidak ada rekaman jawaban" : `${wordCount} kata • ${charCount} karakter`}
                         </div>
                       </div>
                     </div>
@@ -538,9 +570,15 @@ export function SubmissionDetailCard({ submission, onScoreUpdated }: SubmissionD
                     <div className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
                       Jawaban Mahasiswa:
                     </div>
-                    <div className="p-4 rounded-xl bg-muted/20 border border-border/60 text-sm leading-relaxed text-foreground whitespace-pre-wrap font-sans selection:bg-primary/20">
-                      {answerText}
-                    </div>
+                    {isUnanswered ? (
+                      <div className="p-4 rounded-xl bg-rose-500/5 border border-rose-500/20 text-xs text-rose-700 dark:text-rose-400 font-medium italic">
+                        Mahasiswa tidak mengisi jawaban pada butir soal ini (atau batas waktu pengerjaan habis sebelum soal diselesaikan). Sistem menetapkan skor 0 untuk butir soal ini.
+                      </div>
+                    ) : (
+                      <div className="p-4 rounded-xl bg-muted/20 border border-border/60 text-sm leading-relaxed text-foreground whitespace-pre-wrap font-sans selection:bg-primary/20">
+                        {answerText}
+                      </div>
+                    )}
                   </div>
 
                   {/* Ulasan & Skor AI untuk Butir Soal Ini (Jika Ada) */}

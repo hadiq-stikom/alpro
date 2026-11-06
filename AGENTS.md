@@ -56,12 +56,12 @@ Seluruh AI Agent dan developer WAJIB mematuhi spesifikasi di [`PROJECT_SPEC.md`]
    - **Penutup Percabangan**: Wajib ditutup dengan **`endif`** pada level blok yang bersesuaian.
 
 7. **Sistem Gamifikasi & Lencana Capaian (*Badge System*)**:
-   - **Skala 9 Tingkat Capaian**: `E`, `DE`, `D`, `CD`, `C`, `BC`, `B`, `AB`, `A` dengan pembeda warna visual spesifik.
+   - **Skala 8 Tingkat Capaian**: `E` (0–29), `D` (30–39), `CD` (40–49), `C` (50–59), `BC` (60–69), `B` (70–79), `AB` (80–89), `A` (90–100) dengan pembeda warna visual spesifik.
    - **4 Klaster Capaian**:
-     - `Kurang`: E, DE, D, CD
-     - `Cukup`: C, BC
-     - `Baik`: B, AB
-     - `Sempurna`: A
+     - `Kurang`: E, D, CD (Skor 0–49)
+     - `Cukup`: C, BC (Skor 50–69)
+     - `Baik`: B, AB (Skor 70–89)
+     - `Sempurna`: A (Skor 90–100)
    - **Distribusi Lencana**:
      - **Halaman Mahasiswa**: Menampilkan rata-rata capaian seluruh materi dan capaian spesifik per pertemuan.
      - **Halaman Dosen**: Menampilkan statistik capaian kelas dan rincian performa per mahasiswa baik secara umum maupun per pertemuan.

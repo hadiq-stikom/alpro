@@ -26,6 +26,8 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 import AnimatedNestedLoopDefinition from './chapter10/AnimatedNestedLoopDefinition';
+import NestedLoopRepresentationMatrix from './chapter10/NestedLoopRepresentationMatrix';
+import NestedLoopCombinationsShowcase from './chapter10/NestedLoopCombinationsShowcase';
 import NestedGridCoordsLab from './chapter10/NestedGridCoordsLab';
 import PatternGeneratorLab from './chapter10/PatternGeneratorLab';
 import MultiplicationMatrixLab from './chapter10/MultiplicationMatrixLab';
@@ -161,13 +163,19 @@ export default function Pertemuan10() {
                   Sebagai contoh, jika <code className="font-mono font-bold">M = 3</code> dan <code className="font-mono font-bold">N = 4</code>, maka blok kode terdalam akan dipanggil sebanyak <code className="font-mono font-bold text-purple-600 dark:text-purple-400">3 × 4 = 12</code> kali secara teratur.
                 </p>
               </div>
+
+              {/* Komparasi 4 Representasi Baku Perulangan Bersarang (Aturan 38 & 39) */}
+              <NestedLoopRepresentationMatrix />
+
+              {/* 4 Ragam Kombinasi Perulangan Bersarang & Studi Kasus Nyata */}
+              <NestedLoopCombinationsShowcase />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════════ */}
-      {/* SUB-BAB 2: PEMETAAN KOORDINAT SPASIAL BARIS-KOLOM (i, j) & MATRIKS 2D   */}
+      {/* SUB-BAB 2: PEMETAAN KOORDINAT SPASIAL BARIS-KOLOM (i, j) & GRID KONSOL  */}
       {/* ═══════════════════════════════════════════════════════════════════════ */}
       <div className={`border border-border/60 rounded-2xl bg-secondary/5 shadow-xs transition-all hover:border-purple-500/40 ${isOpen2 ? 'overflow-visible' : 'overflow-hidden'}`}>
         <button
@@ -179,11 +187,11 @@ export default function Pertemuan10() {
               <span className="p-2 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 shrink-0">
                 <Grid className="w-6 h-6 md:w-7 md:h-7" />
               </span>
-              <span>2. Pemetaan Koordinat Spasial: Representasi Baris-Kolom ($i, j$) &amp; Matriks 2D</span>
+              <span>2. Pemetaan Koordinat Spasial: Posisi Baris-Kolom ($i, j$) &amp; Grid Layar Konsol</span>
             </h2>
             <div className="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-semibold">
               <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-              <span>Capaian: Mampu memetakan indeks linear memori ke dalam koordinat baris dan kolom dua dimensi secara presisi.</span>
+              <span>Capaian: Mampu mengontrol pergerakan kursor output dua dimensi (baris-demi-baris) menggunakan variabel pencacah i dan j.</span>
             </div>
           </div>
           <div className={`p-2 rounded-full bg-secondary/80 text-muted-foreground transition-transform duration-300 shrink-0 ${isOpen2 ? 'rotate-180 bg-purple-500/20 text-purple-700 dark:text-purple-300' : 'group-hover:bg-secondary'}`}>
@@ -201,7 +209,7 @@ export default function Pertemuan10() {
               className="p-6 md:p-8 border-t border-border/60 space-y-6 text-base leading-relaxed text-slate-700 dark:text-slate-300"
             >
               <p>
-                Di layar komputer dan memori fisik, data matriks sebenarnya tersimpan secara sekuensial (garis lurus 1 dimensi). Perulangan bersarang adalah alat yang digunakan programmer untuk <strong>mentransformasikan urutan memori 1D menjadi matriks 2D</strong> yang memiliki tinggi (baris) dan lebar (kolom).
+                Di layar konsol komputer, teks dicetak karakter-demi-karakter dari kiri ke kanan, lalu berganti baris dari atas ke bawah. Perulangan bersarang adalah alat utama programmer untuk <strong>mengendalikan posisi kursor dua dimensi $(i, j)$</strong>, di mana variabel outer loop <code className="font-mono font-bold text-purple-700 dark:text-purple-300">i</code> mewakili nomor baris (arah vertikal) dan variabel inner loop <code className="font-mono font-bold text-sky-700 dark:text-sky-300">j</code> mewakili nomor kolom (arah horizontal).
               </p>
 
               {/* Lab Simulator Grid Coords */}
@@ -214,20 +222,17 @@ export default function Pertemuan10() {
                     <span>Penjelajahan Baris-demi-Baris (Row-Major Order):</span>
                   </div>
                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Standar baku yang paling umum: Outer loop mengatur indeks baris <code className="font-mono font-bold text-purple-700 dark:text-purple-300">i</code> (0, 1, 2, ...), sedangkan inner loop menelusuri kolom <code className="font-mono font-bold text-sky-700 dark:text-sky-300">j</code> dari kiri ke kanan.
+                    Standar baku yang paling umum: Outer loop mengatur indeks baris <code className="font-mono font-bold text-purple-700 dark:text-purple-300">i</code> (0, 1, 2, ...), sedangkan inner loop menelusuri kolom <code className="font-mono font-bold text-sky-700 dark:text-sky-300">j</code> dari kiri ke kanan sampai batas kolom tercapai.
                   </p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-card border border-border space-y-2">
                   <div className="font-bold text-sky-700 dark:text-sky-400 flex items-center gap-2">
                     <Cpu className="w-4 h-4" />
-                    <span>Konversi Koordinat ke Alamat Memori RAM:</span>
+                    <span>Mekanisme Pindah Baris (Newline Carriage Return):</span>
                   </div>
                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Untuk mengubah koordinat 2D <code className="font-mono font-bold">(i, j)</code> menjadi indeks array linear 1 dimensi, gunakan rumus standar:
-                    <span className="block font-mono font-bold text-emerald-700 dark:text-emerald-300 pt-1">
-                      indeks_1D = (i × total_kolom) + j
-                    </span>
+                    Karakter dicetak menyamping memakai <code className="font-mono font-bold text-emerald-700 dark:text-emerald-300">print(..., end=" ")</code> di dalam inner loop. Tepat setelah inner loop selesai menyapu seluruh kolom pada satu baris, outer loop memanggil <code className="font-mono font-bold text-purple-700 dark:text-purple-300">print()</code> (tanpa parameter) tepat 1 kali untuk menurunkan kursor ke baris berikutnya.
                   </p>
                 </div>
               </div>
@@ -432,11 +437,49 @@ export default function Pertemuan10() {
                 <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-950 dark:text-emerald-200 space-y-2">
                   <div className="font-bold flex items-center gap-2 text-emerald-800 dark:text-emerald-300">
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Strategi Keluar dari Seluruh Loop Sekaligus:</span>
+                    <span>Pola Terstruktur Murni (Single-Entry Single-Exit / SESE):</span>
                   </div>
                   <p className="leading-relaxed">
-                    Untuk membatalkan seluruh perulangan ketika data ditemukan, gunakan <strong>Boolean Flag</strong> (misal: <code className="font-mono bg-emerald-500/20 px-1 rounded">found = True</code>) lalu periksa <code className="font-mono bg-emerald-500/20 px-1 rounded">if found: break</code> di outer loop, atau bungkus algoritma ke dalam fungsi dan gunakan <code className="font-mono bg-emerald-500/20 px-1 rounded">return</code>.
+                    Sesuai kaidah pemrograman terstruktur (Aturan 41 &amp; 42), hindari ketergantungan pada <code>break</code>. Gunakan perulangan terkondisi <code>while</code> dengan penanda boolean ramah kognitif <code>ditemukan == False</code> di kedua tingkatan loop:
                   </p>
+                  <pre className="p-2.5 rounded-lg bg-emerald-950/20 border border-emerald-500/30 font-mono text-[11px] text-emerald-900 dark:text-emerald-200 overflow-x-auto leading-relaxed">
+{`# Mencari pasangan koordinat (i, j) yang hasil kalinya cocok dengan target (misal target = 12)
+ditemukan = False
+i = 1
+while i <= M and ditemukan == False:
+    j = 1
+    while j <= N and ditemukan == False:
+        if (i * j) == target:
+            target_i = i
+            target_j = j
+            ditemukan = True  # Berhenti terstruktur di kedua loop
+        j += 1
+    i += 1`}
+                  </pre>
+                  <p className="text-[11px] text-emerald-800 dark:text-emerald-300">
+                    Ketika kondisi target terpenuhi, bendera <code>ditemukan = True</code> menyebabkan pengujian kondisi di kedua perulangan bernilai False secara bersih tanpa interupsi paksa.
+                  </p>
+                </div>
+              </div>
+
+              {/* Jembatan Pedagogis (Cliffhanger) ke Bab 11: Struktur Data List & Tuple */}
+              <div className="p-6 rounded-2xl bg-gradient-to-r from-purple-500/10 via-indigo-500/10 to-sky-500/10 border-2 border-purple-500/30 space-y-3">
+                <div className="flex items-center gap-2 text-purple-700 dark:text-purple-300 font-bold text-sm">
+                  <Sparkles className="w-5 h-5 text-amber-500" />
+                  <span>Jembatan Menuju Bab 11: Dari Menampilkan Layar Menuju Menyimpan Data Memori</span>
+                </div>
+                <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  Sepanjang <strong>Pertemuan 10</strong> ini, kita telah berhasil menghitung ribuan titik koordinat, merekayasa pola visual geometris, hingga menyusun tabel perkalian matematika secara dinamis. Namun perhatikan satu hal: <strong>seluruh data tersebut langsung hilang dari memori begitu selesai dicetak ke layar konsol!</strong>
+                </p>
+                <p className="text-xs md:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                  Lalu, bagaimana jika hasil perhitungan multi-dimensi tersebut ingin kita <strong>SIMPAN</strong> ke dalam variabel agar dapat dicari, dimanipulasi, dan diolah kembali kapan saja? Jawabannya akan kita bedah tuntas pada materi berikutnya: <strong className="text-purple-700 dark:text-purple-400">Pertemuan 11: Struktur Data Berurutan (List &amp; Tuple)</strong>!
+                </p>
+                <div className="pt-2 flex items-center justify-between text-xs font-semibold text-purple-700 dark:text-purple-300">
+                  <span>Prasyarat Algoritma Selesai Dipelajari: Kontrol Alur 2D</span>
+                  <span className="flex items-center gap-1 font-bold">
+                    <span>Materi Selanjutnya: List &amp; Tuple</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
                 </div>
               </div>
             </motion.div>

@@ -204,11 +204,11 @@ console.log("Total Akumulasi =", totalSum);`;
         
         {/* Kolom Kiri (7 Spans): Tabel Perkalian Visual */}
         <div className="lg:col-span-7 space-y-3">
-          <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 shadow-inner flex flex-col items-center justify-center min-h-[340px]">
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border dark:border-slate-800 shadow-inner flex flex-col items-center justify-center min-h-[340px]">
             
-            <div className="w-full mb-4 flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="w-full mb-4 flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400">
               <span>TABEL HASIL KALI (i × j):</span>
-              <span className="text-amber-300 font-bold">
+              <span className="text-amber-600 dark:text-amber-300 font-bold">
                 {maxRow} × {maxCol} = {maxRow * maxCol} Sel
               </span>
             </div>
@@ -218,16 +218,16 @@ console.log("Total Akumulasi =", totalSum);`;
               <table className="border-collapse">
                 <thead>
                   <tr>
-                    <th className="p-2 text-center text-xs text-slate-500 font-bold border-b border-r border-slate-800">
+                    <th className="p-2 text-center text-xs text-slate-500 font-bold border-b border-r border-slate-200 dark:border-slate-800">
                       ×
                     </th>
                     {Array.from({ length: maxCol }).map((_, c) => (
                       <th
                         key={c}
-                        className={`p-2 text-center text-xs font-black border-b border-slate-800 transition-colors ${
+                        className={`p-2 text-center text-xs font-black border-b border-slate-200 dark:border-slate-800 transition-colors ${
                           hoveredCoord && hoveredCoord.c === c + 1
-                            ? 'text-sky-300 bg-sky-950/60'
-                            : 'text-slate-400'
+                            ? 'text-sky-700 dark:text-sky-300 bg-sky-100 dark:bg-sky-950/60'
+                            : 'text-slate-500 dark:text-slate-400'
                         }`}
                       >
                         j={c + 1}
@@ -240,10 +240,10 @@ console.log("Total Akumulasi =", totalSum);`;
                     <tr key={r}>
                       {/* Header Baris */}
                       <th
-                        className={`p-2 text-center text-xs font-black border-r border-slate-800 transition-colors ${
+                        className={`p-2 text-center text-xs font-black border-r border-slate-200 dark:border-slate-800 transition-colors ${
                           hoveredCoord && hoveredCoord.r === r + 1
-                            ? 'text-purple-300 bg-purple-950/60'
-                            : 'text-slate-400'
+                            ? 'text-purple-700 dark:text-purple-300 bg-purple-100 dark:bg-purple-950/60'
+                            : 'text-slate-500 dark:text-slate-400'
                         }`}
                       >
                         i={r + 1}
@@ -264,8 +264,8 @@ console.log("Total Akumulasi =", totalSum);`;
                                 isHovered
                                   ? 'bg-amber-400 text-slate-950 scale-125 z-20 shadow-lg ring-2 ring-amber-300 font-black'
                                   : cell.isMatch
-                                  ? 'bg-slate-900 border border-slate-700 text-slate-100 hover:border-amber-400 hover:text-amber-300'
-                                  : 'bg-slate-950/40 text-slate-700 border border-slate-900 opacity-30'
+                                  ? 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 hover:border-amber-400 hover:text-amber-500'
+                                  : 'bg-slate-200/50 dark:bg-slate-950/40 text-slate-400 dark:text-slate-700 border border-slate-200 dark:border-slate-900 opacity-30'
                               }`}
                             >
                               {cell.isMatch ? cell.product : '·'}
@@ -280,14 +280,14 @@ console.log("Total Akumulasi =", totalSum);`;
             </div>
 
             {/* Inspeksi Interaktif di Bawah */}
-            <div className="mt-4 p-2.5 px-4 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-slate-300 flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <div className="mt-4 p-2.5 px-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0" />
               {hoveredCoord ? (
                 <span>
-                  Evaluasi: Baris <strong className="text-purple-300">i={hoveredCoord.r}</strong> × Kolom <strong className="text-sky-300">j={hoveredCoord.c}</strong> = <strong className="text-amber-300 text-sm font-black">{hoveredCoord.product}</strong>
+                  Evaluasi: Baris <strong className="text-purple-700 dark:text-purple-300">i={hoveredCoord.r}</strong> × Kolom <strong className="text-sky-700 dark:text-sky-300">j={hoveredCoord.c}</strong> = <strong className="text-amber-600 dark:text-amber-300 text-sm font-black">{hoveredCoord.product}</strong>
                 </span>
               ) : (
-                <span className="text-slate-500 italic">
+                <span className="text-slate-400 dark:text-slate-500 italic">
                   Arahkan kursor ke angka tabel untuk melihat rumus perkalian sel
                 </span>
               )}
@@ -299,7 +299,7 @@ console.log("Total Akumulasi =", totalSum);`;
         {/* Kolom Kanan (5 Spans): Editor Kode & Total Akumulasi */}
         <div className="lg:col-span-5 space-y-4">
           
-          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 text-xs font-mono shadow-sm">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 p-4 text-xs font-mono shadow-sm">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-slate-400">
               <span className="flex items-center gap-2 font-bold text-slate-200">
                 <Code2 className="w-4 h-4 text-amber-400" />

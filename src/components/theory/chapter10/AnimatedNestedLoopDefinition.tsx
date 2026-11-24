@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Repeat, 
   RotateCw, 
+  RotateCcw,
   Sparkles, 
   CheckCircle2, 
   Play, 
@@ -22,30 +23,26 @@ import {
 export default function AnimatedNestedLoopDefinition() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isRunning, setIsRunning] = useState(true);
-  const [outerStep, setOuterStep] = useState(0); // Outer loop: 0..2 (3 baris)
-  const [innerStep, setInnerStep] = useState(0); // Inner loop: 0..3 (4 kolom)
-  const [totalSteps, setTotalSteps] = useState(1);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0); // 0 .. 11 (Single Source of Truth)
 
   const TOTAL_OUTER = 3;
   const TOTAL_INNER = 4;
+  const TOTAL_STEPS = TOTAL_OUTER * TOTAL_INNER; // 12
 
-  // Efek simulasi jarum jam / gear nested loop
+  // Nilai outer & inner diturunkan secara deterministik dari step linear (mencegah bug desinkronisasi / double increment)
+  const outerStep = Math.floor(currentStepIndex / TOTAL_INNER); // 0, 1, 2
+  const innerStep = currentStepIndex % TOTAL_INNER;             // 0, 1, 2, 3
+  const totalSteps = currentStepIndex + 1;                      // 1 .. 12
+
+  // Efek simulasi perputaran deterministik jarum jam / gear nested loop
   useEffect(() => {
     if (!isRunning) return;
     const timer = setInterval(() => {
-      setInnerStep((prevInner) => {
-        if (prevInner + 1 >= TOTAL_INNER) {
-          // Inner loop selesai satu putaran penuh -> Outer loop melangkah 1 kali
-          setOuterStep((prevOuter) => (prevOuter + 1) % TOTAL_OUTER);
-          return 0;
-        }
-        return prevInner + 1;
-      });
-      setTotalSteps((prev) => (prev >= TOTAL_OUTER * TOTAL_INNER ? 1 : prev + 1));
+      setCurrentStepIndex((prev) => (prev + 1) % TOTAL_STEPS);
     }, 900);
 
     return () => clearInterval(timer);
-  }, [isRunning]);
+  }, [isRunning, TOTAL_STEPS]);
 
   return (
     <div className="w-full my-8">
@@ -132,19 +129,19 @@ export default function AnimatedNestedLoopDefinition() {
                 </div>
 
                 {/* VISUALISASI DINAMIS: SIMULATOR ORBIT DUA LOOP */}
-                <div className="p-6 rounded-2xl bg-slate-900 text-slate-100 dark:bg-black/80 border border-slate-800 shadow-inner flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="p-6 rounded-2xl bg-slate-100 dark:bg-slate-900/90 text-slate-900 dark:text-slate-100 border border-slate-200 dark:border-slate-800 shadow-inner flex flex-col md:flex-row items-center justify-between gap-6">
                   
                   {/* Visual Matriks Mini Interaktif */}
                   <div className="flex-1 w-full space-y-3">
                     <div className="flex items-center justify-between text-xs font-mono">
-                      <span className="text-slate-400">STATUS ALUR ITERASI:</span>
-                      <span className="text-amber-300 font-bold">
+                      <span className="text-slate-600 dark:text-slate-400">STATUS ALUR ITERASI:</span>
+                      <span className="text-amber-600 dark:text-amber-300 font-bold">
                         Langkah #{totalSteps} dari {TOTAL_OUTER * TOTAL_INNER}
                       </span>
                     </div>
 
                     {/* Grid Matriks 3 x 4 */}
-                    <div className="grid grid-cols-4 gap-2.5 p-4 rounded-xl bg-slate-950/80 border border-slate-800">
+                    <div className="grid grid-cols-4 gap-2.5 p-4 rounded-xl bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800">
                       {Array.from({ length: TOTAL_OUTER }).map((_, r) => (
                         Array.from({ length: TOTAL_INNER }).map((_, c) => {
                           const isActive = r === outerStep && c === innerStep;
@@ -156,8 +153,8 @@ export default function AnimatedNestedLoopDefinition() {
                                 isActive
                                   ? 'bg-purple-600 text-white border-purple-400 scale-105 shadow-lg shadow-purple-500/50 ring-2 ring-purple-400'
                                   : isVisited
-                                  ? 'bg-emerald-950/50 text-emerald-300 border-emerald-800/80'
-                                  : 'bg-slate-900 text-slate-500 border-slate-800'
+                                  ? 'bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800/80'
+                                  : 'bg-slate-50 dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-800'
                               }`}
                             >
                               <span className="text-[10px] opacity-75">({r}, {c})</span>
@@ -170,14 +167,14 @@ export default function AnimatedNestedLoopDefinition() {
                       ))}
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono pt-1">
-                      <span>Outer (i) = <strong className="text-purple-300 font-bold">{outerStep}</strong> (Baris {outerStep + 1} dari {TOTAL_OUTER})</span>
-                      <span>Inner (j) = <strong className="text-sky-300 font-bold">{innerStep}</strong> (Kolom {innerStep + 1} dari {TOTAL_INNER})</span>
+                    <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 font-mono pt-1">
+                      <span>Outer (i) = <strong className="text-purple-700 dark:text-purple-300 font-bold">{outerStep}</strong> (Baris {outerStep + 1} dari {TOTAL_OUTER})</span>
+                      <span>Inner (j) = <strong className="text-sky-700 dark:text-sky-300 font-bold">{innerStep}</strong> (Kolom {innerStep + 1} dari {TOTAL_INNER})</span>
                     </div>
                   </div>
 
                   {/* Panel Indikator Telemetri & Kontrol Animasi */}
-                  <div className="w-full md:w-64 flex flex-col items-center justify-center gap-4 p-4 rounded-xl bg-slate-950 border border-slate-800 shrink-0">
+                  <div className="w-full md:w-64 flex flex-col items-center justify-center gap-4 p-4 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 shrink-0">
                     <div className="text-center space-y-1">
                       <div className="text-[10px] uppercase font-mono font-bold tracking-wider text-purple-400">
                         Kecepatan Jarum Jam
@@ -209,6 +206,16 @@ export default function AnimatedNestedLoopDefinition() {
                         {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                         <span>{isRunning ? 'Jeda Simulasi' : 'Jalankan'}</span>
                       </button>
+                      <button
+                        onClick={() => {
+                          setCurrentStepIndex(0);
+                          setIsRunning(false);
+                        }}
+                        className="p-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                        title="Reset ke Langkah Awal"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                      </button>
                     </div>
                   </div>
 
@@ -234,7 +241,7 @@ export default function AnimatedNestedLoopDefinition() {
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Kode Python */}
-                  <div className="rounded-2xl border border-slate-700/80 bg-slate-950 p-4 space-y-2 text-xs font-mono">
+                  <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 p-4 space-y-2 text-xs font-mono shadow-sm">
                     <div className="flex items-center justify-between pb-2 border-b border-slate-800 text-amber-400 font-bold">
                       <span className="flex items-center gap-1.5">
                         <Code2 className="w-4 h-4 text-emerald-400" />
@@ -258,7 +265,7 @@ for i in range(3):
                   </div>
 
                   {/* Kode JavaScript */}
-                  <div className="rounded-2xl border border-slate-700/80 bg-slate-950 p-4 space-y-2 text-xs font-mono">
+                  <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 p-4 space-y-2 text-xs font-mono shadow-sm">
                     <div className="flex items-center justify-between pb-2 border-b border-slate-800 text-amber-400 font-bold">
                       <span className="flex items-center gap-1.5">
                         <Code2 className="w-4 h-4 text-sky-400" />

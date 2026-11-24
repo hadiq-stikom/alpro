@@ -353,11 +353,11 @@ for (let i = 0; i < N; i++) {
         
         {/* Kolom Kiri (6 Spans): Visual Kanvas Pola */}
         <div className="lg:col-span-6 space-y-3">
-          <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 shadow-inner min-h-[340px] flex flex-col items-center justify-center">
+          <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-950 border border-border dark:border-slate-800 shadow-inner min-h-[340px] flex flex-col items-center justify-center">
             
-            <div className="w-full mb-4 flex items-center justify-between text-xs font-mono text-slate-400">
+            <div className="w-full mb-4 flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400">
               <span>OUTPUT KANVAS GEOMETRIS 2D:</span>
-              <span className="text-emerald-400 font-bold">
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                 N = {sizeN} × {sizeN}
               </span>
             </div>
@@ -367,7 +367,7 @@ for (let i = 0; i < N; i++) {
               {patternGrid.map((row, r) => (
                 <div key={r} className="flex gap-1.5 items-center justify-center">
                   {/* Indikator Baris di Kiri */}
-                  <span className="text-[10px] text-slate-600 w-5 text-right font-mono pr-1">
+                  <span className="text-[10px] text-slate-400 dark:text-slate-600 w-5 text-right font-mono pr-1">
                     i={r}
                   </span>
 
@@ -382,8 +382,8 @@ for (let i = 0; i < N; i++) {
                           isHovered
                             ? 'bg-amber-400 text-slate-950 scale-125 z-20 shadow-lg ring-2 ring-amber-300'
                             : cell.isFilled
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30'
-                            : 'bg-slate-900/40 text-slate-700 border border-slate-900 opacity-40'
+                            ? 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30'
+                            : 'bg-slate-200/50 dark:bg-slate-900/40 text-slate-400 dark:text-slate-700 border border-slate-200 dark:border-slate-900 opacity-40'
                         }`}
                       >
                         {cell.isFilled ? cell.char : '·'}
@@ -395,14 +395,14 @@ for (let i = 0; i < N; i++) {
             </div>
 
             {/* Inspeksi Sel saat di-hover */}
-            <div className="mt-5 p-2 px-4 rounded-xl bg-slate-900 border border-slate-800 text-[11px] font-mono text-slate-300 flex items-center gap-2">
-              <Info className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="mt-5 p-2 px-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <Info className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
               {hoveredCell ? (
                 <span>
-                  Koordinat: Baris <strong className="text-purple-300">i={hoveredCell.r}</strong>, Kolom <strong className="text-sky-300">j={hoveredCell.c}</strong> → Karakter: <strong className="text-emerald-300">"{hoveredCell.val}"</strong>
+                  Koordinat: Baris <strong className="text-purple-700 dark:text-purple-300">i={hoveredCell.r}</strong>, Kolom <strong className="text-sky-700 dark:text-sky-300">j={hoveredCell.c}</strong> → Karakter: <strong className="text-emerald-700 dark:text-emerald-300">"{hoveredCell.val}"</strong>
                 </span>
               ) : (
-                <span className="text-slate-500 italic">
+                <span className="text-slate-400 dark:text-slate-500 italic">
                   Arahkan kursor ke salah satu kotak untuk menginspeksi nilai koordinat (i, j)
                 </span>
               )}
@@ -414,7 +414,7 @@ for (let i = 0; i < N; i++) {
         {/* Kolom Kanan (6 Spans): Code Snippet & Bedah Logika */}
         <div className="lg:col-span-6 space-y-4">
           
-          <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 text-xs font-mono shadow-sm">
+          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 p-4 text-xs font-mono shadow-sm">
             <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-slate-400">
               <span className="flex items-center gap-2 font-bold text-slate-200">
                 <Code2 className="w-4 h-4 text-emerald-400" />

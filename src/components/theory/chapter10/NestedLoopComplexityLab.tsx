@@ -284,7 +284,7 @@ export default function NestedLoopComplexityLab() {
 
             {/* Output Log Console Simulasi (7 Spans) */}
             <div className="md:col-span-7 space-y-3">
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 font-mono text-xs">
+              <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 p-4 font-mono text-xs shadow-sm">
                 <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-800 text-slate-400">
                   <span className="flex items-center gap-1.5 text-slate-200 font-bold">
                     <Terminal className="w-4 h-4 text-rose-400" />

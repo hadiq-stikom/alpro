@@ -523,7 +523,12 @@ Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu da
    - Alokasi waktu memfasilitasi siklus lengkap: Konsep & Analogi (30-35') $\rightarrow$ Visualizer Lab (40-50') $\rightarrow$ Hands-on Coding Mandiri (35-45') $\rightarrow$ Asesmen Esai AI Bertingkat (35-40').
 2. **Matriks Silabus Baku Pertemuan 9 s.d. 16**:
    - **Pertemuan 09: Dasar Perulangan (FOR & WHILE Loop)**: Iterasi terhitung (`range`), iterasi berkondisi (`sentinel/flag`), pencegahan *infinite loop*, variabel akumulator (*sum/count*).
-   - **Pertemuan 10: Perulangan Bersarang (Nested Loop)**: Iterasi multi-dimensi, alur outer vs inner loop, pemetaan koordinat spasial ($i, j$), pembangkit pola visual geometris, kompleksitas $O(n^2)$.
+   - **Pertemuan 10: Perulangan Bersarang (Nested Loop)**:
+     - *Batasan Pedagogis Murni*: Fokus mutlak pada kontrol alur dua dimensi dan pola output konsol (DILARANG menggunakan pengindeksan array `matriks[i][j]` atau rumus offset memori RAM linear 1D).
+     - *Kaidah Awal 4 Representasi*: Menyajikan FOR bersarang dan WHILE bersarang secara berdampingan (Naratif, Flowchart ANSI/ISO, Pseudocode CLRS 3 Blok, Kode Dwibahasa) dengan penekanan jebakan reset counter inner `j = 1` pada WHILE bersarang.
+     - *4 Ragam Kombinasi*: `for-for`, `for-while`, `while-while`, `while-for` beserta simulasi dan use case aplikatif dunia nyata.
+     - *Jembatan Pedagogis (Cliffhanger)*: Pengantar motivasi di akhir materi menuju Bab 11 (dari mencetak ke konsol menuju menyimpan data ke memori List & Tuple).
+     - *Topik Inti*: Iterasi multi-dimensi, alur outer vs inner loop, pemetaan koordinat spasial ($i, j$), pembangkit pola visual geometris, kompleksitas $O(n^2)$.
    - **Pertemuan 11: Struktur Data Berurutan (List & Tuple)**:
      - *Porsi Dominan 75% List*: Manipulasi CRUD (*append, insert, pop, remove*), *slicing*, algoritma agregasi & *Linear Search*.
      - *Porsi Khusus 25% Tuple*: Integritas data (*immutability vault*), koordinat paten, dan *tuple unpacking*.
@@ -584,8 +589,27 @@ Dokumen ini merekam seluruh kesepakatan baku pengajaran antara Dosen Pengampu da
    - Landasan filosofis dicetak dalam 2 kotak pilar berdampingan (*side-by-side*).
    - Dasar teori disajikan dalam format daftar butir berpoin rapi (*bulleted list*) dengan tag kode tebal, tanpa blok konsol hitam.
 
+### 6.30 Standar Penyajian Perulangan, Topologi Bebas Tubrukan & Pemrograman Terstruktur Murni (Pertemuan 9)
+1. **Matriks 4 Representasi Algoritma Teori 2 Kolom Responsif**:
+   - Dilarang menjajarkan 4 kolom sempit (`grid-cols-4`) di halaman teori yang membuat tampilan berjejal sesak (*cramped*).
+   - Wajib menggunakan grid responsif 2 kolom (`grid-cols-1 md:grid-cols-2 gap-6`): Baris 1 (Naratif & Flowchart luas), Baris 2 (Pseudocode CLRS & Kode Dwibahasa + Terminal).
+2. **Standar Simbol ANSI Segi Enam (Preparation) pada Loop FOR**:
+   - Loop FOR wajib menggunakan simbol Segi Enam ANSI (`preparationNode`) dengan port keluar bawah (`✓ Ulangi`), loopback dari kiri (`Next [pencacah]`), dan exit dari kanan (`Selesai`).
+3. **Komparasi Elemen Pokok Baku (CLRS & Deitel Framework)**:
+   - FOR: `start` (nilai awal), `stop` (batas akhir eksklusif `stop - 1`), `step` (interval/langkah).
+   - WHILE: `Inisialisasi` (kondisi tolak awal), `Kondisi Terminasi` (syarat henti boolean), `Update Pencacah / Mutasi State` (pemutakhiran variabel pencegah infinite loop).
+4. **Prinsip Single-Entry Single-Exit (SESE) & Larangan `break` di Studi Kasus Dasar**:
+   - Larangan penggunaan `break` pada pencarian linear dasar; wajib menggunakan perulangan terkondisi `while` bertanda (*sentinel/flag-controlled loop*).
+   - `break` dan `continue` hanya dialokasikan untuk materi pengayaan interupsi darurat alur kontrol.
+5. **Notasi Ramah Kognitif Pemula (`ditemukan == False`)**:
+   - Menghindari jebakan negasi ganda (*double negation trap*) `not ditemukan` dengan menggunakan pembandingan eksplisit `ditemukan == False` (Python) atau `ditemukan === false` (JavaScript) yang selaras 1:1 dengan State Memory RAM.
+6. **Topologi Flowchart Bebas Tubrukan (*Collision-Free Loop Routing*)**:
+   - Rel bus putar balik (`LoopbackEdge`) dihitung dinamis di sisi kiri `minX - 60`, rel bus keluar (`LoopExitEdge`) di sisi kanan `maxX + 60`.
+   - Jalur interupsi `break` terhubung langsung ke `exitMergeId` dengan label `⚡ break (Keluar Loop)` dan redup visual pada loopback yang ditinggalkan.
+   - Pusat sumbu vertikal diperlebar ke `centerX = 380px`.
+
 ---
 
-*Dokumen ini terakhir diperbarui: 11 Oktober 2026 (Versi 3.0)*  
+*Dokumen ini terakhir diperbarui: 24 November 2026 (Versi 3.1)*  
 *Disusun dan disepakati oleh: Hadiq, ST, M.Kom bersama Antigravity AI*
 

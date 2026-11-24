@@ -307,16 +307,76 @@ const missions: Mission[] = [
     pyCode: `deret_angka = [15, 28, 42, 67, 89]\ntarget = 42\nditemukan = False\ni = 0\nn = 5\n\nprint(f"Mencari angka target: {target}")\n\nwhile i < n and ditemukan == False:\n    angka = deret_angka[i]\n    print(f"Indeks {i}: memeriksa angka {angka}...")\n    if angka == target:\n        ditemukan = True\n        print(f"🎯 Angka {target} DITEMUKAN pada indeks {i}!")\n    else:\n        i = i + 1\n\nif ditemukan:\n    print("Pencarian berhasil.")\nelse:\n    print("Angka tidak ada di dalam deret.")`,
     jsCode: `let deretAngka = [15, 28, 42, 67, 89];\nlet target = 42;\nlet ditemukan = false;\nlet i = 0;\nlet n = 5;\n\nconsole.log(\`Mencari angka target: \${target}\`);\n\nwhile (i < n && ditemukan === false) {\n    let angka = deretAngka[i];\n    console.log(\`Indeks \${i}: memeriksa angka \${angka}...\`);\n    if (angka === target) {\n        ditemukan = true;\n        console.log(\`🎯 Angka \${target} DITEMUKAN pada indeks \${i}!\`);\n    } else {\n        i = i + 1;\n    }\n}\n\nif (ditemukan) {\n    console.log("Pencarian berhasil.");\n} else {\n    console.log("Angka tidak ada di dalam deret.");\n}`,
     theoryDesc: 'Pencarian linear terstruktur menggunakan perulangan while dengan kondisi perbandingan eksplisit (i < n and ditemukan == False) menjamin pemahaman logika yang intuitif, bersih, dan mematuhi kaidah Single-Entry Single-Exit.'
+  },
+  {
+    id: 21,
+    chapter: 10,
+    codeNum: '10.1',
+    title: 'Misi 10.1: Grid Koordinat Matriks 2D (N × M)',
+    category: 'Dasar Matriks 2D',
+    description: 'Cetak seluruh pasangan titik koordinat (i, j) untuk area matriks berukuran 3 baris dan 4 kolom secara teratur.',
+    formula: 'for i in range(1, baris + 1): for j in range(1, kolom + 1): print(f"({i},{j})", end=" ")',
+    pyCode: `baris = 3\nkolom = 4\n\nprint("=== GRID KOORDINAT MATRIKS 3x4 ===")\n\nfor i in range(1, baris + 1):\n    for j in range(1, kolom + 1):\n        print(f"({i},{j})", end=" ")\n    print()`,
+    jsCode: `let baris = 3;\nlet kolom = 4;\n\nconsole.log("=== GRID KOORDINAT MATRIKS 3x4 ===");\n\nfor (let i = 1; i <= baris; i++) {\n    let rowText = "";\n    for (let j = 1; j <= kolom; j++) {\n        rowText += \`(\${i},\${j}) \`;\n    }\n    console.log(rowText);\n}`,
+    theoryDesc: 'Outer loop mengendalikan indeks baris vertikal i, dan inner loop menelusuri kolom horizontal j dari kiri ke kanan (Row-Major Order).'
+  },
+  {
+    id: 22,
+    chapter: 10,
+    codeNum: '10.2',
+    title: 'Misi 10.2: Segitiga Bintang Siku-Siku Bertingkat',
+    category: 'Rekayasa Pola Geometri',
+    description: 'Bentuk pola segitiga siku-siku bintang setinggi N baris. Batas inner loop bersifat dinamis mengikuti nilai baris outer loop i.',
+    formula: 'for i in range(1, N + 1): for j in range(1, i + 1): print("*", end=" ")',
+    pyCode: `N = 5\n\nprint("=== POLA SEGITIGA SIKU-SIKU (N=5) ===")\n\nfor i in range(1, N + 1):\n    for j in range(1, i + 1):\n        print("*", end=" ")\n    print()`,
+    jsCode: `let N = 5;\n\nconsole.log("=== POLA SEGITIGA SIKU-SIKU (N=5) ===");\n\nfor (let i = 1; i <= N; i++) {\n    let barisBintang = "";\n    for (let j = 1; j <= i; j++) {\n        barisBintang += "* ";\n    }\n    console.log(barisBintang);\n}`,
+    theoryDesc: 'Pola bertumbuh (ascending) mengaitkan batas inner loop dengan variabel outer loop (range(1, i + 1)), sehingga jumlah bintang bertambah 1 setiap baris baru.'
+  },
+  {
+    id: 23,
+    chapter: 10,
+    codeNum: '10.3',
+    title: 'Misi 10.3: Segitiga Siku-Siku Terbalik (Reduktif)',
+    category: 'Rekayasa Pola Geometri',
+    description: 'Bentuk pola segitiga siku-siku terbalik. Baris pertama berisi N bintang, lalu menyusut pada baris-baris berikutnya hingga tersisa 1 bintang di baris terakhir.',
+    formula: 'for i in range(N): for j in range(N - i): print("*", end=" ")',
+    pyCode: `N = 5\n\nprint("=== SEGITIGA SIKU-SIKU TERBALIK (N=5) ===")\n\nfor i in range(N):\n    for j in range(N - i):\n        print("*", end=" ")\n    print()`,
+    jsCode: `let N = 5;\n\nconsole.log("=== SEGITIGA SIKU-SIKU TERBALIK (N=5) ===");\n\nfor (let i = 0; i < N; i++) {\n    let barisBintang = "";\n    for (let j = 0; j < N - i; j++) {\n        barisBintang += "* ";\n    }\n    console.log(barisBintang);\n}`,
+    theoryDesc: 'Pola menyusut (descending) menggunakan formula batas reduktif (N - i) pada inner loop, menghasilkan pengurangan bintang secara linier per baris.'
+  },
+  {
+    id: 24,
+    chapter: 10,
+    codeNum: '10.4',
+    title: 'Misi 10.4: Tabel Perkalian Matematika Terformat',
+    category: 'Matriks Komputasi & Akumulator',
+    description: 'Bangun tabel perkalian 1 sampai 5 dan akumulasikan seluruh produk hasil kali pada setiap sel matriks.',
+    formula: 'hasil = i * j; total_sum += hasil; print(f"{hasil:4d}", end=" ")',
+    pyCode: `ukuran = 5\ntotal_sum = 0\n\nprint("=== TABEL PERKALIAN 1 s.d 5 ===")\n\nfor i in range(1, ukuran + 1):\n    for j in range(1, ukuran + 1):\n        hasil = i * j\n        total_sum += hasil\n        print(f"{hasil:4d}", end=" ")\n    print()\n\nprint(f"\\nTotal Akumulasi Semua Sel: {total_sum}")`,
+    jsCode: `let ukuran = 5;\nlet totalSum = 0;\n\nconsole.log("=== TABEL PERKALIAN 1 s.d 5 ===");\n\nfor (let i = 1; i <= ukuran; i++) {\n    let rowText = "";\n    for (let j = 1; j <= ukuran; j++) {\n        let hasil = i * j;\n        totalSum += hasil;\n        rowText += String(hasil).padStart(4, " ") + " ";\n    }\n    console.log(rowText);\n}\n\nconsole.log(\`\\nTotal Akumulasi Semua Sel: \${totalSum}\`);`,
+    theoryDesc: 'Pola perkalian matriks menggabungkan perkalian dua dimensi i * j dengan akumulator penjumlahan total, disajikan dengan format lebar tetap.'
+  },
+  {
+    id: 25,
+    chapter: 10,
+    codeNum: '10.5',
+    title: 'Misi 10.5: Pencarian 2D Terstruktur (SESE While Loop)',
+    category: 'Pencarian Terstruktur (SESE)',
+    description: 'Cari angka target 77 pada matriks 3x3 secara terstruktur tanpa menggunakan break, menggunakan boolean flag ditemukan == False.',
+    formula: 'while i < 3 and ditemukan == False: while j < 3 and ditemukan == False: ...',
+    pyCode: `matriks = [\n    [12, 25, 38],\n    [44, 77, 61],\n    [83, 90, 99]\n]\ntarget = 77\nbaris_total = 3\nkolom_total = 3\n\nditemukan = False\npos_i = -1\npos_j = -1\ni = 0\n\nprint(f"Mencari nilai target {target} pada matriks 3x3...")\n\nwhile i < baris_total and ditemukan == False:\n    j = 0\n    while j < kolom_total and ditemukan == False:\n        nilai = matriks[i][j]\n        print(f"Memeriksa sel ({i},{j}) = {nilai}...")\n        if nilai == target:\n            ditemukan = True\n            pos_i = i\n            pos_j = j\n        else:\n            j += 1\n    i += 1\n\nif ditemukan:\n    print(f"🎯 Nilai {target} DITEMUKAN pada baris {pos_i}, kolom {pos_j}!")\nelse:\n    print("Nilai tidak ditemukan di dalam matriks.")`,
+    jsCode: `let matriks = [\n    [12, 25, 38],\n    [44, 77, 61],\n    [83, 90, 99]\n];\nlet target = 77;\nlet barisTotal = 3;\nlet kolomTotal = 3;\n\nlet ditemukan = false;\nlet posI = -1;\nlet posJ = -1;\nlet i = 0;\n\nconsole.log(\`Mencari nilai target \${target} pada matriks 3x3...\`);\n\nwhile (i < barisTotal && ditemukan === false) {\n    let j = 0;\n    while (j < kolomTotal && ditemukan === false) {\n        let nilai = matriks[i][j];\n        console.log(\`Memeriksa sel (\${i},\${j}) = \${nilai}...\`);\n        if (nilai === target) {\n            ditemukan = true;\n            posI = i;\n            posJ = j;\n        } else {\n            j++;\n        }\n    }\n    i++;\n}\n\nif (ditemukan) {\n    console.log(\`🎯 Nilai \${target} DITEMUKAN pada baris \${posI}, kolom \${posJ}!\`);\n} else {\n    console.log("Nilai tidak ditemukan di dalam matriks.");\n}`,
+    theoryDesc: 'Menerapkan paradigma Single-Entry Single-Exit (SESE) pada perulangan bertingkat dengan kondisi evaluasi eksplisit (ditemukan == False) di kedua loop.'
   }
 ];
 
 function WorkspaceContent() {
   const searchParams = useSearchParams();
   const chapterParam = searchParams.get('chapter');
-  const initialChapter: 5 | 6 | 7 | 9 = chapterParam === '9' ? 9 : chapterParam === '7' ? 7 : chapterParam === '6' ? 6 : 5;
-  const initialMissionId = initialChapter === 9 ? 16 : initialChapter === 7 ? 11 : initialChapter === 6 ? 6 : 1;
+  const initialChapter: 5 | 6 | 7 | 9 | 10 = chapterParam === '10' ? 10 : chapterParam === '9' ? 9 : chapterParam === '7' ? 7 : chapterParam === '6' ? 6 : 5;
+  const initialMissionId = initialChapter === 10 ? 21 : initialChapter === 9 ? 16 : initialChapter === 7 ? 11 : initialChapter === 6 ? 6 : 1;
 
-  const [selectedChapter, setSelectedChapter] = useState<5 | 6 | 7 | 9>(initialChapter);
+  const [selectedChapter, setSelectedChapter] = useState<5 | 6 | 7 | 9 | 10>(initialChapter);
   const [selectedMissionId, setSelectedMissionId] = useState(initialMissionId);
   const [activeTab, setActiveTab] = useState<'task' | 'theory'>('task');
   const [normalTab, setNormalTab] = useState<'flowchart' | 'pseudocode' | 'narrative'>('flowchart');
@@ -393,7 +453,7 @@ function WorkspaceContent() {
   const setCode = language === 'python' ? setPythonCode : setJsCode;
 
   // Handle Chapter Switch
-  const handleSwitchChapter = (ch: 5 | 6 | 7 | 9) => {
+  const handleSwitchChapter = (ch: 5 | 6 | 7 | 9 | 10) => {
     setSelectedChapter(ch);
     const chapterMissions = missions.filter(m => m.chapter === ch);
     if (chapterMissions.length > 0) {
@@ -1145,7 +1205,7 @@ function WorkspaceContent() {
           <span className="text-slate-700">|</span>
           <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            Pertemuan {selectedChapter}: {selectedChapter === 5 ? 'Operator & Ekspresi' : selectedChapter === 6 ? 'Percabangan Statemen Tunggal & Ganda' : selectedChapter === 7 ? 'Percabangan Majemuk & Bersarang' : 'Dasar Perulangan (FOR & WHILE Loop)'} Studio
+            Pertemuan {selectedChapter}: {selectedChapter === 5 ? 'Operator & Ekspresi' : selectedChapter === 6 ? 'Percabangan Statemen Tunggal & Ganda' : selectedChapter === 7 ? 'Percabangan Majemuk & Bersarang' : selectedChapter === 9 ? 'Dasar Perulangan (FOR & WHILE Loop)' : 'Perulangan Bersarang (Nested Loop)'} Studio
           </span>
         </div>
 
@@ -1185,6 +1245,14 @@ function WorkspaceContent() {
             >
               <span>🔁</span> Bab 9
             </button>
+            <button
+              onClick={() => handleSwitchChapter(10)}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                selectedChapter === 10 ? 'bg-purple-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <span>🪐</span> Bab 10
+            </button>
           </div>
 
           {/* Mission Selector Tabs for Active Chapter */}
@@ -1203,7 +1271,9 @@ function WorkspaceContent() {
                         ? 'bg-sky-600 text-white shadow-md' 
                         : selectedChapter === 7
                         ? 'bg-orange-600 text-white shadow-md'
-                        : 'bg-emerald-600 text-white shadow-md'
+                        : selectedChapter === 9
+                        ? 'bg-emerald-600 text-white shadow-md'
+                        : 'bg-purple-600 text-white shadow-md'
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -1239,7 +1309,9 @@ function WorkspaceContent() {
                       ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
                       : selectedChapter === 7
                       ? 'bg-orange-500/20 text-orange-300 border-orange-500/40'
-                      : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                      : selectedChapter === 9
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                      : 'bg-purple-500/20 text-purple-300 border-purple-500/40'
                   }`}>
                     {currentMission.category}
                   </span>

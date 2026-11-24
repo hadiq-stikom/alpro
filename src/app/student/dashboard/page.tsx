@@ -21,6 +21,7 @@ import {
   Lock,
   FlaskConical,
   AlertCircle,
+  AlertTriangle,
   FileSpreadsheet,
   Printer
 } from "lucide-react";
@@ -49,6 +50,32 @@ interface MeetingInfo {
   status: 'ready' | 'upcoming';
 }
 
+export interface UtsExamData {
+  score: number;
+  finalScore: number;
+  gradeLetter: string;
+  gradeCategory: string;
+  aspectScores?: {
+    penyerapan_materi?: number;
+    pemahaman_konsep?: number;
+    kemampuan_menjelaskan?: number;
+    implementasi_algoritma?: number;
+    implementasi_kode?: number;
+  };
+  weights?: {
+    penyerapan_materi?: number;
+    pemahaman_konsep?: number;
+    kemampuan_menjelaskan?: number;
+    implementasi_algoritma?: number;
+    implementasi_kode?: number;
+  };
+  notes?: string;
+  aiFeedback?: string;
+  gradedBy?: string;
+  updatedAt?: string;
+  isGraded: boolean;
+}
+
 // Daftar 16 Pertemuan Silabus Semester PP112601
 const ALL_MEETINGS: MeetingInfo[] = [
   { id: 1, title: "Pengenalan Komputer & Pemrograman", subtitle: "Evolusi komputasi, bahasa pemrograman & siklus eksekusi", status: 'ready' },
@@ -58,7 +85,7 @@ const ALL_MEETINGS: MeetingInfo[] = [
   { id: 5, title: "Operator, Ekspresi & Manipulasi Data", subtitle: "Aritmatika, relasional, logika Boolean & manipulasi string", status: 'ready' },
   { id: 6, title: "Struktur Percabangan Statemen Tunggal & Ganda", subtitle: "Kondisi IF & IF-ELSE, evaluasi True/False beranimasi", status: 'ready' },
   { id: 7, title: "Percabangan Majemuk & Bersarang", subtitle: "Cascading IF-ELSE IF, Nested IF & Multi-branch selector", status: 'ready' },
-  { id: 8, title: "Evaluasi Tengah Semester (UTS)", subtitle: "Ujian komprehensif pilar logika dan kontrol alur", status: 'upcoming' },
+  { id: 8, title: "Evaluasi Tengah Semester (UTS)", subtitle: "Ujian komprehensif pilar logika dan kontrol alur", status: 'ready' },
   { id: 9, title: "Dasar Perulangan (FOR & WHILE Loop)", subtitle: "Iterasi terhitung (range), iterasi terkondisi, dan akumulator data", status: 'ready' },
   { id: 10, title: "Perulangan Bersarang (Nested Loop)", subtitle: "Iterasi multi-dimensi, pemetaan baris-kolom, dan pembangkit pola visual", status: 'ready' },
   { id: 11, title: "Struktur Data Berurutan (List & Tuple)", subtitle: "Urutan terindeks, mutabilitas dinamis (75%), dan proteksi immutabilitas tuple (25%)", status: 'upcoming' },
@@ -77,6 +104,7 @@ export default function StudentDashboardPage() {
   const [meetingGrades, setMeetingGrades] = useState<MeetingGradeItem[]>([]);
   const [stats, setStats] = useState({ totalCompleted: 0, totalBadges: 0, totalHours: 0 });
   const [filterTab, setFilterTab] = useState<'all' | 'uncompleted' | 'completed'>('all');
+  const [utsData, setUtsData] = useState<UtsExamData | null>(null);
   const [praktikumStats, setPraktikumStats] = useState<{
     totalModules: number;
     approvedCount: number;
@@ -96,11 +124,12 @@ export default function StudentDashboardPage() {
         // 1. Ambil semua submissions langsung dari tabel quiz_submissions (sumber kebenaran mutlak)
         const { data: submissionsData } = await supabase
           .from('quiz_submissions')
-          .select('time_spent_seconds, meeting_id, score, quiz_type')
+          .select('id, time_spent_seconds, meeting_id, score, quiz_type, answers_json, ai_feedback, submitted_at')
           .eq('user_id', profile.id)
           .order('meeting_id', { ascending: true });
 
-        const submissions = (submissionsData || []) as { time_spent_seconds?: number; meeting_id?: number; score?: number; quiz_type?: string }[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const submissions = (submissionsData || []) as any[];
 
         // 2. Ambil nilai pertemuan dari view meeting_grades
         const { data: meetingGradesData } = await supabase
@@ -143,6 +172,35 @@ export default function StudentDashboardPage() {
         })).sort((a, b) => a.meeting_id - b.meeting_id);
 
         setMeetingGrades(uniqueMeetingGrades);
+
+        // 2b. Ekstraksi Penilaian Khusus Evaluasi Tengah Semester (UTS - Meeting 8)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const utsSub = submissions.find(
+          (s: any) => s.meeting_id === 8 && (s.quiz_type === 'exam' || s.quiz_type === 'essay')
+        );
+        const utsGradeItem = gradeMap.get(8);
+
+        if (utsSub || utsGradeItem !== undefined) {
+          const finalScore = Number(utsSub?.score ?? utsGradeItem ?? 0);
+          const badgeCfg = getBadgeFromScore(finalScore);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const answersJson = (utsSub?.answers_json || {}) as any;
+          setUtsData({
+            score: finalScore,
+            finalScore,
+            gradeLetter: badgeCfg.level,
+            gradeCategory: badgeCfg.category,
+            aspectScores: answersJson?.aspect_scores,
+            weights: answersJson?.weights,
+            notes: answersJson?.notes,
+            aiFeedback: utsSub?.ai_feedback || answersJson?.ai_feedback,
+            gradedBy: answersJson?.graded_by || 'Dosen Pengampu',
+            updatedAt: answersJson?.updated_at || utsSub?.submitted_at,
+            isGraded: finalScore > 0,
+          });
+        } else {
+          setUtsData(null);
+        }
 
         // 3. Ambil overall grades dari view atau hitung otomatis jika view belum mengagregasi
         const { data: overallData } = await supabase
@@ -257,6 +315,31 @@ export default function StudentDashboardPage() {
       return true;
     });
   }, [filterTab, meetingGrades]);
+
+  // Daftar materi pra-UTS (Bab 1 s.d 7) untuk evaluasi rekomendasi perbaikan
+  const preUtsMeetings = useMemo(() => {
+    return ALL_MEETINGS.filter((m) => m.id <= 7).map((m) => {
+      const g = meetingGrades.find((item) => item.meeting_id === m.id);
+      return {
+        ...m,
+        score: g ? g.avg_score : null,
+        isCompleted: !!g,
+        needsImprovement: !g || g.avg_score < 70, // di bawah B (< 70)
+        isBelowA: !g || g.avg_score < 90,        // di bawah A (< 90)
+      };
+    });
+  }, [meetingGrades]);
+
+  // Bab pra-UTS terendah yang paling mendesak untuk diperbaiki
+  const lowestPreUtsMeeting = useMemo(() => {
+    const needing = preUtsMeetings.filter((m) => m.needsImprovement);
+    if (needing.length === 0) {
+      const belowA = preUtsMeetings.filter((m) => m.isBelowA);
+      if (belowA.length === 0) return null;
+      return belowA.sort((a, b) => (a.score ?? 0) - (b.score ?? 0))[0];
+    }
+    return needing.sort((a, b) => (a.score ?? 0) - (b.score ?? 0))[0];
+  }, [preUtsMeetings]);
 
   return (
     <div className="min-h-screen bg-background pb-20 selection:bg-primary/20">
@@ -502,6 +585,265 @@ export default function StudentDashboardPage() {
             </motion.div>
           ))}
         </div>
+
+        {/* ── KARTU KHUSUS CAPAIAN & EVALUASI EVALUASI TENGAH SEMESTER (UTS) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22 }}
+          className={`mb-10 rounded-3xl border p-6 md:p-8 shadow-md relative overflow-hidden transition-all ${
+            utsData && utsData.isGraded
+              ? utsData.score < 70
+                ? 'bg-gradient-to-br from-amber-500/10 via-rose-500/5 to-purple-500/10 border-amber-500/30 dark:border-amber-500/40'
+                : utsData.score < 90
+                ? 'bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-purple-500/10 border-blue-500/30 dark:border-blue-500/40'
+                : 'bg-gradient-to-br from-emerald-500/10 via-amber-500/10 to-indigo-500/10 border-emerald-500/30 dark:border-emerald-500/40'
+              : 'bg-gradient-to-br from-purple-500/5 via-background to-secondary/30 border-purple-500/20'
+          }`}
+        >
+          {/* Ambient Glow Ornaments */}
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Top Bar: Label Milestone & Status Penilaian */}
+          <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5 border-b border-border/60 mb-6">
+            <div className="flex items-center gap-3.5">
+              <div className={`p-3 rounded-2xl border shadow-inner shrink-0 ${
+                utsData && utsData.isGraded
+                  ? utsData.score < 70
+                    ? 'bg-amber-500/15 border-amber-500/30 text-amber-600 dark:text-amber-400'
+                    : utsData.score < 90
+                    ? 'bg-blue-500/15 border-blue-500/30 text-blue-600 dark:text-blue-400'
+                    : 'bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400'
+                  : 'bg-purple-500/10 border-purple-500/25 text-purple-600 dark:text-purple-400'
+              }`}>
+                <GraduationCap className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30">
+                    Milestone Akademik • Pekan 08
+                  </span>
+                  <span className="text-xs text-muted-foreground hidden sm:inline">• Bobot 30% Teori</span>
+                </div>
+                <h3 className="text-xl md:text-2xl font-black text-foreground mt-0.5 flex items-center gap-2">
+                  <span>Hasil Evaluasi Tengah Semester (UTS)</span>
+                </h3>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2.5">
+              {utsData && utsData.isGraded ? (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 shadow-xs">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                  <span>Dinilai Resmi oleh Dosen</span>
+                </div>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30">
+                  <Clock className="w-4 h-4 text-purple-500 animate-pulse" />
+                  <span>Sedang Proses Penilaian Dosen</span>
+                </div>
+              )}
+
+              <Link
+                href="/student/meeting/8"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-card border border-border hover:bg-secondary/70 text-foreground transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+              >
+                <span>Buka Rapor UTS</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Body: Jika UTS sudah dinilai vs belum dinilai */}
+          {utsData && utsData.isGraded ? (
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              {/* Kolom 1: Skor & Lencana (4 Spans) */}
+              <div className="lg:col-span-4 rounded-2xl bg-background/80 border border-border/80 p-5 flex flex-col justify-between shadow-xs">
+                <div>
+                  <div className="text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-3">
+                    Skor Akhir &amp; Predikat
+                  </div>
+                  <div className="flex items-center gap-4">
+                    {/* Badge Display */}
+                    <div className="shrink-0 scale-90 -ml-2">
+                      <BadgeDisplay badge={getBadgeFromScore(utsData.score)} size="md" />
+                    </div>
+                    <div>
+                      <div className="text-3xl md:text-4xl font-black font-mono tracking-tight text-foreground">
+                        {utsData.score.toFixed(1)}
+                        <span className="text-sm font-normal text-muted-foreground ml-1">/100</span>
+                      </div>
+                      <div className="text-xs font-bold mt-1" style={{ color: getBadgeFromScore(utsData.score).hexColor }}>
+                        Grade {utsData.gradeLetter} ({utsData.gradeCategory})
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 mt-4 border-t border-border/50 text-[11px] text-muted-foreground space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span>Penilai:</span>
+                    <strong className="text-foreground">{utsData.gradedBy}</strong>
+                  </div>
+                  {utsData.updatedAt && (
+                    <div className="flex items-center justify-between">
+                      <span>Tanggal:</span>
+                      <span>{new Date(utsData.updatedAt).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Kolom 2: Rincian 5 Aspek Penilaian (5 Spans) */}
+              <div className="lg:col-span-5 rounded-2xl bg-background/80 border border-border/80 p-5 flex flex-col justify-between shadow-xs space-y-3">
+                <div>
+                  <div className="flex items-center justify-between text-xs font-mono font-bold text-muted-foreground uppercase tracking-wider mb-2.5">
+                    <span>5 Aspek Penilaian Ujian</span>
+                    <span className="text-[10px] text-purple-600 dark:text-purple-400">Standar Rubrik</span>
+                  </div>
+
+                  {/* 5 Aspek List */}
+                  <div className="space-y-2 text-xs">
+                    {[
+                      { key: 'penyerapan_materi', label: 'Penyerapan Materi', score: utsData.aspectScores?.penyerapan_materi ?? Math.round(utsData.score), weight: utsData.weights?.penyerapan_materi ?? 20 },
+                      { key: 'pemahaman_konsep', label: 'Pemahaman Konsep', score: utsData.aspectScores?.pemahaman_konsep ?? Math.round(utsData.score), weight: utsData.weights?.pemahaman_konsep ?? 20 },
+                      { key: 'kemampuan_menjelaskan', label: 'Kemampuan Menjelaskan', score: utsData.aspectScores?.kemampuan_menjelaskan ?? Math.round(utsData.score), weight: utsData.weights?.kemampuan_menjelaskan ?? 20 },
+                      { key: 'implementasi_algoritma', label: 'Implementasi Algoritma', score: utsData.aspectScores?.implementasi_algoritma ?? Math.round(utsData.score), weight: utsData.weights?.implementasi_algoritma ?? 20 },
+                      { key: 'implementasi_kode', label: 'Implementasi Kode', score: utsData.aspectScores?.implementasi_kode ?? Math.round(utsData.score), weight: utsData.weights?.implementasi_kode ?? 20 },
+                    ].map((asp) => (
+                      <div key={asp.key} className="space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="text-slate-700 dark:text-slate-300 font-medium truncate max-w-[180px]">
+                            {asp.label}
+                          </span>
+                          <span className="font-mono font-bold text-foreground">
+                            {asp.score} <span className="text-[10px] text-muted-foreground font-normal">({asp.weight}%)</span>
+                          </span>
+                        </div>
+                        <div className="w-full bg-secondary/70 rounded-full h-1.5 overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all duration-500 ${
+                              asp.score >= 80 ? 'bg-emerald-500' : asp.score >= 70 ? 'bg-blue-500' : 'bg-amber-500'
+                            }`}
+                            style={{ width: `${Math.min(100, Math.max(0, asp.score))}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {utsData.notes && (
+                  <div className="pt-2 border-t border-border/50 text-[11px] text-slate-600 dark:text-slate-300 italic">
+                    <span className="font-bold text-foreground not-italic">Catatan Dosen: </span>
+                    &ldquo;{utsData.notes}&rdquo;
+                  </div>
+                )}
+              </div>
+
+              {/* Kolom 3: Nudge Motivasi & Rekomendasi Remedial (3 Spans) */}
+              <div className={`lg:col-span-3 rounded-2xl border p-5 flex flex-col justify-between shadow-xs ${
+                utsData.score < 70
+                  ? 'bg-amber-500/10 border-amber-500/30'
+                  : utsData.score < 90
+                  ? 'bg-blue-500/10 border-blue-500/30'
+                  : 'bg-emerald-500/10 border-emerald-500/30'
+              }`}>
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-2">
+                    {utsData.score < 70 ? (
+                      <>
+                        <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                        <span className="text-xs font-bold text-amber-800 dark:text-amber-300">
+                          Peluang Emas Remedial
+                        </span>
+                      </>
+                    ) : utsData.score < 90 ? (
+                      <>
+                        <TrendingUp className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+                        <span className="text-xs font-bold text-blue-800 dark:text-blue-300">
+                          Fondasi Mantap Menuju A
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <Trophy className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
+                          Prestasi Logika Sempurna
+                        </span>
+                      </>
+                    )}
+                  </div>
+
+                  <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                    {utsData.score < 70
+                      ? 'Nilai UTS Anda saat ini berada di zona remedial. Jangan berkecil hati! Ini adalah kesempatan terbaik memperkuat logika di Bab 1 s.d 7. Manfaatkan remedial sekarang!'
+                      : utsData.score < 90
+                      ? 'Pencapaian UTS Anda sudah Baik! Pertahankan kedisiplinan belajar di paruh kedua (Bab 9–16: Perulangan Kompleks & Struktur Data) untuk mengunci Grade A Sempurna di UAS.'
+                      : 'Luar biasa! Capaian UTS Sempurna! Anda menguasai seluruh pilar logika dasar dengan sangat baik. Terus asah kecakapan Anda di materi tingkat lanjut!'}
+                  </p>
+                </div>
+
+                <div className="pt-3 space-y-2">
+                  {utsData.score < 70 && lowestPreUtsMeeting ? (
+                    <Link
+                      href={`/theory/${lowestPreUtsMeeting.id}?startTest=true#assessment`}
+                      scroll={false}
+                      className="w-full py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                    >
+                      <span>🚀 Perbaiki Bab {lowestPreUtsMeeting.id} ({lowestPreUtsMeeting.score !== null ? lowestPreUtsMeeting.score.toFixed(0) : 'Belum Selesai'})</span>
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/student/meeting/8"
+                      className="w-full py-2.5 px-3 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                    >
+                      <Award className="w-3.5 h-3.5" />
+                      <span>Lihat Rapor Evaluasi UTS</span>
+                    </Link>
+                  )}
+
+                  <Link
+                    href="/workspace"
+                    className="w-full py-2 px-3 rounded-xl bg-card border border-border/80 hover:bg-secondary/60 text-foreground font-semibold text-[11px] flex items-center justify-center gap-1.5 transition-all"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Latihan di Code Studio</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* Jika UTS belum dinilai oleh Dosen */
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 p-4 rounded-2xl bg-background/60 border border-border/60">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 shrink-0">
+                  <Clock className="w-6 h-6 animate-pulse" />
+                </div>
+                <div className="space-y-1">
+                  <div className="text-sm font-bold text-foreground">
+                    Penilaian Ujian Sedang Berlangsung
+                  </div>
+                  <p className="text-xs text-muted-foreground max-w-xl leading-relaxed">
+                    Dosen Pengampu sedang mengevaluasi lembar jawaban dan kode program UTS. Sambil menunggu pengumuman nilai resmi, pastikan Anda menuntaskan materi pra-UTS (Bab 1–7) dan mulai mempelajari materi Bab 9 &amp; 10!
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2.5 w-full md:w-auto shrink-0 justify-end">
+                <Link
+                  href={`/theory/${firstUncompletedReadyMeeting}?startTest=true#assessment`}
+                  scroll={false}
+                  className="px-4 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs flex items-center gap-1.5 transition-all shadow-xs"
+                >
+                  <span>Tuntaskan Bab Belum Selesai</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            </div>
+          )}
+        </motion.div>
 
         {/* Peta 9 Tingkat Capaian & Sistem Lencana */}
         <motion.div
@@ -791,8 +1133,12 @@ export default function StudentDashboardPage() {
                         <div>
                           {/* Header Mini: Minggu & Skor */}
                           <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">
-                              Minggu {meeting.id.toString().padStart(2, '0')}
+                            <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${
+                              meeting.id === 8 
+                                ? 'bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30' 
+                                : 'bg-secondary text-muted-foreground'
+                            }`}>
+                              {meeting.id === 8 ? 'Minggu 08 • UTS' : `Minggu ${meeting.id.toString().padStart(2, '0')}`}
                             </span>
                             <div 
                               className="flex items-center gap-1.5 text-xs font-mono font-bold px-2 py-0.5 rounded-md border" 
@@ -860,9 +1206,12 @@ export default function StudentDashboardPage() {
 
                 // KARTU COMPACT 2: Pertemuan AKTIF BELUM SELESAI (Siap Dikerjakan)
                 if (isReady) {
+                  const isUts = meeting.id === 8;
+                  const targetHref = isUts ? '/student/meeting/8' : `/theory/${meeting.id}?startTest=true#assessment`;
+
                   return (
                     <Link 
-                      href={`/theory/${meeting.id}?startTest=true#assessment`} 
+                      href={targetHref} 
                       scroll={false} 
                       key={`m-${meeting.id}`} 
                       className="group"
@@ -871,19 +1220,31 @@ export default function StudentDashboardPage() {
                         <div>
                           {/* Header Mini: Minggu & Status Belum Dikerjakan */}
                           <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-md bg-secondary text-muted-foreground">
-                              Minggu {meeting.id.toString().padStart(2, '0')}
+                            <span className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${
+                              isUts 
+                                ? 'bg-purple-500/15 text-purple-700 dark:text-purple-300 border border-purple-500/30' 
+                                : 'bg-secondary text-muted-foreground'
+                            }`}>
+                              {isUts ? 'Minggu 08 • UTS' : `Minggu ${meeting.id.toString().padStart(2, '0')}`}
                             </span>
-                            <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20">
+                            <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                              isUts
+                                ? 'bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/20'
+                                : 'bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/20'
+                            }`}>
                               <Sparkles className="w-2.5 h-2.5 text-amber-500 animate-pulse" />
-                              <span>Tersedia</span>
+                              <span>{isUts ? 'Evaluasi UTS' : 'Tersedia'}</span>
                             </span>
                           </div>
 
                           {/* Tengah: Ikon & Judul */}
                           <div className="flex items-start gap-2.5 mb-2">
-                            <div className="w-8 h-8 rounded-xl bg-primary/10 border border-primary/20 text-primary flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                              <BookOpen className="w-4 h-4" />
+                            <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${
+                              isUts 
+                                ? 'bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400' 
+                                : 'bg-primary/10 border border-primary/20 text-primary'
+                            }`}>
+                              {isUts ? <Award className="w-4 h-4" /> : <BookOpen className="w-4 h-4" />}
                             </div>
                             <div className="min-w-0 flex-1">
                               <h4 className="font-bold text-xs text-foreground leading-snug line-clamp-2 group-hover:text-primary transition-colors">
@@ -898,9 +1259,9 @@ export default function StudentDashboardPage() {
 
                         {/* Footer Mini: Tombol Langsung Mulai */}
                         <div className="pt-2 border-t border-border/40 flex items-center justify-between text-[11px] mt-1">
-                          <span className="text-muted-foreground text-[10px]">Tantangan siap</span>
+                          <span className="text-muted-foreground text-[10px]">{isUts ? 'Evaluasi Tengah Semester' : 'Tantangan siap'}</span>
                           <span className="font-bold text-primary inline-flex items-center gap-0.5 text-[10px] group-hover:translate-x-0.5 transition-transform">
-                            <span>Mulai Tes</span>
+                            <span>{isUts ? 'Buka Rapor UTS' : 'Mulai Tes'}</span>
                             <ArrowRight className="w-3 h-3 ml-0.5" />
                           </span>
                         </div>

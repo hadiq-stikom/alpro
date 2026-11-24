@@ -711,6 +711,99 @@ Sisi muka (*Front Face*) menyajikan intisari konsep esensial, sedangkan sisi bal
    - Landasan filosofis dicetak dalam 2 kotak pilar mini berdampingan (*side-by-side*).
    - Dasar teori disajikan dalam format daftar butir berpoin rapi (*bulleted list*) dengan tag kode tebal, tanpa blok konsol hitam.
 
+---
+
+## 36. Standar Penyajian Matriks 4 Representasi Algoritma Teori (Anti-Sesak 2 Kolom Responsif)
+1. **Larangan Tata Letak 4 Kolom Sempit di Teori**:
+   - DILARANG KERAS menjajarkan 4 kartu representasi algoritma (Naratif, Flowchart, Pseudocode, Kode Program) dalam format 4 kolom mendatar (`grid-cols-4`) pada halaman teori perulangan atau struktur kontrol yang kompleks.
+   - Tata letak 4 kolom menyebabkan tampilan berjejal sesak (*cramped*), kanvas flowchart terhimpit, dan memicu *horizontal scrollbar* yang merusak keterbacaan.
+2. **Pola Baku Grid 2 Kolom Responsif**:
+   - Wajib menggunakan tata letak grid responsif 2 kolom (`grid-cols-1 md:grid-cols-2 gap-6`):
+     * **Baris 1**: Kartu 1 (Algoritma Naratif) bersanding dengan Kartu 2 (Flowchart ANSI/ISO berkanvas luas).
+     * **Baris 2**: Kartu 3 (Pseudocode Standar CLRS) bersanding dengan Kartu 4 (Kode Program Dwibahasa Python/JavaScript lengkap dengan Terminal Output).
+3. **Keuntungan Pedagogis**:
+   - Memberikan ruang proporsional bagi diagram alir SVG dan sintaks kode dwibahasa agar dapat diinspeksi secara mendalam tanpa distraksi visual.
+
+---
+
+## 37. Standar ANSI/ISO Perulangan FOR (Preparation Hexagon & Topologi 3 Port Alur)
+1. **Simbol Baku Segi Enam (Preparation)**:
+   - Simbol perulangan terhitung (*definite / count-controlled loop*) seperti loop FOR wajib menggunakan simbol **Segi Enam ANSI (`preparationNode`)**, bukan belah ketupat keputusan biasa. Simbol ini memuat inisialisasi pencacah dan syarat batas (contoh: `i = 1 TO 5`).
+2. **Topologi 3 Port Alur Baku**:
+   - **Port Bawah (`✓ Ulangi`)**: Mengalirkan alur ke bawah memasuki tubuh perulangan (*loop body*).
+   - **Port Sisi Kiri (`Next [pencacah]`)**: Memutar alur kembali (*loopback*) dari akhir tubuh perulangan masuk ke sisi kiri simbol persiapan.
+   - **Port Sisi Kanan (`Selesai`)**: Melompat keluar (*loop exit*) dari sisi kanan simbol persiapan langsung menuju merge/terminator akhir setelah rentang perulangan tuntas terpenuhi.
+
+---
+
+## 38. Komparasi Elemen Pokok Baku Perulangan FOR vs WHILE (CLRS & Deitel Framework)
+1. **Struktur FOR Loop (3 Parameter Deret Baku `range(start, stop, step)`)**:
+   - `start` (*Nilai Awal*): Titik mula pencacah (*initial value*, default 0 jika dihilangkan).
+   - `stop` (*Batas Akhir Eksklusif*): Batas akhir yang **tidak pernah disentuh** (perulangan berhenti tepat pada `stop - 1`).
+   - `step` (*Interval / Langkah / Inkrementasi*): Besaran perubahan nilai pencacah setiap putaran (default `+1`, bernilai negatif untuk perulangan mundur/dekremen).
+2. **Struktur WHILE Loop (3 Unsur Pokok Baku Perulangan Terkondisi)**:
+   - `Inisialisasi` (*Initialization*): Penetapan kondisi awal variabel kontrol sebelum memasuki gelanggang loop.
+   - `Kondisi Terminasi` (*Loop Continuation / Termination Condition*): Ekspresi boolean yang diuji pada setiap putaran; perulangan berlanjut selama bernilai `True` dan wajib berhenti saat bernilai `False`.
+   - `Update Pencacah / Mutasi State` (*State Mutation / Update*): Pembaruan variabel kontrol di dalam tubuh perulangan agar kondisi terminasi tercapai dan mencegah putaran tak terhingga (*infinite loop*).
+
+---
+
+## 39. Prinsip Pemrograman Terstruktur Murni (Single-Entry Single-Exit / SESE) & Larangan Penggunaan `break` di Alur Dasar
+1. **Filosofi Single-Entry Single-Exit (SESE)**:
+   - Berdasarkan kaidah pemrograman terstruktur murni (*Structured Programming Paradigm* - Dijkstra / Bohm-Jacopini / Deitel), setiap modul dan struktur kontrol idealnya memiliki satu pintu masuk dan satu pintu keluar tunggal yang dapat diprediksi.
+2. **Larangan `break` pada Studi Kasus Pencarian Dasar**:
+   - Pada materi dasar algoritma (khususnya pencarian linear / *linear searching*), **DILARANG KERAS** menggunakan pernyataan `break` di dalam loop `for` sebagai pola solusi utama.
+   - Selama suatu persoalan dapat diselesaikan secara terstruktur menggunakan kondisi evaluasi `while`, WAJIB menggunakan struktur perulangan `while` bertanda (*sentinel / flag-controlled loop*) dengan kondisi majemuk.
+3. **Alokasi Khusus `break` & `continue`**:
+   - Pernyataan `break` dan `continue` HANYA diajarkan pada sub-bab teori pengayaan khusus interupsi alur loop (*loop interruption*), disajikan sebagai instrumen darurat/pengecualian, bukan sebagai kebiasaan utama dalam merancang algoritma terstruktur.
+
+---
+
+## 40. Notasi Ramah Kognitif Pemula (`ditemukan == False`) & Anti-Double Negation Trap
+1. **Pencegahan Jebakan Negasi Ganda (*Double Negation*)**:
+   - Pada algoritma perulangan dengan penanda boolean (*flag variable*) untuk mahasiswa baru/pemula, WAJIB menggunakan perbandingan eksplisit:
+     * Python: `while i < n and ditemukan == False:`
+     * JavaScript: `while (i < n && ditemukan === false)`
+2. **Larangan Notasi `not ditemukan` / `!ditemukan` pada Fase Pengantar**:
+   - DILARANG menggunakan operator negasi terselubung (`not ditemukan` atau `!ditemukan`) pada contoh dasar.
+   - *Rasional Pedagogis*: Mahasiswa pemula yang menginisialisasi `ditemukan = False` kerap mengalami hambatan kognitif (*cognitive trap*) saat membaca `not ditemukan` ("jika BUKAN TIDAK DITEMUKAN yang bernilai False maka...").
+   - *Sinkronisasi RAM*: Penulisan `ditemukan == False` menyelaraskan pembacaan kode secara transparan 1:1 dengan visualisasi nilai variabel di State Memory RAM yang tertulis `ditemukan: False`.
+
+---
+
+## 41. Standar Topologi Rel Bus Bebas Tubrukan pada Flowchart Perulangan (*Collision-Free Loop Routing*)
+1. **Jalur Putar Balik Luar (`LoopbackEdge`)**:
+   - Rel bus sumbu X (`busX`) wajib dihitung secara dinamis di luar batas minimum seluruh node anak:
+     `busX = Math.min(minX - 60, centerX - 360)`
+   - DILARANG KERAS memotong, melintasi, atau menabrak badan node proses/decision yang berada di dalam tubuh loop.
+2. **Jalur Keluar Terminasi Luar (`LoopExitEdge`)**:
+   - Rel bus sumbu X (`busX`) wajib dihitung secara dinamis di luar batas maksimum seluruh node anak:
+     `busX = Math.max(maxX + 60, centerX + 320)`
+3. **Penyaluran Interupsi `break` Terarah**:
+   - Ketika struktur kode memuat `break`, garis percabangan disalurkan langsung menuju `exitMergeId` dengan rel trunk dan label eksplisit (`⚡ break (Keluar Loop)`).
+   - Jalur loopback yang terputus oleh break dinonaktifkan/diredupkan secara visual (*opacity 0.25*, non-aktif).
+4. **Pelebaran Sumbu Koordinat Vertikal (`centerX = 380px`)**:
+   - Pusat sumbu utama flowchart pada visualizer berbasis canvas/SVG wajib dilebarkan minimal ke `centerX = 380px` untuk memberikan margin aman (*clearance*) minimal 60–80px antara sayap rel bus luar dan kotak instruksi atau belah ketupat terlebar.
+
+---
+
+## 42. Batasan Pedagogis Prasyarat Bab 10 (Nested Loop) vs Bab 11 (List & Array)
+1. **Fokus Murni Kontrol Alur & Generasi Output (Tanpa Array)**:
+   - Materi Pertemuan 10 (Perulangan Bersarang) WAJIB berfokus murni pada **KONTROL ALUR DUA DIMENSI (Control Flow)** dan **GENERASI KOORDINAT/OUTPUT LANGSUNG (Console Screen Grid & Visual Pattern)**.
+   - **DILARANG KERAS** menggunakan pengindeksan array/list berkurung siku ganda (`matriks[i][j]`) ataupun rumus konversi offset memori array linear 1D (`indeks_1D = (i * cols) + j`) pada materi, lab, dan asesmen Bab 10.
+   - *Rasional Pedagogis*: Struktur data Array, List, dan Tuple baru diajarkan secara formal pada Pertemuan 11. Penggunaan sintaks `[i][j]` mendahului silabus dan memicu beban kognitif berlebih (*premature cognitive load*) bagi mahasiswa baru.
+2. **Kaidah 4 Representasi Baku Awal Bab (FOR Bersarang vs WHILE Bersarang)**:
+   - Modul awal Bab 10 wajib menyajikan 4 representasi baku (*Naratif, Flowchart ANSI/ISO, Pseudocode CLRS 3 Blok, Kode Program Dwibahasa*) untuk **KEDUA BENTUK**: `FOR Bersarang` dan `WHILE Bersarang`.
+   - **Perangkap Reset Inner Loop pada WHILE Bersarang**: Penjelasan wajib menegaskan bahwa pada struktur `while` bersarang, perintah inisialisasi counter dalam (`j = 1`) WAJIB diletakkan di dalam badan perulangan luar sebelum inner loop dimulai, agar saat outer loop melangkah ke baris berikutnya, kolom kembali dihitung dari 1.
+3. **Standar 4 Ragam Kombinasi Perulangan Bersarang & Use Case Nyata**:
+   - Materi wajib membedah dan menyediakan simulasi 4 ragam kombinasi:
+     1. **`for` - `for` (Counted - Counted)**: Grid koordinat tetap (papan catur 8 × 8), tabel perkalian matematika, pola visual geometri.
+     2. **`for` - `while` (Counted - Conditioned)**: Validasi input untuk N orang mahasiswa/data sampai bernilai valid (0-100), percobaan retry koneksi N kali.
+     3. **`while` - `while` (Conditioned - Conditioned)**: Sistem menu aplikasi bertingkat (Menu Utama ATM dan Sub-Menu Transaksi), simulasi navigasi robot labirin.
+     4. **`while` - `for` (Conditioned - Counted)**: Game turn-based selama belum ada pemenang memutar giliran 4 pemain, pemrosesan antrean per-batch 5 truk pengiriman.
+4. **Jembatan Pedagogis (Cliffhanger) ke Bab 11**:
+   - Akhir Bab 10 ditutup dengan pengantar motivasi: data hasil iterasi multi-dimensi langsung lenyap setelah dicetak ke layar konsol. Untuk menyimpannya ke memori, mahasiswa diantarkan menuju Pertemuan 11 (Struktur Data List & Tuple).
+
 
 
 

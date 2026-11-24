@@ -195,8 +195,8 @@ const chaptersData: {
         title: "Perulangan Bersarang (Nested Loop)",
         subtitle: "Iterasi multi-dimensi, pemetaan baris-kolom, dan pembangkit pola visual.",
         type: "code",
-        labs: ["Nested Loop Grid Tracer", "Geometric Pattern Builder", "RAM Coordinate Matrix Stepper"],
-        status: "upcoming",
+        labs: ["Clock Analogy & Gear Tracer", "Spatial Grid Matrix (i, j)", "Geometric Pattern Studio", "Multiplication Table Lab", "O(n²) Complexity & Break Circuit"],
+        status: "ready",
         description: "Menelusuri loop di dalam loop untuk memproses data spasial dan pola geometris.",
         badgeColor: "bg-teal-50 dark:bg-teal-950/70 text-teal-950 dark:text-teal-100 border-teal-300 dark:border-teal-700/80"
       },

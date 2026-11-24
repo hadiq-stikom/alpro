@@ -26,7 +26,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import AnimatedLoopDefinition from './AnimatedLoopDefinition';
 import ForLoopStepperLab from './chapter9/ForLoopStepperLab';
+import ForLoopRepresentationMatrix from './chapter9/ForLoopRepresentationMatrix';
 import WhileSentinelLab from './chapter9/WhileSentinelLab';
+import WhileLoopRepresentationMatrix from './chapter9/WhileLoopRepresentationMatrix';
 import LoopAccumulatorRamLab from './chapter9/LoopAccumulatorRamLab';
 import BreakContinueLab from './chapter9/BreakContinueLab';
 
@@ -212,37 +214,8 @@ export default function Pertemuan9() {
               {/* Laboratorium Interaktif 1: Range Stepper */}
               <ForLoopStepperLab />
 
-              {/* Komparasi 4 Representasi Baku */}
-              <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 space-y-3">
-                <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-emerald-500" />
-                  <span>Sintesis 4 Representasi Baku FOR Loop (Mencetak 1 s.d. 5):</span>
-                </h4>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
-                  <div className="p-3.5 rounded-xl bg-card border border-border space-y-1">
-                    <span className="text-slate-500 block font-sans font-bold">1. Algoritma Naratif:</span>
-                    <p className="font-sans text-slate-700 dark:text-slate-300">
-                      1. Untuk setiap nilai i dari 1 sampai 5 lakukan:<br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;Tampilkan nilai i ke layar.<br />
-                      2. Selesai.
-                    </p>
-                  </div>
-
-                  <div className="p-3.5 rounded-xl bg-card border border-border space-y-1">
-                    <span className="text-slate-500 block font-sans font-bold">2. Pseudocode CLRS:</span>
-                    <pre className="text-slate-800 dark:text-slate-200 overflow-x-auto">
-{`PROGRAM CetakDeret
-KAMUS:
-  i : integer
-ALGORITMA:
-  for i = 1 to 5 do
-    output(i)
-  endfor`}
-                    </pre>
-                  </div>
-                </div>
-              </div>
+              {/* Komparasi 4 Representasi Baku FOR Loop (Naratif, Flowchart ANSI/ISO, Pseudocode CLRS, Kode Program) */}
+              <ForLoopRepresentationMatrix />
             </motion.div>
           )}
         </AnimatePresence>
@@ -282,25 +255,70 @@ ALGORITMA:
             >
               <div className="space-y-4 pt-4 text-slate-700 dark:text-slate-300">
                 <p>
-                  Perulangan <code>WHILE</code> mengevaluasi ekspresi logika sebelum setiap putaran dimulai. Jika bernilai <strong>True</strong>, badan loop dijalankan lalu kontrol program memutar kembali ke pengujian kondisi (*loopback*). Jika bernilai <strong>False</strong>, loop seketika berakhir.
+                  Berbeda dengan <code>FOR</code> yang mengelola pencacah secara otomatis di kepala loop, perulangan <code>WHILE</code> adalah struktur perulangan terkondisi (<em>pre-test conditional loop</em>). Menurut literatur baku ilmu komputer (<em>Tony Gaddis, Deitel &amp; Deitel, serta CLRS</em>), perulangan <code>WHILE</code> tersusun atas <strong>3 Unsur Pengendali Loop (<em>Loop Control Elements</em>)</strong>:
                 </p>
 
-                {/* 3 Rukun Wajib */}
+                {/* Card 3 Unsur Penyusun Struktur WHILE Loop (Identik dengan 3 Parameter Range pada FOR) */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  <div className="p-4 rounded-xl bg-card border border-border shadow-xs space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-bold text-sky-700 dark:text-sky-400">1. Inisialisasi (Initialization)</span>
+                      <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20">
+                        Praloop
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Pemberian nilai mula-mula pada variabel pengendali perulangan (<em>loop control variable</em>) <strong>sebelum</strong> blok perulangan dimasuki. Contoh: <code>i = 1</code>.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-card border border-border shadow-xs space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-bold text-rose-700 dark:text-rose-400">2. Kondisi Uji (Test Condition)</span>
+                      <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/20">
+                        Kepala Loop
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Ekspresi logika boolean (<em>loop-continuation condition</em>) yang diuji di awal setiap iterasi (<em>pre-test</em>). Badan loop hanya dijalankan jika bernilai <strong>True</strong>. Contoh: <code>i &le; 5</code>.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-card border border-border shadow-xs space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-bold text-amber-700 dark:text-amber-400">3. Pembaruan Nilai (Update / Step)</span>
+                      <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20">
+                        Badan Loop
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Instruksi di dalam tubuh perulangan yang mengubah nilai variabel pengendali pada setiap putaran agar mendekati titik terminasi <strong>False</strong>. Contoh: <code>i += 1</code>.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Komparasi Pedagogis & Peringatan Infinite Loop */}
                 <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-950 dark:text-amber-200 space-y-2">
                   <div className="font-bold flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
-                    <span>3 Rukun Wajib Pencegahan Infinite Loop pada WHILE:</span>
+                    <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <span>Korelasi Arsitektur FOR vs WHILE &amp; Bahaya Infinite Loop:</span>
                   </div>
-                  <ol className="list-decimal pl-5 space-y-1">
-                    <li><strong>Inisialisasi Variabel Kondisi:</strong> Didefinisikan sebelum perulangan dimulai (misal <code>i = 1</code>).</li>
-                    <li><strong>Ekspresi Terminasi:</strong> Kondisi uji pada kepala loop (misal <code>while i &lt;= 5:</code>).</li>
-                    <li><strong>Pembaruan Nilai (Update):</strong> Baris instruksi di dalam badan loop yang mengubah variabel menuju kondisi False (misal <code>i += 1</code>). <em>Jika baris ini lupa ditulis, komputer akan berputar selamanya!</em></li>
-                  </ol>
+                  <div className="text-[11.5px] leading-relaxed space-y-1.5 text-slate-700 dark:text-slate-300">
+                    <p>
+                      Pada struktur <code>FOR</code>, ketiga unsur di atas disatukan secara otomatis di kepala loop lewat <code>range(start, stop, step)</code>.
+                    </p>
+                    <p>
+                      Sebaliknya pada <code>WHILE</code>, pemrogram <strong>wajib memisahkan dan menuliskan ketiga unsur ini secara manual</strong>. Jika unsur ke-3 (<strong>Pembaruan Nilai / Update</strong>) terlewat atau tidak pernah membuat kondisi uji menjadi <code>False</code>, komputer akan terjebak dalam <strong>Infinite Loop (Perulangan Tak Hingga)</strong> dan aplikasi akan <em>hang</em>!
+                    </p>
+                  </div>
                 </div>
               </div>
 
               {/* Laboratorium Interaktif 2: While & Sentinel Trap */}
               <WhileSentinelLab />
+
+              {/* Komparasi 4 Representasi Baku WHILE Loop (Naratif, Flowchart ANSI/ISO, Pseudocode CLRS, Kode Program) */}
+              <WhileLoopRepresentationMatrix />
             </motion.div>
           )}
         </AnimatePresence>

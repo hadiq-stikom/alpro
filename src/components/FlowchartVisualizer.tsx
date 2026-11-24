@@ -343,6 +343,12 @@ const TrunkEdge = memo(({
   sourceY,
   targetX,
   targetY,
+  label,
+  labelStyle,
+  labelShowBg,
+  labelBgStyle,
+  labelBgPadding,
+  labelBgBorderRadius,
   style,
   markerEnd,
   markerStart,
@@ -358,9 +364,20 @@ const TrunkEdge = memo(({
     path = `M ${sourceX} ${sourceY} L ${targetX} ${targetY}`;
   }
 
+  const labelX = (sourceX + targetX) / 2;
+  const labelY = targetY - 10;
+
   return (
     <BaseEdge
       path={path}
+      labelX={labelX}
+      labelY={labelY}
+      label={label}
+      labelStyle={labelStyle}
+      labelShowBg={labelShowBg}
+      labelBgStyle={labelBgStyle}
+      labelBgPadding={labelBgPadding}
+      labelBgBorderRadius={labelBgBorderRadius}
       style={style}
       markerEnd={markerEnd}
       markerStart={markerStart}
@@ -442,23 +459,317 @@ const CollectorHorizontalEdge = memo(({
 });
 CollectorHorizontalEdge.displayName = 'CollectorHorizontalEdge';
 
+// ── 8b. Preparation Node (Hexagon / Segi Enam Standar ANSI untuk Looping FOR) ──
+const PreparationNode = memo(({ data }: { 
+  data: { 
+    label: string; 
+    stepKey?: string; 
+    isHovered?: boolean; 
+    onHover?: (key: string | null) => void;
+    branchStatus?: 'active' | 'bypassed' | 'neutral';
+  } 
+}) => {
+  const isBypassed = data.branchStatus === 'bypassed';
+  const width = 230;
+  const height = 66;
+  const hH = height / 2;
+  const insetX = 28;
+  const points = `${insetX},3 ${width - insetX},3 ${width - 3},${hH} ${width - insetX},${height - 3} ${insetX},${height - 3} 3,${hH}`;
+
+  return (
+    <div
+      onMouseEnter={() => data.stepKey && data.onHover?.(data.stepKey)}
+      onMouseLeave={() => data.onHover?.(null)}
+      className={`relative flex items-center justify-center select-none transition-all duration-300 cursor-pointer ${
+        data.isHovered 
+          ? 'scale-110 z-50' 
+          : isBypassed 
+            ? 'opacity-40 grayscale-[60%] hover:opacity-80' 
+            : 'hover:scale-[1.02]'
+      }`}
+      style={{ width, height }}
+    >
+      {data.isHovered ? (
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 font-mono text-[9px] font-black px-2 py-0.5 rounded-full shadow-lg border border-white whitespace-nowrap pointer-events-none animate-bounce z-50">
+          📍 AKTIF
+        </div>
+      ) : isBypassed ? (
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-800 text-slate-400 font-mono text-[8px] font-bold px-1.5 py-0.5 rounded-full border border-slate-700 whitespace-nowrap pointer-events-none z-30">
+          🚫 DILEWATI
+        </div>
+      ) : (
+        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white font-mono text-[8px] font-black px-2 py-0.5 rounded-full border border-emerald-400 whitespace-nowrap pointer-events-none shadow z-30 tracking-wider">
+          🔁 PREPARATION (FOR)
+        </div>
+      )}
+
+      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="absolute inset-0 pointer-events-none">
+        <polygon
+          points={points}
+          fill={data.isHovered ? '#047857' : isBypassed ? '#1e293b' : '#064e3b'}
+          stroke={data.isHovered ? '#fbbf24' : isBypassed ? '#64748b' : '#10b981'}
+          strokeWidth={data.isHovered ? 4 : isBypassed ? 1.5 : 2.5}
+          className={`transition-all ${
+            data.isHovered 
+              ? 'filter drop-shadow-[0_0_20px_rgba(251,191,36,0.9)]' 
+              : 'filter drop-shadow-[0_4px_12px_rgba(16,185,129,0.35)]'
+          }`}
+        />
+      </svg>
+
+      <div className="relative z-10 px-8 text-center max-w-[170px]">
+        <span className={`font-mono text-xs font-black leading-snug block break-words tracking-tight ${
+          data.isHovered ? 'text-white' : isBypassed ? 'text-slate-400' : 'text-emerald-100'
+        }`}>
+          {data.label}
+        </span>
+      </div>
+
+      {/* Handles */}
+      <Handle type="target" position={Position.Top} id="top" className="opacity-0 !w-2 !h-2" style={{ top: 2, left: '50%' }} />
+      <Handle type="source" position={Position.Top} id="s-top" className="opacity-0 !w-2 !h-2" style={{ top: 2, left: '50%' }} />
+      <Handle type="target" position={Position.Left} id="left" className="opacity-0 !w-2 !h-2" style={{ left: 2, top: '50%' }} />
+      <Handle type="source" position={Position.Left} id="s-left" className="opacity-0 !w-2 !h-2" style={{ left: 2, top: '50%' }} />
+      <Handle type="target" position={Position.Right} id="t-right" className="opacity-0 !w-2 !h-2" style={{ right: 2, top: '50%' }} />
+      <Handle type="source" position={Position.Right} id="right" className="opacity-0 !w-2 !h-2" style={{ right: 2, top: '50%' }} />
+      <Handle type="target" position={Position.Bottom} id="t-bottom" className="opacity-0 !w-2 !h-2" style={{ bottom: 2, left: '50%' }} />
+      <Handle type="source" position={Position.Bottom} id="bottom" className="opacity-0 !w-2 !h-2" style={{ bottom: 2, left: '50%' }} />
+    </div>
+  );
+});
+PreparationNode.displayName = 'PreparationNode';
+
+// ── 9. Loopback Edge (Garis Putar Balik Sisi Kiri Standar ANSI) ───────────────
+const LoopbackEdge = memo(({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  label,
+  labelStyle,
+  labelShowBg,
+  labelBgStyle,
+  labelBgPadding,
+  labelBgBorderRadius,
+  style,
+  markerEnd,
+  markerStart,
+  interactionWidth,
+  data,
+}: EdgeProps) => {
+  const r = 10;
+  // Bus berjalan di sisi kiri seluruh node (menggunakan data.busX agar tidak menabrak node cabang kiri)
+  const busX = (data as any)?.busX !== undefined ? (data as any).busX : (Math.min(sourceX, targetX) - 55);
+  const dropY = sourceY + 18;
+
+  const path = `M ${sourceX} ${sourceY} ` +
+    `L ${sourceX} ${dropY - r} ` +
+    `Q ${sourceX} ${dropY} ${sourceX - r} ${dropY} ` +
+    `L ${busX + r} ${dropY} ` +
+    `Q ${busX} ${dropY} ${busX} ${dropY - r} ` +
+    `L ${busX} ${targetY + r} ` +
+    `Q ${busX} ${targetY} ${busX + r} ${targetY} ` +
+    `L ${targetX} ${targetY}`;
+
+  const labelX = busX - 8;
+  const labelY = (dropY + targetY) / 2;
+
+  return (
+    <BaseEdge
+      path={path}
+      labelX={labelX}
+      labelY={labelY}
+      label={label}
+      labelStyle={labelStyle}
+      labelShowBg={labelShowBg}
+      labelBgStyle={labelBgStyle}
+      labelBgPadding={labelBgPadding}
+      labelBgBorderRadius={labelBgBorderRadius}
+      style={style}
+      markerEnd={markerEnd}
+      markerStart={markerStart}
+      interactionWidth={interactionWidth}
+    />
+  );
+});
+LoopbackEdge.displayName = 'LoopbackEdge';
+
+// ── 10. Loop Exit Edge (Garis Keluar Selesai Sisi Kanan Standar ANSI) ─────────
+const LoopExitEdge = memo(({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  label,
+  labelStyle,
+  labelShowBg,
+  labelBgStyle,
+  labelBgPadding,
+  labelBgBorderRadius,
+  style,
+  markerEnd,
+  markerStart,
+  interactionWidth,
+  data,
+}: EdgeProps) => {
+  const r = 10;
+  // Bus berjalan di sisi kanan seluruh node (menggunakan data.busX agar tidak menabrak node cabang kanan)
+  const busX = (data as any)?.busX !== undefined ? (data as any).busX : (Math.max(sourceX, targetX) + 55);
+
+  const path = `M ${sourceX} ${sourceY} ` +
+    `L ${busX - r} ${sourceY} ` +
+    `Q ${busX} ${sourceY} ${busX} ${sourceY + r} ` +
+    `L ${busX} ${targetY - r} ` +
+    `Q ${busX} ${targetY} ${busX - r} ${targetY} ` +
+    `L ${targetX} ${targetY}`;
+
+  const labelX = busX + 8;
+  const labelY = (sourceY + targetY) / 2;
+
+  return (
+    <BaseEdge
+      path={path}
+      labelX={labelX}
+      labelY={labelY}
+      label={label}
+      labelStyle={labelStyle}
+      labelShowBg={labelShowBg}
+      labelBgStyle={labelBgStyle}
+      labelBgPadding={labelBgPadding}
+      labelBgBorderRadius={labelBgBorderRadius}
+      style={style}
+      markerEnd={markerEnd}
+      markerStart={markerStart}
+      interactionWidth={interactionWidth}
+    />
+  );
+});
+LoopExitEdge.displayName = 'LoopExitEdge';
+
+// ── 11. Loopback Horizontal Edge (Garis Putar Balik Sisi Bawah) ───────────────
+const LoopbackHorizontalEdge = memo(({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  label,
+  labelStyle,
+  labelShowBg,
+  labelBgStyle,
+  labelBgPadding,
+  labelBgBorderRadius,
+  style,
+  markerEnd,
+  markerStart,
+  interactionWidth,
+  data,
+}: EdgeProps) => {
+  const r = 10;
+  const busY = (data as any)?.busY !== undefined ? (data as any).busY : (Math.max(sourceY, targetY) + 65);
+
+  const path = `M ${sourceX} ${sourceY} ` +
+    `L ${sourceX} ${busY - r} ` +
+    `Q ${sourceX} ${busY} ${sourceX - r} ${busY} ` +
+    `L ${targetX + r} ${busY} ` +
+    `Q ${targetX} ${busY} ${targetX} ${busY - r} ` +
+    `L ${targetX} ${targetY}`;
+
+  const labelX = (sourceX + targetX) / 2;
+  const labelY = busY + 10;
+
+  return (
+    <BaseEdge
+      path={path}
+      labelX={labelX}
+      labelY={labelY}
+      label={label}
+      labelStyle={labelStyle}
+      labelShowBg={labelShowBg}
+      labelBgStyle={labelBgStyle}
+      labelBgPadding={labelBgPadding}
+      labelBgBorderRadius={labelBgBorderRadius}
+      style={style}
+      markerEnd={markerEnd}
+      markerStart={markerStart}
+      interactionWidth={interactionWidth}
+    />
+  );
+});
+LoopbackHorizontalEdge.displayName = 'LoopbackHorizontalEdge';
+
+// ── 12. Loop Exit Horizontal Edge (Garis Keluar Sisi Atas) ─────────────────────
+const LoopExitHorizontalEdge = memo(({
+  sourceX,
+  sourceY,
+  targetX,
+  targetY,
+  label,
+  labelStyle,
+  labelShowBg,
+  labelBgStyle,
+  labelBgPadding,
+  labelBgBorderRadius,
+  style,
+  markerEnd,
+  markerStart,
+  interactionWidth,
+  data,
+}: EdgeProps) => {
+  const r = 10;
+  const busY = (data as any)?.busY !== undefined ? (data as any).busY : (Math.min(sourceY, targetY) - 65);
+
+  const path = `M ${sourceX} ${sourceY} ` +
+    `L ${sourceX} ${busY + r} ` +
+    `Q ${sourceX} ${busY} ${sourceX + r} ${busY} ` +
+    `L ${targetX - r} ${busY} ` +
+    `Q ${targetX} ${busY} ${targetX} ${busY + r} ` +
+    `L ${targetX} ${targetY}`;
+
+  const labelX = (sourceX + targetX) / 2;
+  const labelY = busY - 10;
+
+  return (
+    <BaseEdge
+      path={path}
+      labelX={labelX}
+      labelY={labelY}
+      label={label}
+      labelStyle={labelStyle}
+      labelShowBg={labelShowBg}
+      labelBgStyle={labelBgStyle}
+      labelBgPadding={labelBgPadding}
+      labelBgBorderRadius={labelBgBorderRadius}
+      style={style}
+      markerEnd={markerEnd}
+      markerStart={markerStart}
+      interactionWidth={interactionWidth}
+    />
+  );
+});
+LoopExitHorizontalEdge.displayName = 'LoopExitHorizontalEdge';
+
 const nodeTypes = {
   terminatorNode: TerminatorNode,
   processNode: ProcessNode,
   ioNode: IONode,
   diamondNode: DiamondNode,
   mergeNode: MergeNode,
+  preparationNode: PreparationNode,
 };
 
 const edgeTypes = {
   trunkEdge: TrunkEdge,
   collectorEdge: CollectorEdge,
   collectorHorizontalEdge: CollectorHorizontalEdge,
+  loopbackEdge: LoopbackEdge,
+  loopExitEdge: LoopExitEdge,
+  loopbackHorizontalEdge: LoopbackHorizontalEdge,
+  loopExitHorizontalEdge: LoopExitHorizontalEdge,
 };
 
 // ── Parser Struktur Kode ──────────────────────────────────────────────────────
 type Stmt =
-  | { kind: 'assign' | 'io'; label: string; varName?: string; id: string; stepKey: string }
+  | { kind: 'assign' | 'io' | 'break'; label: string; varName?: string; id: string; stepKey: string }
   | { kind: 'if'; cond: string; trueBranch: Stmt[]; falseBranch: Stmt[]; id: string; stepKey: string; elseStepKey?: string }
   | {
       kind: 'multi_branch';
@@ -475,6 +786,21 @@ type Stmt =
       };
       id: string;
       stepKey: string;
+    }
+  | {
+      kind: 'loop_for';
+      label: string;
+      varName: string;
+      body: Stmt[];
+      id: string;
+      stepKey: string;
+    }
+  | {
+      kind: 'loop_while';
+      cond: string;
+      body: Stmt[];
+      id: string;
+      stepKey: string;
     };
 
 type IndexedLine = { text: string; lineIndex: number };
@@ -482,6 +808,66 @@ type IndexedLine = { text: string; lineIndex: number };
 function getIndent(line: string): number {
   const match = line.search(/\S/);
   return match === -1 ? 0 : match;
+}
+
+// ── Helper Pemformat Label Preparation FOR Loop (Standar ANSI) ────────────────
+function formatForLoopLabel(line: string): { label: string; varName: string } {
+  // Python: `for var in range(...)`
+  const pyRangeMatch = line.match(/for\s+([a-zA-Z_][a-zA-Z0-9_]*)\s+in\s+range\s*\(([^)]+)\)/);
+  if (pyRangeMatch) {
+    const varName = pyRangeMatch[1];
+    const rawArgs = pyRangeMatch[2].split(',').map(s => s.trim());
+    if (rawArgs.length === 1) {
+      const stopRaw = rawArgs[0];
+      const stop = isNaN(Number(stopRaw)) ? `${stopRaw}-1` : String(Number(stopRaw) - 1);
+      return { label: `${varName} = 0 TO ${stop}`, varName };
+    } else if (rawArgs.length === 2) {
+      const start = rawArgs[0];
+      const stopRaw = rawArgs[1];
+      const stop = isNaN(Number(stopRaw)) ? `${stopRaw}-1` : String(Number(stopRaw) - 1);
+      return { label: `${varName} = ${start} TO ${stop}`, varName };
+    } else if (rawArgs.length >= 3) {
+      const start = rawArgs[0];
+      const stopRaw = rawArgs[1];
+      const stop = isNaN(Number(stopRaw)) ? `${stopRaw}-1` : String(Number(stopRaw) - 1);
+      const step = rawArgs[2];
+      return { label: `${varName} = ${start} TO ${stop} STEP ${step}`, varName };
+    }
+  }
+
+  // Python: `for item in items`
+  const pyInMatch = line.match(/for\s+([a-zA-Z_][a-zA-Z0-9_]*)\s+in\s+([a-zA-Z0-9_.[\]]+)/);
+  if (pyInMatch) {
+    const varName = pyInMatch[1];
+    const collection = pyInMatch[2];
+    return { label: `${varName} in ${collection}`, varName };
+  }
+
+  // JS: `for (let i = 1; i <= 5; i++)` or `for (let i = 0; i < n; i++)`
+  const jsForMatch = line.match(/for\s*\(\s*(?:let|var|const)?\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^;]+);\s*\1\s*(<=|<)\s*([^;]+);\s*(.+)\)/);
+  if (jsForMatch) {
+    const varName = jsForMatch[1];
+    const start = jsForMatch[2].trim();
+    const op = jsForMatch[3];
+    const stopRaw = jsForMatch[4].trim();
+    const incRaw = jsForMatch[5].trim();
+
+    let stop = stopRaw;
+    if (op === '<') {
+      stop = isNaN(Number(stopRaw)) ? `${stopRaw}-1` : String(Number(stopRaw) - 1);
+    }
+    
+    let stepStr = '';
+    const stepMatch = incRaw.match(/\+=\s*(\d+)/);
+    if (stepMatch && Number(stepMatch[1]) !== 1) {
+      stepStr = ` STEP ${stepMatch[1]}`;
+    }
+
+    return { label: `${varName} = ${start} TO ${stop}${stepStr}`, varName };
+  }
+
+  const clean = line.replace(/^for\s*\(?/, '').replace(/\)?\s*[:{]?\s*$/, '').trim();
+  return { label: clean || 'i = 1 TO N', varName: 'i' };
 }
 
 function parseCode(lines: IndexedLine[]): Stmt[] {
@@ -761,7 +1147,110 @@ function parseCode(lines: IndexedLine[]): Stmt[] {
       continue;
     }
 
-    // 3. Output IO (print / console.log)
+    // 3. FOR Loop statement (Python: `for ... in ...:`, JS: `for (...) {`)
+    const isFor = /^for\s*\(?.+\)?\s*[:{]/.test(trimmed) || /^for\s+.+:$/.test(trimmed);
+    if (isFor) {
+      const forLineIdx = item.lineIndex;
+      const { label: forLabel, varName } = formatForLoopLabel(trimmed);
+      i++;
+
+      const bodyLines: IndexedLine[] = [];
+      let braceDepth = trimmed.includes('{') ? 1 : 0;
+
+      while (i < lines.length) {
+        const subItem = lines[i];
+        const subRaw = stripComment(subItem.text);
+        const subTrimmed = subRaw.trim();
+        if (!subTrimmed) { i++; continue; }
+
+        const subIndent = getIndent(subRaw);
+
+        if (braceDepth > 0) {
+          if (subTrimmed === '}') {
+            braceDepth--;
+            if (braceDepth === 0) { i++; break; }
+          }
+          bodyLines.push(subItem);
+          i++;
+        } else if (subIndent > baseIndent) {
+          bodyLines.push(subItem);
+          i++;
+        } else {
+          break;
+        }
+      }
+
+      stmts.push({
+        kind: 'loop_for',
+        label: forLabel,
+        varName,
+        body: parseCode(bodyLines),
+        id: `for-${forLineIdx}`,
+        stepKey: `line-${forLineIdx}`
+      });
+      continue;
+    }
+
+    // 4. WHILE Loop statement (Python: `while ...:`, JS: `while (...) {`)
+    const isWhile = (/^while\s*\(?.+\)?\s*[:{]/.test(trimmed) || /^while\s+.+:$/.test(trimmed)) && !trimmed.startsWith('while (false)');
+    if (isWhile) {
+      const whileLineIdx = item.lineIndex;
+      const condMatch = trimmed.match(/^while\s*\(?(.*?)\)?\s*[:{]\s*$/) || trimmed.match(/^while\s+(.*):$/);
+      let cond = condMatch ? condMatch[1].trim() : trimmed.replace(/^while\s*/, '');
+      cond = cond.replace(/\s*:\s*$/, '').replace(/\s*\{\s*$/, '');
+      if (!cond.endsWith('?')) cond += '?';
+      i++;
+
+      const bodyLines: IndexedLine[] = [];
+      let braceDepth = trimmed.includes('{') ? 1 : 0;
+
+      while (i < lines.length) {
+        const subItem = lines[i];
+        const subRaw = stripComment(subItem.text);
+        const subTrimmed = subRaw.trim();
+        if (!subTrimmed) { i++; continue; }
+
+        const subIndent = getIndent(subRaw);
+
+        if (braceDepth > 0) {
+          if (subTrimmed === '}') {
+            braceDepth--;
+            if (braceDepth === 0) { i++; break; }
+          }
+          bodyLines.push(subItem);
+          i++;
+        } else if (subIndent > baseIndent) {
+          bodyLines.push(subItem);
+          i++;
+        } else {
+          break;
+        }
+      }
+
+      stmts.push({
+        kind: 'loop_while',
+        cond,
+        body: parseCode(bodyLines),
+        id: `while-${whileLineIdx}`,
+        stepKey: `line-${whileLineIdx}`
+      });
+      continue;
+    }
+
+    // 5. Break statement
+    // 5. BREAK statement (Keluar paksa dari perulangan)
+    if (trimmed === 'break' || trimmed === 'break;') {
+      stmts.push({
+        kind: 'break',
+        label: 'break (Keluar Loop)',
+        id: `break-${item.lineIndex}`,
+        stepKey: `line-${item.lineIndex}`
+      });
+      i++;
+      continue;
+    }
+
+    // 6. Output IO (print / console.log)
     const norm = trimmed.replace(/^(let|const|var)\s+/, '').replace(/;$/, '').trim();
     if (norm.startsWith('print') || norm.startsWith('console.log')) {
       const match = norm.match(/\(([^)]*)\)/);
@@ -855,7 +1344,9 @@ function evaluateCondition(condStr: string, vars: Record<string, any>): boolean 
 }
 
 function getEstimatedNodeHeight(stmt: Stmt): number {
-  if (stmt.kind === 'if' || stmt.kind === 'multi_branch') return 90;
+  if (stmt.kind === 'if' || stmt.kind === 'multi_branch' || stmt.kind === 'loop_while') return 90;
+  if (stmt.kind === 'loop_for') return 66;
+  if (stmt.kind === 'break') return 46;
   const len = stmt.label ? stmt.label.length : 20;
   if (len > 50) return 65;
   if (len > 30) return 52;
@@ -875,16 +1366,22 @@ function buildGraph(
   variables: Record<string, any>,
   hoveredStepKey?: string | null,
   onHoverStepKey?: (key: string | null) => void,
-  branchStatus: 'neutral' | 'active' | 'bypassed' = 'neutral'
-): { lastId: string; lastHandle: string | undefined } {
+  branchStatus: 'neutral' | 'active' | 'bypassed' = 'neutral',
+  loopContext?: { exitMergeId: string; loopPrepId: string }
+): { lastId: string; lastHandle: string | undefined; minX: number; maxX: number } {
   let currentPrev = prevId;
   let currentPrevHandle = prevHandle;
+  let minX = centerX;
+  let maxX = centerX;
 
   for (const stmt of stmts) {
-    if (stmt.kind === 'assign' || stmt.kind === 'io') {
+    if (stmt.kind === 'assign' || stmt.kind === 'io' || stmt.kind === 'break') {
       const nodeId = `${stmt.id}-${counter.n++}`;
       const nodeH = getEstimatedNodeHeight(stmt);
       const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
+
+      minX = Math.min(minX, centerX - 140);
+      maxX = Math.max(maxX, centerX + 140);
 
       nodes.push({
         id: nodeId,
@@ -929,6 +1426,9 @@ function buildGraph(
       const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
       const condEval = branchStatus === 'bypassed' ? null : evaluateCondition(stmt.cond, variables);
 
+      minX = Math.min(minX, centerX - 140);
+      maxX = Math.max(maxX, centerX + 140);
+
       nodes.push({
         id: diamondId,
         position: { x: centerX, y: yRef.y },
@@ -961,6 +1461,7 @@ function buildGraph(
       const branchStartY = yRef.y;
 
       const leftBranchX = centerX - 220;
+      minX = Math.min(minX, leftBranchX - 140);
       const leftYRef = { y: branchStartY };
       let leftLastId: string;
       let leftLastHandle: string | undefined;
@@ -983,10 +1484,13 @@ function buildGraph(
           variables,
           hoveredStepKey,
           onHoverStepKey,
-          trueBranchStatus
+          trueBranchStatus,
+          loopContext
         );
         leftLastId = res.lastId;
         leftLastHandle = res.lastHandle;
+        minX = Math.min(minX, res.minX);
+        maxX = Math.max(maxX, res.maxX);
 
         const firstEdge = edges.find(e => e.source === diamondId && (e.sourceHandle === 'yes-left' || e.sourceHandle === 'yes'));
         if (firstEdge) {
@@ -1022,6 +1526,7 @@ function buildGraph(
       }
 
       const rightBranchX = centerX + 220;
+      maxX = Math.max(maxX, rightBranchX + 140);
       const rightYRef = { y: branchStartY };
       let rightLastId: string;
       let rightLastHandle: string | undefined;
@@ -1044,10 +1549,13 @@ function buildGraph(
           variables,
           hoveredStepKey,
           onHoverStepKey,
-          falseBranchStatus
+          falseBranchStatus,
+          loopContext
         );
         rightLastId = res.lastId;
         rightLastHandle = res.lastHandle;
+        minX = Math.min(minX, res.minX);
+        maxX = Math.max(maxX, res.maxX);
 
         const firstEdge = edges.find(e => e.source === diamondId && e.sourceHandle === 'no');
         if (firstEdge) {
@@ -1091,107 +1599,265 @@ function buildGraph(
         rightLastHandle = 'no';
       }
 
-      const maxY = Math.max(leftYRef.y, rightYRef.y) + 30;
-      const mergeId = `merge-${counter.n++}`;
-      nodes.push({
-        id: mergeId,
-        position: { x: centerX, y: maxY },
-        origin: [0.5, 0.5],
-        type: 'mergeNode',
-        data: {},
-      });
-      yRef.y = maxY + 45;
+      // Deteksi jika salah satu cabang diakhiri BREAK di dalam konteks perulangan
+      const isTrueBreak = stmt.trueBranch.length > 0 && stmt.trueBranch[stmt.trueBranch.length - 1].kind === 'break';
+      const isFalseBreak = stmt.falseBranch.length > 0 && stmt.falseBranch[stmt.falseBranch.length - 1].kind === 'break';
 
-      edges.push({
-        id: `e-${leftLastId}-${mergeId}`,
-        source: leftLastId,
-        sourceHandle: leftLastHandle,
-        target: mergeId,
-        targetHandle: 't-left',
-        type: 'trunkEdge',
-        style: condEval === true && branchStatus !== 'bypassed'
-          ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
-          : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
-        animated: condEval === true && branchStatus !== 'bypassed',
-        markerEnd: { 
-          type: MarkerType.ArrowClosed, 
-          color: condEval === true && branchStatus !== 'bypassed' ? '#10b981' : '#64748b', 
-          width: 14, 
-          height: 14 
-        },
-      });
+      if (loopContext && (isTrueBreak || isFalseBreak)) {
+        if (isTrueBreak) {
+          edges.push({
+            id: `e-${leftLastId}-${loopContext.exitMergeId}-break`,
+            source: leftLastId,
+            sourceHandle: leftLastHandle || 'bottom',
+            target: loopContext.exitMergeId,
+            targetHandle: 't-left',
+            type: 'trunkEdge',
+            label: isTrueActive ? '⚡ break (Keluar Loop)' : '✗ break (DILEWATI)',
+            labelStyle: isTrueActive
+              ? { fill: '#ffffff', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' }
+              : { fill: '#94a3b8', fontWeight: 700, fontSize: 9 },
+            labelBgStyle: isTrueActive
+              ? { fill: '#b91c1c', fillOpacity: 0.95, rx: 4, ry: 4 }
+              : { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
+            labelBgPadding: [6, 3],
+            style: isTrueActive
+              ? { stroke: '#10b981', strokeWidth: 3.5, filter: 'drop-shadow(0 0 6px rgba(16,185,129,0.8))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isTrueActive,
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: isTrueActive ? '#10b981' : '#64748b', 
+              width: 14, 
+              height: 14 
+            },
+          });
+        }
 
-      if (stmt.falseBranch.length > 0) {
+        if (isFalseBreak) {
+          edges.push({
+            id: `e-${rightLastId}-${loopContext.exitMergeId}-break`,
+            source: rightLastId,
+            sourceHandle: rightLastHandle || 'bottom',
+            target: loopContext.exitMergeId,
+            targetHandle: 't-right',
+            type: 'trunkEdge',
+            label: isFalseActive ? '⚡ break (Keluar Loop)' : '✗ break (DILEWATI)',
+            labelStyle: isFalseActive
+              ? { fill: '#ffffff', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' }
+              : { fill: '#94a3b8', fontWeight: 700, fontSize: 9 },
+            labelBgStyle: isFalseActive
+              ? { fill: '#b91c1c', fillOpacity: 0.95, rx: 4, ry: 4 }
+              : { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
+            labelBgPadding: [6, 3],
+            style: isFalseActive
+              ? { stroke: '#10b981', strokeWidth: 3.5, filter: 'drop-shadow(0 0 6px rgba(16,185,129,0.8))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isFalseActive,
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: isFalseActive ? '#10b981' : '#64748b', 
+              width: 14, 
+              height: 14 
+            },
+          });
+        }
+
+        const maxY = Math.max(leftYRef.y, rightYRef.y) + 30;
+        const continueId = `merge-${counter.n++}`;
+        nodes.push({
+          id: continueId,
+          position: { x: centerX, y: maxY },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+        yRef.y = maxY + 45;
+
+        if (isTrueBreak && stmt.falseBranch.length === 0) {
+          const isElseHovered = Boolean(stmt.elseStepKey && hoveredStepKey === stmt.elseStepKey);
+          edges.push({
+            id: `e-${diamondId}-${continueId}`,
+            source: diamondId,
+            sourceHandle: 'no',
+            target: continueId,
+            targetHandle: 't-right',
+            label: isElseHovered
+              ? '⚡ Selain itu (LEWATI)'
+              : isFalseActive
+                ? '✓ Tidak (FALSE)'
+                : isFalseBypassed
+                  ? '✗ Tidak (LEWATI)'
+                  : 'Tidak',
+            labelStyle: isElseHovered
+              ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
+              : isFalseActive
+                ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
+                : isFalseBypassed
+                  ? { fill: '#94a3b8', fontWeight: 700, fontSize: 10 }
+                  : { fill: '#fb7185', fontWeight: 900, fontSize: 12 },
+            labelBgStyle: isElseHovered
+              ? { fill: '#b45309', fillOpacity: 1, rx: 6, ry: 6 }
+              : isFalseActive
+                ? { fill: '#059669', fillOpacity: 1, rx: 6, ry: 6 }
+                : { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
+            labelBgPadding: [6, 3],
+            type: 'trunkEdge',
+            style: isFalseActive
+              ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isFalseActive,
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: isFalseActive ? '#10b981' : '#64748b', 
+              width: 14, 
+              height: 14 
+            },
+          });
+        } else if (isTrueBreak && stmt.falseBranch.length > 0) {
+          edges.push({
+            id: `e-${rightLastId}-${continueId}`,
+            source: rightLastId,
+            sourceHandle: rightLastHandle || 'bottom',
+            target: continueId,
+            targetHandle: 't-right',
+            type: 'trunkEdge',
+            style: isFalseActive
+              ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isFalseActive,
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: isFalseActive ? '#10b981' : '#64748b', 
+              width: 14, 
+              height: 14 
+            },
+          });
+        } else if (isFalseBreak && stmt.trueBranch.length > 0) {
+          edges.push({
+            id: `e-${leftLastId}-${continueId}`,
+            source: leftLastId,
+            sourceHandle: leftLastHandle || 'bottom',
+            target: continueId,
+            targetHandle: 't-left',
+            type: 'trunkEdge',
+            style: isTrueActive
+              ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isTrueActive,
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: isTrueActive ? '#10b981' : '#64748b', 
+              width: 14, 
+              height: 14 
+            },
+          });
+        }
+
+        currentPrev = continueId;
+        currentPrevHandle = 'b-out';
+      } else {
+        const maxY = Math.max(leftYRef.y, rightYRef.y) + 30;
+        const mergeId = `merge-${counter.n++}`;
+        nodes.push({
+          id: mergeId,
+          position: { x: centerX, y: maxY },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+        yRef.y = maxY + 45;
+
         edges.push({
-          id: `e-${rightLastId}-${mergeId}`,
-          source: rightLastId,
-          sourceHandle: rightLastHandle,
+          id: `e-${leftLastId}-${mergeId}`,
+          source: leftLastId,
+          sourceHandle: leftLastHandle,
           target: mergeId,
-          targetHandle: 't-right',
+          targetHandle: 't-left',
           type: 'trunkEdge',
-          style: condEval === false && branchStatus !== 'bypassed'
-            ? { stroke: '#f43f5e', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(244,63,94,0.5))' }
+          style: condEval === true && branchStatus !== 'bypassed'
+            ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
             : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
-          animated: condEval === false && branchStatus !== 'bypassed',
+          animated: condEval === true && branchStatus !== 'bypassed',
           markerEnd: { 
             type: MarkerType.ArrowClosed, 
-            color: condEval === false && branchStatus !== 'bypassed' ? '#f43f5e' : '#64748b', 
+            color: condEval === true && branchStatus !== 'bypassed' ? '#10b981' : '#64748b', 
             width: 14, 
             height: 14 
           },
         });
-      } else {
-        const isElseHovered = Boolean(stmt.elseStepKey && hoveredStepKey === stmt.elseStepKey);
-        const isBypassActive = condEval === false && branchStatus !== 'bypassed';
-        const isBypassDimmed = condEval === true || branchStatus === 'bypassed';
-        edges.push({
-          id: `e-${diamondId}-${mergeId}`,
-          source: diamondId,
-          sourceHandle: 'no',
-          target: mergeId,
-          targetHandle: 't-right',
-          label: isElseHovered
-            ? '⚡ Selain itu (LEWATI)'
-            : isBypassActive
-              ? '✓ Tidak (FALSE)'
-              : isBypassDimmed
-                ? '✗ Tidak (LEWATI)'
-                : 'Tidak',
-          labelStyle: isElseHovered
-            ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
-            : isBypassActive 
-              ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
-              : isBypassDimmed
-                ? { fill: '#94a3b8', fontWeight: 700, fontSize: 10 }
-                : { fill: '#fb7185', fontWeight: 900, fontSize: 12 },
-          labelBgStyle: isElseHovered
-            ? { fill: '#b45309', fillOpacity: 1, rx: 6, ry: 6 }
-            : isBypassActive
-              ? { fill: '#e11d48', fillOpacity: 1, rx: 6, ry: 6 }
-              : isBypassDimmed
-                ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
-                : { fill: '#4c0519', fillOpacity: 0.95, rx: 4, ry: 4 },
-          labelBgPadding: [6, 3],
-          type: 'trunkEdge',
-          style: isElseHovered
-            ? { stroke: '#fbbf24', strokeWidth: 4, filter: 'drop-shadow(0 0 10px rgba(251,191,36,0.95))' }
-            : isBypassActive
-              ? { stroke: '#f43f5e', strokeWidth: 3.5, filter: 'drop-shadow(0 0 6px rgba(244,63,94,0.8))' }
-              : isBypassDimmed
-                ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
-                : { stroke: '#f43f5e', strokeWidth: 2.5 },
-          animated: isElseHovered || isBypassActive,
-          markerEnd: { 
-            type: MarkerType.ArrowClosed, 
-            color: isElseHovered ? '#fbbf24' : isBypassActive ? '#f43f5e' : isBypassDimmed ? '#64748b' : '#f43f5e', 
-            width: isElseHovered || isBypassActive ? 16 : 14, 
-            height: isElseHovered || isBypassActive ? 16 : 14 
-          },
-        });
-      }
 
-      currentPrev = mergeId;
-      currentPrevHandle = 'b-out';
+        if (stmt.falseBranch.length > 0) {
+          edges.push({
+            id: `e-${rightLastId}-${mergeId}`,
+            source: rightLastId,
+            sourceHandle: rightLastHandle,
+            target: mergeId,
+            targetHandle: 't-right',
+            type: 'trunkEdge',
+            style: condEval === false && branchStatus !== 'bypassed'
+              ? { stroke: '#f43f5e', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(244,63,94,0.5))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: condEval === false && branchStatus !== 'bypassed',
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: condEval === false && branchStatus !== 'bypassed' ? '#f43f5e' : '#64748b', 
+              width: 14, 
+              height: 14 
+            },
+          });
+        } else {
+          const isElseHovered = Boolean(stmt.elseStepKey && hoveredStepKey === stmt.elseStepKey);
+          const isBypassActive = condEval === false && branchStatus !== 'bypassed';
+          const isBypassDimmed = condEval === true || branchStatus === 'bypassed';
+          edges.push({
+            id: `e-${diamondId}-${mergeId}`,
+            source: diamondId,
+            sourceHandle: 'no',
+            target: mergeId,
+            targetHandle: 't-right',
+            label: isElseHovered
+              ? '⚡ Selain itu (LEWATI)'
+              : isBypassActive
+                ? '✓ Tidak (FALSE)'
+                : isBypassDimmed
+                  ? '✗ Tidak (LEWATI)'
+                  : 'Tidak',
+            labelStyle: isElseHovered
+              ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
+              : isBypassActive 
+                ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
+                : isBypassDimmed
+                  ? { fill: '#94a3b8', fontWeight: 700, fontSize: 10 }
+                  : { fill: '#fb7185', fontWeight: 900, fontSize: 12 },
+            labelBgStyle: isElseHovered
+              ? { fill: '#b45309', fillOpacity: 1, rx: 6, ry: 6 }
+              : isBypassActive
+                ? { fill: '#e11d48', fillOpacity: 1, rx: 6, ry: 6 }
+                : isBypassDimmed
+                  ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+                  : { fill: '#4c0519', fillOpacity: 0.95, rx: 4, ry: 4 },
+            labelBgPadding: [6, 3],
+            type: 'trunkEdge',
+            style: isElseHovered
+              ? { stroke: '#fbbf24', strokeWidth: 4, filter: 'drop-shadow(0 0 10px rgba(251,191,36,0.95))' }
+              : isBypassActive
+                ? { stroke: '#f43f5e', strokeWidth: 3.5, filter: 'drop-shadow(0 0 6px rgba(244,63,94,0.8))' }
+                : isBypassDimmed
+                  ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+                  : { stroke: '#f43f5e', strokeWidth: 2.5 },
+            animated: isElseHovered || isBypassActive,
+            markerEnd: { 
+              type: MarkerType.ArrowClosed, 
+              color: isElseHovered ? '#fbbf24' : isBypassActive ? '#f43f5e' : isBypassDimmed ? '#64748b' : '#f43f5e', 
+              width: isElseHovered || isBypassActive ? 16 : 14, 
+              height: isElseHovered || isBypassActive ? 16 : 14 
+            },
+          });
+        }
+
+        currentPrev = mergeId;
+        currentPrevHandle = 'b-out';
+      }
     } else if (stmt.kind === 'multi_branch') {
       // ── Cascading Selection (Percabangan Majemuk / Multi-Branch) ────────────
       let activeBranchIdx: number | null = null;
@@ -1475,10 +2141,296 @@ function buildGraph(
       currentPrev = mergeId;
       currentPrevHandle = 'b-out';
       yRef.y = maxY + 85;
+    } else if (stmt.kind === 'loop_for') {
+      const prepId = `prep-${counter.n++}`;
+      const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
+
+      nodes.push({
+        id: prepId,
+        position: { x: centerX, y: yRef.y },
+        origin: [0.5, 0],
+        type: 'preparationNode',
+        data: {
+          label: stmt.label,
+          stepKey: stmt.stepKey,
+          isHovered,
+          onHover: onHoverStepKey,
+          branchStatus,
+        },
+      });
+
+      edges.push({
+        id: `e-${currentPrev}-${prepId}`,
+        source: currentPrev,
+        sourceHandle: currentPrevHandle,
+        target: prepId,
+        targetHandle: 'top',
+        type: 'smoothstep',
+        style: branchStatus === 'bypassed'
+          ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+          : { stroke: '#94a3b8', strokeWidth: 2 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: branchStatus === 'bypassed' ? '#64748b' : '#94a3b8', width: 14, height: 14 },
+      });
+
+      yRef.y += 66 + 45;
+
+      if (stmt.body.length > 0) {
+        const exitMergeId = `merge-${counter.n++}`;
+
+        const bodyRes = buildGraph(
+          stmt.body,
+          nodes,
+          edges,
+          prepId,
+          'bottom',
+          centerX,
+          yRef,
+          counter,
+          variables,
+          hoveredStepKey,
+          onHoverStepKey,
+          branchStatus === 'bypassed' ? 'bypassed' : 'active',
+          { exitMergeId, loopPrepId: prepId }
+        );
+
+        minX = Math.min(minX, bodyRes.minX);
+        maxX = Math.max(maxX, bodyRes.maxX);
+
+        const entryEdge = edges.find(e => e.source === prepId && e.sourceHandle === 'bottom');
+        if (entryEdge) {
+          entryEdge.label = '✓ Ulangi';
+          entryEdge.labelStyle = { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' };
+          entryEdge.labelBgStyle = { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 };
+          entryEdge.style = { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' };
+          entryEdge.animated = true;
+          entryEdge.markerEnd = { type: MarkerType.ArrowClosed, color: '#10b981', width: 14, height: 14 };
+        }
+
+        // Cek apakah ada cabang break aktif yang keluar ke exitMergeId
+        const breakEdge = edges.find(e => e.target === exitMergeId && e.id.includes('-break'));
+        const hasActiveBreak = breakEdge && breakEdge.animated === true;
+
+        // Loopback busX: aman di sebelah kiri seluruh node body (jarak minimal 60px dari node paling kiri)
+        const loopbackBusX = Math.min(bodyRes.minX - 60, centerX - 360);
+        minX = Math.min(minX, loopbackBusX - 20);
+
+        // Loopback edge returning from body back to prepId left handle
+        edges.push({
+          id: `e-${bodyRes.lastId}-${prepId}-loopback`,
+          source: bodyRes.lastId,
+          sourceHandle: bodyRes.lastHandle || 'bottom',
+          target: prepId,
+          targetHandle: 'left',
+          type: 'loopbackEdge',
+          data: { busX: loopbackBusX },
+          label: hasActiveBreak ? `✗ Next ${stmt.varName || 'i'} (DILEWATI)` : `Next ${stmt.varName || 'i'}`,
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak || branchStatus === 'bypassed'
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' },
+          animated: !hasActiveBreak && branchStatus !== 'bypassed',
+          markerEnd: { 
+            type: MarkerType.ArrowClosed, 
+            color: (hasActiveBreak || branchStatus === 'bypassed') ? '#64748b' : '#10b981', 
+            width: 14, 
+            height: 14 
+          },
+        });
+
+        // Merge node below loop body
+        nodes.push({
+          id: exitMergeId,
+          position: { x: centerX, y: yRef.y },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+
+        // Loop exit busX: aman di sebelah kanan seluruh node body (jarak minimal 60px dari node paling kanan)
+        const exitBusX = Math.max(bodyRes.maxX + 60, centerX + 320);
+        maxX = Math.max(maxX, exitBusX + 20);
+
+        // Loop exit edge from prepId right handle to exitMergeId
+        edges.push({
+          id: `e-${prepId}-${exitMergeId}-exit`,
+          source: prepId,
+          sourceHandle: 'right',
+          target: exitMergeId,
+          targetHandle: 't-right',
+          type: 'loopExitEdge',
+          data: { busX: exitBusX },
+          label: hasActiveBreak ? 'Selesai (DILEWATI)' : 'Selesai',
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#f43f5e', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#881337', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#f43f5e', strokeWidth: 2 },
+          markerEnd: { 
+            type: MarkerType.ArrowClosed, 
+            color: hasActiveBreak ? '#64748b' : '#f43f5e', 
+            width: 14, 
+            height: 14 
+          },
+        });
+
+        currentPrev = exitMergeId;
+        currentPrevHandle = 'b-out';
+        yRef.y += 24 + 45;
+      }
+    } else if (stmt.kind === 'loop_while') {
+      const diamondId = `diamond-${counter.n++}`;
+      const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
+      const condEval = branchStatus === 'bypassed' ? null : evaluateCondition(stmt.cond, variables);
+
+      nodes.push({
+        id: diamondId,
+        position: { x: centerX, y: yRef.y },
+        origin: [0.5, 0],
+        type: 'diamondNode',
+        data: {
+          label: stmt.cond,
+          stepKey: stmt.stepKey,
+          isHovered,
+          onHover: onHoverStepKey,
+          condResult: condEval,
+          branchStatus,
+        },
+      });
+
+      edges.push({
+        id: `e-${currentPrev}-${diamondId}`,
+        source: currentPrev,
+        sourceHandle: currentPrevHandle,
+        target: diamondId,
+        targetHandle: 'top',
+        type: 'smoothstep',
+        style: branchStatus === 'bypassed'
+          ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+          : { stroke: '#94a3b8', strokeWidth: 2 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: branchStatus === 'bypassed' ? '#64748b' : '#94a3b8', width: 14, height: 14 },
+      });
+
+      yRef.y += 90 + 45;
+
+      if (stmt.body.length > 0) {
+        const exitMergeId = `merge-${counter.n++}`;
+
+        const bodyRes = buildGraph(
+          stmt.body,
+          nodes,
+          edges,
+          diamondId,
+          'bottom',
+          centerX,
+          yRef,
+          counter,
+          variables,
+          hoveredStepKey,
+          onHoverStepKey,
+          branchStatus === 'bypassed' ? 'bypassed' : 'active',
+          { exitMergeId, loopPrepId: diamondId }
+        );
+
+        minX = Math.min(minX, bodyRes.minX);
+        maxX = Math.max(maxX, bodyRes.maxX);
+
+        const entryEdge = edges.find(e => e.source === diamondId && e.sourceHandle === 'bottom');
+        if (entryEdge) {
+          entryEdge.label = '✓ Ya (Ulangi)';
+          entryEdge.labelStyle = { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' };
+          entryEdge.labelBgStyle = { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 };
+          entryEdge.style = { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' };
+          entryEdge.animated = true;
+          entryEdge.markerEnd = { type: MarkerType.ArrowClosed, color: '#10b981', width: 14, height: 14 };
+        }
+
+        const breakEdge = edges.find(e => e.target === exitMergeId && e.id.includes('-break'));
+        const hasActiveBreak = breakEdge && breakEdge.animated === true;
+
+        const loopbackBusX = Math.min(bodyRes.minX - 60, centerX - 360);
+        minX = Math.min(minX, loopbackBusX - 20);
+
+        edges.push({
+          id: `e-${bodyRes.lastId}-${diamondId}-loopback`,
+          source: bodyRes.lastId,
+          sourceHandle: bodyRes.lastHandle || 'bottom',
+          target: diamondId,
+          targetHandle: 't-left',
+          type: 'loopbackEdge',
+          data: { busX: loopbackBusX },
+          label: hasActiveBreak ? '✗ Putar Balik (DILEWATI)' : 'Putar Balik',
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak || branchStatus === 'bypassed'
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' },
+          animated: !hasActiveBreak && branchStatus !== 'bypassed',
+          markerEnd: { 
+            type: MarkerType.ArrowClosed, 
+            color: (hasActiveBreak || branchStatus === 'bypassed') ? '#64748b' : '#10b981', 
+            width: 14, 
+            height: 14 
+          },
+        });
+
+        nodes.push({
+          id: exitMergeId,
+          position: { x: centerX, y: yRef.y },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+
+        const exitBusX = Math.max(bodyRes.maxX + 60, centerX + 320);
+        maxX = Math.max(maxX, exitBusX + 20);
+
+        edges.push({
+          id: `e-${diamondId}-${exitMergeId}-exit`,
+          source: diamondId,
+          sourceHandle: 'no',
+          target: exitMergeId,
+          targetHandle: 't-right',
+          type: 'loopExitEdge',
+          data: { busX: exitBusX },
+          label: hasActiveBreak ? 'Tidak (Selesai - DILEWATI)' : 'Tidak (Selesai)',
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#f43f5e', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#881337', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#f43f5e', strokeWidth: 2 },
+          markerEnd: { 
+            type: MarkerType.ArrowClosed, 
+            color: hasActiveBreak ? '#64748b' : '#f43f5e', 
+            width: 14, 
+            height: 14 
+          },
+        });
+
+        currentPrev = exitMergeId;
+        currentPrevHandle = 'b-out';
+        yRef.y += 24 + 45;
+      }
     }
   }
 
-  return { lastId: currentPrev, lastHandle: currentPrevHandle };
+  return { lastId: currentPrev, lastHandle: currentPrevHandle, minX, maxX };
 }
 
 // ── Horizontal Graph Builder (Alur Kiri ke Kanan Standar ANSI) ─────────────────
@@ -1494,13 +2446,14 @@ function buildHorizontalGraph(
   variables: Record<string, any>,
   hoveredStepKey?: string | null,
   onHoverStepKey?: (key: string | null) => void,
-  branchStatus: 'neutral' | 'active' | 'bypassed' = 'neutral'
+  branchStatus: 'neutral' | 'active' | 'bypassed' = 'neutral',
+  loopContext?: { exitMergeId: string; loopPrepId: string }
 ): { lastId: string; lastHandle: string | undefined } {
   let currentPrev = prevId;
   let currentPrevHandle = prevHandle;
 
   for (const stmt of stmts) {
-    if (stmt.kind === 'assign' || stmt.kind === 'io') {
+    if (stmt.kind === 'assign' || stmt.kind === 'io' || stmt.kind === 'break') {
       const nodeId = `${stmt.id}-${counter.n++}`;
       const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
 
@@ -1586,6 +2539,11 @@ function buildHorizontalGraph(
       const trueBranchStatus: 'active' | 'bypassed' | 'neutral' =
         isTrueActive ? 'active' : isTrueBypassed ? 'bypassed' : 'neutral';
 
+      const isFalseActive = branchStatus === 'bypassed' ? false : condEval === false;
+      const isFalseBypassed = branchStatus === 'bypassed' ? true : condEval === true;
+      const falseBranchStatus: 'active' | 'bypassed' | 'neutral' =
+        isFalseActive ? 'active' : isFalseBypassed ? 'bypassed' : 'neutral';
+
       const actionY = centerY - 140;
       const topXRef = { x: xRef.x };
       let leftLastId = diamondId;
@@ -1604,7 +2562,8 @@ function buildHorizontalGraph(
           variables,
           hoveredStepKey,
           onHoverStepKey,
-          trueBranchStatus
+          trueBranchStatus,
+          loopContext
         );
         leftLastId = res.lastId;
         leftLastHandle = res.lastHandle;
@@ -1644,11 +2603,6 @@ function buildHorizontalGraph(
       const elseXRef = { x: xRef.x + 280 };
 
       if (stmt.falseBranch.length > 0) {
-        const isFalseActive = branchStatus === 'bypassed' ? false : condEval === false;
-        const isFalseBypassed = branchStatus === 'bypassed' ? true : condEval === true;
-        const falseBranchStatus: 'active' | 'bypassed' | 'neutral' =
-          isFalseActive ? 'active' : isFalseBypassed ? 'bypassed' : 'neutral';
-
         const res = buildHorizontalGraph(
           stmt.falseBranch,
           nodes,
@@ -1661,7 +2615,8 @@ function buildHorizontalGraph(
           variables,
           hoveredStepKey,
           onHoverStepKey,
-          falseBranchStatus
+          falseBranchStatus,
+          loopContext
         );
         rightLastId = res.lastId;
         rightLastHandle = res.lastHandle;
@@ -1705,7 +2660,95 @@ function buildHorizontalGraph(
         }
       }
 
-      const maxX = Math.max(topXRef.x, stmt.falseBranch.length > 0 ? elseXRef.x : xRef.x + 280) + 30;
+      const isTrueBreak = stmt.trueBranch.length > 0 && stmt.trueBranch[stmt.trueBranch.length - 1].kind === 'break';
+      const isFalseBreak = stmt.falseBranch.length > 0 && stmt.falseBranch[stmt.falseBranch.length - 1].kind === 'break';
+
+      if (loopContext && (isTrueBreak || isFalseBreak)) {
+        if (isTrueBreak) {
+          edges.push({
+            id: `e-${leftLastId}-${loopContext.exitMergeId}-break`,
+            source: leftLastId,
+            sourceHandle: leftLastHandle === 'right' ? 's-top' : leftLastHandle || 's-top',
+            target: loopContext.exitMergeId,
+            targetHandle: 't-top',
+            type: 'collectorHorizontalEdge',
+            label: isTrueActive ? '⚡ break (Keluar Loop)' : '✗ break (DILEWATI)',
+            labelStyle: isTrueActive ? { fill: '#ffffff', fontWeight: 900, fontSize: 10 } : { fill: '#94a3b8', fontWeight: 700, fontSize: 9 },
+            labelBgStyle: isTrueActive ? { fill: '#b91c1c', fillOpacity: 0.95, rx: 4, ry: 4 } : { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
+            style: isTrueActive
+              ? { stroke: '#10b981', strokeWidth: 3.5, filter: 'drop-shadow(0 0 6px rgba(16,185,129,0.8))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isTrueActive,
+            markerEnd: { type: MarkerType.ArrowClosed, color: isTrueActive ? '#10b981' : '#64748b', width: 14, height: 14 },
+          });
+        }
+
+        const maxX = Math.max(topXRef.x, stmt.falseBranch.length > 0 ? elseXRef.x : xRef.x + 280) + 30;
+        const continueId = `merge-${counter.n++}`;
+        nodes.push({
+          id: continueId,
+          position: { x: maxX, y: centerY },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+
+        if (isTrueBreak && stmt.falseBranch.length === 0) {
+          const isElseHovered = Boolean(stmt.elseStepKey && hoveredStepKey === stmt.elseStepKey);
+          edges.push({
+            id: `e-${diamondId}-${continueId}`,
+            source: diamondId,
+            sourceHandle: 'no-right',
+            target: continueId,
+            targetHandle: 't-left',
+            label: isElseHovered
+              ? '⚡ Selain itu (LEWATI)'
+              : isFalseActive
+                ? '✓ Tidak (FALSE)'
+                : isFalseBypassed
+                  ? '✗ Tidak (LEWATI)'
+                  : 'Tidak',
+            labelStyle: isElseHovered
+              ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
+              : isFalseActive
+                ? { fill: '#ffffff', fontWeight: 900, fontSize: 11 }
+                : isFalseBypassed
+                  ? { fill: '#94a3b8', fontWeight: 700, fontSize: 10 }
+                  : { fill: '#fb7185', fontWeight: 900, fontSize: 12 },
+            labelBgStyle: isElseHovered
+              ? { fill: '#b45309', fillOpacity: 1, rx: 6, ry: 6 }
+              : isFalseActive
+                ? { fill: '#059669', fillOpacity: 1, rx: 6, ry: 6 }
+                : { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 },
+            labelBgPadding: [6, 3],
+            type: 'smoothstep',
+            style: isFalseActive
+              ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isFalseActive,
+            markerEnd: { type: MarkerType.ArrowClosed, color: isFalseActive ? '#10b981' : '#64748b', width: 14, height: 14 },
+          });
+        } else if (isTrueBreak && stmt.falseBranch.length > 0) {
+          edges.push({
+            id: `e-${rightLastId}-${continueId}`,
+            source: rightLastId,
+            sourceHandle: rightLastHandle || 'right',
+            target: continueId,
+            targetHandle: 't-left',
+            type: 'smoothstep',
+            style: isFalseActive
+              ? { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' }
+              : { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 },
+            animated: isFalseActive,
+            markerEnd: { type: MarkerType.ArrowClosed, color: isFalseActive ? '#10b981' : '#64748b', width: 14, height: 14 },
+          });
+        }
+
+        currentPrev = continueId;
+        currentPrevHandle = 'r-out';
+        xRef.x = maxX + 60;
+      } else {
+        const maxX = Math.max(topXRef.x, stmt.falseBranch.length > 0 ? elseXRef.x : xRef.x + 280) + 30;
       const mergeId = `merge-${counter.n++}`;
       nodes.push({
         id: mergeId,
@@ -1807,7 +2850,8 @@ function buildHorizontalGraph(
       currentPrev = mergeId;
       currentPrevHandle = 'r-out';
       xRef.x = maxX + 80;
-    } else if (stmt.kind === 'multi_branch') {
+    }
+  } else if (stmt.kind === 'multi_branch') {
       let activeBranchIdx: number | null = null;
       let isElseActive = false;
 
@@ -2084,6 +3128,244 @@ function buildHorizontalGraph(
       currentPrev = mergeId;
       currentPrevHandle = 'r-out';
       xRef.x = mergeX + 85;
+    } else if (stmt.kind === 'loop_for') {
+      const prepId = `prep-${counter.n++}`;
+      const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
+
+      nodes.push({
+        id: prepId,
+        position: { x: xRef.x, y: centerY },
+        origin: [0.5, 0.5],
+        type: 'preparationNode',
+        data: {
+          label: stmt.label,
+          stepKey: stmt.stepKey,
+          isHovered,
+          onHover: onHoverStepKey,
+          branchStatus,
+        },
+      });
+
+      edges.push({
+        id: `e-${currentPrev}-${prepId}`,
+        source: currentPrev,
+        sourceHandle: currentPrevHandle,
+        target: prepId,
+        targetHandle: 'left',
+        type: 'smoothstep',
+        style: branchStatus === 'bypassed'
+          ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+          : { stroke: '#94a3b8', strokeWidth: 2 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: branchStatus === 'bypassed' ? '#64748b' : '#94a3b8', width: 14, height: 14 },
+      });
+
+      xRef.x += 240;
+
+      if (stmt.body.length > 0) {
+        const exitMergeId = `merge-${counter.n++}`;
+
+        const bodyRes = buildHorizontalGraph(
+          stmt.body,
+          nodes,
+          edges,
+          prepId,
+          'right',
+          centerY,
+          xRef,
+          counter,
+          variables,
+          hoveredStepKey,
+          onHoverStepKey,
+          branchStatus === 'bypassed' ? 'bypassed' : 'active',
+          { exitMergeId, loopPrepId: prepId }
+        );
+
+        const entryEdge = edges.find(e => e.source === prepId && e.sourceHandle === 'right');
+        if (entryEdge) {
+          entryEdge.label = '✓ Ulangi';
+          entryEdge.labelStyle = { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' };
+          entryEdge.labelBgStyle = { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 };
+          entryEdge.style = { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' };
+          entryEdge.animated = true;
+          entryEdge.markerEnd = { type: MarkerType.ArrowClosed, color: '#10b981', width: 14, height: 14 };
+        }
+
+        const breakEdge = edges.find(e => e.target === exitMergeId && e.id.includes('-break'));
+        const hasActiveBreak = breakEdge && breakEdge.animated === true;
+
+        edges.push({
+          id: `e-${bodyRes.lastId}-${prepId}-loopback`,
+          source: bodyRes.lastId,
+          sourceHandle: bodyRes.lastHandle || 'right',
+          target: prepId,
+          targetHandle: 't-bottom',
+          type: 'loopbackHorizontalEdge',
+          label: hasActiveBreak ? `✗ Next ${stmt.varName || 'i'} (DILEWATI)` : `Next ${stmt.varName || 'i'}`,
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak || branchStatus === 'bypassed'
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' },
+          animated: !hasActiveBreak && branchStatus !== 'bypassed',
+          markerEnd: { type: MarkerType.ArrowClosed, color: (hasActiveBreak || branchStatus === 'bypassed') ? '#64748b' : '#10b981', width: 14, height: 14 },
+        });
+
+        nodes.push({
+          id: exitMergeId,
+          position: { x: xRef.x, y: centerY },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+
+        edges.push({
+          id: `e-${prepId}-${exitMergeId}-exit`,
+          source: prepId,
+          sourceHandle: 's-top',
+          target: exitMergeId,
+          targetHandle: 't-top',
+          type: 'loopExitHorizontalEdge',
+          label: hasActiveBreak ? 'Selesai (DILEWATI)' : 'Selesai',
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#f43f5e', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#881337', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#f43f5e', strokeWidth: 2 },
+          markerEnd: { type: MarkerType.ArrowClosed, color: hasActiveBreak ? '#64748b' : '#f43f5e', width: 14, height: 14 },
+        });
+
+        currentPrev = exitMergeId;
+        currentPrevHandle = 'r-out';
+        xRef.x += 160;
+      }
+    } else if (stmt.kind === 'loop_while') {
+      const diamondId = `diamond-${counter.n++}`;
+      const isHovered = Boolean(hoveredStepKey && hoveredStepKey === stmt.stepKey);
+      const condEval = branchStatus === 'bypassed' ? null : evaluateCondition(stmt.cond, variables);
+
+      nodes.push({
+        id: diamondId,
+        position: { x: xRef.x, y: centerY },
+        origin: [0.5, 0.5],
+        type: 'diamondNode',
+        data: {
+          label: stmt.cond,
+          stepKey: stmt.stepKey,
+          isHovered,
+          onHover: onHoverStepKey,
+          condResult: condEval,
+          branchStatus,
+        },
+      });
+
+      edges.push({
+        id: `e-${currentPrev}-${diamondId}`,
+        source: currentPrev,
+        sourceHandle: currentPrevHandle,
+        target: diamondId,
+        targetHandle: 't-left',
+        type: 'smoothstep',
+        style: branchStatus === 'bypassed'
+          ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+          : { stroke: '#94a3b8', strokeWidth: 2 },
+        markerEnd: { type: MarkerType.ArrowClosed, color: branchStatus === 'bypassed' ? '#64748b' : '#94a3b8', width: 14, height: 14 },
+      });
+
+      xRef.x += 240;
+
+      if (stmt.body.length > 0) {
+        const exitMergeId = `merge-${counter.n++}`;
+
+        const bodyRes = buildHorizontalGraph(
+          stmt.body,
+          nodes,
+          edges,
+          diamondId,
+          'yes',
+          centerY,
+          xRef,
+          counter,
+          variables,
+          hoveredStepKey,
+          onHoverStepKey,
+          branchStatus === 'bypassed' ? 'bypassed' : 'active',
+          { exitMergeId, loopPrepId: diamondId }
+        );
+
+        const entryEdge = edges.find(e => e.source === diamondId && (e.sourceHandle === 'yes' || e.sourceHandle === 'bottom'));
+        if (entryEdge) {
+          entryEdge.label = '✓ Ya (Ulangi)';
+          entryEdge.labelStyle = { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' };
+          entryEdge.labelBgStyle = { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 };
+          entryEdge.style = { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' };
+          entryEdge.animated = true;
+          entryEdge.markerEnd = { type: MarkerType.ArrowClosed, color: '#10b981', width: 14, height: 14 };
+        }
+
+        const breakEdge = edges.find(e => e.target === exitMergeId && e.id.includes('-break'));
+        const hasActiveBreak = breakEdge && breakEdge.animated === true;
+
+        edges.push({
+          id: `e-${bodyRes.lastId}-${diamondId}-loopback`,
+          source: bodyRes.lastId,
+          sourceHandle: bodyRes.lastHandle || 'right',
+          target: diamondId,
+          targetHandle: 'bottom',
+          type: 'loopbackHorizontalEdge',
+          label: hasActiveBreak ? '✗ Putar Balik (DILEWATI)' : 'Putar Balik',
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#10b981', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#064e3b', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak || branchStatus === 'bypassed'
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#10b981', strokeWidth: 2.5, filter: 'drop-shadow(0 0 4px rgba(16,185,129,0.5))' },
+          animated: !hasActiveBreak && branchStatus !== 'bypassed',
+          markerEnd: { type: MarkerType.ArrowClosed, color: (hasActiveBreak || branchStatus === 'bypassed') ? '#64748b' : '#10b981', width: 14, height: 14 },
+        });
+
+        nodes.push({
+          id: exitMergeId,
+          position: { x: xRef.x, y: centerY },
+          origin: [0.5, 0.5],
+          type: 'mergeNode',
+          data: {},
+        });
+
+        edges.push({
+          id: `e-${diamondId}-${exitMergeId}-exit`,
+          source: diamondId,
+          sourceHandle: 'yes-top',
+          target: exitMergeId,
+          targetHandle: 't-top',
+          type: 'loopExitHorizontalEdge',
+          label: hasActiveBreak ? 'Tidak (Selesai - DILEWATI)' : 'Tidak (Selesai)',
+          labelStyle: hasActiveBreak
+            ? { fill: '#94a3b8', fontWeight: 700, fontSize: 9 }
+            : { fill: '#f43f5e', fontWeight: 900, fontSize: 10, fontFamily: 'monospace' },
+          labelBgStyle: hasActiveBreak
+            ? { fill: '#1e293b', fillOpacity: 0.8, rx: 4, ry: 4 }
+            : { fill: '#881337', fillOpacity: 0.9, rx: 4, ry: 4 },
+          style: hasActiveBreak
+            ? { stroke: '#64748b', strokeWidth: 1.5, strokeDasharray: '5,5', opacity: 0.35 }
+            : { stroke: '#f43f5e', strokeWidth: 2 },
+          markerEnd: { type: MarkerType.ArrowClosed, color: hasActiveBreak ? '#64748b' : '#f43f5e', width: 14, height: 14 },
+        });
+
+        currentPrev = exitMergeId;
+        currentPrevHandle = 'r-out';
+        xRef.x += 160;
+      }
     }
   }
 
@@ -2166,7 +3448,7 @@ export default function FlowchartVisualizer({
       setNodes(newNodes);
       setEdges(newEdges);
     } else {
-      const centerX = 220;
+      const centerX = 380;
       const newNodes: Node[] = [];
       const newEdges: Edge[] = [];
       const yRef = { y: 30 };

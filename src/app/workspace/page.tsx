@@ -245,16 +245,78 @@ const missions: Mission[] = [
     pyCode: `pilihan_menu = 2\nsaldo = 1500000\n\nprint("=== MENU TRANSAKSI ATM ===")\n\nif pilihan_menu == 1:\n    print(f"Saldo rekening Anda: Rp{saldo:,}")\nelif pilihan_menu == 2:\n    tarik = 200000\n    if tarik <= saldo:\n        saldo -= tarik\n        print(f"Penarikan Rp{tarik:,} berhasil!")\n        print(f"Sisa saldo: Rp{saldo:,}")\n    else:\n        print("Saldo tidak mencukupi.")\nelif pilihan_menu == 3:\n    print("Silakan masukkan nomor rekening tujuan transfer.")\nelif pilihan_menu == 4:\n    print("Transaksi selesai. Kartu Anda telah dikeluarkan.")\nelse:\n    print("⚠️ Pilihan menu tidak valid. Silakan tekan angka 1 - 4.")`,
     jsCode: `let pilihanMenu = 2;\nlet saldo = 1500000;\n\nconsole.log("=== MENU TRANSAKSI ATM ===");\n\nswitch (pilihanMenu) {\n    case 1:\n        console.log(\`Saldo rekening Anda: Rp\${saldo.toLocaleString()}\`);\n        break;\n    case 2:\n        let tarik = 200000;\n        if (tarik <= saldo) {\n            saldo -= tarik;\n            console.log(\`Penarikan Rp\${tarik.toLocaleString()} berhasil!\`);\n            console.log(\`Sisa saldo: Rp\${saldo.toLocaleString()}\`);\n        } else {\n            console.log("Saldo tidak mencukupi.");\n        }\n        break;\n    case 3:\n        console.log("Silakan masukkan nomor rekening tujuan transfer.");\n        break;\n    case 4:\n        console.log("Transaksi selesai. Kartu Anda telah dikeluarkan.");\n        break;\n    default:\n        console.log("⚠️ Pilihan menu tidak valid. Silakan tekan angka 1 - 4.");\n        break;\n}`,
     theoryDesc: 'Pemilihan nilai diskrit pasti cocok diimplementasikan menggunakan if-elif maupun switch/match case dengan penanganan fallback default.'
+  },
+
+  // ── BAB 9: Dasar Perulangan (FOR & WHILE Loop) ──────────────────────────
+  {
+    id: 16,
+    chapter: 9,
+    codeNum: '9.1',
+    title: 'Misi 9.1: Deret Bilangan Asli (FOR Loop)',
+    category: 'Perulangan Terhitung',
+    description: 'Cetaklah deret angka 1 sampai 5 ke layar menggunakan perulangan FOR dan generator deret range.',
+    formula: 'for i in range(1, 6): print(i)',
+    pyCode: `print("=== MENCETAK DERET 1 S.D. 5 ===")\n\nfor i in range(1, 6):\n    print(f"Putaran ke-{i}: angka {i}")\n\nprint("Perulangan selesai.")`,
+    jsCode: `console.log("=== MENCETAK DERET 1 S.D. 5 ===");\n\nfor (let i = 1; i <= 5; i++) {\n    console.log(\`Putaran ke-\${i}: angka \${i}\`);\n}\n\nconsole.log("Perulangan selesai.");`,
+    theoryDesc: 'Perulangan terhitung (Definite Iteration) menggunakan FOR loop untuk mengulang instruksi sebanyak n kali secara terukur.'
+  },
+  {
+    id: 17,
+    chapter: 9,
+    codeNum: '9.2',
+    title: 'Misi 9.2: Bilangan Genap Melompat (Range Step +2)',
+    category: 'Perulangan Terhitung',
+    description: 'Buatlah perulangan yang menghasilkan deret bilangan genap dari 2 sampai 10 menggunakan parameter step +2 pada fungsi range.',
+    formula: 'for i in range(2, 11, 2): print(i)',
+    pyCode: `print("=== DERET BILANGAN GENAP (2 - 10) ===")\n\nfor i in range(2, 11, 2):\n    print(f"Bilangan genap: {i}")\n\nprint("Deret genap selesai.")`,
+    jsCode: `console.log("=== DERET BILANGAN GENAP (2 - 10) ===");\n\nfor (let i = 2; i <= 10; i += 2) {\n    console.log(\`Bilangan genap: \${i}\`);\n}\n\nconsole.log("Deret genap selesai.");`,
+    theoryDesc: 'Parameter step pada range mengendalikan besaran loncatan nilai pencacah di setiap putaran loop.'
+  },
+  {
+    id: 18,
+    chapter: 9,
+    codeNum: '9.3',
+    title: 'Misi 9.3: Kasir Akumulator Belanja (Pola Akumulator)',
+    category: 'Pola Akumulator',
+    description: 'Hitung total belanja dari kumpulan harga barang menggunakan variabel akumulator total_bayar yang diinisialisasi sebelum perulangan.',
+    formula: 'total_bayar = 0 | for harga in daftar_harga: total_bayar += harga',
+    pyCode: `daftar_harga = [25000, 15000, 30000, 10000]\ntotal_bayar = 0\n\nprint("=== STRUK KASIR BELANJA ===")\n\nfor harga in daftar_harga:\n    total_bayar += harga\n    print(f"Tambah item: Rp{harga:,} -> Subtotal: Rp{total_bayar:,}")\n\nprint(f"Total Bayar Akhir: Rp{total_bayar:,}")`,
+    jsCode: `let daftarHarga = [25000, 15000, 30000, 10000];\nlet totalBayar = 0;\n\nconsole.log("=== STRUK KASIR BELANJA ===");\n\nfor (let i = 0; i < daftarHarga.length; i++) {\n    let harga = daftarHarga[i];\n    totalBayar += harga;\n    console.log(\`Tambah item: Rp\${harga.toLocaleString()} -> Subtotal: Rp\${totalBayar.toLocaleString()}\`);\n}\n\nconsole.log(\`Total Bayar Akhir: Rp\${totalBayar.toLocaleString()}\`);`,
+    theoryDesc: 'Pola Akumulator mengumpulkan nilai kumulatif di setiap putaran; variabel akumulator wajib diinisialisasi sebelum loop.'
+  },
+  {
+    id: 19,
+    chapter: 9,
+    codeNum: '9.4',
+    title: 'Misi 9.4: Target Celengan Mandiri (WHILE Loop)',
+    category: 'Perulangan Terkondisi',
+    description: 'Simulasikan menabung secara konsisten setiap hari hingga saldo tabungan mencapai target minimal Rp100.000.',
+    formula: 'while saldo < target: saldo += setoran',
+    pyCode: `saldo = 20000\ntarget = 100000\nsetoran = 20000\nhari = 0\n\nprint("=== TARGET TABUNGAN RP 100.000 ===")\n\nwhile saldo < target:\n    hari += 1\n    saldo += setoran\n    print(f"Hari ke-{hari}: setor Rp{setoran:,} -> Saldo kini: Rp{saldo:,}")\n\nprint(f"🎉 Target tercapai dalam {hari} hari! Saldo Akhir: Rp{saldo:,}")`,
+    jsCode: `let saldo = 20000;\nlet target = 100000;\nlet setoran = 20000;\nlet hari = 0;\n\nconsole.log("=== TARGET TABUNGAN RP 100.000 ===");\n\nwhile (saldo < target) {\n    hari += 1;\n    saldo += setoran;\n    console.log(\`Hari ke-\${hari}: setor Rp\${setoran.toLocaleString()} -> Saldo kini: Rp\${saldo.toLocaleString()}\`);\n}\n\nconsole.log(\`🎉 Target tercapai dalam \${hari} hari! Saldo Akhir: Rp\${saldo.toLocaleString()}\`);`,
+    theoryDesc: 'Perulangan terkondisi (Indefinite Iteration) berjalan selama syarat logika bernilai True dan berhenti begitu menjadi False.'
+  },
+  {
+    id: 20,
+    chapter: 9,
+    codeNum: '9.5',
+    title: 'Misi 9.5: Pencarian Angka Linear Terstruktur (While Loop)',
+    category: 'Pencarian Terstruktur',
+    description: 'Cari angka target 42 di dalam kumpulan data secara terstruktur. Perulangan while berjalan selama data masih ada dan angka belum ditemukan (ditemukan == False).',
+    formula: 'while i < n and ditemukan == False: if deret[i] == target: ditemukan = True else: i = i + 1',
+    pyCode: `deret_angka = [15, 28, 42, 67, 89]\ntarget = 42\nditemukan = False\ni = 0\nn = 5\n\nprint(f"Mencari angka target: {target}")\n\nwhile i < n and ditemukan == False:\n    angka = deret_angka[i]\n    print(f"Indeks {i}: memeriksa angka {angka}...")\n    if angka == target:\n        ditemukan = True\n        print(f"🎯 Angka {target} DITEMUKAN pada indeks {i}!")\n    else:\n        i = i + 1\n\nif ditemukan:\n    print("Pencarian berhasil.")\nelse:\n    print("Angka tidak ada di dalam deret.")`,
+    jsCode: `let deretAngka = [15, 28, 42, 67, 89];\nlet target = 42;\nlet ditemukan = false;\nlet i = 0;\nlet n = 5;\n\nconsole.log(\`Mencari angka target: \${target}\`);\n\nwhile (i < n && ditemukan === false) {\n    let angka = deretAngka[i];\n    console.log(\`Indeks \${i}: memeriksa angka \${angka}...\`);\n    if (angka === target) {\n        ditemukan = true;\n        console.log(\`🎯 Angka \${target} DITEMUKAN pada indeks \${i}!\`);\n    } else {\n        i = i + 1;\n    }\n}\n\nif (ditemukan) {\n    console.log("Pencarian berhasil.");\n} else {\n    console.log("Angka tidak ada di dalam deret.");\n}`,
+    theoryDesc: 'Pencarian linear terstruktur menggunakan perulangan while dengan kondisi perbandingan eksplisit (i < n and ditemukan == False) menjamin pemahaman logika yang intuitif, bersih, dan mematuhi kaidah Single-Entry Single-Exit.'
   }
 ];
 
 function WorkspaceContent() {
   const searchParams = useSearchParams();
   const chapterParam = searchParams.get('chapter');
-  const initialChapter = chapterParam === '7' ? 7 : chapterParam === '6' ? 6 : 5;
-  const initialMissionId = initialChapter === 7 ? 11 : initialChapter === 6 ? 6 : 1;
+  const initialChapter: 5 | 6 | 7 | 9 = chapterParam === '9' ? 9 : chapterParam === '7' ? 7 : chapterParam === '6' ? 6 : 5;
+  const initialMissionId = initialChapter === 9 ? 16 : initialChapter === 7 ? 11 : initialChapter === 6 ? 6 : 1;
 
-  const [selectedChapter, setSelectedChapter] = useState<5 | 6 | 7>(initialChapter);
+  const [selectedChapter, setSelectedChapter] = useState<5 | 6 | 7 | 9>(initialChapter);
   const [selectedMissionId, setSelectedMissionId] = useState(initialMissionId);
   const [activeTab, setActiveTab] = useState<'task' | 'theory'>('task');
   const [normalTab, setNormalTab] = useState<'flowchart' | 'pseudocode' | 'narrative'>('flowchart');
@@ -331,7 +393,7 @@ function WorkspaceContent() {
   const setCode = language === 'python' ? setPythonCode : setJsCode;
 
   // Handle Chapter Switch
-  const handleSwitchChapter = (ch: 5 | 6 | 7) => {
+  const handleSwitchChapter = (ch: 5 | 6 | 7 | 9) => {
     setSelectedChapter(ch);
     const chapterMissions = missions.filter(m => m.chapter === ch);
     if (chapterMissions.length > 0) {
@@ -445,7 +507,7 @@ function WorkspaceContent() {
           {(() => {
             const lines = code.split('\n');
             const items: {
-              type: 'if' | 'else_if' | 'else' | 'endif' | 'input' | 'output' | 'assign' | 'other';
+              type: 'if' | 'else_if' | 'else' | 'endif' | 'for' | 'endfor' | 'while' | 'endwhile' | 'break' | 'input' | 'output' | 'assign' | 'other';
               text: string;
               level: number;
               lineIdx?: number;
@@ -456,7 +518,7 @@ function WorkspaceContent() {
               left?: string;
               right?: string;
             }[] = [];
-            const ifStack: { baseIndent: number; level: number; lineIdx: number; stepKey: string }[] = [];
+            const blockStack: { kind: 'if' | 'for' | 'while'; baseIndent: number; level: number; lineIdx: number; stepKey: string }[] = [];
 
             for (let lineIdx = 0; lineIdx < lines.length; lineIdx++) {
               const rawLineText = lines[lineIdx];
@@ -468,11 +530,12 @@ function WorkspaceContent() {
               // JS closing brace '}'
               if (rawLine === '}' || rawLine.startsWith('}')) {
                 if (rawLine === '}') {
-                  if (ifStack.length > 0) {
-                    const top = ifStack.pop()!;
+                  if (blockStack.length > 0) {
+                    const top = blockStack.pop()!;
+                    const endText = top.kind === 'for' ? 'endfor' : top.kind === 'while' ? 'endwhile' : 'endif';
                     items.push({
-                      type: 'endif',
-                      text: 'endif',
+                      type: endText as any,
+                      text: endText,
                       level: top.level,
                       lineIdx,
                       stepKey: `line-${lineIdx}`
@@ -482,30 +545,32 @@ function WorkspaceContent() {
                 }
               }
 
-              // In Python, check if indentation decreased below active if blocks
-              if (ifStack.length > 0 && indent !== -1) {
+              // In Python, check if indentation decreased below active blocks
+              if (blockStack.length > 0 && indent !== -1) {
                 const isElif = rawLine.startsWith('elif ') || rawLine.startsWith('elif(') || rawLine.startsWith('} else if') || rawLine.startsWith('else if');
                 const isElse = rawLine === 'else:' || rawLine.startsWith('else:') || rawLine.startsWith('else') || rawLine.startsWith('} else');
 
                 if (isElif || isElse) {
-                  // Pop any inner nested ifs that were deeper than this elif/else
-                  while (ifStack.length > 0 && ifStack[ifStack.length - 1].baseIndent > indent) {
-                    const top = ifStack.pop()!;
+                  // Pop any inner nested blocks that were deeper than this elif/else
+                  while (blockStack.length > 0 && blockStack[blockStack.length - 1].baseIndent > indent) {
+                    const top = blockStack.pop()!;
+                    const endText = top.kind === 'for' ? 'endfor' : top.kind === 'while' ? 'endwhile' : 'endif';
                     items.push({
-                      type: 'endif',
-                      text: 'endif',
+                      type: endText as any,
+                      text: endText,
                       level: top.level,
                       lineIdx: top.lineIdx,
                       stepKey: top.stepKey
                     });
                   }
                 } else {
-                  // Normal statement with smaller indent -> close if blocks
-                  while (ifStack.length > 0 && ifStack[ifStack.length - 1].baseIndent >= indent) {
-                    const top = ifStack.pop()!;
+                  // Normal statement with smaller indent -> close blocks
+                  while (blockStack.length > 0 && blockStack[blockStack.length - 1].baseIndent >= indent) {
+                    const top = blockStack.pop()!;
+                    const endText = top.kind === 'for' ? 'endfor' : top.kind === 'while' ? 'endwhile' : 'endif';
                     items.push({
-                      type: 'endif',
-                      text: 'endif',
+                      type: endText as any,
+                      text: endText,
                       level: top.level,
                       lineIdx: top.lineIdx,
                       stepKey: top.stepKey
@@ -514,7 +579,7 @@ function WorkspaceContent() {
                 }
               }
 
-              const currentLevel = ifStack.length > 0 ? ifStack[ifStack.length - 1].level + 1 : 0;
+              const currentLevel = blockStack.length > 0 ? blockStack[blockStack.length - 1].level + 1 : 0;
               const stepKey = `line-${lineIdx}`;
               const normalizedLine = rawLine.replace(/^(let|const|var)\s+/, '').replace(/;/g, '').trim();
 
@@ -526,8 +591,8 @@ function WorkspaceContent() {
                   .replace(/\)?\s*\{\s*$/, '')
                   .trim();
                 
-                const myLevel = ifStack.length; // at current block level
-                ifStack.push({ baseIndent: indent !== -1 ? indent : 0, level: myLevel, lineIdx, stepKey });
+                const myLevel = blockStack.length; // at current block level
+                blockStack.push({ kind: 'if', baseIndent: indent !== -1 ? indent : 0, level: myLevel, lineIdx, stepKey });
 
                 items.push({
                   type: 'if',
@@ -549,7 +614,7 @@ function WorkspaceContent() {
                   .replace(/\)?\s*\{\s*$/, '')
                   .trim();
 
-                const topLevel = ifStack.length > 0 ? ifStack[ifStack.length - 1].level : 0;
+                const topLevel = blockStack.length > 0 ? blockStack[blockStack.length - 1].level : 0;
                 items.push({
                   type: 'else_if',
                   text: `else if ${cond} then`,
@@ -563,7 +628,7 @@ function WorkspaceContent() {
 
               // 3. ELSE statement
               if (rawLine === 'else:' || rawLine.startsWith('else:') || rawLine.startsWith('else') || rawLine.startsWith('} else')) {
-                const topLevel = ifStack.length > 0 ? ifStack[ifStack.length - 1].level : 0;
+                const topLevel = blockStack.length > 0 ? blockStack[blockStack.length - 1].level : 0;
                 items.push({
                   type: 'else',
                   text: 'else',
@@ -574,7 +639,92 @@ function WorkspaceContent() {
                 continue;
               }
 
-              // 4. Input statement
+              // 4. FOR loop statement
+              if (rawLine.startsWith('for ') || rawLine.startsWith('for(')) {
+                let forText = '';
+                const pyRangeMatch = rawLine.match(/^for\s+([a-zA-Z_]\w*)\s+in\s+range\((.*?)\)\s*:/);
+                const pyInMatch = rawLine.match(/^for\s+([a-zA-Z_]\w*)\s+in\s+([a-zA-Z_]\w*)\s*:/);
+                const jsRangeMatch = rawLine.match(/for\s*\(\s*(?:let|var)?\s*([a-zA-Z_]\w*)\s*=\s*(\d+)\s*;\s*\1\s*<=\s*(\d+)\s*;\s*\1\s*(?:\+\+|\+=\s*(\d+))\s*\)/);
+                const jsArrayMatch = rawLine.match(/for\s*\(\s*(?:let|var)?\s*([a-zA-Z_]\w*)\s*=\s*0\s*;\s*\1\s*<\s*([a-zA-Z_]\w*)\.length\s*;\s*\1\+\+\s*\)/);
+
+                if (pyRangeMatch) {
+                  const varName = pyRangeMatch[1];
+                  const args = pyRangeMatch[2].split(',').map(s => s.trim());
+                  if (args.length === 1) {
+                    const stop = parseInt(args[0], 10);
+                    forText = `for ${varName} = 0 to ${isNaN(stop) ? args[0] : stop - 1} do`;
+                  } else if (args.length === 2) {
+                    const start = args[0];
+                    const stop = parseInt(args[1], 10);
+                    forText = `for ${varName} = ${start} to ${isNaN(stop) ? args[1] : stop - 1} do`;
+                  } else if (args.length === 3) {
+                    const start = args[0];
+                    const stop = parseInt(args[1], 10);
+                    const step = args[2];
+                    forText = `for ${varName} = ${start} to ${isNaN(stop) ? args[1] : stop - 1} step ${step} do`;
+                  }
+                } else if (jsRangeMatch) {
+                  const varName = jsRangeMatch[1];
+                  const start = jsRangeMatch[2];
+                  const stop = jsRangeMatch[3];
+                  const step = jsRangeMatch[4];
+                  forText = step ? `for ${varName} = ${start} to ${stop} step ${step} do` : `for ${varName} = ${start} to ${stop} do`;
+                } else if (pyInMatch) {
+                  forText = `for each ${pyInMatch[1]} in ${pyInMatch[2]} do`;
+                } else if (jsArrayMatch) {
+                  forText = `for each item in ${jsArrayMatch[2]} do`;
+                } else {
+                  forText = `for ${rawLine.replace(/[{:]\s*$/, '').trim()} do`;
+                }
+
+                const myLevel = blockStack.length;
+                blockStack.push({ kind: 'for', baseIndent: indent !== -1 ? indent : 0, level: myLevel, lineIdx, stepKey });
+
+                items.push({
+                  type: 'for',
+                  text: forText,
+                  level: myLevel,
+                  lineIdx,
+                  stepKey
+                });
+                continue;
+              }
+
+              // 5. WHILE loop statement
+              if (rawLine.startsWith('while ') || rawLine.startsWith('while(')) {
+                const cond = rawLine
+                  .replace(/^while\s*\(?/, '')
+                  .replace(/\)?\s*:\s*$/, '')
+                  .replace(/\)?\s*\{\s*$/, '')
+                  .trim();
+
+                const myLevel = blockStack.length;
+                blockStack.push({ kind: 'while', baseIndent: indent !== -1 ? indent : 0, level: myLevel, lineIdx, stepKey });
+
+                items.push({
+                  type: 'while',
+                  text: `while ${cond} do`,
+                  cond,
+                  level: myLevel,
+                  lineIdx,
+                  stepKey
+                });
+                continue;
+              }
+
+              // 6. BREAK statement
+              if (normalizedLine === 'break' || normalizedLine.startsWith('break')) {
+                items.push({
+                  type: 'break',
+                  text: 'break',
+                  level: currentLevel,
+                  lineIdx,
+                  stepKey
+                });
+                continue;
+              }
+
+              // 7. Input statement
               if (normalizedLine.includes('=') && (normalizedLine.includes('input(') || normalizedLine.includes('prompt('))) {
                 const parts = normalizedLine.split('=');
                 const varName = parts[0].trim();
@@ -589,7 +739,7 @@ function WorkspaceContent() {
                 continue;
               }
 
-              // 5. Output statement
+              // 8. Output statement
               if (normalizedLine.startsWith('print') || normalizedLine.startsWith('console.log')) {
                 const match = normalizedLine.match(/\((.*)\)/);
                 const rawArgs = match ? match[1].trim() : '';
@@ -605,7 +755,7 @@ function WorkspaceContent() {
                 continue;
               }
 
-              // 6. Assignment
+              // 9. Assignment
               if (normalizedLine.includes('=')) {
                 const parts = normalizedLine.split('=');
                 const left = parts[0].trim();
@@ -622,7 +772,7 @@ function WorkspaceContent() {
                 continue;
               }
 
-              // 7. Other statement
+              // 10. Other statement
               items.push({
                 type: 'other',
                 text: normalizedLine,
@@ -632,12 +782,13 @@ function WorkspaceContent() {
               });
             }
 
-            // Close any remaining if blocks at end of file
-            while (ifStack.length > 0) {
-              const top = ifStack.pop()!;
+            // Close any remaining blocks at end of file
+            while (blockStack.length > 0) {
+              const top = blockStack.pop()!;
+              const endText = top.kind === 'for' ? 'endfor' : top.kind === 'while' ? 'endwhile' : 'endif';
               items.push({
-                type: 'endif',
-                text: 'endif',
+                type: endText as any,
+                text: endText,
                 level: top.level,
                 lineIdx: top.lineIdx,
                 stepKey: top.stepKey
@@ -665,6 +816,16 @@ function WorkspaceContent() {
                 content = <span className="text-amber-500 dark:text-amber-300 font-bold">else</span>;
               } else if (item.type === 'endif') {
                 content = <span className="text-amber-500 dark:text-amber-300 font-bold">endif</span>;
+              } else if (item.type === 'for' || item.type === 'while') {
+                content = (
+                  <span className="text-blue-600 dark:text-blue-400 font-bold">
+                    {item.text}
+                  </span>
+                );
+              } else if (item.type === 'endfor' || item.type === 'endwhile') {
+                content = <span className="text-blue-600 dark:text-blue-400 font-bold">{item.text}</span>;
+              } else if (item.type === 'break') {
+                content = <span className="text-rose-600 dark:text-rose-400 font-bold">break</span>;
               } else if (item.type === 'input') {
                 content = (
                   <span className="text-fuchsia-600 dark:text-fuchsia-400 font-bold">
@@ -720,7 +881,7 @@ function WorkspaceContent() {
   const renderNaratif = (isCompact = false) => {
     let stepCounter = 0;
     const lines = code.split('\n');
-    let currentBlock: { type: 'if' | 'else'; baseIndent: number } | null = null;
+    let currentBlock: { type: 'if' | 'else' | 'for' | 'while'; baseIndent: number } | null = null;
 
     const innerContent = (
       <div className="space-y-2 text-xs md:text-sm text-slate-700 dark:text-slate-300 font-mono">
@@ -794,11 +955,82 @@ function WorkspaceContent() {
             );
           }
 
+          // FOR loop statement
+          if (rawLine.startsWith('for ') || rawLine.startsWith('for(')) {
+            stepCounter++;
+            currentBlock = { type: 'for', baseIndent: indent !== -1 ? indent : 0 };
+            let desc = '';
+            const pyRangeMatch = rawLine.match(/^for\s+([a-zA-Z_]\w*)\s+in\s+range\((.*?)\)\s*:/);
+            const pyInMatch = rawLine.match(/^for\s+([a-zA-Z_]\w*)\s+in\s+([a-zA-Z_]\w*)\s*:/);
+            const jsRangeMatch = rawLine.match(/for\s*\(\s*(?:let|var)?\s*([a-zA-Z_]\w*)\s*=\s*(\d+)\s*;\s*\1\s*<=\s*(\d+)\s*;/);
+
+            if (pyRangeMatch) {
+              const varName = pyRangeMatch[1];
+              const args = pyRangeMatch[2].split(',').map(s => s.trim());
+              if (args.length === 1) desc = `nilai ${varName} dari 0 sampai ${parseInt(args[0], 10) - 1}`;
+              else if (args.length >= 2) desc = `nilai ${varName} dari ${args[0]} sampai ${parseInt(args[1], 10) - 1}${args[2] ? ` (langkah ${args[2]})` : ''}`;
+            } else if (jsRangeMatch) {
+              desc = `nilai ${jsRangeMatch[1]} dari ${jsRangeMatch[2]} sampai ${jsRangeMatch[3]}`;
+            } else if (pyInMatch) {
+              desc = `setiap data ${pyInMatch[1]} di dalam ${pyInMatch[2]}`;
+            } else {
+              desc = 'setiap putaran perulangan';
+            }
+
+            return (
+              <div 
+                key={lineIdx} 
+                onMouseEnter={() => setHoveredStepKey(stepKey)}
+                onMouseLeave={() => setHoveredStepKey(null)}
+                className={hoverClass}
+              >
+                <p className="font-bold text-emerald-600 dark:text-emerald-400">
+                  {stepCounter}. Untuk {desc} lakukan:
+                </p>
+              </div>
+            );
+          }
+
+          // WHILE loop statement
+          if (rawLine.startsWith('while ') || rawLine.startsWith('while(')) {
+            stepCounter++;
+            currentBlock = { type: 'while', baseIndent: indent !== -1 ? indent : 0 };
+            const cond = rawLine.replace(/^while\s*\(?/, '').replace(/\)?\s*:\s*$/, '').replace(/\)?\s*\{\s*$/, '').trim();
+            return (
+              <div 
+                key={lineIdx} 
+                onMouseEnter={() => setHoveredStepKey(stepKey)}
+                onMouseLeave={() => setHoveredStepKey(null)}
+                className={hoverClass}
+              >
+                <p className="font-bold text-teal-600 dark:text-teal-400">
+                  {stepCounter}. Selama kondisi {cond} terpenuhi lakukan:
+                </p>
+              </div>
+            );
+          }
+
           // Format langkah utama (top level ada nomor) vs aksi cabang (child tanpa nomor dengan indentasi)
           const prefix = isChild ? '' : `${++stepCounter}. `;
           const containerClass = isChild 
             ? `ml-6 md:ml-8 pl-3 border-l-2 border-border/50 dark:border-border/40 ${hoverClass}` 
             : hoverClass;
+
+          // BREAK statement
+          if (normalizedLine === 'break' || normalizedLine.startsWith('break')) {
+            return (
+              <div 
+                key={lineIdx} 
+                onMouseEnter={() => setHoveredStepKey(stepKey)}
+                onMouseLeave={() => setHoveredStepKey(null)}
+                className={containerClass}
+              >
+                <p className="font-bold text-rose-600 dark:text-rose-400">
+                  {prefix}Hentikan perulangan seketika (break).
+                </p>
+              </div>
+            );
+          }
 
           // Input
           if (normalizedLine.includes('=') && (normalizedLine.includes('input(') || normalizedLine.includes('prompt('))) {
@@ -913,7 +1145,7 @@ function WorkspaceContent() {
           <span className="text-slate-700">|</span>
           <span className="text-xs font-bold text-amber-400 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" />
-            Pertemuan {selectedChapter}: {selectedChapter === 5 ? 'Operator & Ekspresi' : selectedChapter === 6 ? 'Percabangan Statemen Tunggal & Ganda' : 'Percabangan Majemuk & Bersarang'} Studio
+            Pertemuan {selectedChapter}: {selectedChapter === 5 ? 'Operator & Ekspresi' : selectedChapter === 6 ? 'Percabangan Statemen Tunggal & Ganda' : selectedChapter === 7 ? 'Percabangan Majemuk & Bersarang' : 'Dasar Perulangan (FOR & WHILE Loop)'} Studio
           </span>
         </div>
 
@@ -945,6 +1177,14 @@ function WorkspaceContent() {
             >
               <span>🌿</span> Bab 7
             </button>
+            <button
+              onClick={() => handleSwitchChapter(9)}
+              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                selectedChapter === 9 ? 'bg-emerald-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <span>🔁</span> Bab 9
+            </button>
           </div>
 
           {/* Mission Selector Tabs for Active Chapter */}
@@ -961,7 +1201,9 @@ function WorkspaceContent() {
                         ? 'bg-amber-600 text-white shadow-md' 
                         : selectedChapter === 6 
                         ? 'bg-sky-600 text-white shadow-md' 
-                        : 'bg-orange-600 text-white shadow-md'
+                        : selectedChapter === 7
+                        ? 'bg-orange-600 text-white shadow-md'
+                        : 'bg-emerald-600 text-white shadow-md'
                       : 'text-slate-400 hover:text-slate-200'
                   }`}
                 >
@@ -995,7 +1237,9 @@ function WorkspaceContent() {
                       ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' 
                       : selectedChapter === 6
                       ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
-                      : 'bg-orange-500/20 text-orange-300 border-orange-500/40'
+                      : selectedChapter === 7
+                      ? 'bg-orange-500/20 text-orange-300 border-orange-500/40'
+                      : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                   }`}>
                     {currentMission.category}
                   </span>

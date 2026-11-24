@@ -13,6 +13,7 @@ import Pertemuan5 from '@/components/theory/Pertemuan5';
 import Pertemuan6 from '@/components/theory/Pertemuan6';
 import Pertemuan7 from '@/components/theory/Pertemuan7';
 import Pertemuan9 from '@/components/theory/Pertemuan9';
+import Pertemuan10 from '@/components/theory/Pertemuan10';
 import { TheoryAssessment } from '@/components/assessment/TheoryAssessment';
 
 export default function TheoryPage({ params }: { params: Promise<{ id: string }> }) {
@@ -77,6 +78,7 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
                unwrappedParams.id === '6' ? 'Pertemuan 6: Struktur Percabangan Statemen Tunggal & Ganda' :
                unwrappedParams.id === '7' ? 'Pertemuan 7: Percabangan Majemuk & Bersarang' :
                unwrappedParams.id === '9' ? 'Pertemuan 9: Dasar Perulangan (FOR & WHILE Loop)' :
+               unwrappedParams.id === '10' ? 'Pertemuan 10: Perulangan Bersarang (Nested Loop)' :
                `Pertemuan ${unwrappedParams.id}`}
             </h1>
           </div>
@@ -85,7 +87,7 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
           </div>
 
           {/* Quick Jump to Assessment Button */}
-          {['1', '2', '3', '4', '5', '6', '7', '9'].includes(unwrappedParams.id) && (
+          {['1', '2', '3', '4', '5', '6', '7', '9', '10'].includes(unwrappedParams.id) && (
             <button
               type="button"
               onClick={() => {
@@ -125,12 +127,13 @@ export default function TheoryPage({ params }: { params: Promise<{ id: string }>
         {unwrappedParams.id === '6' && <Pertemuan6 />}
         {unwrappedParams.id === '7' && <Pertemuan7 />}
         {unwrappedParams.id === '9' && <Pertemuan9 />}
-        {!['1','2','3','4','5','6','7','9'].includes(unwrappedParams.id) && (
+        {unwrappedParams.id === '10' && <Pertemuan10 />}
+        {!['1','2','3','4','5','6','7','9','10'].includes(unwrappedParams.id) && (
            <div className="p-8 text-center mt-20 text-muted-foreground font-mono">Materi belum tersedia untuk pertemuan ini.</div>
         )}
 
         {/* Asesmen & Uji Pemahaman */}
-        {['1', '2', '3', '4', '5', '6', '7', '9'].includes(unwrappedParams.id) && (
+        {['1', '2', '3', '4', '5', '6', '7', '9', '10'].includes(unwrappedParams.id) && (
           <div id="assessment" className="pt-2 relative">
             <hr className="border-border/50 mb-3" />
             <TheoryAssessment meetingId={Number(unwrappedParams.id)} />

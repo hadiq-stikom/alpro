@@ -60,7 +60,7 @@ const ALL_MEETINGS: MeetingInfo[] = [
   { id: 7, title: "Percabangan Majemuk & Bersarang", subtitle: "Cascading IF-ELSE IF, Nested IF & Multi-branch selector", status: 'ready' },
   { id: 8, title: "Evaluasi Tengah Semester (UTS)", subtitle: "Ujian komprehensif pilar logika dan kontrol alur", status: 'upcoming' },
   { id: 9, title: "Dasar Perulangan (FOR & WHILE Loop)", subtitle: "Iterasi terhitung (range), iterasi terkondisi, dan akumulator data", status: 'ready' },
-  { id: 10, title: "Perulangan Bersarang (Nested Loop)", subtitle: "Iterasi multi-dimensi, pemetaan baris-kolom, dan pembangkit pola visual", status: 'upcoming' },
+  { id: 10, title: "Perulangan Bersarang (Nested Loop)", subtitle: "Iterasi multi-dimensi, pemetaan baris-kolom, dan pembangkit pola visual", status: 'ready' },
   { id: 11, title: "Struktur Data Berurutan (List & Tuple)", subtitle: "Urutan terindeks, mutabilitas dinamis (75%), dan proteksi immutabilitas tuple (25%)", status: 'upcoming' },
   { id: 12, title: "Struktur Data Asosiatif (Dictionary & Set)", subtitle: "Pasangan Key-Value (75%), himpunan unik Set (25%), dan tabel List of Dictionaries", status: 'upcoming' },
   { id: 13, title: "Fungsi Dasar & Top-Down Design", subtitle: "Dekomposisi modular tanpa parameter/return, dan simbol Predefined Process", status: 'upcoming' },

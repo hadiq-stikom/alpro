@@ -635,6 +635,84 @@ export const ESSAY_BANK: EssayQuestion[] = [
          - Di dalam loop: jika elemen target ditemukan, cetak "Ditemukan" lalu panggil break untuk menghemat proses (15 poin).
          - Di blok else: cetak "Tidak Ditemukan", karena jika loop selesai tanpa pernah terkena break, berarti target memang tidak ada di dalam deret (15 poin).
     `
+  },
+  // ==========================================
+  // MINGGU 10: Perulangan Bersarang (Nested Loop)
+  // ==========================================
+  {
+    id: 'm10-essay-1',
+    meetingId: 10,
+    text: 'Struktur Perulangan Bersarang (Nested Loop) sering dianalogikan dengan pergerakan dua jarum pada jam dinding mekanis.\n\n(A) Jelaskan peran Outer Loop sebagai "Jarum Jam" dan Inner Loop sebagai "Jarum Menit"! Mengapa perulangan dalam (inner loop) wajib menyelesaikan seluruh putarannya 100% terlebih dahulu sebelum perulangan luar (outer loop) dapat maju satu langkah?\n(B) Jika diberikan kode:\nfor i in range(4):\n    for j in range(5):\n        aksi_cetak()\nBerapa total kali fungsi aksi_cetak() dieksekusi? Apa akibat fatal yang terjadi jika variabel loop dalam secara tidak sengaja diberi nama i (sama dengan loop luar)?',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Analisis Analogi Jam & Alur Kerja Outer-Inner Loop (50 poin):
+         - Outer loop bertindak sebagai jarum jam (langkah makro/baris) yang bergerak lambat, sedangkan inner loop bertindak sebagai jarum menit (langkah mikro/kolom) yang berputar cepat (25 poin).
+         - Prinsip eksekusi: Badan perulangan luar berisi seluruh struktur perulangan dalam. Mesin komputer mengeksekusi instruksi secara hierarkis, sehingga inner loop harus mengalami kondisi terminasi (False/selesai rentang) barulah alur kontrol kembali ke kepala outer loop untuk melangkah ke iterasi berikutnya (25 poin).
+      B. Perhitungan Total Eksekusi & Fatalitas Variable Collision (50 poin):
+         - Total eksekusi tepat: 4 × 5 = 20 kali eksekusi aksi_cetak() (25 poin).
+         - Fatalitas kesamaan nama variabel (Variable Collision/Shadowing): Nilai variabel i pada outer loop akan ditimpa/diubah nilainya oleh loop dalam pada setiap iterasi. Hal ini merusak siklus kontrol loop luar dan dapat memicu infinite loop, berhentinya loop secara prematur, atau bug logika yang sangat sulit dilacak (25 poin).
+    `
+  },
+  {
+    id: 'm10-essay-2',
+    meetingId: 10,
+    text: 'Dalam rekayasa pola visual geometris (Pattern Generation), programmer dapat membentuk beragam bangun seperti persegi solid, segitiga siku-siku bertingkat, dan segitiga siku-siku terbalik.\n\n(A) Bandingkan perbedaan batas iterasi perulangan dalam (inner loop) antara pola Persegi Solid (N × N) dengan pola Segitiga Siku-Siku! Mengapa batas inner loop pada segitiga siku-siku harus bersifat dinamis dan bergantung pada variabel baris i?\n(B) Tuliskan logika kode (dalam Python atau JavaScript) untuk mencetak pola Segitiga Siku-Siku Terbalik berukuran N baris (baris pertama berisi N bintang, lalu menyusut hingga baris terakhir hanya 1 bintang)! Jelaskan formula matematis yang Anda gunakan pada batas inner loop-nya!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Perbandingan Batas Statis vs Dinamis (45 poin):
+         - Pola Persegi: Batas inner loop bersifat statis/konstan range(N), sehingga setiap baris selalu memiliki jumlah kolom yang sama persis (20 poin).
+         - Pola Segitiga: Batas inner loop bersifat dinamis range(i + 1), karena jumlah bintang yang dicetak bertambah satu per satu seiring bertambahnya nomor baris i (baris 0 ada 1 bintang, baris 1 ada 2 bintang, dst.) (25 poin).
+      B. Logika Segitiga Terbalik & Formula Matematis (55 poin):
+         - Logika kode benar: for i in range(N): for j in range(N - i): print("*", end=" ") diikuti print() pindah baris (atau ekuivalen di JavaScript) (30 poin).
+         - Penjelasan formula (N - i): Ketika i = 0 (baris pertama), loop dalam berputar N - 0 = N kali. Seiring bertambahnya i menuju N - 1, nilai N - i menyusut secara bertahap hingga menyisakan tepat 1 kali pada baris terakhir (25 poin).
+    `
+  },
+  {
+    id: 'm10-essay-3',
+    meetingId: 10,
+    text: 'Perulangan bersarang adalah fondasi utama dalam pembentukan matriks dua dimensi dan tabel perkalian matematika.\n\n(A) Jelaskan bagaimana koordinat spasial (i, j) terbentuk selama proses perulangan bertingkat dan jelaskan bagaimana formula matematis untuk memetakan koordinat dua dimensi (baris i, kolom j) ke dalam indeks larik/array satu dimensi (1D) pada memori komputer!\n(B) Pada program pembangkit tabel perkalian matematika, seorang mahasiswa meletakkan perintah ganti baris (print() atau enter) di DALAM badan inner loop bersamaan dengan pencetakan hasil kali. Jelaskan dampak visual kerusakan keluaran yang terjadi dan di manakah posisi yang benar untuk meletakkan perintah ganti baris tersebut!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Pembentukan Koordinat (i, j) & Pemetaan Indeks 1D (50 poin):
+         - Pembentukan koordinat: Variabel i merepresentasikan indeks baris vertikal (0 sampai rows - 1) dan variabel j merepresentasikan indeks kolom horizontal (0 sampai cols - 1). Kombinasi keduanya menghasilkan pasangan koordinat spasial unik (i, j) untuk setiap sel (25 poin).
+         - Formula pemetaan indeks 1D (Row-Major Mapping): index_1D = (i * total_kolom) + j. Formula ini melompati baris-baris penuh sebelumnya di memori fisik yang linear (25 poin).
+      B. Penempatan Perintah Pindah Baris & Analisis Cacat Visual (50 poin):
+         - Cacat visual: Jika perintah pindah baris diletakkan di DALAM inner loop, setiap kali satu sel selesai dicetak kursor langsung turun ke bawah. Akibatnya, angka-angka tabel tidak tersusun mendatar menjadi baris dan kolom melainkan menjadi satu kolom vertikal memanjang turun ke bawah (25 poin).
+         - Posisi yang benar: Perintah ganti baris WAJIB diletakkan di LUAR inner loop namun masih di DALAM outer loop (sejajar dengan blok for j), sehingga kursor baru pindah baris setelah satu baris horizontal selesai dicetak tuntas (25 poin).
+    `
+  },
+  {
+    id: 'm10-essay-4',
+    meetingId: 10,
+    text: 'Dari sudut pandang analisis algoritma dan efisiensi komputasi, perulangan bersarang dua tingkat memiliki kompleksitas waktu kuadratik O(n²).\n\n(A) Jelaskan apa yang dimaksud dengan kompleksitas kuadratik O(n²)! Jelaskan efek lonjakan komputasi (quadratic explosion) yang terjadi ketika ukuran masukan N dinaikkan dari 100 menjadi 10.000 data!\n(B) Berikan 1 contoh kasus algoritma di dunia nyata yang memiliki kompleksitas O(n²) (misalnya algoritma pencocokan pasangan atau pengurutan sederhana)! Mengapa pengembang perangkat lunak profesional sangat menghindari penggunaan perulangan bersarang 3 tingkat O(n³) untuk data bervolume besar?',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Konsep Kompleksitas O(n²) & Lonjakan Kuadratik (50 poin):
+         - Definisi O(n²): Waktu eksekusi atau jumlah operasi komputasi bertambah sebanding dengan kuadrat dari ukuran masukan data N (25 poin).
+         - Efek lonjakan: Pada N = 100, operasi yang berjalan adalah 100² = 10.000 operasi (kurang dari 1 milidetik). Ketika N dinaikkan 100 kali menjadi N = 10.000, jumlah operasinya melompat 10.000 kali lipat menjadi 10.000² = 100.000.000 (100 juta) operasi, yang dapat memakan waktu beberapa detik dan membebani CPU secara signifikan (25 poin).
+      B. Contoh Riil & Bahaya 3 Tingkat Loop O(n³) (50 poin):
+         - Contoh kasus O(n²): Algoritma pengurutan Bubble Sort / Insertion Sort / Selection Sort, pencarian pasangan elemen (pair-matching), atau perbandingan kemiripan antar-dokumen secara silang (25 poin).
+         - Bahaya O(n³): Untuk data N = 1.000 saja, loop bersarang 3 tingkat akan memicu 1.000³ = 1.000.000.000 (1 Miliar) operasi. Pada data jutaan, ia memerlukan triliunan komputasi yang pasti menyebabkan program freeze, CPU throttling, atau request timeout (25 poin).
+    `
+  },
+  {
+    id: 'm10-essay-5',
+    meetingId: 10,
+    text: 'Dalam penelusuran data pada matriks 2D, seorang programmer ingin mencari nilai tertentu. Ketika nilai tersebut ditemukan, ia mengeksekusi perintah break di dalam perulangan bagian dalam (inner loop).\n\n(A) Jelaskan mengapa perintah break tersebut TIDAK menghentikan seluruh program atau seluruh perulangan! Loop mana yang terhenti dan apa yang terjadi pada outer loop?\n(B) Jelaskan 2 strategi pemrograman yang elegan (misalnya menggunakan Boolean Flag atau membungkus kode ke dalam Fungsi ber-return) agar program dapat langsung berhenti dan keluar dari KEDUA perulangan sekaligus seketika data ditemukan!',
+    timeLimit: 300,
+    rubric: `
+      Kriteria Penilaian (0-100):
+      A. Perilaku Lokal Break pada Nested Loop (45 poin):
+         - Perilaku break: Pernyataan break hanya memiliki lingkup lokal terhadap satu blok perulangan terdekat yang langsung membungkusnya (20 poin).
+         - Akibat pada outer loop: break hanya membatalkan sisa iterasi inner loop saat itu. Alur eksekusi akan tetap keluar ke badan outer loop dan outer loop AKAN TETAP MELANJUTKAN iterasi ke baris berikutnya, sehingga pencarian yang tidak diperlukan tetap berjalan (25 poin).
+      B. 2 Strategi Penghentian Multi-Loop Lengkap (55 poin):
+         - Strategi 1 (Boolean Flag): Mendeklarasikan variabel penanda sebelum loop (misal found = False). Saat data ketemu di inner loop, set found = True lalu panggil break. Di blok outer loop, tambahkan pengecekan if found: break untuk segera memutus loop luar (25 poin).
+         - Strategi 2 (Fungsi & Return): Membungkus seluruh logika pencarian nested loop ke dalam sebuah fungsi khusus. Ketika target ditemukan, panggil perintah return nilai_target (atau return True). Perintah return secara instan mengakhiri eksekusi seluruh fungsi dan keluar dari semua tingkat perulangan seketika tanpa sisa (30 poin).
+    `
   }
 ];
 

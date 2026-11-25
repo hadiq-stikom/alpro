@@ -1,34 +1,46 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createServerClient } from '@/lib/supabase-server';
+import { getAuthenticatedSessionUser } from '@/lib/supabase-server';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
+    const auth = await getAuthenticatedSessionUser(req);
+    if (!auth) {
+      return NextResponse.json(
+        { success: false, error: 'Sesi login tidak valid atau telah kedaluwarsa.' },
+        { status: 401 }
+      );
+    }
+    if (auth.profile.role !== 'dosen') {
+      return NextResponse.json(
+        { success: false, error: 'Akses ditolak. Fitur ini khusus Dosen Pengampu.' },
+        { status: 403 }
+      );
+    }
+
     const { searchParams } = new URL(req.url);
     const moduleId = searchParams.get('moduleId');
     const status = searchParams.get('status');
-    const lecturerId = searchParams.get('lecturerId');
+    const { supabaseAdmin } = auth;
 
-    const supabaseAdmin = createServerClient();
-
-    // 1. Ambil tanda tangan tersimpan dosen jika lecturerId disertakan
+    // 1. Ambil tanda tangan tersimpan milik dosen yang sedang login
     let lecturerStoredSignature: string | null = null;
-    if (lecturerId) {
-      try {
-        const { data: lecUser } = await (supabaseAdmin
-          .from('users' as any) as any)
-          .select('stored_signature')
-          .eq('id', lecturerId)
-          .single();
-        if (lecUser?.stored_signature) {
-          lecturerStoredSignature = lecUser.stored_signature;
-        }
-      } catch (lecErr) {
-        console.warn('[lecturer/praktikum GET] Gagal mengambil stored_signature dosen:', lecErr);
+    try {
+      const { data: lecUser } = await (supabaseAdmin
+        .from('users' as any) as any)
+        .select('stored_signature')
+        .eq('id', auth.user.id)
+        .single();
+      if (lecUser?.stored_signature) {
+        lecturerStoredSignature = lecUser.stored_signature;
       }
+    } catch (lecErr) {
+      console.warn('[lecturer/praktikum GET] Gagal mengambil stored_signature dosen:', lecErr);
     }
 
-    // 2. Query tabel praktikum_submissions
+    // 2. Query tabel praktikum_submissions (list terfilter + hitung agregat seluruh status secara paralel)
     let query = (supabaseAdmin
       .from('praktikum_submissions' as any) as any)
       .select(`
@@ -37,22 +49,49 @@ export async function GET(req: NextRequest) {
       `)
       .order('updated_at', { ascending: false });
 
+    let countsQuery = (supabaseAdmin
+      .from('praktikum_submissions' as any) as any)
+      .select('status');
+
     if (moduleId) {
-      query = query.eq('module_id', parseInt(moduleId, 10));
+      const parsedModId = parseInt(moduleId, 10);
+      query = query.eq('module_id', parsedModId);
+      countsQuery = countsQuery.eq('module_id', parsedModId);
     }
 
-    if (status && status !== 'semua') {
+    if (status && status !== 'semua' && status !== 'all') {
       query = query.eq('status', status);
     }
 
-    const { data, error } = await query;
+    const [{ data, error }, { data: countsData }] = await Promise.all([
+      query,
+      countsQuery,
+    ]);
+
+    const counts = {
+      diajukan: 0,
+      disetujui: 0,
+      perlu_revisi: 0,
+      draft: 0,
+      total: 0,
+    };
+
+    if (Array.isArray(countsData)) {
+      for (const row of countsData) {
+        counts.total += 1;
+        if (row.status === 'diajukan') counts.diajukan += 1;
+        else if (row.status === 'disetujui') counts.disetujui += 1;
+        else if (row.status === 'perlu_revisi') counts.perlu_revisi += 1;
+        else if (row.status === 'draft') counts.draft += 1;
+      }
+    }
 
     if (error) {
-      // Jika tabel belum dibuat, tangani secara elegan
       console.warn('[lecturer/praktikum GET] Query submissions error (tabel mungkin belum dibuat):', error.message);
       return NextResponse.json({
         success: true,
         submissions: [],
+        counts,
         lecturerStoredSignature,
         isTableReady: false,
         warning: 'Tabel praktikum_submissions belum diinisialisasi di basis data Supabase.'
@@ -62,6 +101,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       success: true,
       submissions: data || [],
+      counts,
       lecturerStoredSignature,
       isTableReady: true
     });
@@ -77,10 +117,23 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = await getAuthenticatedSessionUser(req);
+    if (!auth) {
+      return NextResponse.json(
+        { success: false, error: 'Sesi login tidak valid atau telah kedaluwarsa.' },
+        { status: 401 }
+      );
+    }
+    if (auth.profile.role !== 'dosen') {
+      return NextResponse.json(
+        { success: false, error: 'Akses ditolak. Fitur ini khusus Dosen Pengampu.' },
+        { status: 403 }
+      );
+    }
+
     const body = await req.json();
     const {
       submissionId,
-      lecturerId,
       status, // 'disetujui' | 'perlu_revisi'
       lecturerScore,
       lecturerFeedback,
@@ -88,17 +141,18 @@ export async function POST(req: NextRequest) {
       saveAsDefaultLecturerSignature
     } = body;
 
-    if (!submissionId || !status) {
+    if (!submissionId || !status || !['disetujui', 'perlu_revisi'].includes(status)) {
       return NextResponse.json(
-        { success: false, error: 'Parameter submissionId dan status wajib disertakan.' },
+        { success: false, error: 'Parameter submissionId dan status valid (disetujui/perlu_revisi) wajib disertakan.' },
         { status: 400 }
       );
     }
 
-    const supabaseAdmin = createServerClient();
+    const { supabaseAdmin } = auth;
+    const lecturerId = auth.user.id;
 
     // 1. Simpan tanda tangan default dosen jika diminta
-    if (saveAsDefaultLecturerSignature && lecturerSignature && lecturerId) {
+    if (saveAsDefaultLecturerSignature && lecturerSignature) {
       try {
         await (supabaseAdmin
           .from('users' as any) as any)
@@ -122,6 +176,11 @@ export async function POST(req: NextRequest) {
       updatePayload.lecturer_score = Number(lecturerScore);
       updatePayload.lecturer_signature = lecturerSignature || null;
       updatePayload.lecturer_signed_at = new Date().toISOString();
+    } else {
+      // Jika dikembalikan untuk revisi, bersihkan pengesahan sebelumnya (jika ada)
+      updatePayload.lecturer_score = null;
+      updatePayload.lecturer_signature = null;
+      updatePayload.lecturer_signed_at = null;
     }
 
     const { data, error } = await (supabaseAdmin

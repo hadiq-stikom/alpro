@@ -72,6 +72,15 @@ export default function LecturerPraktikumPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("diajukan"); // default fokus ke antrean yang diajukan
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Statistik agregat seluruh status (independen terhadap tab filter status yang aktif)
+  const [statusCounts, setStatusCounts] = useState({
+    diajukan: 0,
+    disetujui: 0,
+    perlu_revisi: 0,
+    draft: 0,
+    total: 0,
+  });
+
   // Modal Detail Pemeriksaan
   const [activeSubmission, setActiveSubmission] = useState<PraktikumSubmissionItem | null>(null);
   const [inputScore, setInputScore] = useState<string>("85");
@@ -91,14 +100,27 @@ export default function LecturerPraktikumPage() {
       if (selectedStatus !== "all") url.searchParams.set("status", selectedStatus);
       if (profile?.id) url.searchParams.set("lecturerId", profile.id);
 
-      const res = await fetch(url.toString());
+      const res = await fetch(url.toString(), { cache: "no-store" });
       const data = await res.json();
 
       if (!res.ok || !data.success) {
         throw new Error(data.error || "Gagal memuat antrean praktikum.");
       }
 
-      setSubmissions(data.submissions || []);
+      const loadedSubmissions: PraktikumSubmissionItem[] = data.submissions || [];
+      setSubmissions(loadedSubmissions);
+
+      if (data.counts) {
+        setStatusCounts(data.counts);
+      } else {
+        setStatusCounts({
+          diajukan: loadedSubmissions.filter((s) => s.status === "diajukan").length,
+          disetujui: loadedSubmissions.filter((s) => s.status === "disetujui").length,
+          perlu_revisi: loadedSubmissions.filter((s) => s.status === "perlu_revisi").length,
+          draft: loadedSubmissions.filter((s) => s.status === "draft").length,
+          total: loadedSubmissions.length,
+        });
+      }
       if (data.lecturerStoredSignature) {
         setLecturerStoredSignature(data.lecturerStoredSignature);
         if (!lecturerSignature) {
@@ -228,10 +250,10 @@ export default function LecturerPraktikumPage() {
     return matchesSearch;
   });
 
-  // Statistik Ringkasan
-  const countDiajukan = submissions.filter((s) => s.status === "diajukan").length;
-  const countDisetujui = submissions.filter((s) => s.status === "disetujui").length;
-  const countRevisi = submissions.filter((s) => s.status === "perlu_revisi").length;
+  // Statistik Ringkasan (selalu sinkron dengan agregat DB seluruh status)
+  const countDiajukan = statusCounts.diajukan;
+  const countDisetujui = statusCounts.disetujui;
+  const countRevisi = statusCounts.perlu_revisi;
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-24">
@@ -276,7 +298,15 @@ export default function LecturerPraktikumPage() {
       <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
         {/* Banner Statistik */}
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-          <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-sm flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setSelectedStatus("diajukan")}
+            className={`p-5 rounded-2xl bg-card border shadow-sm flex items-center justify-between text-left transition-all cursor-pointer ${
+              selectedStatus === "diajukan"
+                ? "border-cyan-500/60 ring-2 ring-cyan-500/20"
+                : "border-border/80 hover:border-cyan-500/40"
+            }`}
+          >
             <div>
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Menunggu Pengesahan</span>
               <span className="text-2xl font-black text-cyan-600 dark:text-cyan-400 mt-1 block">
@@ -286,9 +316,17 @@ export default function LecturerPraktikumPage() {
             <div className="w-12 h-12 rounded-xl bg-cyan-500/15 text-cyan-500 flex items-center justify-center font-bold">
               <Clock className="w-6 h-6" />
             </div>
-          </div>
+          </button>
 
-          <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-sm flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setSelectedStatus("disetujui")}
+            className={`p-5 rounded-2xl bg-card border shadow-sm flex items-center justify-between text-left transition-all cursor-pointer ${
+              selectedStatus === "disetujui"
+                ? "border-emerald-500/60 ring-2 ring-emerald-500/20"
+                : "border-border/80 hover:border-emerald-500/40"
+            }`}
+          >
             <div>
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Telah Disahkan</span>
               <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-1 block">
@@ -298,9 +336,17 @@ export default function LecturerPraktikumPage() {
             <div className="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center font-bold">
               <CheckCircle2 className="w-6 h-6" />
             </div>
-          </div>
+          </button>
 
-          <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-sm flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setSelectedStatus("perlu_revisi")}
+            className={`p-5 rounded-2xl bg-card border shadow-sm flex items-center justify-between text-left transition-all cursor-pointer ${
+              selectedStatus === "perlu_revisi"
+                ? "border-rose-500/60 ring-2 ring-rose-500/20"
+                : "border-border/80 hover:border-rose-500/40"
+            }`}
+          >
             <div>
               <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Dalam Revisi</span>
               <span className="text-2xl font-black text-rose-600 dark:text-rose-400 mt-1 block">
@@ -310,7 +356,7 @@ export default function LecturerPraktikumPage() {
             <div className="w-12 h-12 rounded-xl bg-rose-500/15 text-rose-500 flex items-center justify-center font-bold">
               <AlertCircle className="w-6 h-6" />
             </div>
-          </div>
+          </button>
 
           <div className="p-5 rounded-2xl bg-card border border-border/80 shadow-sm flex items-center justify-between">
             <div>
@@ -332,7 +378,7 @@ export default function LecturerPraktikumPage() {
             <div className="flex items-center gap-1.5 p-1 rounded-xl bg-secondary/60 border border-border/70 text-xs font-bold">
               <button
                 onClick={() => setSelectedStatus("diajukan")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                   selectedStatus === "diajukan"
                     ? "bg-cyan-600 text-white shadow"
                     : "text-slate-600 dark:text-slate-400 hover:text-foreground"
@@ -342,7 +388,7 @@ export default function LecturerPraktikumPage() {
               </button>
               <button
                 onClick={() => setSelectedStatus("disetujui")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                   selectedStatus === "disetujui"
                     ? "bg-emerald-600 text-white shadow"
                     : "text-slate-600 dark:text-slate-400 hover:text-foreground"
@@ -352,7 +398,7 @@ export default function LecturerPraktikumPage() {
               </button>
               <button
                 onClick={() => setSelectedStatus("perlu_revisi")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                   selectedStatus === "perlu_revisi"
                     ? "bg-rose-600 text-white shadow"
                     : "text-slate-600 dark:text-slate-400 hover:text-foreground"
@@ -362,13 +408,13 @@ export default function LecturerPraktikumPage() {
               </button>
               <button
                 onClick={() => setSelectedStatus("all")}
-                className={`px-3 py-1.5 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
                   selectedStatus === "all"
                     ? "bg-slate-700 text-white shadow"
                     : "text-slate-600 dark:text-slate-400 hover:text-foreground"
                 }`}
               >
-                Semua
+                Semua ({statusCounts.total})
               </button>
             </div>
 
@@ -524,10 +570,10 @@ export default function LecturerPraktikumPage() {
                               <span>{sub.status === "disetujui" ? "Ulas / Nilai" : "Periksa & Sahkan"}</span>
                             </button>
                             <Link
-                              href={`/praktikum/${sub.module_id}/print`}
+                              href={`/praktikum/${sub.module_id}/print?userId=${sub.user_id}`}
                               target="_blank"
                               className="p-1.5 rounded-xl bg-secondary hover:bg-secondary/80 text-foreground border border-border/70"
-                              title="Buka Lembar Cetak A4"
+                              title="Buka Lembar Cetak A4 Mahasiswa"
                             >
                               <Printer className="w-4 h-4" />
                             </Link>

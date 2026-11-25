@@ -322,8 +322,8 @@ export default function PraktikumWorksheetPage({
   const isAnalisisComplete = totalAnalisisPrompts > 0 && filledAnalisisCount === totalAnalisisPrompts;
   const isKesimpulanComplete = Boolean(kesimpulanText && kesimpulanText.trim().length > 0);
   
-  // Akses formulir Analisis & Kesimpulan terbuka jika baseline sudah ada, atau baru diselesaikan di sesi ini, atau sudah disubmit/disetujui
-  const isFormUnlocked = hasBaseline || isWarmupCompletedInSession || submissionStatus === 'disetujui' || submissionStatus === 'diajukan';
+  // Akses formulir Analisis & Kesimpulan terbuka jika baseline sudah ada, atau baru diselesaikan di sesi ini, atau sudah pernah diajukan/revisi/disetujui
+  const isFormUnlocked = hasBaseline || isWarmupCompletedInSession || submissionStatus === 'disetujui' || submissionStatus === 'diajukan' || submissionStatus === 'perlu_revisi';
 
   // Syarat tombol cetak aktif: Analisis & Kesimpulan lengkap DAN dinyatakan "Memenuhi Standar" oleh AI, ATAU telah disahkan resmi oleh Dosen
   const isApprovedByLecturer =
@@ -544,7 +544,7 @@ export default function PraktikumWorksheetPage({
     if (hasLoadedRemoteSubmission.current) return;
     hasLoadedRemoteSubmission.current = true;
 
-    fetch(`/api/praktikum/submission?userId=${currentUserId}&moduleId=${moduleId}`)
+    fetch(`/api/praktikum/submission?userId=${currentUserId}&moduleId=${moduleId}`, { cache: "no-store" })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
@@ -2720,6 +2720,8 @@ export default function PraktikumWorksheetPage({
               ? "✓ Laporan telah disahkan resmi oleh Dosen Pengampu Laboratorium. Nilai dan tanda tangan digital telah terekam permanen."
               : submissionStatus === "diajukan"
               ? "⏳ Laporan praktikum sedang dalam antrean pemeriksaan oleh Dosen Hadiq, ST, M.Kom."
+              : submissionStatus === "perlu_revisi"
+              ? "⚠️ Dosen meminta perbaikan pada laporan ini. Silakan baca catatan koreksi di atas, perbaiki isian, lalu ajukan ulang."
               : "* Sebelum mengajukan, pastikan Analisis & Kesimpulan telah lengkap dan tanda tangan mahasiswa telah ditempel."}
           </div>
 
@@ -2759,7 +2761,13 @@ export default function PraktikumWorksheetPage({
                 ) : (
                   <>
                     <CheckCircle2 className="w-4 h-4 text-white" />
-                    <span>{submissionStatus === "diajukan" ? "Perbarui Pengajuan ke Dosen" : "Ajukan Konsultasi ke Dosen"}</span>
+                    <span>
+                      {submissionStatus === "diajukan"
+                        ? "Perbarui Pengajuan ke Dosen"
+                        : submissionStatus === "perlu_revisi"
+                        ? "Ajukan Ulang Hasil Revisi"
+                        : "Ajukan Konsultasi ke Dosen"}
+                    </span>
                   </>
                 )}
               </button>

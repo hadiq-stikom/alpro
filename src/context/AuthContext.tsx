@@ -67,49 +67,90 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   // Ambil profil dari tabel users
-  const fetchProfile = useCallback(async (userId: string) => {
-    console.log("[AuthContext] fetchProfile userId:", userId);
-    const { data, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("id", userId)
-      .single();
+  const fetchProfile = useCallback(async (userId: string): Promise<UserProfile | null> => {
+    try {
+      console.log("[AuthContext] fetchProfile userId:", userId);
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("id", userId)
+        .single();
 
-    if (error) {
-      console.error("[AuthContext] ❌ Gagal ambil profil:", error.code, error.message, error.details);
+      if (error) {
+        console.error("[AuthContext] ❌ Gagal ambil profil:", error.code, error.message, error.details);
+        setProfile(null);
+        return null;
+      } else {
+        console.log("[AuthContext] ✅ Profil ditemukan:", data);
+        setProfile(data);
+        return data;
+      }
+    } catch (err) {
+      console.error("[AuthContext] Exception saat fetchProfile:", err);
       setProfile(null);
-    } else {
-      console.log("[AuthContext] ✅ Profil ditemukan:", data);
-      setProfile(data);
+      return null;
     }
   }, []);
 
-  // Inisialisasi: cek session yang sudah ada
+  // Inisialisasi: cek session yang sudah ada (tahan gagal & timeout agar loading tidak pernah macet)
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id).finally(() => setLoading(false));
-      } else {
+    let isMounted = true;
+    const safetyTimer = setTimeout(() => {
+      if (isMounted) {
+        console.warn("[AuthContext] Init auth timeout fallback — melepas status loading.");
         setLoading(false);
       }
-    });
+    }, 4500);
 
-    // Dengarkan perubahan auth state
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
+    async function initAuth() {
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (!isMounted) return;
+        if (error) {
+          console.warn("[AuthContext] getSession error:", error.message);
+        }
+        setSession(session ?? null);
         setUser(session?.user ?? null);
         if (session?.user) {
           await fetchProfile(session.user.id);
         } else {
           setProfile(null);
         }
+      } catch (err) {
+        console.error("[AuthContext] Exception saat getSession:", err);
+        if (isMounted) {
+          setSession(null);
+          setUser(null);
+          setProfile(null);
+        }
+      } finally {
+        clearTimeout(safetyTimer);
+        if (isMounted) setLoading(false);
+      }
+    }
+
+    initAuth();
+
+    // Dengarkan perubahan auth state
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, nextSession) => {
+        if (!isMounted) return;
+        setSession(nextSession ?? null);
+        setUser(nextSession?.user ?? null);
+        if (nextSession?.user) {
+          await fetchProfile(nextSession.user.id);
+        } else {
+          setProfile(null);
+        }
+        if (isMounted) setLoading(false);
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      clearTimeout(safetyTimer);
+      subscription.unsubscribe();
+    };
   }, [fetchProfile]);
 
   // ----------------------------------------------------------------
@@ -117,18 +158,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // ----------------------------------------------------------------
   const signIn = useCallback(
     async (nim: string, password: string): Promise<{ error: string | null }> => {
-      const email = resolveEmail(nim);
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      try {
+        const email = resolveEmail(nim);
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (error) {
-        if (error.message.includes("Invalid login credentials")) {
-          return { error: "NIM atau password salah. Coba lagi." };
+        if (error) {
+          if (error.message.includes("Invalid login credentials")) {
+            return { error: "NIM atau password salah. Coba lagi." };
+          }
+          return { error: error.message };
         }
-        return { error: error.message };
+
+        if (data?.session) {
+          setSession(data.session);
+          setUser(data.user ?? null);
+        }
+        if (data?.user) {
+          const loadedProfile = await fetchProfile(data.user.id);
+          if (!loadedProfile) {
+            setLoading(false);
+            return { error: "Login berhasil, tetapi data profil tidak dapat dimuat dari tabel users." };
+          }
+        }
+        setLoading(false);
+        return { error: null };
+      } catch (err: any) {
+        return { error: err?.message || "Terjadi kesalahan jaringan saat mencoba masuk." };
       }
-      return { error: null };
     },
-    []
+    [fetchProfile]
   );
 
   // ----------------------------------------------------------------

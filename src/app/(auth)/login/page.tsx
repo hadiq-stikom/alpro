@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useId, Suspense } from "react";
+import React, { useState, useEffect, useId, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Variants } from "framer-motion";
 import { motion, AnimatePresence } from "framer-motion";
@@ -38,6 +38,8 @@ function LoginForm() {
 
   const nimId  = useId();
   const passId = useId();
+  const nimRef  = useRef<HTMLInputElement>(null);
+  const passRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -63,17 +65,21 @@ function LoginForm() {
     e.preventDefault();
     setError(null);
 
-    if (!nim.trim()) {
+    // Fallback membaca DOM ref langsung untuk kompatibilitas penuh dengan browser autofill
+    const effectiveNim = (nimRef.current?.value ?? nim).trim();
+    const effectivePassword = passRef.current?.value ?? password;
+
+    if (!effectiveNim) {
       setError("NIM tidak boleh kosong.");
       return;
     }
-    if (!password) {
+    if (!effectivePassword) {
       setError("Password tidak boleh kosong.");
       return;
     }
 
     setIsSubmitting(true);
-    const { error: authError } = await signIn(nim.trim(), password);
+    const { error: authError } = await signIn(effectiveNim, effectivePassword);
     setIsSubmitting(false);
 
     if (authError) {
@@ -189,7 +195,9 @@ function LoginForm() {
                   NIM / Email
                 </label>
                 <input
+                  ref={nimRef}
                   id={nimId}
+                  name="username"
                   type="text"
                   autoComplete="username"
                   placeholder="NIM mahasiswa atau email dosen"
@@ -212,7 +220,9 @@ function LoginForm() {
                 </label>
                 <div className="relative">
                   <input
+                    ref={passRef}
                     id={passId}
+                    name="password"
                     type={showPass ? "text" : "password"}
                     autoComplete="current-password"
                     placeholder="Password Anda"
@@ -227,7 +237,7 @@ function LoginForm() {
                     type="button"
                     onClick={() => setShowPass(!showPass)}
                     tabIndex={-1}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors cursor-pointer"
                     aria-label={showPass ? "Sembunyikan password" : "Tampilkan password"}
                   >
                     {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -241,10 +251,10 @@ function LoginForm() {
               {/* Submit */}
               <motion.button
                 type="submit"
-                disabled={isSubmitting || authLoading}
+                disabled={isSubmitting}
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full mt-2 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white
+                className="w-full mt-2 flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold text-white cursor-pointer
                   transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   background:

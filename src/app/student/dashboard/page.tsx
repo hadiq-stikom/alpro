@@ -111,7 +111,12 @@ export default function StudentDashboardPage() {
     pendingCount: number;
     revisionCount: number;
     avgScore: number | null;
-    moduleStatuses: Record<number, { status: string; score: number | null }>;
+    moduleStatuses: Record<number, {
+      status: string;
+      score: number | null;
+      feedback?: string | null;
+      signedAt?: string | null;
+    }>;
   } | null>(null);
 
   useEffect(() => {
@@ -238,7 +243,7 @@ export default function StudentDashboardPage() {
 
         // 5. Ambil data pengesahan praktikum (1 SKS) secara terpisah
         try {
-          const resPrak = await fetch(`/api/praktikum/submission?userId=${profile.id}`);
+          const resPrak = await fetch(`/api/praktikum/submission?userId=${profile.id}`, { cache: 'no-store' });
           const dataPrak = await resPrak.json();
           if (dataPrak.success && Array.isArray(dataPrak.submissions)) {
             const subs = dataPrak.submissions;
@@ -252,13 +257,15 @@ export default function StudentDashboardPage() {
 
             const pAvg = scores.length > 0 ? Number((scores.reduce((a: number, b: number) => a + b, 0) / scores.length).toFixed(1)) : null;
 
-            const modMap: Record<number, { status: string; score: number | null }> = {};
+            const modMap: Record<number, { status: string; score: number | null; feedback?: string | null; signedAt?: string | null }> = {};
             subs.forEach((s: any) => {
               const mId = Number(s.module_id);
               if (mId) {
                 modMap[mId] = {
                   status: s.status,
-                  score: s.lecturer_score !== null && s.lecturer_score !== undefined ? Number(s.lecturer_score) : null
+                  score: s.lecturer_score !== null && s.lecturer_score !== undefined ? Number(s.lecturer_score) : null,
+                  feedback: s.lecturer_feedback || null,
+                  signedAt: s.lecturer_signed_at || null,
                 };
               }
             });
@@ -975,11 +982,18 @@ export default function StudentDashboardPage() {
 
             <div className="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-between lg:justify-end">
               {/* Badge Ringkasan */}
-              <div className="flex items-center gap-2 text-xs font-bold">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
                 <span className="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
                   {praktikumStats ? `${praktikumStats.approvedCount}/7 Disahkan` : "0/7 Disahkan"}
                 </span>
+
+                {praktikumStats && praktikumStats.avgScore !== null && (
+                  <span className="px-3 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/30 text-indigo-700 dark:text-indigo-300 flex items-center gap-1.5 font-mono">
+                    <Award className="w-4 h-4" />
+                    Rata-rata: {praktikumStats.avgScore}
+                  </span>
+                )}
 
                 {praktikumStats && praktikumStats.pendingCount > 0 && (
                   <span className="px-3 py-1.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 flex items-center gap-1.5 animate-pulse">
@@ -1045,6 +1059,7 @@ export default function StudentDashboardPage() {
                     <div className="flex items-center justify-between text-[10px] font-mono font-bold">
                       <span className="text-cyan-600 dark:text-cyan-400">MODUL 0{m.id}</span>
                       {statusKey === 'disetujui' && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
+                      {statusKey === 'perlu_revisi' && <AlertCircle className="w-3.5 h-3.5 text-rose-500" />}
                     </div>
                     <div className="text-xs font-bold text-foreground line-clamp-1" title={m.title}>
                       {m.title}
@@ -1058,6 +1073,88 @@ export default function StudentDashboardPage() {
               );
             })}
           </div>
+
+          {/* Notifikasi Langsung Catatan Revisi & Hasil Pengesahan Dosen */}
+          {praktikumStats && (praktikumStats.revisionCount > 0 || praktikumStats.approvedCount > 0) && (
+            <div className="mt-5 pt-5 border-t border-border/60 space-y-3">
+              {/* Daftar Modul Perlu Revisi + Catatan Dosen */}
+              {PRAKTIKUM_MODULES.filter((m) => praktikumStats.moduleStatuses[m.id]?.status === 'perlu_revisi').map((m) => {
+                const info = praktikumStats.moduleStatuses[m.id];
+                return (
+                  <div
+                    key={`rev-${m.id}`}
+                    className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-xs font-bold text-rose-700 dark:text-rose-300">
+                        <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
+                        <span>Modul 0{m.id}: {m.title} — Perlu Perbaikan (Revisi Dosen)</span>
+                      </div>
+                      <p className="text-xs text-foreground/90 pl-6 leading-relaxed">
+                        <span className="font-semibold text-rose-700 dark:text-rose-300">Catatan Dosen: </span>
+                        <span className="italic">
+                          {info?.feedback
+                            ? `"${info.feedback}"`
+                            : "Silakan tinjau kembali tabel pengamatan, analisis, dan kesimpulan laporan Anda lalu ajukan ulang."}
+                        </span>
+                      </p>
+                    </div>
+                    <Link
+                      href={`/praktikum/${m.id}`}
+                      className="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 shrink-0 transition-colors shadow-xs"
+                    >
+                      <span>Perbaiki &amp; Ajukan Ulang</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                );
+              })}
+
+              {/* Ringkasan Modul Disahkan + Catatan Apresiasi & Cetak Cepat */}
+              {PRAKTIKUM_MODULES.filter((m) => praktikumStats.moduleStatuses[m.id]?.status === 'disetujui').map((m) => {
+                const info = praktikumStats.moduleStatuses[m.id];
+                return (
+                  <div
+                    key={`app-${m.id}`}
+                    className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+                  >
+                    <div className="space-y-0.5">
+                      <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-emerald-700 dark:text-emerald-300">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+                        <span>Modul 0{m.id}: {m.title} — Telah Disahkan Dosen</span>
+                        {info?.score !== null && info?.score !== undefined && (
+                          <span className="px-2 py-0.5 rounded-md bg-emerald-500/20 border border-emerald-500/30 font-mono text-[11px]">
+                            Nilai: {info.score}/100
+                          </span>
+                        )}
+                      </div>
+                      {info?.feedback && (
+                        <p className="text-xs text-foreground/85 pl-6 italic">
+                          Catatan Dosen: &ldquo;{info.feedback}&rdquo;
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0 pl-6 sm:pl-0">
+                      <Link
+                        href={`/praktikum/${m.id}`}
+                        className="px-3 py-1.5 rounded-xl bg-card hover:bg-secondary border border-border text-foreground font-bold text-[11px] transition-colors"
+                      >
+                        Lihat Laporan
+                      </Link>
+                      <Link
+                        href={`/praktikum/${m.id}/print`}
+                        target="_blank"
+                        className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] flex items-center gap-1.5 transition-colors shadow-xs"
+                      >
+                        <Printer className="w-3.5 h-3.5" />
+                        <span>Cetak PDF A4</span>
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </motion.div>
 
         {/* DAFTAR LENCANA & SELURUH PERTEMUAN (FORMAT COMPACT CARD) */}

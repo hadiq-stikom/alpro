@@ -1,18 +1,33 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { createServerClient } from '@/lib/supabase-server';
+import { getAuthenticatedSessionUser } from '@/lib/supabase-server';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const userId = searchParams.get('userId');
-    const moduleId = searchParams.get('moduleId');
-
-    if (!userId) {
-      return NextResponse.json({ success: false, error: 'Parameter userId wajib disertakan.' }, { status: 400 });
+    const auth = await getAuthenticatedSessionUser(req);
+    if (!auth) {
+      return NextResponse.json(
+        { success: false, error: 'Sesi login tidak ditemukan atau telah kedaluwarsa. Harap login kembali.' },
+        { status: 401 }
+      );
     }
 
-    const supabaseAdmin = createServerClient();
+    const { searchParams } = new URL(req.url);
+    const requestedUserId = searchParams.get('userId') || auth.user.id;
+    const moduleId = searchParams.get('moduleId');
+
+    // Isolasi data ketat: Mahasiswa hanya boleh mengakses datanya sendiri; hanya Dosen yang dapat melihat milik mahasiswa lain
+    if (requestedUserId !== auth.user.id && auth.profile.role !== 'dosen') {
+      return NextResponse.json(
+        { success: false, error: 'Akses ditolak: Anda hanya dapat melihat laporan praktikum milik Anda sendiri.' },
+        { status: 403 }
+      );
+    }
+
+    const userId = requestedUserId;
+    const { supabaseAdmin } = auth;
 
     // 1. Ambil stored_signature dari profil user
     let storedSignature: string | null = null;
@@ -100,9 +115,17 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
+    const auth = await getAuthenticatedSessionUser(req);
+    if (!auth) {
+      return NextResponse.json(
+        { success: false, error: 'Sesi login tidak ditemukan atau telah kedaluwarsa. Harap login kembali.' },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json();
     const {
-      userId,
+      userId: requestedUserId,
       classId,
       moduleId,
       studentName,
@@ -119,14 +142,24 @@ export async function POST(req: NextRequest) {
       saveSignatureToProfile
     } = body;
 
-    if (!userId || !moduleId) {
+    if (!moduleId) {
       return NextResponse.json(
-        { success: false, error: 'Parameter userId dan moduleId wajib disertakan.' },
+        { success: false, error: 'Parameter moduleId wajib disertakan.' },
         { status: 400 }
       );
     }
 
-    const supabaseAdmin = createServerClient();
+    // Tolak jika klien mengirim userId milik orang lain
+    if (requestedUserId && requestedUserId !== auth.user.id) {
+      return NextResponse.json(
+        { success: false, error: 'Akses ditolak: Anda hanya dapat menyimpan laporan praktikum milik akun Anda sendiri.' },
+        { status: 403 }
+      );
+    }
+
+    // Gunakan selalu ID terverifikasi dari sesi cookie
+    const userId = auth.user.id;
+    const { supabaseAdmin } = auth;
 
     // 1. Jika opsi simpan tanda tangan ke profil aktif
     if (saveSignatureToProfile && studentSignature) {
@@ -147,10 +180,10 @@ export async function POST(req: NextRequest) {
 
     const payload = {
       user_id: userId,
-      class_id: classId || null,
+      class_id: classId || auth.profile.class_id || null,
       module_id: Number(moduleId),
-      student_name: studentName || null,
-      student_nim: studentNim || null,
+      student_name: studentName || auth.profile.full_name || null,
+      student_nim: studentNim || auth.profile.nim || null,
       student_class: studentClass || null,
       lab_date: labDate || null,
       observations: observations || [],
@@ -165,9 +198,9 @@ export async function POST(req: NextRequest) {
     };
 
     // 3. Cek apakah record sudah ada
-    const { data: existing, error: checkErr } = await (supabaseAdmin
+    const { data: existing } = await (supabaseAdmin
       .from('praktikum_submissions' as any) as any)
-      .select('id, status, lecturer_score, lecturer_signature, lecturer_feedback')
+      .select('*')
       .eq('user_id', userId)
       .eq('module_id', Number(moduleId))
       .maybeSingle();
@@ -175,10 +208,20 @@ export async function POST(req: NextRequest) {
     let resultData: any = null;
 
     if (existing) {
-      // Pertahankan skor, feedback, dan status jika sudah disetujui / diajukan
+      // Jangan timpa laporan resmi yang sudah disahkan dosen saat autosave / simpan draf
+      if (existing.status === 'disetujui' && action !== 'diajukan') {
+        return NextResponse.json({
+          success: true,
+          data: existing,
+          message: 'Laporan praktikum telah disahkan resmi dan terkunci dari perubahan draf.'
+        });
+      }
+
+      // Pertahankan status 'disetujui', 'diajukan', maupun 'perlu_revisi' saat hanya menyimpan draf!
+      // Status baru berubah ke 'diajukan' hanya jika mahasiswa menekan ajukan / ajukan ulang.
       const effectiveStatus = action === 'diajukan'
         ? 'diajukan'
-        : (existing.status === 'disetujui' || existing.status === 'diajukan'
+        : (existing.status === 'disetujui' || existing.status === 'diajukan' || existing.status === 'perlu_revisi'
             ? existing.status
             : 'draft');
 
@@ -187,7 +230,6 @@ export async function POST(req: NextRequest) {
         status: effectiveStatus,
       };
 
-      // Jika sebelumnya disetujui, dan mahasiswa mengajukan ulang, status beralih ke diajukan
       const { data: updated, error: updateErr } = await (supabaseAdmin
         .from('praktikum_submissions' as any) as any)
         .update(updatePayload)

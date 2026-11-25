@@ -74,7 +74,7 @@ export default function PraktikumIndexPage() {
       // 2. Jika mahasiswa terautentikasi, sinkronkan dengan database Supabase
       if (profile?.id) {
         try {
-          const res = await fetch(`/api/praktikum/submission?userId=${profile.id}`);
+          const res = await fetch(`/api/praktikum/submission?userId=${profile.id}`, { cache: "no-store" });
           const data = await res.json();
           if (data.success && Array.isArray(data.submissions)) {
             data.submissions.forEach((sub: any) => {
@@ -320,11 +320,23 @@ export default function PraktikumIndexPage() {
                     </p>
                   </div>
 
-                  {/* Catatan Feedback Dosen jika status Perlu Revisi */}
+                  {/* Catatan Feedback Dosen jika status Perlu Revisi atau Disetujui */}
                   {statusKey === 'perlu_revisi' && modStatus.feedback && (
                     <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/25 text-xs text-rose-700 dark:text-rose-300 space-y-1">
                       <div className="font-bold flex items-center gap-1.5">
                         <AlertCircle className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                        <span>Catatan Koreksi Dosen:</span>
+                      </div>
+                      <p className="line-clamp-3 pl-5 italic font-normal text-slate-700 dark:text-slate-300">
+                        &ldquo;{modStatus.feedback}&rdquo;
+                      </p>
+                    </div>
+                  )}
+
+                  {statusKey === 'disetujui' && modStatus.feedback && (
+                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 text-xs text-emerald-700 dark:text-emerald-300 space-y-1">
+                      <div className="font-bold flex items-center gap-1.5">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                         <span>Catatan Dosen:</span>
                       </div>
                       <p className="line-clamp-2 pl-5 italic font-normal text-slate-700 dark:text-slate-300">

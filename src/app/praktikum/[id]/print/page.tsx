@@ -33,8 +33,12 @@ export default function PraktikumPrintPage({
   const [lecturerScore, setLecturerScore] = useState<number | null>(null);
   const [lecturerSignedAt, setLecturerSignedAt] = useState<string | null>(null);
   const [submissionStatus, setSubmissionStatus] = useState<string>("draft");
+  const [accessDeniedMsg, setAccessDeniedMsg] = useState<string | null>(null);
 
   useEffect(() => {
+    const searchParamsUserId = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("userId") : null;
+    const isViewingOtherStudent = Boolean(searchParamsUserId && (!profile?.id || searchParamsUserId !== profile.id));
+
     // Tanggal default
     const today = new Date().toLocaleDateString("id-ID", {
       day: "numeric",
@@ -43,7 +47,7 @@ export default function PraktikumPrintPage({
     });
     setLabDate(today);
 
-    if (profile) {
+    if (profile && !isViewingOtherStudent) {
       setStudentName(profile.full_name || "");
       setStudentNim(profile.nim || "");
     }
@@ -53,29 +57,31 @@ export default function PraktikumPrintPage({
       return;
     }
 
-    const specificKey = profile?.nim ? `lkp_draft_m${moduleId}_${profile.nim}` : null;
-    const fallbackKey = `lkp_draft_m${moduleId}_local`;
     let parsed: any = null;
+    if (!isViewingOtherStudent) {
+      const specificKey = profile?.nim ? `lkp_draft_m${moduleId}_${profile.nim}` : null;
+      const fallbackKey = `lkp_draft_m${moduleId}_local`;
 
-    if (specificKey) {
-      try {
-        const item = localStorage.getItem(specificKey);
-        if (item) parsed = JSON.parse(item);
-      } catch (e) {
-        console.error("Gagal membaca specificKey:", e);
-      }
-    }
-    if (!parsed) {
-      try {
-        const item = localStorage.getItem(fallbackKey);
-        if (item) {
-          const rawParsed = JSON.parse(item);
-          if (!profile?.nim || !rawParsed.studentNim || rawParsed.studentNim === profile.nim) {
-            parsed = rawParsed;
-          }
+      if (specificKey) {
+        try {
+          const item = localStorage.getItem(specificKey);
+          if (item) parsed = JSON.parse(item);
+        } catch (e) {
+          console.error("Gagal membaca specificKey:", e);
         }
-      } catch (e) {
-        console.error("Gagal membaca fallbackKey:", e);
+      }
+      if (!parsed) {
+        try {
+          const item = localStorage.getItem(fallbackKey);
+          if (item) {
+            const rawParsed = JSON.parse(item);
+            if (!profile?.nim || !rawParsed.studentNim || rawParsed.studentNim === profile.nim) {
+              parsed = rawParsed;
+            }
+          }
+        } catch (e) {
+          console.error("Gagal membaca fallbackKey:", e);
+        }
       }
     }
 
@@ -107,14 +113,20 @@ export default function PraktikumPrintPage({
       setObservations(moduleData.defaultObservations);
     }
 
-    // Ambil data remote submission dari database jika ada (bisa dari userId di searchParams atau profile)
-    const searchParamsUserId = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("userId") : null;
+    // Ambil data remote submission dari database jika ada (divalidasi sesi cookie di backend)
     const targetUserId = searchParamsUserId || profile?.id;
 
     if (targetUserId) {
-      fetch(`/api/praktikum/submission?userId=${targetUserId}&moduleId=${moduleId}`)
-        .then((res) => res.json())
-        .then((data) => {
+      fetch(`/api/praktikum/submission?userId=${targetUserId}&moduleId=${moduleId}`, { cache: "no-store" })
+        .then(async (res) => {
+          const data = await res.json();
+          if (res.status === 401 || res.status === 403 || !data.success) {
+            if (res.status === 401 || res.status === 403) {
+              setAccessDeniedMsg(data.error || "Akses ditolak. Harap login dengan akun yang sesuai.");
+            }
+            return;
+          }
+          setAccessDeniedMsg(null);
           if (data.success && data.submission) {
             const sub = data.submission;
             const isOfficial = sub.status === "submitted" || sub.status === "disetujui" || sub.status === "graded";
@@ -195,6 +207,30 @@ export default function PraktikumPrintPage({
       <div className="min-h-screen bg-slate-900 text-slate-100 flex flex-col items-center justify-center p-12 text-center gap-3">
         <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
         <p className="text-sm text-slate-300">Memverifikasi status pengesahan &amp; memuat dokumen cetak...</p>
+      </div>
+    );
+  }
+
+  // Tolak akses jika mencoba membuka laporan mahasiswa lain / belum login
+  if (accessDeniedMsg) {
+    return (
+      <div className="min-h-screen bg-slate-900 text-slate-100 flex items-center justify-center p-6">
+        <div className="max-w-md w-full p-8 rounded-3xl bg-slate-950 border border-rose-500/40 text-center space-y-5 shadow-2xl">
+          <div className="w-16 h-16 rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 flex items-center justify-center mx-auto shadow-md">
+            <Lock className="w-8 h-8" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-xl font-bold text-white tracking-tight">Akses Ditolak</h2>
+            <p className="text-sm text-slate-300 leading-relaxed">{accessDeniedMsg}</p>
+          </div>
+          <Link
+            href="/student/dashboard"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Kembali ke Dashboard</span>
+          </Link>
+        </div>
       </div>
     );
   }
